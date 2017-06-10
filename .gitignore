@@ -1,0 +1,11 @@
+# Compiled typings
+typings
+
+# Server-side dependencies
+node_modules
+
+# Ignore the built version of the site
+public
+
+# Ignore files used for publishing to gh-pages
+.publish

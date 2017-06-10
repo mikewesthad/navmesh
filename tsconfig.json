@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+      "target": "es6",
+      "allowJs": true,
+      "checkJs": true,
+      "typeRoots": ["./typings"]
+  },
+  "include": [
+      "src/**/*",
+      "typings/**/*"
+  ]
+}
