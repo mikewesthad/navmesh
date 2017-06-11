@@ -1,0 +1,67 @@
+{
+  "name": "phaser-navmesh-plugin",
+  "version": "1.0.0",
+  "description": "A plugin for Phaser for fast pathfinding using navigation meshes",
+  "main": "dist/phaser-navmesh-plugin.min.js",
+  "scripts": {
+    "build:library": "webpack -p --config config/webpack.config.library.js",
+    "build:example": "webpack -p --config config/webpack.config.example.js",
+    "build:all": "concurrently \"npm run build:library\" \"npm run build:example\"",
+    "watch:library": "webpack --watch --config config/webpack.config.library.js",
+    "watch:example": "webpack --watch --config config/webpack.config.example.js",
+    "watch:all": "concurrently \"npm run watch:library\" \"npm run watch:example\"",
+    "serve": "browser-sync start --config \"config/browser-sync.config.js\"",
+    "dev": "concurrently \"npm run watch:all\" \"npm run serve\"",
+    "clean:builds": "rimraf dist public",
+    "clean:docs": "rimraf out",
+    "clean:all": "rimraf dist public out",
+    "doc": "jsdoc -c config/jsdoc.config.json",
+    "postdoc": "cp -r doc-images/ jsdocs/",
+    "deploy:doc": "gh-pages --branch gh-pages --dist jsdocs --dest docs",
+    "predeploy:doc": "npm run doc"
+  },
+  "files": [
+    "dist/",
+    "src/library/"
+  ],
+  "browserify": {
+    "transform": [
+      ["babelify", {"only": "src/**/*"}]
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikewesthad/phaser-navmesh-plugin.git"
+  },
+  "keywords": [
+    "path finding",
+    "navigation mesh",
+    "phaser",
+    "a*"
+  ],
+  "author": "Michael Hadley",
+  "contributors": [
+    "Rex Twedt"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mikewesthad/phaser-navmesh-plugin/issues"
+  },
+  "homepage": "https://github.com/mikewesthad/phaser-navmesh-plugin#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.0.0",
+    "babel-preset-env": "^1.5.2",
+    "browser-sync": "^2.18.12",
+    "concurrently": "^3.4.0",
+    "copy-webpack-plugin": "^4.0.1",
+    "docdash": "^0.4.0",
+    "expose-loader": "^0.7.3",
+    "gh-pages": "^1.0.0",
+    "jsdoc": "^3.4.3",
+    "phaser-ce": "^2.8.0",
+    "rimraf": "^2.6.1",
+    "webpack": "^2.6.1"
+  }
+}

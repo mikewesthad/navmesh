@@ -2,11 +2,9 @@
   "compilerOptions": {
       "target": "es6",
       "allowJs": true,
-      "checkJs": true,
-      "typeRoots": ["./typings"]
+      "checkJs": true
   },
   "include": [
-      "src/**/*",
-      "typings/**/*"
+      "src/**/*"
   ]
 }

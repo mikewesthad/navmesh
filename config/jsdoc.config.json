@@ -1,0 +1,13 @@
+{
+    "source": {
+        "include": ["src/library"],
+        "includePattern": ".+\\.js(doc)?$",
+        "excludePattern": "(^|\\/|\\\\)_"
+    },
+    "opts": {
+        "recurse": true,
+        "template": "node_modules/docdash",
+        "destination": "./jsdocs/",
+        "readme": "./README.md"
+    }
+}
