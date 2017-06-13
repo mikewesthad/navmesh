@@ -4,8 +4,8 @@
   "description": "A plugin for Phaser for fast pathfinding using navigation meshes",
   "main": "dist/phaser-navmesh-plugin.min.js",
   "scripts": {
-    "build:library": "webpack -p --config config/webpack.config.library.js",
-    "build:example": "webpack -p --config config/webpack.config.example.js",
+    "build:library": "webpack --config config/webpack.config.library.js",
+    "build:example": "webpack --config config/webpack.config.example.js",
     "build:all": "concurrently \"npm run build:library\" \"npm run build:example\"",
     "watch:library": "webpack --watch --config config/webpack.config.library.js",
     "watch:example": "webpack --watch --config config/webpack.config.example.js",

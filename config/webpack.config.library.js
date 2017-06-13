@@ -1,6 +1,7 @@
 /* eslint-env node */
 
 const path = require("path");
+const webpack = require("webpack");
 
 // Go up one directory since we are in config/
 const root = path.join(__dirname, "..");
@@ -26,5 +27,12 @@ module.exports = {
             }
         ]
     },
+    plugins: [
+        new webpack.optimize.UglifyJsPlugin({
+            include: /\.min\.js$/,
+            minimize: true,
+            sourceMap: "source-map"
+        })
+    ],
     devtool: "source-map"
 };
