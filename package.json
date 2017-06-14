@@ -26,7 +26,12 @@
   ],
   "browserify": {
     "transform": [
-      ["babelify", {"only": "src/**/*"}]
+      [
+        "babelify",
+        {
+          "only": "src/**/*"
+        }
+      ]
     ]
   },
   "repository": {
@@ -48,7 +53,9 @@
     "url": "https://github.com/mikewesthad/phaser-navmesh-plugin/issues"
   },
   "homepage": "https://github.com/mikewesthad/phaser-navmesh-plugin#readme",
-  "dependencies": {},
+  "dependencies": {
+    "javascript-astar": "github:mikewesthad/javascript-astar"
+  },
   "devDependencies": {
     "babel-core": "^6.25.0",
     "babel-loader": "^7.0.0",
