@@ -1,8 +1,10 @@
-import NavMeshPlugin from "../../../library"; // Importing directly from library/ for now
+import NavMeshPlugin from "../../../../library"; // Importing directly from library/ for now
 
 class StartState extends Phaser.State {
     create() {
         const g = this.game;
+
+        // -- Tilemap Setup --
 
         // Load the map from the Phaser cache
         const tilemap = g.add.tilemap("map");
@@ -20,21 +22,45 @@ class StartState extends Phaser.State {
             wallTileset.total, true, wallLayer);
         
 
-        // -- NavMesh Code --
+        // -- Text --
+        
+        const style = { 
+            font: "20px Arial", fill: "#ff0044", align: "left", backgroundColor: "#fff" 
+        };
+        const text = "Click twice to search for a path\n"
+            + "Press \"m\" to toggle the navmesh visibility";
+        this.game.add.text(10, 5, text, style);
+
+        const pathInfo = "No points currently selected...";
+        const pathInfoText = this.game.add.text(10, 200, pathInfo, style);
+
+
+        // -- NavMesh --
 
         // Register the plugin with Phaser
         const navMeshPlugin = this.game.plugins.add(NavMeshPlugin);
 
         // Load the navMesh from the tilemap object layer "navmesh" and store it in the plugin under
         // the key "level-1". The navMesh was created with 12.5 pixels of space around obstacles.
-        navMeshPlugin.buildMeshFromTiled("level-1", tilemap, "navmesh", 12.5);
+        const navMesh = navMeshPlugin.buildMeshFromTiled("level-1", tilemap, "navmesh", 12.5);
 
-        const p1 = new Phaser.Point(100, 400);
-        const p2 = new Phaser.Point(700, 200);
-        const path = navMeshPlugin.findPath(p1, p2, {
-            drawNavMesh: false, drawPolyPath: false, drawFinalPath: false
+        // Toggle the navmesh visibility on/off
+        this.game.input.keyboard.addKey(Phaser.KeyCode.M).onDown.add(() => {
+            if (navMesh.isDebugEnabled()) {
+                navMesh.disableDebug();
+            } else {
+                navMesh.debugDrawMesh({
+                    drawCentroid: true, drawBounds: false, drawNeighbors: false, drawPortals: true
+                });
+            }
         });
-        this._printPath(path);
+
+        // const p1 = new Phaser.Point(100, 400);
+        // const p2 = new Phaser.Point(700, 200);
+        // const path = navMeshPlugin.findPath(p1, p2, {
+        //     drawNavMesh: false, drawPolyPath: false, drawFinalPath: false
+        // });
+        // this._printPath(path);
 
         // Visualize path between two spots by clicking
         const graphics = this.game.add.graphics(0, 0);
@@ -49,11 +75,15 @@ class StartState extends Phaser.State {
                 graphics.endFill();
             } else if (!endPoint) {
                 endPoint = this.game.input.activePointer.position.clone();
+                const startTime = performance.now();
                 const path = navMeshPlugin.findPath(startPoint, endPoint, true, true);
+                const pathTime = performance.now() - startTime;
                 if (path) {
+                    pathInfoText.setText(`Path found.\nSearch took: ${pathTime.toFixed(2)}ms`);
                     this._printPath(path);
                     this._drawPath(graphics, path);
                 } else {
+                    pathInfoText.setText(`No path found.\nSearch took: ${pathTime.toFixed(2)}ms`);
                     console.log("No path found.");
                 }
                 startPoint = null;

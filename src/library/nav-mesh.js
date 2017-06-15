@@ -51,8 +51,6 @@ class NavMesh {
      * @param {Phaser.Point} startPoint
      * @param {Phaser.Point} endPoint
      * @param {object} [drawOptions={}] Options for controlling debug drawing
-     * @param {boolean} [drawOptions.drawNavMesh=false] Whether or not to visualize the nav mesh
-     * with colored overlay.
      * @param {boolean} [drawOptions.drawPolyPath=false] Whether or not to visualize the path
      * through the polygons - e.g. the path that astar found.
      * @param {boolean} [drawOptions.drawFinalPath=false] Whether or not to visualize the path
@@ -61,8 +59,7 @@ class NavMesh {
      *
      * @memberof NavMesh
      */
-    findPath(startPoint, endPoint, {drawNavMesh = false, drawPolyPath = false, 
-            drawFinalPath = false} = {}) {
+    findPath(startPoint, endPoint, {drawPolyPath = false, drawFinalPath = false} = {}) {
         let startPoly = null;
         let endPoly = null;
         let startDistance = Number.MAX_VALUE;
@@ -163,9 +160,8 @@ class NavMesh {
         }
 
         // Call debug drawing
-        if (drawFinalPath || drawNavMesh || drawPolyPath) {
+        if (drawFinalPath || drawPolyPath) {
             this.debugDraw(
-                drawNavMesh,
                 drawPolyPath ? astarPath : null,
                 drawFinalPath ? phaserPath : null 
             );
@@ -312,25 +308,47 @@ class NavMesh {
 
     enableDebug() {
         this._debugGraphics = this.game.add.graphics(0, 0);
+        this._debugGraphics.alpha = 0.5;
     }
 
     disableDebug() {
         if (this._debugGraphics) {
             this._debugGraphics.destroy();
-            this._debugGraphics = undefined;
+            this._debugGraphics = null;
         }
     }
 
-    debugDraw(drawNavMesh = false, polyPath = null, funnelPath = null) {
+    isDebugEnabled() {
+        return this._debugGraphics !== null;
+    }
+
+    debugDrawClear() {
+        if (this._debugGraphics) this._debugGraphics.clear();
+    }
+    
+    /**
+     * Visualize the polygons in the nav mesh as an overlay on top of the game
+     *
+     * @param {object} options
+     * @param {boolean} [options.drawCentroid=true] For each polygon, show the approx centroid
+     * @param {boolean} [options.drawBounds=false] For each polygon, show the bounding radius
+     * @param {boolean} [options.drawNeighbors=true] For each polygon, show the connections to
+     * neighbors
+     * @param {boolean} [options.drawPortals=true] For each polygon, show the portal edges
+     *
+     * @memberof NavMesh
+     */
+    debugDrawMesh({drawCentroid = true, drawBounds = false, drawNeighbors = true, 
+            drawPortals = true} = {}) {
         if (!this._debugGraphics) this.enableDebug();
         this._debugGraphics.clear();
-        this._debugGraphics.alpha = 0.5;
-
         // Visualize the navigation mesh
-        if (drawNavMesh) {
-            for (const navPoly of this._navPolygons) navPoly.draw(this._debugGraphics);
+        for (const navPoly of this._navPolygons) {
+            navPoly.draw(this._debugGraphics, drawCentroid, drawBounds, drawNeighbors, drawPortals);
         }
+    }
 
+    debugDraw(polyPath = null, funnelPath = null) {
         // Draw astar path through the polygons
         if (polyPath) {
             this._debugGraphics.lineStyle(10, 0x00FF00);

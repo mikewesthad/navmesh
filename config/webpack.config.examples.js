@@ -7,12 +7,13 @@ const path = require("path");
 const root = path.join(__dirname, "..");
 
 module.exports = {
-    context: path.join(root, "src", "example"),
+    context: path.join(root, "src", "examples"),
     entry: {
-        main: "./js/main.js"
+        "demo/js/main": "./demo/js/main.js",
+        "performance/js/main": "./performance/js/main.js"
     },
     output: {
-        filename: "js/[name].js",
+        filename: "[name].js",
         path: path.resolve(root, "public")
     },
     module: {
@@ -55,7 +56,7 @@ module.exports = {
     plugins: [
         new CopyWebpackPlugin(
             [{from: "**/*"}], 
-            {ignore: ["js/**/*"]}
+            {ignore: ["**/js/**/*"]}
         )
     ],
     devtool: "source-map"
