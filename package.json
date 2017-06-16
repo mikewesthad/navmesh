@@ -17,7 +17,8 @@
     "clean:all": "rimraf dist public out",
     "doc": "jsdoc -c config/jsdoc.config.json",
     "postdoc": "cp -r doc-images/ jsdocs/",
-    "depoly:examples": "gh-pages --branch gh-pages --dist public",
+    "deploy:examples": "gh-pages --branch gh-pages --dist public",
+    "predeploy:examples": "npm run \"build:examples\"",
     "deploy:doc": "gh-pages --branch gh-pages --dist jsdocs --dest docs",
     "predeploy:doc": "npm run doc"
   },
