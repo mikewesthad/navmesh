@@ -38,6 +38,24 @@ Long paths (600 pixels and greater length), average time per iteration:
         NavMesh is 21.65x faster than EasyStar
 ```
 
+## Usage
+
+```js
+// This snippet assumes you've got your tilemap loaded in a variable called "tilemap"
+
+// Register the plugin with Phaser
+const navMeshPlugin = this.game.plugins.add(NavMeshPlugin);
+
+// Load the navMesh from the tilemap object layer "navmesh" and store it in the plugin under
+// the key "level-1". The navMesh was created with 12.5 pixels of space around obstacles.
+const navMesh = navMeshPlugin.buildMeshFromTiled("level-1", tilemap, "navmesh", 12.5);
+
+const p1 = new Phaser.Point(100, 400);
+const p2 = new Phaser.Point(700, 200);
+const path = navMeshPlugin.findPath(p1, p2);
+// -> path is now either an array of points, or null if no valid path could be found
+```
+
 ## TODO
 
 - Add tests vs Phaser astar plugin 
