@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 20);
+/******/ 	return __webpack_require__(__webpack_require__.s = 21);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -577,140 +577,6 @@ return {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(1);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-// Mostly sourced from PatrolJS at the moment. TODO: come back and reimplement this as an incomplete
-// funnel algorithm so astar checks can be more accurate.
-
-
-
-var Channel = function () {
-    function Channel() {
-        _classCallCheck(this, Channel);
-
-        this.portals = [];
-    }
-
-    /**
-     * @param {Phaser.Point} p1 
-     * @param {Phaser.Point} p2 
-     * 
-     * @memberof Channel
-     */
-
-
-    _createClass(Channel, [{
-        key: "push",
-        value: function push(p1) {
-            var p2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
-            if (p2 === null) p2 = p1;
-            this.portals.push({
-                left: p1,
-                right: p2
-            });
-        }
-    }, {
-        key: "stringPull",
-        value: function stringPull() {
-            var portals = this.portals;
-            var pts = [];
-            // Init scan state
-            var portalApex, portalLeft, portalRight;
-            var apexIndex = 0,
-                leftIndex = 0,
-                rightIndex = 0;
-
-            portalApex = portals[0].left;
-            portalLeft = portals[0].left;
-            portalRight = portals[0].right;
-
-            // Add start point.
-            pts.push(portalApex);
-
-            for (var i = 1; i < portals.length; i++) {
-                // Find the next portal vertices
-                var left = portals[i].left;
-                var right = portals[i].right;
-
-                // Update right vertex.
-                if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* triarea2 */])(portalApex, portalRight, right) <= 0.0) {
-                    if (portalApex.equals(portalRight) || __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* triarea2 */])(portalApex, portalLeft, right) > 0.0) {
-                        // Tighten the funnel.
-                        portalRight = right;
-                        rightIndex = i;
-                    } else {
-                        // Right vertex just crossed over the left vertex, so the left vertex should
-                        // now be part of the path.
-                        pts.push(portalLeft);
-
-                        // Restart scan from portal left point.
-
-                        // Make current left the new apex.
-                        portalApex = portalLeft;
-                        apexIndex = leftIndex;
-                        // Reset portal
-                        portalLeft = portalApex;
-                        portalRight = portalApex;
-                        leftIndex = apexIndex;
-                        rightIndex = apexIndex;
-                        // Restart scan
-                        i = apexIndex;
-                        continue;
-                    }
-                }
-
-                // Update left vertex.
-                if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* triarea2 */])(portalApex, portalLeft, left) >= 0.0) {
-                    if (portalApex.equals(portalLeft) || __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* triarea2 */])(portalApex, portalRight, left) < 0.0) {
-                        // Tighten the funnel.
-                        portalLeft = left;
-                        leftIndex = i;
-                    } else {
-                        // Left vertex just crossed over the right vertex, so the right vertex should
-                        // now be part of the path
-                        pts.push(portalRight);
-
-                        // Restart scan from portal right point.
-
-                        // Make current right the new apex.
-                        portalApex = portalRight;
-                        apexIndex = rightIndex;
-                        // Reset portal
-                        portalLeft = portalApex;
-                        portalRight = portalApex;
-                        leftIndex = apexIndex;
-                        rightIndex = apexIndex;
-                        // Restart scan
-                        i = apexIndex;
-                        continue;
-                    }
-                }
-            }
-
-            if (pts.length === 0 || !pts[pts.length - 1].equals(portals[portals.length - 1].left)) {
-                // Append last point to path.
-                pts.push(portals[portals.length - 1].left);
-            }
-
-            this.path = pts;
-            return pts;
-        }
-    }]);
-
-    return Channel;
-}();
-
-/* harmony default export */ __webpack_exports__["a"] = (Channel);
-
-/***/ }),
-/* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__nav_mesh__ = __webpack_require__(9);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -912,6 +778,140 @@ Phaser.NavMeshPlugin = NavMeshPlugin;
 /* harmony default export */ __webpack_exports__["a"] = (NavMeshPlugin);
 
 /***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(1);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+// Mostly sourced from PatrolJS at the moment. TODO: come back and reimplement this as an incomplete
+// funnel algorithm so astar checks can be more accurate.
+
+
+
+var Channel = function () {
+    function Channel() {
+        _classCallCheck(this, Channel);
+
+        this.portals = [];
+    }
+
+    /**
+     * @param {Phaser.Point} p1 
+     * @param {Phaser.Point} p2 
+     * 
+     * @memberof Channel
+     */
+
+
+    _createClass(Channel, [{
+        key: "push",
+        value: function push(p1) {
+            var p2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+            if (p2 === null) p2 = p1;
+            this.portals.push({
+                left: p1,
+                right: p2
+            });
+        }
+    }, {
+        key: "stringPull",
+        value: function stringPull() {
+            var portals = this.portals;
+            var pts = [];
+            // Init scan state
+            var portalApex, portalLeft, portalRight;
+            var apexIndex = 0,
+                leftIndex = 0,
+                rightIndex = 0;
+
+            portalApex = portals[0].left;
+            portalLeft = portals[0].left;
+            portalRight = portals[0].right;
+
+            // Add start point.
+            pts.push(portalApex);
+
+            for (var i = 1; i < portals.length; i++) {
+                // Find the next portal vertices
+                var left = portals[i].left;
+                var right = portals[i].right;
+
+                // Update right vertex.
+                if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* triarea2 */])(portalApex, portalRight, right) <= 0.0) {
+                    if (portalApex.equals(portalRight) || __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* triarea2 */])(portalApex, portalLeft, right) > 0.0) {
+                        // Tighten the funnel.
+                        portalRight = right;
+                        rightIndex = i;
+                    } else {
+                        // Right vertex just crossed over the left vertex, so the left vertex should
+                        // now be part of the path.
+                        pts.push(portalLeft);
+
+                        // Restart scan from portal left point.
+
+                        // Make current left the new apex.
+                        portalApex = portalLeft;
+                        apexIndex = leftIndex;
+                        // Reset portal
+                        portalLeft = portalApex;
+                        portalRight = portalApex;
+                        leftIndex = apexIndex;
+                        rightIndex = apexIndex;
+                        // Restart scan
+                        i = apexIndex;
+                        continue;
+                    }
+                }
+
+                // Update left vertex.
+                if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* triarea2 */])(portalApex, portalLeft, left) >= 0.0) {
+                    if (portalApex.equals(portalLeft) || __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* triarea2 */])(portalApex, portalRight, left) < 0.0) {
+                        // Tighten the funnel.
+                        portalLeft = left;
+                        leftIndex = i;
+                    } else {
+                        // Left vertex just crossed over the right vertex, so the right vertex should
+                        // now be part of the path
+                        pts.push(portalRight);
+
+                        // Restart scan from portal right point.
+
+                        // Make current right the new apex.
+                        portalApex = portalRight;
+                        apexIndex = rightIndex;
+                        // Reset portal
+                        portalLeft = portalApex;
+                        portalRight = portalApex;
+                        leftIndex = apexIndex;
+                        rightIndex = apexIndex;
+                        // Restart scan
+                        i = apexIndex;
+                        continue;
+                    }
+                }
+            }
+
+            if (pts.length === 0 || !pts[pts.length - 1].equals(portals[portals.length - 1].left)) {
+                // Append last point to path.
+                pts.push(portals[portals.length - 1].left);
+            }
+
+            this.path = pts;
+            return pts;
+        }
+    }]);
+
+    return Channel;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (Channel);
+
+/***/ }),
 /* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -969,7 +969,7 @@ NavGraph.prototype.markDirty = __WEBPACK_IMPORTED_MODULE_0_javascript_astar___de
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_javascript_astar___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_javascript_astar__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__nav_poly__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__nav_graph__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__channel__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__channel__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils__ = __webpack_require__(1);
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -107495,181 +107495,10 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var LoadState = function (_Phaser$State) {
-    _inherits(LoadState, _Phaser$State);
-
-    function LoadState() {
-        _classCallCheck(this, LoadState);
-
-        return _possibleConstructorReturn(this, (LoadState.__proto__ || Object.getPrototypeOf(LoadState)).apply(this, arguments));
-    }
-
-    _createClass(LoadState, [{
-        key: "preload",
-        value: function preload() {
-            this.load.tilemap("map", "tilemaps/map.json", null, Phaser.Tilemap.TILED_JSON);
-            this.load.image("tiles", "tilemaps/tiles.png");
-            this.load.image("follower", "images/follower.png");
-        }
-    }, {
-        key: "create",
-        value: function create() {
-            this.game.state.start("start");
-        }
-    }]);
-
-    return LoadState;
-}(Phaser.State);
-
-/* harmony default export */ __webpack_exports__["a"] = (LoadState);
-
-/***/ }),
-/* 16 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__library__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__game_objects_follower__ = __webpack_require__(19);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
- // Importing directly from library/ for now
-
-
-var StartState = function (_Phaser$State) {
-        _inherits(StartState, _Phaser$State);
-
-        function StartState() {
-                _classCallCheck(this, StartState);
-
-                return _possibleConstructorReturn(this, (StartState.__proto__ || Object.getPrototypeOf(StartState)).apply(this, arguments));
-        }
-
-        _createClass(StartState, [{
-                key: "create",
-                value: function create() {
-                        var _this2 = this;
-
-                        // -- Tilemap Setup --
-
-                        // Load the map from the Phaser cache
-                        var tilemap = this.game.add.tilemap("map");
-
-                        // Set up the tilesets - first parameter is name of tileset in Tiled and second paramter is
-                        // name of tileset image in Phaser's cache
-                        var wallTileset = tilemap.addTilesetImage("tiles", "tiles");
-
-                        // Load the named layers - first parameter corresponds to layer name in Tiled
-                        tilemap.createLayer("bg", this.game.width, this.game.height);
-                        var wallLayer = tilemap.createLayer("walls", this.game.width, this.game.height);
-
-                        // Set all tiles in the wall layer to be colliding
-                        tilemap.setCollisionBetween(wallTileset.firstgid, wallTileset.firstgid + wallTileset.total, true, wallLayer);
-
-                        // -- NavMesh Setup --
-
-                        // Register the plugin with Phaser
-                        var navMeshPlugin = this.game.plugins.add(__WEBPACK_IMPORTED_MODULE_0__library__["a" /* default */]);
-
-                        // Load the navMesh from the tilemap object layer "navmesh" and store it in the plugin under
-                        // the key "level-1". The navMesh was created with 12.5 pixels of space around obstacles.
-                        var navMesh = navMeshPlugin.buildMeshFromTiled("level-1", tilemap, "navmesh", 12.5);
-
-                        // Now you could find a path via navMesh.findPath(startPoint, endPoint)
-
-
-                        // -- Instructions --
-
-                        var style = {
-                                font: "22px Arial", fill: "#ff0044", align: "left", backgroundColor: "#fff"
-                        };
-                        var pathInfoText = this.game.add.text(10, 5, "Click to find a path!", style);
-                        this.game.add.text(10, 35, 'Press "m" to see navmesh.', style);
-
-                        // -- Click to Find Path --
-
-                        // Graphics overlay for visualizing path
-                        var graphics = this.game.add.graphics(0, 0);
-                        graphics.alpha = 0.5;
-
-                        // Game object that can follow a path (inherits from Phaser.Sprite) 
-                        var follower = new __WEBPACK_IMPORTED_MODULE_1__game_objects_follower__["a" /* default */](this.game, 50, 200, navMesh);
-
-                        // On click
-                        this.game.input.onDown.add(function () {
-                                // Get the location of the mouse
-                                var target = _this2.game.input.activePointer.position.clone();
-
-                                // Tell the follower sprite to find its path to the target
-                                follower.goTo(target);
-
-                                // For demo purposes, let's recalculate the path here and draw it on the screen
-                                var startTime = performance.now();
-                                var path = navMesh.findPath(follower.position, target);
-                                // -> path is now an array of points, or null if no valid path found 
-                                var pathTime = performance.now() - startTime;
-
-                                // Draw the start and end of the path
-                                graphics.clear();
-                                graphics.beginFill(0xffd900);
-                                graphics.drawEllipse(follower.position.x, follower.position.y, 10, 10);
-                                graphics.drawEllipse(target.x, target.y, 10, 10);
-                                graphics.endFill();
-
-                                // Display the path, if it exists
-                                if (path) {
-                                        pathInfoText.setText("Path found in: " + pathTime.toFixed(2) + "ms");
-                                        graphics.lineStyle(5, 0xffd900);
-                                        graphics.drawShape(new (Function.prototype.bind.apply(Phaser.Polygon, [null].concat(_toConsumableArray(path))))());
-                                } else {
-                                        pathInfoText.setText("No path found (" + pathTime.toFixed(2) + "ms)");
-                                }
-                        });
-
-                        // Toggle the navmesh visibility on/off
-                        this.game.input.keyboard.addKey(Phaser.KeyCode.M).onDown.add(function () {
-                                if (navMesh.isDebugEnabled()) {
-                                        navMesh.disableDebug();
-                                } else {
-                                        navMesh.debugDrawMesh({
-                                                drawCentroid: true, drawBounds: false, drawNeighbors: false, drawPortals: true
-                                        });
-                                }
-                        });
-                }
-        }]);
-
-        return StartState;
-}(Phaser.State);
-
-/* harmony default export */ __webpack_exports__["a"] = (StartState);
-
-/***/ }),
-/* 17 */,
-/* 18 */,
-/* 19 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var FollowerSprite = function (_Phaser$Sprite) {
     _inherits(FollowerSprite, _Phaser$Sprite);
 
-    function FollowerSprite(game, x, y, navMesh) {
+    function FollowerSprite(game, x, y, navMesh, wallLayer) {
         _classCallCheck(this, FollowerSprite);
 
         var _this = _possibleConstructorReturn(this, (FollowerSprite.__proto__ || Object.getPrototypeOf(FollowerSprite)).call(this, game, x, y, "follower"));
@@ -107677,6 +107506,7 @@ var FollowerSprite = function (_Phaser$Sprite) {
         _this.anchor.set(0.5);
         _this.game.add.existing(_this);
         _this.navMesh = navMesh;
+        _this.wallLayer = wallLayer;
         _this.path = null;
         _this.currentTarget = null;
 
@@ -107738,7 +107568,357 @@ var FollowerSprite = function (_Phaser$Sprite) {
 /* harmony default export */ __webpack_exports__["a"] = (FollowerSprite);
 
 /***/ }),
-/* 20 */
+/* 16 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var LoadState = function (_Phaser$State) {
+    _inherits(LoadState, _Phaser$State);
+
+    function LoadState() {
+        _classCallCheck(this, LoadState);
+
+        return _possibleConstructorReturn(this, (LoadState.__proto__ || Object.getPrototypeOf(LoadState)).apply(this, arguments));
+    }
+
+    _createClass(LoadState, [{
+        key: "preload",
+        value: function preload() {
+            this.load.tilemap("map", "tilemaps/map.json", null, Phaser.Tilemap.TILED_JSON);
+            this.load.image("tiles", "tilemaps/tiles.png");
+            this.load.image("follower", "images/follower.png");
+        }
+    }, {
+        key: "create",
+        value: function create() {
+            this.game.state.start("start");
+        }
+    }]);
+
+    return LoadState;
+}(Phaser.State);
+
+/* harmony default export */ __webpack_exports__["a"] = (LoadState);
+
+/***/ }),
+/* 17 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__library__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__game_objects_follower__ = __webpack_require__(15);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+ // Importing directly from library/ for now
+
+
+var StartState = function (_Phaser$State) {
+    _inherits(StartState, _Phaser$State);
+
+    function StartState() {
+        _classCallCheck(this, StartState);
+
+        return _possibleConstructorReturn(this, (StartState.__proto__ || Object.getPrototypeOf(StartState)).apply(this, arguments));
+    }
+
+    _createClass(StartState, [{
+        key: "create",
+        value: function create() {
+            var _this2 = this;
+
+            // -- Tilemap Setup --
+
+            // Load the map from the Phaser cache
+            var tilemap = this.game.add.tilemap("map");
+
+            // Set up the tilesets - first parameter is name of tileset in Tiled and second paramter is
+            // name of tileset image in Phaser's cache
+            var wallTileset = tilemap.addTilesetImage("tiles", "tiles");
+
+            // Load the named layers - first parameter corresponds to layer name in Tiled
+            tilemap.createLayer("bg", this.game.width, this.game.height);
+            var wallLayer = tilemap.createLayer("walls", this.game.width, this.game.height);
+
+            // Set all tiles in the wall layer to be colliding
+            tilemap.setCollisionBetween(wallTileset.firstgid, wallTileset.firstgid + wallTileset.total, true, wallLayer);
+
+            this.tilemap = tilemap;
+            this.wallLayer = wallLayer;
+
+            // -- NavMesh Setup --
+
+            var navMeshPlugin = this.game.plugins.add(__WEBPACK_IMPORTED_MODULE_0__library__["a" /* default */]);
+            var navMesh = navMeshPlugin.buildMeshFromTiled("level-1", tilemap, "navmesh", 12.5);
+            this.navMesh = navMesh;
+
+            // -- Instructions --
+
+            var style = {
+                font: "22px Arial", fill: "#ff0044", align: "left", backgroundColor: "#fff"
+            };
+            this.infoText = this.game.add.text(10, 5, "Click to add followers", style);
+            this.game.add.text(10, 35, "Press '1' to go to scene 1", style);
+
+            // -- Click to Find Path --
+
+            // Graphics overlay for visualizing path
+            var graphics = this.game.add.graphics(0, 0);
+            graphics.alpha = 0.5;
+
+            // Game object that can follow a path (inherits from Phaser.Sprite)
+            this.followers = [];
+
+            // On click
+            this.game.input.onDown.add(function () {
+                // Get the location of the mouse
+                var cursor = _this2.game.input.activePointer.position.clone();
+                if (_this2._isPointEmpty(cursor.x, cursor.y)) {
+                    _this2._addFollowers(cursor, 25);
+                }
+            });
+
+            // Scene changer
+            this.game.input.keyboard.addKey(Phaser.KeyCode.ONE).onDown.add(function () {
+                _this2.game.state.start("start");
+            });
+        }
+    }, {
+        key: "update",
+        value: function update() {
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+                for (var _iterator = this.followers[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var follower = _step.value;
+
+                    if (!follower.currentTarget) {
+                        var randomTarget = this._getRandomEmptyPoint();
+                        follower.goTo(randomTarget);
+                    }
+                }
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator.return) {
+                        _iterator.return();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
+            }
+        }
+    }, {
+        key: "_addFollowers",
+        value: function _addFollowers(location, num) {
+            for (var i = 0; i < num; i++) {
+                var follower = new __WEBPACK_IMPORTED_MODULE_1__game_objects_follower__["a" /* default */](this.game, location.x, location.y, this.navMesh, this.wallLayer);
+                this.followers.push(follower);
+                var randomTarget = this._getRandomEmptyPoint();
+                follower.goTo(randomTarget);
+            }
+            this.infoText.setText("Number: " + this.followers.length);
+        }
+    }, {
+        key: "_getRandomEmptyPoint",
+        value: function _getRandomEmptyPoint() {
+            // Find random tile that is empty
+            var tileX = this.game.rnd.integerInRange(0, this.tilemap.width);
+            var tileY = this.game.rnd.integerInRange(0, this.tilemap.height);
+            while (!this._isTileEmpty(tileX, tileY)) {
+                tileX = this.game.rnd.integerInRange(0, this.tilemap.width);
+                tileY = this.game.rnd.integerInRange(0, this.tilemap.height);
+            }
+            // Convert from tile location to pixel location (at center of tile)
+            var p = new Phaser.Point(tileX * this.tilemap.tileWidth + this.tilemap.tileWidth / 2, tileY * this.tilemap.tileHeight + this.tilemap.tileHeight / 2);
+            return p;
+        }
+    }, {
+        key: "_isPointEmpty",
+        value: function _isPointEmpty(x, y) {
+            var checkTile = this.tilemap.getTileWorldXY(x, y, this.tilemap.tileWidth, this.tilemap.tileHeight, this.wallLayer, true);
+            // Check if location was out of bounds or invalid (getTileWorldXY returns 
+            // null for invalid locations when nonNull param is true)
+            if (checkTile === null) return false;
+            // Check if tile is empty (getTileWorldXY returns a tile with an index of 
+            // -1 when the nonNull param is true)
+            if (checkTile.index === -1) return true;else return false;
+        }
+    }, {
+        key: "_isTileEmpty",
+        value: function _isTileEmpty(tileX, tileY) {
+            var checkTile = this.tilemap.getTile(tileX, tileY, this.wallLayer, true);
+            // Check if location was out of bounds or invalid (getTileWorldXY returns 
+            // null for invalid locations when nonNull param is true)
+            if (checkTile === null) return false;
+            // Check if tile is empty (getTileWorldXY returns a tile with an index of 
+            // -1 when the nonNull param is true)
+            if (checkTile.index === -1) return true;else return false;
+        }
+    }]);
+
+    return StartState;
+}(Phaser.State);
+
+/* harmony default export */ __webpack_exports__["a"] = (StartState);
+
+/***/ }),
+/* 18 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__library__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__game_objects_follower__ = __webpack_require__(15);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+ // Importing directly from library/ for now
+
+
+var StartState = function (_Phaser$State) {
+        _inherits(StartState, _Phaser$State);
+
+        function StartState() {
+                _classCallCheck(this, StartState);
+
+                return _possibleConstructorReturn(this, (StartState.__proto__ || Object.getPrototypeOf(StartState)).apply(this, arguments));
+        }
+
+        _createClass(StartState, [{
+                key: "create",
+                value: function create() {
+                        var _this2 = this;
+
+                        // -- Tilemap Setup --
+
+                        // Load the map from the Phaser cache
+                        var tilemap = this.game.add.tilemap("map");
+
+                        // Set up the tilesets - first parameter is name of tileset in Tiled and second paramter is
+                        // name of tileset image in Phaser's cache
+                        var wallTileset = tilemap.addTilesetImage("tiles", "tiles");
+
+                        // Load the named layers - first parameter corresponds to layer name in Tiled
+                        tilemap.createLayer("bg", this.game.width, this.game.height);
+                        var wallLayer = tilemap.createLayer("walls", this.game.width, this.game.height);
+
+                        // Set all tiles in the wall layer to be colliding
+                        tilemap.setCollisionBetween(wallTileset.firstgid, wallTileset.firstgid + wallTileset.total, true, wallLayer);
+
+                        // -- NavMesh Setup --
+
+                        // Register the plugin with Phaser
+                        var navMeshPlugin = this.game.plugins.add(__WEBPACK_IMPORTED_MODULE_0__library__["a" /* default */]);
+
+                        // Load the navMesh from the tilemap object layer "navmesh" and store it in the plugin under
+                        // the key "level-1". The navMesh was created with 12.5 pixels of space around obstacles.
+                        var navMesh = navMeshPlugin.buildMeshFromTiled("level-1", tilemap, "navmesh", 12.5);
+
+                        // Now you could find a path via navMesh.findPath(startPoint, endPoint)
+
+
+                        // -- Instructions --
+
+                        var style = {
+                                font: "22px Arial", fill: "#ff0044", align: "left", backgroundColor: "#fff"
+                        };
+                        var pathInfoText = this.game.add.text(10, 5, "Click to find a path!", style);
+                        this.game.add.text(10, 35, "Press 'm' to see navmesh.", style);
+                        this.game.add.text(10, 65, "Press '2' to go to scene 2.", style);
+
+                        // -- Click to Find Path --
+
+                        // Graphics overlay for visualizing path
+                        var graphics = this.game.add.graphics(0, 0);
+                        graphics.alpha = 0.5;
+
+                        // Game object that can follow a path (inherits from Phaser.Sprite) 
+                        var follower = new __WEBPACK_IMPORTED_MODULE_1__game_objects_follower__["a" /* default */](this.game, 50, 200, navMesh);
+
+                        // On click
+                        this.game.input.onDown.add(function () {
+                                // Get the location of the mouse
+                                var target = _this2.game.input.activePointer.position.clone();
+
+                                // Tell the follower sprite to find its path to the target
+                                follower.goTo(target);
+
+                                // For demo purposes, let's recalculate the path here and draw it on the screen
+                                var startTime = performance.now();
+                                var path = navMesh.findPath(follower.position, target);
+                                // -> path is now an array of points, or null if no valid path found 
+                                var pathTime = performance.now() - startTime;
+
+                                // Draw the start and end of the path
+                                graphics.clear();
+                                graphics.beginFill(0xffd900);
+                                graphics.drawEllipse(follower.position.x, follower.position.y, 10, 10);
+                                graphics.drawEllipse(target.x, target.y, 10, 10);
+                                graphics.endFill();
+
+                                // Display the path, if it exists
+                                if (path) {
+                                        pathInfoText.setText("Path found in: " + pathTime.toFixed(2) + "ms");
+                                        graphics.lineStyle(5, 0xffd900);
+                                        graphics.drawShape(new (Function.prototype.bind.apply(Phaser.Polygon, [null].concat(_toConsumableArray(path))))());
+                                } else {
+                                        pathInfoText.setText("No path found (" + pathTime.toFixed(2) + "ms)");
+                                }
+                        });
+
+                        // Toggle the navmesh visibility on/off
+                        this.game.input.keyboard.addKey(Phaser.KeyCode.M).onDown.add(function () {
+                                if (navMesh.isDebugEnabled()) {
+                                        navMesh.disableDebug();
+                                } else {
+                                        navMesh.debugDrawMesh({
+                                                drawCentroid: true, drawBounds: false, drawNeighbors: false, drawPortals: true
+                                        });
+                                }
+                        });
+
+                        // Scene changer
+                        this.game.input.keyboard.addKey(Phaser.KeyCode.TWO).onDown.add(function () {
+                                _this2.game.state.start("many-paths");
+                        });
+                }
+        }]);
+
+        return StartState;
+}(Phaser.State);
+
+/* harmony default export */ __webpack_exports__["a"] = (StartState);
+
+/***/ }),
+/* 19 */,
+/* 20 */,
+/* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -107749,11 +107929,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_p2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_p2__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_phaser__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_phaser___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_phaser__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__states_load__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__states_start__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__states_load__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__states_start__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__states_many_paths__ = __webpack_require__(17);
 // Phaser 2 wasn't intended to be used with npm modules. See webpack config for how these libs are
 // exposed. These need to be imported here so that all other files have access to them from the 
 // global scope.
+
 
 
 
@@ -107770,6 +107952,7 @@ var game = new __WEBPACK_IMPORTED_MODULE_2_phaser___default.a.Game({
 
 game.state.add("load", __WEBPACK_IMPORTED_MODULE_3__states_load__["a" /* default */]);
 game.state.add("start", __WEBPACK_IMPORTED_MODULE_4__states_start__["a" /* default */]);
+game.state.add("many-paths", __WEBPACK_IMPORTED_MODULE_5__states_many_paths__["a" /* default */]);
 
 game.state.start("load");
 

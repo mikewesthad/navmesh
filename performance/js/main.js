@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 21);
+/******/ 	return __webpack_require__(__webpack_require__.s = 22);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -577,140 +577,6 @@ return {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(1);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-// Mostly sourced from PatrolJS at the moment. TODO: come back and reimplement this as an incomplete
-// funnel algorithm so astar checks can be more accurate.
-
-
-
-var Channel = function () {
-    function Channel() {
-        _classCallCheck(this, Channel);
-
-        this.portals = [];
-    }
-
-    /**
-     * @param {Phaser.Point} p1 
-     * @param {Phaser.Point} p2 
-     * 
-     * @memberof Channel
-     */
-
-
-    _createClass(Channel, [{
-        key: "push",
-        value: function push(p1) {
-            var p2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
-            if (p2 === null) p2 = p1;
-            this.portals.push({
-                left: p1,
-                right: p2
-            });
-        }
-    }, {
-        key: "stringPull",
-        value: function stringPull() {
-            var portals = this.portals;
-            var pts = [];
-            // Init scan state
-            var portalApex, portalLeft, portalRight;
-            var apexIndex = 0,
-                leftIndex = 0,
-                rightIndex = 0;
-
-            portalApex = portals[0].left;
-            portalLeft = portals[0].left;
-            portalRight = portals[0].right;
-
-            // Add start point.
-            pts.push(portalApex);
-
-            for (var i = 1; i < portals.length; i++) {
-                // Find the next portal vertices
-                var left = portals[i].left;
-                var right = portals[i].right;
-
-                // Update right vertex.
-                if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* triarea2 */])(portalApex, portalRight, right) <= 0.0) {
-                    if (portalApex.equals(portalRight) || __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* triarea2 */])(portalApex, portalLeft, right) > 0.0) {
-                        // Tighten the funnel.
-                        portalRight = right;
-                        rightIndex = i;
-                    } else {
-                        // Right vertex just crossed over the left vertex, so the left vertex should
-                        // now be part of the path.
-                        pts.push(portalLeft);
-
-                        // Restart scan from portal left point.
-
-                        // Make current left the new apex.
-                        portalApex = portalLeft;
-                        apexIndex = leftIndex;
-                        // Reset portal
-                        portalLeft = portalApex;
-                        portalRight = portalApex;
-                        leftIndex = apexIndex;
-                        rightIndex = apexIndex;
-                        // Restart scan
-                        i = apexIndex;
-                        continue;
-                    }
-                }
-
-                // Update left vertex.
-                if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* triarea2 */])(portalApex, portalLeft, left) >= 0.0) {
-                    if (portalApex.equals(portalLeft) || __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* triarea2 */])(portalApex, portalRight, left) < 0.0) {
-                        // Tighten the funnel.
-                        portalLeft = left;
-                        leftIndex = i;
-                    } else {
-                        // Left vertex just crossed over the right vertex, so the right vertex should
-                        // now be part of the path
-                        pts.push(portalRight);
-
-                        // Restart scan from portal right point.
-
-                        // Make current right the new apex.
-                        portalApex = portalRight;
-                        apexIndex = rightIndex;
-                        // Reset portal
-                        portalLeft = portalApex;
-                        portalRight = portalApex;
-                        leftIndex = apexIndex;
-                        rightIndex = apexIndex;
-                        // Restart scan
-                        i = apexIndex;
-                        continue;
-                    }
-                }
-            }
-
-            if (pts.length === 0 || !pts[pts.length - 1].equals(portals[portals.length - 1].left)) {
-                // Append last point to path.
-                pts.push(portals[portals.length - 1].left);
-            }
-
-            this.path = pts;
-            return pts;
-        }
-    }]);
-
-    return Channel;
-}();
-
-/* harmony default export */ __webpack_exports__["a"] = (Channel);
-
-/***/ }),
-/* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__nav_mesh__ = __webpack_require__(9);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -912,6 +778,140 @@ Phaser.NavMeshPlugin = NavMeshPlugin;
 /* harmony default export */ __webpack_exports__["a"] = (NavMeshPlugin);
 
 /***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(1);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+// Mostly sourced from PatrolJS at the moment. TODO: come back and reimplement this as an incomplete
+// funnel algorithm so astar checks can be more accurate.
+
+
+
+var Channel = function () {
+    function Channel() {
+        _classCallCheck(this, Channel);
+
+        this.portals = [];
+    }
+
+    /**
+     * @param {Phaser.Point} p1 
+     * @param {Phaser.Point} p2 
+     * 
+     * @memberof Channel
+     */
+
+
+    _createClass(Channel, [{
+        key: "push",
+        value: function push(p1) {
+            var p2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+            if (p2 === null) p2 = p1;
+            this.portals.push({
+                left: p1,
+                right: p2
+            });
+        }
+    }, {
+        key: "stringPull",
+        value: function stringPull() {
+            var portals = this.portals;
+            var pts = [];
+            // Init scan state
+            var portalApex, portalLeft, portalRight;
+            var apexIndex = 0,
+                leftIndex = 0,
+                rightIndex = 0;
+
+            portalApex = portals[0].left;
+            portalLeft = portals[0].left;
+            portalRight = portals[0].right;
+
+            // Add start point.
+            pts.push(portalApex);
+
+            for (var i = 1; i < portals.length; i++) {
+                // Find the next portal vertices
+                var left = portals[i].left;
+                var right = portals[i].right;
+
+                // Update right vertex.
+                if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* triarea2 */])(portalApex, portalRight, right) <= 0.0) {
+                    if (portalApex.equals(portalRight) || __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* triarea2 */])(portalApex, portalLeft, right) > 0.0) {
+                        // Tighten the funnel.
+                        portalRight = right;
+                        rightIndex = i;
+                    } else {
+                        // Right vertex just crossed over the left vertex, so the left vertex should
+                        // now be part of the path.
+                        pts.push(portalLeft);
+
+                        // Restart scan from portal left point.
+
+                        // Make current left the new apex.
+                        portalApex = portalLeft;
+                        apexIndex = leftIndex;
+                        // Reset portal
+                        portalLeft = portalApex;
+                        portalRight = portalApex;
+                        leftIndex = apexIndex;
+                        rightIndex = apexIndex;
+                        // Restart scan
+                        i = apexIndex;
+                        continue;
+                    }
+                }
+
+                // Update left vertex.
+                if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* triarea2 */])(portalApex, portalLeft, left) >= 0.0) {
+                    if (portalApex.equals(portalLeft) || __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* triarea2 */])(portalApex, portalRight, left) < 0.0) {
+                        // Tighten the funnel.
+                        portalLeft = left;
+                        leftIndex = i;
+                    } else {
+                        // Left vertex just crossed over the right vertex, so the right vertex should
+                        // now be part of the path
+                        pts.push(portalRight);
+
+                        // Restart scan from portal right point.
+
+                        // Make current right the new apex.
+                        portalApex = portalRight;
+                        apexIndex = rightIndex;
+                        // Reset portal
+                        portalLeft = portalApex;
+                        portalRight = portalApex;
+                        leftIndex = apexIndex;
+                        rightIndex = apexIndex;
+                        // Restart scan
+                        i = apexIndex;
+                        continue;
+                    }
+                }
+            }
+
+            if (pts.length === 0 || !pts[pts.length - 1].equals(portals[portals.length - 1].left)) {
+                // Append last point to path.
+                pts.push(portals[portals.length - 1].left);
+            }
+
+            this.path = pts;
+            return pts;
+        }
+    }]);
+
+    return Channel;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (Channel);
+
+/***/ }),
 /* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -969,7 +969,7 @@ NavGraph.prototype.markDirty = __WEBPACK_IMPORTED_MODULE_0_javascript_astar___de
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_javascript_astar___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_javascript_astar__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__nav_poly__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__nav_graph__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__channel__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__channel__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils__ = __webpack_require__(1);
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -107485,7 +107485,9 @@ process.umask = function() { return 0; };
 /***/ }),
 /* 15 */,
 /* 16 */,
-/* 17 */
+/* 17 */,
+/* 18 */,
+/* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -107526,14 +107528,14 @@ var LoadState = function (_Phaser$State) {
 /* harmony default export */ __webpack_exports__["a"] = (LoadState);
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__library__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__plugins_phaser_astar__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__library__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__plugins_phaser_astar__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__plugins_phaser_astar___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__plugins_phaser_astar__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__plugins_easy_star_plugin__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__plugins_easy_star_plugin__ = __webpack_require__(23);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -107856,9 +107858,8 @@ var StartState = function (_Phaser$State) {
 /* harmony default export */ __webpack_exports__["a"] = (StartState);
 
 /***/ }),
-/* 19 */,
-/* 20 */,
-/* 21 */
+/* 21 */,
+/* 22 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -107869,8 +107870,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_p2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_p2__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_phaser__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_phaser___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_phaser__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__states_load__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__states_start__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__states_load__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__states_start__ = __webpack_require__(20);
 // Phaser 2 wasn't intended to be used with npm modules. See webpack config for how these libs are
 // exposed. These need to be imported here so that all other files have access to them from the 
 // global scope.
@@ -107894,7 +107895,7 @@ game.state.add("start", __WEBPACK_IMPORTED_MODULE_4__states_start__["a" /* defau
 game.state.start("load");
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -107910,7 +107911,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * Modified from PathFinderPlugin: https://github.com/appsbu-de/phaser_plugin_pathfinding
  */
 
-var EasyStar = __webpack_require__(24);
+var EasyStar = __webpack_require__(25);
 
 /**
  * A plugin that is powered by easystarjs. Easystar is forced to be synchronous in order to make
@@ -108122,7 +108123,7 @@ var EasyStarPlugin = function (_Phaser$Plugin) {
 /* harmony default export */ __webpack_exports__["a"] = (EasyStarPlugin);
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports) {
 
 /* eslint-disable */
@@ -108708,7 +108709,7 @@ Phaser.Utils.Debug.prototype.AStar = function (astar, x, y, color, showVisited) 
 };
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -108720,9 +108721,9 @@ Phaser.Utils.Debug.prototype.AStar = function (astar, x, y, color, showVisited) 
 **/
 
 var EasyStar = {}
-var Instance = __webpack_require__(25);
-var Node = __webpack_require__(26);
-var Heap = __webpack_require__(27);
+var Instance = __webpack_require__(26);
+var Node = __webpack_require__(27);
+var Heap = __webpack_require__(28);
 
 const CLOSED_LIST = 0;
 const OPEN_LIST = 1;
@@ -109270,7 +109271,7 @@ EasyStar.TOP_LEFT = 'TOP_LEFT'
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports) {
 
 /**
@@ -109289,7 +109290,7 @@ module.exports = function() {
 };
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports) {
 
 /**
@@ -109316,14 +109317,14 @@ module.exports = function(parent, x, y, costSoFar, simpleDistanceToTarget) {
 };
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(28);
+module.exports = __webpack_require__(29);
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// Generated by CoffeeScript 1.8.0
