@@ -40,7 +40,8 @@ class StartState extends Phaser.State {
             font: "22px Arial", fill: "#ff0044", align: "left", backgroundColor: "#fff" 
         };
         const pathInfoText = this.game.add.text(10, 5, "Click to find a path!", style);
-        this.game.add.text(10, 35, 'Press "m" to see navmesh.', style);
+        this.game.add.text(10, 35, "Press 'm' to see navmesh.", style);
+        this.game.add.text(10, 65, "Press '2' to go to scene 2.", style);
 
 
         // -- Click to Find Path --
@@ -92,6 +93,11 @@ class StartState extends Phaser.State {
                     drawCentroid: true, drawBounds: false, drawNeighbors: false, drawPortals: true
                 });
             }
+        });
+        
+        // Scene changer
+        this.game.input.keyboard.addKey(Phaser.KeyCode.TWO).onDown.add(() => {
+            this.game.state.start("many-paths");
         });
     }
 }

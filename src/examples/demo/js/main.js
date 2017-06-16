@@ -7,6 +7,7 @@ import Phaser from "phaser";
 
 import Load from "./states/load";
 import Start from "./states/start";
+import ManyPaths from "./states/many-paths";
 
 const game = new Phaser.Game({
     width: 750,
@@ -17,5 +18,7 @@ const game = new Phaser.Game({
 
 game.state.add("load", Load);
 game.state.add("start", Start);
+game.state.add("many-paths", ManyPaths);
+
 
 game.state.start("load");

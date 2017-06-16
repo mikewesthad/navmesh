@@ -1,9 +1,10 @@
 class FollowerSprite extends Phaser.Sprite {
-    constructor(game, x, y, navMesh) {
+    constructor(game, x, y, navMesh, wallLayer) {
         super(game, x, y, "follower");
         this.anchor.set(0.5);
         this.game.add.existing(this);
         this.navMesh = navMesh;
+        this.wallLayer = wallLayer;
         this.path = null;
         this.currentTarget = null;
 
