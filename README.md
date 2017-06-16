@@ -2,13 +2,13 @@
 
 In progress. A Phaser plugin for fast path-finding using navigation meshes.
 
-[<img src="./doc-images/demo.png" width="400">](https://www.mikewesthad.com/phaser-navmesh-plugin/demo/)
+[<img src="./doc-images/single-following-agent.gif" width="400">](https://www.mikewesthad.com/phaser-navmesh-plugin/demo/)
 
 [Interactive demo](https://www.mikewesthad.com/phaser-navmesh-plugin/demo/)
 
-The current path-finding plugins for Phaser use A* on the tiles in a tilemap. If you have a 50 x 50 tilemap, that's 2500 nodes in the A* graph.
+The current path-finding plugins for Phaser use A* on the tiles in a tilemap. If you have a 50 x 50 tilemap, that's up to 2500 nodes in the A* graph.
 
-This plugin uses navigation meshes to simplify that A* search. Instead of using tiles in a tilemap, it uses a mesh (currently quads) to describe the walkable areas within a map. This can lead to significant improvements in performance (e.g. >100x times faster than Phaser's A* plugin on long paths).
+This plugin uses navigation meshes to simplify that A* search. Instead of using tiles in a tilemap, it uses a mesh (currently quads) to describe the walkable areas within a map. This can lead to significant improvements in performance (e.g. >100x times faster than Phaser's A* plugin over long distances).
 
 The example map below (left) is a 30 x 30 map. Regular astar uses 780 nodes to represent the walkable areas. In contrast, the navmesh (right) uses 27 nodes (colored rectangles) to represent the walkable areas.
 
