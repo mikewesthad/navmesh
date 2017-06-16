@@ -5,8 +5,8 @@ import pixi from "pixi";
 import p2 from "p2";
 import Phaser from "phaser";
 
-import load from "./states/load";
-import start from "./states/start";
+import Load from "./states/load";
+import Start from "./states/start";
 
 const game = new Phaser.Game({
     width: 750,
@@ -15,7 +15,7 @@ const game = new Phaser.Game({
     parent: "game-container"
 });
 
-game.state.add("load", load);
-game.state.add("start", start);
+game.state.add("load", Load);
+game.state.add("start", Start);
 
 game.state.start("load");

@@ -24,7 +24,6 @@ class NavMeshPlugin extends Phaser.Plugin {
         this._pluginManager = manager;
         this._navmeshes = {};
         this._currentLevel = null;
-        console.log("hi");
     }
 
     /**

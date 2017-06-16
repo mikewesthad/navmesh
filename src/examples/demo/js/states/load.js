@@ -1,9 +1,9 @@
 class LoadState extends Phaser.State {
     preload() {
-        // Tilemap and tileset
         this.load.tilemap("map", "tilemaps/map.json", null, 
             Phaser.Tilemap.TILED_JSON);
         this.load.image("tiles", "tilemaps/tiles.png");
+        this.load.image("follower", "images/follower.png");
     }
 
     create() {

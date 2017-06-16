@@ -322,7 +322,7 @@ class NavMesh {
         return this._debugGraphics !== null;
     }
 
-    debugDrawClear() {
+    debugClear() {
         if (this._debugGraphics) this._debugGraphics.clear();
     }
     
@@ -349,6 +349,8 @@ class NavMesh {
     }
 
     debugDraw(polyPath = null, funnelPath = null) {
+        if (!this._debugGraphics) this.enableDebug();
+
         // Draw astar path through the polygons
         if (polyPath) {
             this._debugGraphics.lineStyle(10, 0x00FF00);
