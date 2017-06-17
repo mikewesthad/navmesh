@@ -1,0 +1,4 @@
+/* Hide confusing import paths at the top of every module */
+[data-ice="importPath"] {
+    display: none;
+}

@@ -2,7 +2,7 @@
 
 In progress. A Phaser plugin for fast path-finding using navigation meshes.
 
-[<img src="./doc-images/single-following-agent.gif" width="400">](https://www.mikewesthad.com/phaser-navmesh-plugin/demo/)
+[<img src="./doc-source/single-following-agent.gif" width="400">](https://www.mikewesthad.com/phaser-navmesh-plugin/demo/)
 
 [Interactive demo](https://www.mikewesthad.com/phaser-navmesh-plugin/demo/)
 
@@ -12,7 +12,7 @@ This plugin uses navigation meshes to simplify that A* search. Instead of using 
 
 The example map below (left) is a 30 x 30 map. Regular astar uses 780 nodes to represent the walkable areas. In contrast, the navmesh (right) uses 27 nodes (colored rectangles) to represent the walkable areas.
 
-<img src="./doc-images/combined.png" width="700">
+<img src="./doc-source/combined.png" width="700">
 
 ## Temporary Performance Comparison
 

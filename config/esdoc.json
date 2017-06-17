@@ -1,0 +1,5 @@
+{
+  "source": "./src/library",
+  "destination": "./docs",
+  "styles": ["./doc-source/injected-style.css"]
+}
