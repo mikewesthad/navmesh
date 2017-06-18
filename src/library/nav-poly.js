@@ -15,6 +15,7 @@ const palette = [0x00A0B0, 0x6A4A3C, 0xCC333F, 0xEB6841, 0xEDC951];
  * https://github.com/bgrins/javascript-astar/blob/master/test/tests.js
  *
  * @class NavPoly
+ * @private
  */
 class NavPoly {
     /**
@@ -43,6 +44,12 @@ class NavPoly {
 
     constains(point) {
         return this.polygon.contains(point.x, point.y);
+    }
+
+    destroy() {
+        this.game = null;
+        this.neighbors = [];
+        this.portals = [];
     }
 
     // jsastar methods

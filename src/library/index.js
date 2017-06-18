@@ -2,35 +2,22 @@
 import NavMesh from "./nav-mesh";
 
 /**
- * This plugin can create and manage a set of navmeshes for a game. Each is stored in the plugin
- * under a user-supplied key. The navmeshes can either be constructed algorithmically from convex
- * polygons that describe the obstacles in the map or from convex polygons embedded in a Tiled map.
+ * This plugin can create navigation meshes for use in Phaser. The navmeshes can be constructed from
+ * convex polygons embedded in a Tiled map. Instantiate this using game.plugins.add(NavMeshPlugin).
  *
- * @class NavMeshPlugin
- * @extends {Phaser.Plugin}
+ * @param {Phaser.Game} game
+ * @param {Phaser.PluginManager} manager
  */
-class NavMeshPlugin extends Phaser.Plugin {
-    /**
-     * Creates an instance of NavMeshPlugin.
-     * 
-     * @param {Phaser.Game} game 
-     * @param {Phaser.PluginManager} manager 
-     * 
-     * @memberOf NavMeshPlugin
-     */
+export default class NavMeshPlugin extends Phaser.Plugin {
     constructor(game, manager) {
         super(game, manager);
-        this.game = game;
-        this._pluginManager = manager;
-        this._navmeshes = {};
-        this._currentLevel = null;
+        this._navMeshes = [];
     }
 
     /**
      * Load a navmesh from Tiled and switch it to be the current navmesh. Currently assumes that the
      * polygons are squares!
      * 
-     * @param {string} levelName The key to use to store the navmesh in the plugin 
      * @param {Phaser.Tilemap} tilemap The tilemap that contains polygons under an object layer
      * @param {string} objectKey The name of the object layer in the tilemap
      * @param {number} [meshShrinkAmount=0] The amount (in pixels) that the navmesh has been
@@ -38,9 +25,9 @@ class NavMeshPlugin extends Phaser.Plugin {
      * 
      * @memberof NavMeshPlugin
      */
-    buildMeshFromTiled(levelName, tilemap, objectKey, meshShrinkAmount = 0) {
+    buildMeshFromTiled(tilemap, objectKey, meshShrinkAmount = 0) {
         // Load up the object layer
-        const rects = tilemap.objects[objectKey];
+        const rects = tilemap.objects[objectKey] || [];
         // Loop over the objects and construct a polygon
         const polygons = [];
         for (const r of rects) {
@@ -51,12 +38,18 @@ class NavMeshPlugin extends Phaser.Plugin {
             const poly = new Phaser.Polygon(left,top, left,bottom, right,bottom, right,top);
             polygons.push(poly);
         }
-        // Build the navmesh, cache it and set it to be the current
-        const navMesh = new NavMesh(this.game, polygons, meshShrinkAmount);
-        this._navmeshes[levelName] = navMesh;
-        this._currentNavMesh = navMesh;
-        return navMesh;
-    }  
+        // Build the navmesh
+        const mesh = new NavMesh(this.game, polygons, meshShrinkAmount);
+        this._navMeshes.push(mesh);
+        return mesh;
+    }
+
+    destroy() {
+        console.log("destroyed");
+        for (const mesh of this._navMeshes) mesh.destroy();
+        this._navMeshes = [];
+        super.destroy();
+    }
 
     // /**
     //  * Build a navmesh from an array of convex polygons. This currently tesselates the polygons into
@@ -87,32 +80,6 @@ class NavMeshPlugin extends Phaser.Plugin {
     //     this._currentNavMesh = navMesh;
     // }
 
-    /**
-     * Switch the currently loaded navmesh
-     *
-     * @param {string} levelName Name of the level to look up in the cache of loaded levels 
-     * 
-     * @memberof NavMeshPlugin
-     */
-    switchLevel(levelName) {
-        if (this._navmeshes[levelName]) this._currentNavMesh = this._navmeshes[levelName];
-    }
-    
-    /**
-     * Find a path from the start point to the end point using the currently loaded nav mesh.
-     * 
-     * @param {Phaser.Point} startPoint The starting point in world coordinates
-     * @param {Phaser.Point} endPoint The end point in world coordinates
-     * @param {boolean} [debugDraw=false] Whether or not to draw debug graphics for the path
-     * @returns {Phaser.Point[]|null} An array of points if a path is found, or null if no path
-     * 
-     * @memberof NavMeshPlugin
-     */
-    findPath(startPoint, endPoint, debugDraw = false) {
-        if (!this._currentNavMesh) return null;
-        return this._currentNavMesh.findPath(startPoint, endPoint, debugDraw);
-    }
-
     // /**
     //  * @param {[]} hulls 
     //  * @returns 
@@ -140,4 +107,3 @@ class NavMeshPlugin extends Phaser.Plugin {
 }
 
 Phaser.NavMeshPlugin = NavMeshPlugin;
-export default NavMeshPlugin;

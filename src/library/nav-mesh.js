@@ -5,28 +5,24 @@ import Channel from "./channel";
 import {angleDifference, areCollinear} from "./utils";
 
 /**
- * The workhorse that builds a navigation mesh from a series of polygons. Once built, the mesh can
- * be asked for a path from one point to another point. It has debug methods for visualizing paths
- * and visualizing the individual polygons. Some internal terminology usage:
+ * The workhorse that represents a navigation mesh built from a series of polygons. Once built, the
+ * mesh can be asked for a path from one point to another point. It has debug methods for 
+ * visualizing paths and visualizing the individual polygons. Some internal terminology usage:
  * 
  * - neighbor: a polygon that shares part of an edge with another polygon
  * - portal: when two neighbor's have edges that overlap, the portal is the overlapping line segment
  * - channel: the path of polygons from starting point to end point
  * - pull the string: run the funnel algorithm on the channel so that the path hugs the edges of the
- *   channel. Equivalent to having a string snaking through a hallway and then pulling it taut
- * 
- * @class NavMesh
+ *   channel. Equivalent to having a string snaking through a hallway and then pulling it taut.
  */
 class NavMesh {
-
     /**
      * Creates an instance of NavMesh.
+     * 
      * @param {Phaser.Game} game
      * @param {Phaser.Polygon[]} polygons
      * @param {number} [meshShrinkAmount=0] The amount (in pixels) that the navmesh has been
      * shrunk around obstacles (a.k.a the amount obstacles have been expanded)
-     *
-     * @memberof NavMesh
      */
     constructor(game, polygons, meshShrinkAmount = 0) {
         this.game = game;
@@ -42,7 +38,22 @@ class NavMesh {
         this._calculateNeighbors();
 
         // Astar graph of connections between polygons
-        this.graph = new NavGraph(this._navPolygons);
+        this._graph = new NavGraph(this._navPolygons);
+    }
+
+    /**
+     * Cleanup method to remove references so that navmeshes don't hang around from state to state.
+     * You don't have to invoke this directly. If you call destroy on the plugin, it will destroy
+     * all navmeshes that have been created. 
+     * 
+     * @memberof NavMesh
+     */
+    destroy() {
+        this._graph.destroy();
+        for (const poly of this._navPolygons) poly.destroy();
+        this._navPolygons = [];
+        this.game = null;
+        this.disableDebug();
     }
 
     /**
@@ -121,8 +132,8 @@ class NavMesh {
         if (!startPoly || !endPoly) return null;
         
         // Search!
-        const astarPath = jsastar.astar.search(this.graph, startPoly, endPoly, {
-            heuristic: this.graph.navHeuristic
+        const astarPath = jsastar.astar.search(this._graph, startPoly, endPoly, {
+            heuristic: this._graph.navHeuristic
         });
         // jsastar drops the first point from the path, but the funnel algorithm needs it
         astarPath.unshift(startPoly);
@@ -160,12 +171,11 @@ class NavMesh {
         }
 
         // Call debug drawing
-        if (drawFinalPath || drawPolyPath) {
-            this.debugDraw(
-                drawPolyPath ? astarPath : null,
-                drawFinalPath ? phaserPath : null 
-            );
+        if (drawPolyPath) {
+            const polyPath = astarPath.map((elem) => elem.centroid);
+            this.debugDrawPath(polyPath, 0x00ff00, 5);
         }
+        if (drawFinalPath) this.debugDrawPath(phaserPath, 0xffd900, 10);
 
         return phaserPath;
     }
@@ -264,6 +274,7 @@ class NavMesh {
      * @param {NavPoly} navPoly The navigation polygon to test against
      * @returns {{point: Phaser.Point, distance: number}}
      * 
+     * @private
      * @memberof NavMesh
      */
     _projectPointToPolygon(point, navPoly) {
@@ -306,11 +317,19 @@ class NavMesh {
         return p;        
     }
 
+    /**
+     * Enable debug and create graphics overlay (if it hasn't already been created) 
+     */
     enableDebug() {
-        this._debugGraphics = this.game.add.graphics(0, 0);
-        this._debugGraphics.alpha = 0.5;
+        if (!this._debugGraphics) {
+            this._debugGraphics = this.game.add.graphics(0, 0);
+            this._debugGraphics.alpha = 0.5;
+        }
     }
 
+    /**
+     * Disable debug and destroy associated graphics
+     */
     disableDebug() {
         if (this._debugGraphics) {
             this._debugGraphics.destroy();
@@ -318,10 +337,18 @@ class NavMesh {
         }
     }
 
+    /**
+     * Check whether debug is enabled
+     * 
+     * @returns {boolean}
+     */
     isDebugEnabled() {
         return this._debugGraphics !== null;
     }
 
+    /**
+     * Clear the debug overlay
+     */
     debugClear() {
         if (this._debugGraphics) this._debugGraphics.clear();
     }
@@ -335,43 +362,35 @@ class NavMesh {
      * @param {boolean} [options.drawNeighbors=true] For each polygon, show the connections to
      * neighbors
      * @param {boolean} [options.drawPortals=true] For each polygon, show the portal edges
-     *
-     * @memberof NavMesh
      */
     debugDrawMesh({drawCentroid = true, drawBounds = false, drawNeighbors = true, 
             drawPortals = true} = {}) {
         if (!this._debugGraphics) this.enableDebug();
-        this._debugGraphics.clear();
         // Visualize the navigation mesh
         for (const navPoly of this._navPolygons) {
             navPoly.draw(this._debugGraphics, drawCentroid, drawBounds, drawNeighbors, drawPortals);
         }
     }
 
-    debugDraw(polyPath = null, funnelPath = null) {
+    /**
+     * Visualize a path (array of points) on the debug graphics overlay
+     * 
+     * @param {Phaser.Point[]} path 
+     * @param {number} [color=0x00FF00] 
+     * @param {number} [thickness=10] 
+     */
+    debugDrawPath(path, color = 0x00FF00, thickness = 10) {
         if (!this._debugGraphics) this.enableDebug();
-
-        // Draw astar path through the polygons
-        if (polyPath) {
-            this._debugGraphics.lineStyle(10, 0x00FF00);
-            this._debugGraphics.moveTo(polyPath[0].centroid.x, polyPath[0].centroid.y);
-            for (const navPoly of polyPath) {
-                this._debugGraphics.lineTo(navPoly.centroid.x, navPoly.centroid.y);
-            }
-            const lastPoly = polyPath[polyPath.length - 1];
-            this._debugGraphics.lineTo(lastPoly.centroid.x, lastPoly.centroid.y);
-        }
-
-        // Draw the funneled path
-        if (funnelPath) {
-            this._debugGraphics.lineStyle(5, 0xffd900);
-            const p = new Phaser.Polygon(...funnelPath);
-            p.closed = false;
-            this._debugGraphics.drawShape(p); 
-            this._debugGraphics.beginFill(0xffd900);
-            this._debugGraphics.drawEllipse(funnelPath[0].x, funnelPath[0].y, 10, 10);
-            const lastPoint = funnelPath[funnelPath.length - 1];
-            this._debugGraphics.drawEllipse(lastPoint.x, lastPoint.y, 10, 10);
+        if (path.length) {
+            // Draw line for path
+            this._debugGraphics.lineStyle(thickness, color);
+            this._debugGraphics.drawShape(new Phaser.Polygon(...path)); 
+            this._debugGraphics.beginFill(color);
+            // Draw circle at start and end of path
+            const d = 0.5 * thickness;
+            this._debugGraphics.drawEllipse(path[0].x, path[0].y, d, d);
+            const lastPoint = path[path.length - 1];
+            this._debugGraphics.drawEllipse(lastPoint.x, lastPoint.y, d, d);
             this._debugGraphics.endFill();
         }
     }

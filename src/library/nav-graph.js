@@ -4,7 +4,8 @@ import jsastar from "javascript-astar";
  * Graph for javascript-astar. It implements the functionality for astar. See GPS test from astar
  * repo for structure: https://github.com/bgrins/javascript-astar/blob/master/test/tests.js
  *
- * @class NavGraph
+ * @class NavGraph 
+ * @private
  */
 class NavGraph {
     constructor(navPolygons) {
@@ -18,6 +19,11 @@ class NavGraph {
 
     navHeuristic(navPolygon1, navPolygon2) {
         return navPolygon1.centroidDistance(navPolygon2);
+    }
+
+    destroy() {
+        this.cleanDirty();
+        this.nodes = [];
     }
 }
 

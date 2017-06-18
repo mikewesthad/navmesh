@@ -3,6 +3,9 @@
 
 import {triarea2} from "./utils";
 
+/**
+ * @private
+ */
 class Channel {
     constructor() {
         this.portals = [];
