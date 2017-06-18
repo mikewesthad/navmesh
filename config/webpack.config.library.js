@@ -15,7 +15,7 @@ module.exports = {
     output: {
         filename: "[name].js",
         path: path.resolve(root, "dist"),
-        library: "phaserNavmesh",
+        library: "PhaserNavmesh",
         libraryTarget: "umd"
     },
     module: {

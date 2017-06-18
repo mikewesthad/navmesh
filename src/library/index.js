@@ -45,7 +45,6 @@ export default class NavMeshPlugin extends Phaser.Plugin {
     }
 
     destroy() {
-        console.log("destroyed");
         for (const mesh of this._navMeshes) mesh.destroy();
         this._navMeshes = [];
         super.destroy();
@@ -105,5 +104,3 @@ export default class NavMeshPlugin extends Phaser.Plugin {
     //     return contours;
     // }
 }
-
-Phaser.NavMeshPlugin = NavMeshPlugin;

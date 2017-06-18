@@ -2,7 +2,7 @@
   "name": "phaser-navmesh",
   "version": "1.0.0",
   "description": "A plugin for Phaser for fast pathfinding using navigation meshes",
-  "main": "dist/phaser-navmesh-plugin.min.js",
+  "main": "dist/phaser-navmesh.min.js",
   "scripts": {
     "build:library": "webpack --config config/webpack.config.library.js",
     "build:examples": "webpack --config config/webpack.config.examples.js",
