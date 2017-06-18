@@ -683,7 +683,6 @@ var NavMeshPlugin = function (_Phaser$Plugin) {
     }, {
         key: "destroy",
         value: function destroy() {
-            console.log("destroyed");
             var _iteratorNormalCompletion2 = true;
             var _didIteratorError2 = false;
             var _iteratorError2 = undefined;
@@ -772,9 +771,6 @@ var NavMeshPlugin = function (_Phaser$Plugin) {
 }(Phaser.Plugin);
 
 /* harmony default export */ __webpack_exports__["a"] = (NavMeshPlugin);
-
-
-Phaser.NavMeshPlugin = NavMeshPlugin;
 
 /***/ }),
 /* 7 */

@@ -4,9 +4,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
 	else if(typeof exports === 'object')
-		exports["phaserNavmesh"] = factory();
+		exports["PhaserNavmesh"] = factory();
 	else
-		root["phaserNavmesh"] = factory();
+		root["PhaserNavmesh"] = factory();
 })(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -1482,7 +1482,6 @@ var NavMeshPlugin = function (_Phaser$Plugin) {
     }, {
         key: "destroy",
         value: function destroy() {
-            console.log("destroyed");
             var _iteratorNormalCompletion2 = true;
             var _didIteratorError2 = false;
             var _iteratorError2 = undefined;
@@ -1571,9 +1570,6 @@ var NavMeshPlugin = function (_Phaser$Plugin) {
 }(Phaser.Plugin);
 
 /* harmony default export */ __webpack_exports__["default"] = (NavMeshPlugin);
-
-
-Phaser.NavMeshPlugin = NavMeshPlugin;
 
 /***/ }),
 /* 5 */
