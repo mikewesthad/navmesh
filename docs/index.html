@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl">
+  <title data-ice="title">API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-injected-style.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/mikewesthad/phaser-navmesh-plugin" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/library/nav-mesh-plugin.js~NavMeshPlugin.html">NavMeshPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/library/nav-mesh.js~NavMesh.html">NavMesh</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="navigation-meshes-in-phaser">Navigation Meshes in Phaser</h1>
+<p>A <a href="http://phaser.io/">Phaser</a> plugin for fast pathfinding using navigation meshes.</p>
+<p><a href="https://www.mikewesthad.com/phaser-navmesh/demo/"><img src="./doc-source/single-following-agent.gif" width="400"></a></p>
+<p><a href="https://www.mikewesthad.com/phaser-navmesh/demo/">Interactive demo</a></p>
+<p>Pathfinding is essentially solving a maze, finding a path between two points while avoiding obstacles. When pathfinding in games, we need to:</p>
+<ol>
+<li>Represent the game world in a way that defines what areas are walkable.</li>
+<li>Search that representation for the shortest path.</li>
+</ol>
+<p>When it comes to 2D pathfinding in <a href="http://phaser.io/">Phaser</a>, the <a href="https://github.com/photonstorm/phaser-plugins">packaged solution</a> represents the world using <a href="https://developer.mozilla.org/en-US/docs/Games/Techniques/Tilemaps">tiles</a> (a grid) and then searchs for a path using the <a href="https://en.wikipedia.org/wiki/A*_search_algorithm">A* algorithm</a>. If you have a 50 x 50 tile world, searching for a path involves searching through a representation of the world with up to 2500 locations (nodes).</p>
+<p>This plugin uses navigation meshes to simplify that search. Instead of representing the world as a grid of tiles, it represents the walkable areas of the world as a mesh. That means that the representation of the world has far fewer nodes, and hence, can be searched much faster than the grid approach. This approach is 5x - 150x faster than Phaser&apos;s A* plugin (see performance section).</p>
+<p>The example map below (left) is a 30 x 30 map. As a grid, there are 900 nodes, but as a navmesh (right) there are 27 nodes (colored rectangles).</p>
+<p><img src="./doc-source/combined.png" width="700"></p>
+<p>(Note: if you are viewing this on GitHub or NPM, you might want to check out the HTML documentation <a href="https://www.mikewesthad.com/phaser-navmesh/docs/">here</a>.)</p>
+<h2 id="temporary-performance-comparison">Temporary Performance Comparison</h2>
+<p>TODO: make this more readable and add interactive demo</p>
+<p>Comparing this navmesh plugin against:</p>
+<ul>
+<li><a href="https://github.com/photonstorm/phaser-plugins">Phaser&apos;s grid-based A* plugin</a>. Navmesh is approximately 5x - 150x faster.</li>
+<li>A faster, grid-based A* search, <a href="https://github.com/prettymuchbryce/easystarjs">EasyStar.js</a>. Navmesh is approximately 5x - 20x faster.</li>
+</ul>
+<p>Performance depends on the size of the area that needs to be searched. Finding for a path between points that are 50 pixels away is (generally) going to be much faster than finding a path between points that are 5000 pixels away.</p>
+<p>Details (see <a href="https://github.com/mikewesthad/phaser-navmesh/tree/master/src/examples/performance">src/library/performance</a>):</p>
+<pre><code><code class="source-code prettyprint">Performance Comparison, 100000 iterations, 30x30 tilemap
+
+Short paths (150 - 500 pixel length)
+
+    Average time per iteration:
+        AStart Plugin: 0.02470ms
+        EasyStar Plugin: 0.02876ms
+        NavMesh Plugin: 0.00575ms
+
+    Comparison:
+        NavMesh is 4.30x faster than Phaser AStar
+        NavMesh is 5.00x faster than EasyStar
+
+Long paths (600 pixels and greater length), average time per iteration:
+
+    Average time per iteration:
+        AStart Plugin: 1.38710ms
+        EasyStar Plugin: 0.15977ms
+        NavMesh Plugin: 0.00738ms
+
+    Comparison:
+        NavMesh is 187.95x faster than Phaser AStar
+        NavMesh is 21.65x faster than EasyStar</code>
+</code></pre><h2 id="installation">Installation</h2>
+<p>Whether you include the library as a script tag or import it as a module, Phaser is a dependency. The library expects Phaser to be in the global scope.</p>
+<h3 id="as-a-script">As a Script</h3>
+<p>Download the dist/phaser-navmesh.min.js <a href="https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/dist/phaser-navmesh.min.js">here</a> and include it in your HTML:</p>
+<pre><code class="lang-html"><code class="source-code prettyprint">&lt;script src=&quot;dist/phaser-navmesh.min.js&quot;&gt;&lt;/script&gt;</code>
+</code></pre>
+<p>Inside of your own script, you can now use the global PhaserNavmesh:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">this.game.plugins.add(PhaserNavmesh);</code>
+</code></pre>
+<h3 id="as-a-module">As a Module</h3>
+<p>Install the dependency:</p>
+<pre><code><code class="source-code prettyprint">npm install --save phaser-navmesh</code>
+</code></pre><p>To use the babelified and minified library:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">import phaserNavmesh from &quot;phaser-navmesh&quot;;
+this.game.plugins.add(PhaserNavmesh);</code>
+</code></pre>
+<p>To use the raw es6 library (so you can transpile it to match your own project settings):</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">import phaserNavmesh from &quot;phaser-navmesh/src/library&quot;;
+this.game.plugins.add(PhaserNavmesh);</code>
+</code></pre>
+<h2 id="usage">Usage</h2>
+<pre><code class="lang-js"><code class="source-code prettyprint">// This snippet assumes you&apos;ve got your tilemap loaded in a variable called &quot;tilemap&quot;
+
+// Register the plugin with Phaser
+const navMeshPlugin = this.game.plugins.add(phaserNavmesh);
+
+// Load the navMesh from the tilemap object layer &quot;navmesh.&quot; The navMesh was created with 12.5
+// pixels of space around obstacles.
+const navMesh = navMeshPlugin.buildMeshFromTiled(tilemap, &quot;navmesh&quot;, 12.5);
+
+const p1 = new Phaser.Point(100, 400);
+const p2 = new Phaser.Point(700, 200);
+const path = navMeshPlugin.findPath(p1, p2);
+// -&gt; path is now either an array of points, or null if no valid path could be found</code>
+</code></pre>
+<p>Visually debugging paths:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">navMesh.enableDebug(); // Creates a Phaser.Graphics overlay on top of the screen
+navMesh.debugClear(); // Clears the overlay
+// Visualize the underlying navmesh
+navMesh.debugDrawMesh({
+    drawCentroid: true, drawBounds: false, drawNeighbors: true, drawPortals: true
+});
+// Find &amp; visualize a specific path
+const path = navMesh.findPath(follower.position, target, {
+    drawPolyPath: true, drawFinalPath: true
+});</code>
+</code></pre>
+<h2 id="references">References</h2>
+<p>Helpful resources used while building this plugin:</p>
+<ul>
+<li>Inspired by <a href="https://github.com/nickjanssen/PatrolJS">PatrolJS</a>, an implementation of navmeshes for threejs</li>
+<li>Navmesh path-finding algorithm explanations:<ul>
+<li><a href="http://jceipek.com/Olin-Coding-Tutorials/pathing.html">Game Path Planning by Julian Ceipek</a></li>
+<li><a href="http://digestingduck.blogspot.com/2010/03/simple-stupid-funnel-algorithm.html">Simple Stupid Funnel Algorithm</a></li>
+</ul>
+</li>
+<li><a href="http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html">Advice on astar heuristics</a></li>
+</ul>
+<h2 id="todo">TODO</h2>
+<ul>
+<li>Documentation<ul>
+<li>Describe the Tiled process. Adding an object layer, setting snapping, making sure vertices overlap...</li>
+</ul>
+</li>
+<li>Specific Extensions<ul>
+<li>Allow non-square navmesh from Tiled - any convex shape</li>
+<li>Reimplement the autotessalation version of the lib<ul>
+<li>Try libtess in quad mode</li>
+</ul>
+</li>
+<li>The astar heuristic &amp; cost functions need another pass. They don&apos;t always produce the shortest path. Implement incomplete funneling while building the astar path?</li>
+<li>The navmesh assumes any polygon can reach any other polygon. This probably should be extended to put connected polygons into groups like patroljs.</li>
+</ul>
+</li>
+<li>Testing<ul>
+<li>Check against tilemap that is larger than the screen</li>
+</ul>
+</li>
+<li>Research<ul>
+<li>There are probably optimization tricks to do when dealing with certain types of shapes. E.g. we are using axis-aligned boxes for the polygons and it is dead simple to calculate if a point is inside one of those...</li>
+<li>Investigate <a href="http://www.david-gouveia.com/portfolio/pathfinding-on-a-2d-polygonal-map/">Points-of-Visibility</a> pathfinding to compare speed</li>
+<li>Using ES6 is probably suboptimal for performance</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

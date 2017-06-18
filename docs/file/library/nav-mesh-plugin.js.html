@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">library/nav-mesh-plugin.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-injected-style.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/mikewesthad/phaser-navmesh-plugin" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/library/nav-mesh-plugin.js~NavMeshPlugin.html">NavMeshPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/library/nav-mesh.js~NavMesh.html">NavMesh</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">library/nav-mesh-plugin.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">// const triangulate = require(&quot;./triangulate&quot;);
+import NavMesh from &quot;./nav-mesh&quot;;
+
+/**
+ * This plugin can create navigation meshes for use in Phaser. The navmeshes can be constructed from
+ * convex polygons embedded in a Tiled map. Instantiate this using game.plugins.add(NavMeshPlugin).
+ *
+ * @param {Phaser.Game} game
+ * @param {Phaser.PluginManager} manager
+ */
+export default class NavMeshPlugin extends Phaser.Plugin {
+    constructor(game, manager) {
+        super(game, manager);
+        this._navMeshes = [];
+    }
+
+    /**
+     * Load a navmesh from Tiled and switch it to be the current navmesh. Currently assumes that the
+     * polygons are squares!
+     * 
+     * @param {Phaser.Tilemap} tilemap The tilemap that contains polygons under an object layer
+     * @param {string} objectKey The name of the object layer in the tilemap
+     * @param {number} [meshShrinkAmount=0] The amount (in pixels) that the navmesh has been
+     * shrunk around obstacles (a.k.a the amount obstacles have been expanded)
+     * 
+     * @memberof NavMeshPlugin
+     */
+    buildMeshFromTiled(tilemap, objectKey, meshShrinkAmount = 0) {
+        // Load up the object layer
+        const rects = tilemap.objects[objectKey] || [];
+        // Loop over the objects and construct a polygon
+        const polygons = [];
+        for (const r of rects) {
+            const top = r.y;
+            const bottom = r.y + r.height;
+            const left = r.x;
+            const right = r.x + r.width;
+            const poly = new Phaser.Polygon(left,top, left,bottom, right,bottom, right,top);
+            polygons.push(poly);
+        }
+        // Build the navmesh
+        const mesh = new NavMesh(this.game, polygons, meshShrinkAmount);
+        this._navMeshes.push(mesh);
+        return mesh;
+    }
+
+    destroy() {
+        for (const mesh of this._navMeshes) mesh.destroy();
+        this._navMeshes = [];
+        super.destroy();
+    }
+
+    // /**
+    //  * Build a navmesh from an array of convex polygons. This currently tesselates the polygons into
+    //  * triangles. They aren&apos;t as efficient or as well designed as ones made by hand in Tiled. 
+    //  *
+    //  * @param {string} levelName The key to use to store the navmesh in the plugin  
+    //  * @param {[]} hulls An array of convex polygons describing the obstacles in the
+    //  * level. See lighting-plugin/hull-from-tiles.
+    //  *
+    //  * @memberof NavMeshPlugin
+    //  */
+    // buildMesh(levelName, hulls) {
+    //     const contours = this._buildContours(hulls);
+    //     // Get an array of triangulated vertices
+    //     const triangles = triangulate(contours, false); // Counter-clockwise ordering!
+    //     const polygons = [];
+    //     for (let i = 0; i &lt; triangles.length; i += 6) {
+    //         const poly = new Phaser.Polygon(
+    //             // These should be in counter-clockwise order from triangulate
+    //             triangles[i + 0], triangles[i + 1], 
+    //             triangles[i + 2], triangles[i + 3], 
+    //             triangles[i + 4], triangles[i + 5]
+    //         );
+    //         polygons.push(poly);
+    //     }
+    //     const navMesh = new NavMesh(this.game, polygons);
+    //     this._navMeshes[levelName] = navMesh;
+    //     this._currentNavMesh = navMesh;
+    // }
+
+    // /**
+    //  * @param {[]} hulls 
+    //  * @returns 
+    //  * 
+    //  * @memberof NavMeshPlugin
+    //  */
+    // _buildContours(hulls) {
+    //     const w = this.game.width;
+    //     const h = this.game.height;
+    //     // Start the contours
+    //     const contours = [
+    //         // Full screen - counter clockwise
+    //         Float32Array.of(0,0, 0,h, w,h, w,0)
+    //     ];
+    //     // For each convex hull add the contour
+    //     for (const hull of hulls) {
+    //         const contour = [];
+    //         for (const lineInfo of hull) {
+    //             contour.push(lineInfo.line.start.x, lineInfo.line.start.y);
+    //         }
+    //         contours.push(Float32Array.from(contour));
+    //     }
+    //     return contours;
+    // }
+}</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
