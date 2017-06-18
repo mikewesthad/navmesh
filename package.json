@@ -1,5 +1,5 @@
 {
-  "name": "phaser-navmesh-plugin",
+  "name": "phaser-navmesh",
   "version": "1.0.0",
   "description": "A plugin for Phaser for fast pathfinding using navigation meshes",
   "main": "dist/phaser-navmesh-plugin.min.js",

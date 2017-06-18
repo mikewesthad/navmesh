@@ -2,9 +2,9 @@
 
 In progress. A Phaser plugin for fast path-finding using navigation meshes.
 
-[<img src="./doc-source/single-following-agent.gif" width="400">](https://www.mikewesthad.com/phaser-navmesh-plugin/demo/)
+[<img src="./doc-source/single-following-agent.gif" width="400">](https://www.mikewesthad.com/phaser-navmesh/demo/)
 
-[Interactive demo](https://www.mikewesthad.com/phaser-navmesh-plugin/demo/)
+[Interactive demo](https://www.mikewesthad.com/phaser-navmesh/demo/)
 
 The current path-finding plugins for Phaser use A* on the tiles in a tilemap. If you have a 50 x 50 tilemap, that's up to 2500 nodes in the A* graph.
 

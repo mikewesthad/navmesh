@@ -4,9 +4,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
 	else if(typeof exports === 'object')
-		exports["phaserNavmeshPlugin"] = factory();
+		exports["phaserNavmesh"] = factory();
 	else
-		root["phaserNavmeshPlugin"] = factory();
+		root["phaserNavmesh"] = factory();
 })(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -1910,4 +1910,4 @@ var NavPoly = function () {
 /***/ })
 /******/ ]);
 });
-//# sourceMappingURL=phaser-navmesh-plugin.js.map
+//# sourceMappingURL=phaser-navmesh.js.map
