@@ -85,7 +85,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /* unused harmony export almostEqual */
 /* harmony export (immutable) */ __webpack_exports__["b"] = angleDifference;
 /* harmony export (immutable) */ __webpack_exports__["a"] = areCollinear;
-// Twice the area of the triangle formed by a, b and c
+/**
+ * Twice the area of the triangle formed by a, b and c
+ * @private
+ */
 function triarea2(a, b, c) {
     var ax = b.x - a.x;
     var ay = b.y - a.y;
@@ -94,13 +97,19 @@ function triarea2(a, b, c) {
     return bx * ay - ax * by;
 }
 
+/**
+ * @private
+ */
 function almostEqual(value1, value2) {
     var errorMargin = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0.0001;
 
     if (Math.abs(value1 - value2) <= errorMargin) return true;else return false;
 }
 
-// https://gist.github.com/Aaronduino/4068b058f8dbc34b4d3a9eedc8b2cbe0
+/**
+ * https://gist.github.com/Aaronduino/4068b058f8dbc34b4d3a9eedc8b2cbe0
+ * @private
+ */
 function angleDifference(x, y) {
     var a = x - y;
     var i = a + Math.PI;
@@ -110,6 +119,9 @@ function angleDifference(x, y) {
     return a;
 }
 
+/**
+ * @private
+ */
 function areCollinear(line1, line2) {
     var errorMargin = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0.0001;
 
@@ -560,29 +572,25 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 
 /**
- * The workhorse that builds a navigation mesh from a series of polygons. Once built, the mesh can
- * be asked for a path from one point to another point. It has debug methods for visualizing paths
- * and visualizing the individual polygons. Some internal terminology usage:
+ * The workhorse that represents a navigation mesh built from a series of polygons. Once built, the
+ * mesh can be asked for a path from one point to another point. It has debug methods for 
+ * visualizing paths and visualizing the individual polygons. Some internal terminology usage:
  * 
  * - neighbor: a polygon that shares part of an edge with another polygon
  * - portal: when two neighbor's have edges that overlap, the portal is the overlapping line segment
  * - channel: the path of polygons from starting point to end point
  * - pull the string: run the funnel algorithm on the channel so that the path hugs the edges of the
- *   channel. Equivalent to having a string snaking through a hallway and then pulling it taut
- * 
- * @class NavMesh
+ *   channel. Equivalent to having a string snaking through a hallway and then pulling it taut.
  */
 
 var NavMesh = function () {
-
     /**
      * Creates an instance of NavMesh.
+     * 
      * @param {Phaser.Game} game
      * @param {Phaser.Polygon[]} polygons
      * @param {number} [meshShrinkAmount=0] The amount (in pixels) that the navmesh has been
      * shrunk around obstacles (a.k.a the amount obstacles have been expanded)
-     *
-     * @memberof NavMesh
      */
     function NavMesh(game, polygons) {
         var meshShrinkAmount = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
@@ -628,26 +636,67 @@ var NavMesh = function () {
         this._calculateNeighbors();
 
         // Astar graph of connections between polygons
-        this.graph = new __WEBPACK_IMPORTED_MODULE_2__nav_graph__["a" /* default */](this._navPolygons);
+        this._graph = new __WEBPACK_IMPORTED_MODULE_2__nav_graph__["a" /* default */](this._navPolygons);
     }
 
     /**
-     * Find a path from the start point to the end point using this nav mesh.
-     *
-     * @param {Phaser.Point} startPoint
-     * @param {Phaser.Point} endPoint
-     * @param {object} [drawOptions={}] Options for controlling debug drawing
-     * @param {boolean} [drawOptions.drawPolyPath=false] Whether or not to visualize the path
-     * through the polygons - e.g. the path that astar found.
-     * @param {boolean} [drawOptions.drawFinalPath=false] Whether or not to visualize the path
-     * through the path that was returned.
-     * @returns {Phaser.Point[]|null} An array of points if a path is found, or null if no path
-     *
+     * Cleanup method to remove references so that navmeshes don't hang around from state to state.
+     * You don't have to invoke this directly. If you call destroy on the plugin, it will destroy
+     * all navmeshes that have been created. 
+     * 
      * @memberof NavMesh
      */
 
 
     _createClass(NavMesh, [{
+        key: "destroy",
+        value: function destroy() {
+            this._graph.destroy();
+            var _iteratorNormalCompletion2 = true;
+            var _didIteratorError2 = false;
+            var _iteratorError2 = undefined;
+
+            try {
+                for (var _iterator2 = this._navPolygons[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                    var poly = _step2.value;
+                    poly.destroy();
+                }
+            } catch (err) {
+                _didIteratorError2 = true;
+                _iteratorError2 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                        _iterator2.return();
+                    }
+                } finally {
+                    if (_didIteratorError2) {
+                        throw _iteratorError2;
+                    }
+                }
+            }
+
+            this._navPolygons = [];
+            this.game = null;
+            this.disableDebug();
+        }
+
+        /**
+         * Find a path from the start point to the end point using this nav mesh.
+         *
+         * @param {Phaser.Point} startPoint
+         * @param {Phaser.Point} endPoint
+         * @param {object} [drawOptions={}] Options for controlling debug drawing
+         * @param {boolean} [drawOptions.drawPolyPath=false] Whether or not to visualize the path
+         * through the polygons - e.g. the path that astar found.
+         * @param {boolean} [drawOptions.drawFinalPath=false] Whether or not to visualize the path
+         * through the path that was returned.
+         * @returns {Phaser.Point[]|null} An array of points if a path is found, or null if no path
+         *
+         * @memberof NavMesh
+         */
+
+    }, {
         key: "findPath",
         value: function findPath(startPoint, endPoint) {
             var _ref3 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
@@ -664,13 +713,13 @@ var NavMesh = function () {
                 r = void 0;
 
             // Find the closest poly for the starting and ending point
-            var _iteratorNormalCompletion2 = true;
-            var _didIteratorError2 = false;
-            var _iteratorError2 = undefined;
+            var _iteratorNormalCompletion3 = true;
+            var _didIteratorError3 = false;
+            var _iteratorError3 = undefined;
 
             try {
-                for (var _iterator2 = this._navPolygons[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                    var navPoly = _step2.value;
+                for (var _iterator3 = this._navPolygons[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                    var navPoly = _step3.value;
 
                     r = navPoly.boundingRadius;
                     // Start
@@ -690,28 +739,28 @@ var NavMesh = function () {
                 // If the start point wasn't inside a polygon, run a more liberal check that allows a point
                 // to be within meshShrinkAmount radius of a polygon
             } catch (err) {
-                _didIteratorError2 = true;
-                _iteratorError2 = err;
+                _didIteratorError3 = true;
+                _iteratorError3 = err;
             } finally {
                 try {
-                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                        _iterator2.return();
+                    if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                        _iterator3.return();
                     }
                 } finally {
-                    if (_didIteratorError2) {
-                        throw _iteratorError2;
+                    if (_didIteratorError3) {
+                        throw _iteratorError3;
                     }
                 }
             }
 
             if (!startPoly && this._meshShrinkAmount > 0) {
-                var _iteratorNormalCompletion3 = true;
-                var _didIteratorError3 = false;
-                var _iteratorError3 = undefined;
+                var _iteratorNormalCompletion4 = true;
+                var _didIteratorError4 = false;
+                var _iteratorError4 = undefined;
 
                 try {
-                    for (var _iterator3 = this._navPolygons[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-                        var _navPoly = _step3.value;
+                    for (var _iterator4 = this._navPolygons[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+                        var _navPoly = _step4.value;
 
                         // Check if point is within bounding circle to avoid extra projection calculations
                         r = _navPoly.boundingRadius + this._meshShrinkAmount;
@@ -725,44 +774,6 @@ var NavMesh = function () {
                             if (distance <= this._meshShrinkAmount && distance < startDistance) {
                                 startPoly = _navPoly;
                                 startDistance = distance;
-                            }
-                        }
-                    }
-                } catch (err) {
-                    _didIteratorError3 = true;
-                    _iteratorError3 = err;
-                } finally {
-                    try {
-                        if (!_iteratorNormalCompletion3 && _iterator3.return) {
-                            _iterator3.return();
-                        }
-                    } finally {
-                        if (_didIteratorError3) {
-                            throw _iteratorError3;
-                        }
-                    }
-                }
-            }
-
-            // Same check as above, but for the end point
-            if (!endPoly && this._meshShrinkAmount > 0) {
-                var _iteratorNormalCompletion4 = true;
-                var _didIteratorError4 = false;
-                var _iteratorError4 = undefined;
-
-                try {
-                    for (var _iterator4 = this._navPolygons[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-                        var _navPoly2 = _step4.value;
-
-                        r = _navPoly2.boundingRadius + this._meshShrinkAmount;
-                        d = _navPoly2.centroid.distance(endPoint);
-                        if (d <= r) {
-                            var _projectPointToPolygo2 = this._projectPointToPolygon(endPoint, _navPoly2),
-                                _distance = _projectPointToPolygo2.distance;
-
-                            if (_distance <= this._meshShrinkAmount && _distance < endDistance) {
-                                endPoly = _navPoly2;
-                                endDistance = _distance;
                             }
                         }
                     }
@@ -782,12 +793,50 @@ var NavMesh = function () {
                 }
             }
 
+            // Same check as above, but for the end point
+            if (!endPoly && this._meshShrinkAmount > 0) {
+                var _iteratorNormalCompletion5 = true;
+                var _didIteratorError5 = false;
+                var _iteratorError5 = undefined;
+
+                try {
+                    for (var _iterator5 = this._navPolygons[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+                        var _navPoly2 = _step5.value;
+
+                        r = _navPoly2.boundingRadius + this._meshShrinkAmount;
+                        d = _navPoly2.centroid.distance(endPoint);
+                        if (d <= r) {
+                            var _projectPointToPolygo2 = this._projectPointToPolygon(endPoint, _navPoly2),
+                                _distance = _projectPointToPolygo2.distance;
+
+                            if (_distance <= this._meshShrinkAmount && _distance < endDistance) {
+                                endPoly = _navPoly2;
+                                endDistance = _distance;
+                            }
+                        }
+                    }
+                } catch (err) {
+                    _didIteratorError5 = true;
+                    _iteratorError5 = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion5 && _iterator5.return) {
+                            _iterator5.return();
+                        }
+                    } finally {
+                        if (_didIteratorError5) {
+                            throw _iteratorError5;
+                        }
+                    }
+                }
+            }
+
             // No matching polygons locations for the start or end, so no path found
             if (!startPoly || !endPoly) return null;
 
             // Search!
-            var astarPath = __WEBPACK_IMPORTED_MODULE_0_javascript_astar___default.a.astar.search(this.graph, startPoly, endPoly, {
-                heuristic: this.graph.navHeuristic
+            var astarPath = __WEBPACK_IMPORTED_MODULE_0_javascript_astar___default.a.astar.search(this._graph, startPoly, endPoly, {
+                heuristic: this._graph.navHeuristic
             });
             // jsastar drops the first point from the path, but the funnel algorithm needs it
             astarPath.unshift(startPoly);
@@ -818,13 +867,13 @@ var NavMesh = function () {
             // Clone path, excluding duplicates
             var lastPoint = null;
             var phaserPath = [];
-            var _iteratorNormalCompletion5 = true;
-            var _didIteratorError5 = false;
-            var _iteratorError5 = undefined;
+            var _iteratorNormalCompletion6 = true;
+            var _didIteratorError6 = false;
+            var _iteratorError6 = undefined;
 
             try {
-                for (var _iterator5 = channel.path[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-                    var p = _step5.value;
+                for (var _iterator6 = channel.path[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+                    var p = _step6.value;
 
                     var newPoint = p.clone();
                     if (!lastPoint || !newPoint.equals(lastPoint)) phaserPath.push(newPoint);
@@ -833,23 +882,27 @@ var NavMesh = function () {
 
                 // Call debug drawing
             } catch (err) {
-                _didIteratorError5 = true;
-                _iteratorError5 = err;
+                _didIteratorError6 = true;
+                _iteratorError6 = err;
             } finally {
                 try {
-                    if (!_iteratorNormalCompletion5 && _iterator5.return) {
-                        _iterator5.return();
+                    if (!_iteratorNormalCompletion6 && _iterator6.return) {
+                        _iterator6.return();
                     }
                 } finally {
-                    if (_didIteratorError5) {
-                        throw _iteratorError5;
+                    if (_didIteratorError6) {
+                        throw _iteratorError6;
                     }
                 }
             }
 
-            if (drawFinalPath || drawPolyPath) {
-                this.debugDraw(drawPolyPath ? astarPath : null, drawFinalPath ? phaserPath : null);
+            if (drawPolyPath) {
+                var polyPath = astarPath.map(function (elem) {
+                    return elem.centroid;
+                });
+                this.debugDrawPath(polyPath, 0x00ff00, 5);
             }
+            if (drawFinalPath) this.debugDrawPath(phaserPath, 0xffd900, 10);
 
             return phaserPath;
         }
@@ -868,20 +921,20 @@ var NavMesh = function () {
                     if (d > navPoly.boundingRadius + otherNavPoly.boundingRadius) continue;
 
                     // The are in range, so check each edge pairing
-                    var _iteratorNormalCompletion6 = true;
-                    var _didIteratorError6 = false;
-                    var _iteratorError6 = undefined;
+                    var _iteratorNormalCompletion7 = true;
+                    var _didIteratorError7 = false;
+                    var _iteratorError7 = undefined;
 
                     try {
-                        for (var _iterator6 = navPoly.edges[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-                            var edge = _step6.value;
-                            var _iteratorNormalCompletion7 = true;
-                            var _didIteratorError7 = false;
-                            var _iteratorError7 = undefined;
+                        for (var _iterator7 = navPoly.edges[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+                            var edge = _step7.value;
+                            var _iteratorNormalCompletion8 = true;
+                            var _didIteratorError8 = false;
+                            var _iteratorError8 = undefined;
 
                             try {
-                                for (var _iterator7 = otherNavPoly.edges[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-                                    var otherEdge = _step7.value;
+                                for (var _iterator8 = otherNavPoly.edges[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+                                    var otherEdge = _step8.value;
 
 
                                     // If edges aren't collinear, not an option for connecting navpolys
@@ -928,31 +981,31 @@ var NavMesh = function () {
                                     // there are unnecessary vertices...)
                                 }
                             } catch (err) {
-                                _didIteratorError7 = true;
-                                _iteratorError7 = err;
+                                _didIteratorError8 = true;
+                                _iteratorError8 = err;
                             } finally {
                                 try {
-                                    if (!_iteratorNormalCompletion7 && _iterator7.return) {
-                                        _iterator7.return();
+                                    if (!_iteratorNormalCompletion8 && _iterator8.return) {
+                                        _iterator8.return();
                                     }
                                 } finally {
-                                    if (_didIteratorError7) {
-                                        throw _iteratorError7;
+                                    if (_didIteratorError8) {
+                                        throw _iteratorError8;
                                     }
                                 }
                             }
                         }
                     } catch (err) {
-                        _didIteratorError6 = true;
-                        _iteratorError6 = err;
+                        _didIteratorError7 = true;
+                        _iteratorError7 = err;
                     } finally {
                         try {
-                            if (!_iteratorNormalCompletion6 && _iterator6.return) {
-                                _iterator6.return();
+                            if (!_iteratorNormalCompletion7 && _iterator7.return) {
+                                _iterator7.return();
                             }
                         } finally {
-                            if (_didIteratorError6) {
-                                throw _iteratorError6;
+                            if (_didIteratorError7) {
+                                throw _iteratorError7;
                             }
                         }
                     }
@@ -987,6 +1040,7 @@ var NavMesh = function () {
          * @param {NavPoly} navPoly The navigation polygon to test against
          * @returns {{point: Phaser.Point, distance: number}}
          * 
+         * @private
          * @memberof NavMesh
          */
 
@@ -995,13 +1049,13 @@ var NavMesh = function () {
         value: function _projectPointToPolygon(point, navPoly) {
             var closestProjection = null;
             var closestDistance = Number.MAX_VALUE;
-            var _iteratorNormalCompletion8 = true;
-            var _didIteratorError8 = false;
-            var _iteratorError8 = undefined;
+            var _iteratorNormalCompletion9 = true;
+            var _didIteratorError9 = false;
+            var _iteratorError9 = undefined;
 
             try {
-                for (var _iterator8 = navPoly.edges[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-                    var edge = _step8.value;
+                for (var _iterator9 = navPoly.edges[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
+                    var edge = _step9.value;
 
                     var projectedPoint = this._projectPointToEdge(point, edge);
                     var d = point.distance(projectedPoint);
@@ -1011,16 +1065,16 @@ var NavMesh = function () {
                     }
                 }
             } catch (err) {
-                _didIteratorError8 = true;
-                _iteratorError8 = err;
+                _didIteratorError9 = true;
+                _iteratorError9 = err;
             } finally {
                 try {
-                    if (!_iteratorNormalCompletion8 && _iterator8.return) {
-                        _iterator8.return();
+                    if (!_iteratorNormalCompletion9 && _iterator9.return) {
+                        _iterator9.return();
                     }
                 } finally {
-                    if (_didIteratorError8) {
-                        throw _iteratorError8;
+                    if (_didIteratorError9) {
+                        throw _iteratorError9;
                     }
                 }
             }
@@ -1054,12 +1108,24 @@ var NavMesh = function () {
             var p = new Phaser.Point(a.x + t * (b.x - a.x), a.y + t * (b.y - a.y));
             return p;
         }
+
+        /**
+         * Enable debug and create graphics overlay (if it hasn't already been created) 
+         */
+
     }, {
         key: "enableDebug",
         value: function enableDebug() {
-            this._debugGraphics = this.game.add.graphics(0, 0);
-            this._debugGraphics.alpha = 0.5;
+            if (!this._debugGraphics) {
+                this._debugGraphics = this.game.add.graphics(0, 0);
+                this._debugGraphics.alpha = 0.5;
+            }
         }
+
+        /**
+         * Disable debug and destroy associated graphics
+         */
+
     }, {
         key: "disableDebug",
         value: function disableDebug() {
@@ -1068,11 +1134,23 @@ var NavMesh = function () {
                 this._debugGraphics = null;
             }
         }
+
+        /**
+         * Check whether debug is enabled
+         * 
+         * @returns {boolean}
+         */
+
     }, {
         key: "isDebugEnabled",
         value: function isDebugEnabled() {
             return this._debugGraphics !== null;
         }
+
+        /**
+         * Clear the debug overlay
+         */
+
     }, {
         key: "debugClear",
         value: function debugClear() {
@@ -1088,8 +1166,6 @@ var NavMesh = function () {
          * @param {boolean} [options.drawNeighbors=true] For each polygon, show the connections to
          * neighbors
          * @param {boolean} [options.drawPortals=true] For each polygon, show the portal edges
-         *
-         * @memberof NavMesh
          */
 
     }, {
@@ -1106,84 +1182,58 @@ var NavMesh = function () {
                 drawPortals = _ref4$drawPortals === undefined ? true : _ref4$drawPortals;
 
             if (!this._debugGraphics) this.enableDebug();
-            this._debugGraphics.clear();
             // Visualize the navigation mesh
-            var _iteratorNormalCompletion9 = true;
-            var _didIteratorError9 = false;
-            var _iteratorError9 = undefined;
+            var _iteratorNormalCompletion10 = true;
+            var _didIteratorError10 = false;
+            var _iteratorError10 = undefined;
 
             try {
-                for (var _iterator9 = this._navPolygons[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
-                    var navPoly = _step9.value;
+                for (var _iterator10 = this._navPolygons[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
+                    var navPoly = _step10.value;
 
                     navPoly.draw(this._debugGraphics, drawCentroid, drawBounds, drawNeighbors, drawPortals);
                 }
             } catch (err) {
-                _didIteratorError9 = true;
-                _iteratorError9 = err;
+                _didIteratorError10 = true;
+                _iteratorError10 = err;
             } finally {
                 try {
-                    if (!_iteratorNormalCompletion9 && _iterator9.return) {
-                        _iterator9.return();
+                    if (!_iteratorNormalCompletion10 && _iterator10.return) {
+                        _iterator10.return();
                     }
                 } finally {
-                    if (_didIteratorError9) {
-                        throw _iteratorError9;
+                    if (_didIteratorError10) {
+                        throw _iteratorError10;
                     }
                 }
             }
         }
+
+        /**
+         * Visualize a path (array of points) on the debug graphics overlay
+         * 
+         * @param {Phaser.Point[]} path 
+         * @param {number} [color=0x00FF00] 
+         * @param {number} [thickness=10] 
+         */
+
     }, {
-        key: "debugDraw",
-        value: function debugDraw() {
-            var polyPath = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-            var funnelPath = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+        key: "debugDrawPath",
+        value: function debugDrawPath(path) {
+            var color = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0x00FF00;
+            var thickness = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 10;
 
             if (!this._debugGraphics) this.enableDebug();
-
-            // Draw astar path through the polygons
-            if (polyPath) {
-                this._debugGraphics.lineStyle(10, 0x00FF00);
-                this._debugGraphics.moveTo(polyPath[0].centroid.x, polyPath[0].centroid.y);
-                var _iteratorNormalCompletion10 = true;
-                var _didIteratorError10 = false;
-                var _iteratorError10 = undefined;
-
-                try {
-                    for (var _iterator10 = polyPath[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
-                        var navPoly = _step10.value;
-
-                        this._debugGraphics.lineTo(navPoly.centroid.x, navPoly.centroid.y);
-                    }
-                } catch (err) {
-                    _didIteratorError10 = true;
-                    _iteratorError10 = err;
-                } finally {
-                    try {
-                        if (!_iteratorNormalCompletion10 && _iterator10.return) {
-                            _iterator10.return();
-                        }
-                    } finally {
-                        if (_didIteratorError10) {
-                            throw _iteratorError10;
-                        }
-                    }
-                }
-
-                var lastPoly = polyPath[polyPath.length - 1];
-                this._debugGraphics.lineTo(lastPoly.centroid.x, lastPoly.centroid.y);
-            }
-
-            // Draw the funneled path
-            if (funnelPath) {
-                this._debugGraphics.lineStyle(5, 0xffd900);
-                var p = new (Function.prototype.bind.apply(Phaser.Polygon, [null].concat(_toConsumableArray(funnelPath))))();
-                p.closed = false;
-                this._debugGraphics.drawShape(p);
-                this._debugGraphics.beginFill(0xffd900);
-                this._debugGraphics.drawEllipse(funnelPath[0].x, funnelPath[0].y, 10, 10);
-                var lastPoint = funnelPath[funnelPath.length - 1];
-                this._debugGraphics.drawEllipse(lastPoint.x, lastPoint.y, 10, 10);
+            if (path.length) {
+                // Draw line for path
+                this._debugGraphics.lineStyle(thickness, color);
+                this._debugGraphics.drawShape(new (Function.prototype.bind.apply(Phaser.Polygon, [null].concat(_toConsumableArray(path))))());
+                this._debugGraphics.beginFill(color);
+                // Draw circle at start and end of path
+                var d = 0.5 * thickness;
+                this._debugGraphics.drawEllipse(path[0].x, path[0].y, d, d);
+                var lastPoint = path[path.length - 1];
+                this._debugGraphics.drawEllipse(lastPoint.x, lastPoint.y, d, d);
                 this._debugGraphics.endFill();
             }
         }
@@ -1208,6 +1258,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 // funnel algorithm so astar checks can be more accurate.
 
 
+
+/**
+ * @private
+ */
 
 var Channel = function () {
     function Channel() {
@@ -1337,6 +1391,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__nav_mesh__ = __webpack_require__(2);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -1347,34 +1403,22 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 /**
- * This plugin can create and manage a set of navmeshes for a game. Each is stored in the plugin
- * under a user-supplied key. The navmeshes can either be constructed algorithmically from convex
- * polygons that describe the obstacles in the map or from convex polygons embedded in a Tiled map.
+ * This plugin can create navigation meshes for use in Phaser. The navmeshes can be constructed from
+ * convex polygons embedded in a Tiled map. Instantiate this using game.plugins.add(NavMeshPlugin).
  *
- * @class NavMeshPlugin
- * @extends {Phaser.Plugin}
+ * @param {Phaser.Game} game
+ * @param {Phaser.PluginManager} manager
  */
 
 var NavMeshPlugin = function (_Phaser$Plugin) {
     _inherits(NavMeshPlugin, _Phaser$Plugin);
 
-    /**
-     * Creates an instance of NavMeshPlugin.
-     * 
-     * @param {Phaser.Game} game 
-     * @param {Phaser.PluginManager} manager 
-     * 
-     * @memberOf NavMeshPlugin
-     */
     function NavMeshPlugin(game, manager) {
         _classCallCheck(this, NavMeshPlugin);
 
         var _this = _possibleConstructorReturn(this, (NavMeshPlugin.__proto__ || Object.getPrototypeOf(NavMeshPlugin)).call(this, game, manager));
 
-        _this.game = game;
-        _this._pluginManager = manager;
-        _this._navmeshes = {};
-        _this._currentLevel = null;
+        _this._navMeshes = [];
         return _this;
     }
 
@@ -1382,7 +1426,6 @@ var NavMeshPlugin = function (_Phaser$Plugin) {
      * Load a navmesh from Tiled and switch it to be the current navmesh. Currently assumes that the
      * polygons are squares!
      * 
-     * @param {string} levelName The key to use to store the navmesh in the plugin 
      * @param {Phaser.Tilemap} tilemap The tilemap that contains polygons under an object layer
      * @param {string} objectKey The name of the object layer in the tilemap
      * @param {number} [meshShrinkAmount=0] The amount (in pixels) that the navmesh has been
@@ -1394,11 +1437,11 @@ var NavMeshPlugin = function (_Phaser$Plugin) {
 
     _createClass(NavMeshPlugin, [{
         key: "buildMeshFromTiled",
-        value: function buildMeshFromTiled(levelName, tilemap, objectKey) {
-            var meshShrinkAmount = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+        value: function buildMeshFromTiled(tilemap, objectKey) {
+            var meshShrinkAmount = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
 
             // Load up the object layer
-            var rects = tilemap.objects[objectKey];
+            var rects = tilemap.objects[objectKey] || [];
             // Loop over the objects and construct a polygon
             var polygons = [];
             var _iteratorNormalCompletion = true;
@@ -1416,7 +1459,7 @@ var NavMeshPlugin = function (_Phaser$Plugin) {
                     var poly = new Phaser.Polygon(left, top, left, bottom, right, bottom, right, top);
                     polygons.push(poly);
                 }
-                // Build the navmesh, cache it and set it to be the current
+                // Build the navmesh
             } catch (err) {
                 _didIteratorError = true;
                 _iteratorError = err;
@@ -1432,10 +1475,40 @@ var NavMeshPlugin = function (_Phaser$Plugin) {
                 }
             }
 
-            var navMesh = new __WEBPACK_IMPORTED_MODULE_0__nav_mesh__["a" /* default */](this.game, polygons, meshShrinkAmount);
-            this._navmeshes[levelName] = navMesh;
-            this._currentNavMesh = navMesh;
-            return navMesh;
+            var mesh = new __WEBPACK_IMPORTED_MODULE_0__nav_mesh__["a" /* default */](this.game, polygons, meshShrinkAmount);
+            this._navMeshes.push(mesh);
+            return mesh;
+        }
+    }, {
+        key: "destroy",
+        value: function destroy() {
+            console.log("destroyed");
+            var _iteratorNormalCompletion2 = true;
+            var _didIteratorError2 = false;
+            var _iteratorError2 = undefined;
+
+            try {
+                for (var _iterator2 = this._navMeshes[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                    var mesh = _step2.value;
+                    mesh.destroy();
+                }
+            } catch (err) {
+                _didIteratorError2 = true;
+                _iteratorError2 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                        _iterator2.return();
+                    }
+                } finally {
+                    if (_didIteratorError2) {
+                        throw _iteratorError2;
+                    }
+                }
+            }
+
+            this._navMeshes = [];
+            _get(NavMeshPlugin.prototype.__proto__ || Object.getPrototypeOf(NavMeshPlugin.prototype), "destroy", this).call(this);
         }
 
         // /**
@@ -1467,40 +1540,6 @@ var NavMeshPlugin = function (_Phaser$Plugin) {
         //     this._currentNavMesh = navMesh;
         // }
 
-        /**
-         * Switch the currently loaded navmesh
-         *
-         * @param {string} levelName Name of the level to look up in the cache of loaded levels 
-         * 
-         * @memberof NavMeshPlugin
-         */
-
-    }, {
-        key: "switchLevel",
-        value: function switchLevel(levelName) {
-            if (this._navmeshes[levelName]) this._currentNavMesh = this._navmeshes[levelName];
-        }
-
-        /**
-         * Find a path from the start point to the end point using the currently loaded nav mesh.
-         * 
-         * @param {Phaser.Point} startPoint The starting point in world coordinates
-         * @param {Phaser.Point} endPoint The end point in world coordinates
-         * @param {boolean} [debugDraw=false] Whether or not to draw debug graphics for the path
-         * @returns {Phaser.Point[]|null} An array of points if a path is found, or null if no path
-         * 
-         * @memberof NavMeshPlugin
-         */
-
-    }, {
-        key: "findPath",
-        value: function findPath(startPoint, endPoint) {
-            var debugDraw = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
-            if (!this._currentNavMesh) return null;
-            return this._currentNavMesh.findPath(startPoint, endPoint, debugDraw);
-        }
-
         // /**
         //  * @param {[]} hulls 
         //  * @returns 
@@ -1531,8 +1570,10 @@ var NavMeshPlugin = function (_Phaser$Plugin) {
     return NavMeshPlugin;
 }(Phaser.Plugin);
 
-Phaser.NavMeshPlugin = NavMeshPlugin;
 /* harmony default export */ __webpack_exports__["default"] = (NavMeshPlugin);
+
+
+Phaser.NavMeshPlugin = NavMeshPlugin;
 
 /***/ }),
 /* 5 */
@@ -1551,7 +1592,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * Graph for javascript-astar. It implements the functionality for astar. See GPS test from astar
  * repo for structure: https://github.com/bgrins/javascript-astar/blob/master/test/tests.js
  *
- * @class NavGraph
+ * @class NavGraph 
+ * @private
  */
 
 var NavGraph = function () {
@@ -1571,6 +1613,12 @@ var NavGraph = function () {
         key: "navHeuristic",
         value: function navHeuristic(navPolygon1, navPolygon2) {
             return navPolygon1.centroidDistance(navPolygon2);
+        }
+    }, {
+        key: "destroy",
+        value: function destroy() {
+            this.cleanDirty();
+            this.nodes = [];
         }
     }]);
 
@@ -1609,6 +1657,7 @@ var palette = [0x00A0B0, 0x6A4A3C, 0xCC333F, 0xEB6841, 0xEDC951];
  * https://github.com/bgrins/javascript-astar/blob/master/test/tests.js
  *
  * @class NavPoly
+ * @private
  */
 
 var NavPoly = function () {
@@ -1642,6 +1691,13 @@ var NavPoly = function () {
         key: "constains",
         value: function constains(point) {
             return this.polygon.contains(point.x, point.y);
+        }
+    }, {
+        key: "destroy",
+        value: function destroy() {
+            this.game = null;
+            this.neighbors = [];
+            this.portals = [];
         }
 
         // jsastar methods
