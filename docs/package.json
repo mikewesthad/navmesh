@@ -1,0 +1,76 @@
+{
+  "name": "phaser-navmesh",
+  "version": "1.0.0",
+  "description": "A plugin for Phaser for fast pathfinding using navigation meshes",
+  "main": "dist/phaser-navmesh-plugin.min.js",
+  "scripts": {
+    "build:library": "webpack --config config/webpack.config.library.js",
+    "build:examples": "webpack --config config/webpack.config.examples.js",
+    "build:all": "concurrently \"npm run build:library\" \"npm run build:examples\"",
+    "watch:library": "webpack --watch --config config/webpack.config.library.js",
+    "watch:examples": "webpack --watch --config config/webpack.config.examples.js",
+    "watch:all": "concurrently \"npm run watch:library\" \"npm run watch:examples\"",
+    "serve": "browser-sync start --config \"config/browser-sync.config.js\"",
+    "dev": "concurrently \"npm run watch:all\" \"npm run serve\"",
+    "clean:builds": "rimraf dist public",
+    "clean:docs": "rimraf docs",
+    "clean:all": "concurrently \"npm run clean:builds\" \"npm run clean:docs\"",
+    "doc": "esdoc -c config/esdoc.json",
+    "postdoc": "cp -r doc-source/ docs/",
+    "deploy:examples": "gh-pages --branch gh-pages --dist public",
+    "predeploy:examples": "npm run \"build:examples\"",
+    "deploy:doc": "gh-pages --branch gh-pages --dist docs --dest docs",
+    "predeploy:doc": "npm run doc"
+  },
+  "files": [
+    "dist/",
+    "src/library/"
+  ],
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "only": "src/**/*"
+        }
+      ]
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikewesthad/phaser-navmesh-plugin.git"
+  },
+  "keywords": [
+    "path finding",
+    "navigation mesh",
+    "phaser",
+    "a*"
+  ],
+  "author": "Michael Hadley",
+  "contributors": [
+    "Rex Twedt"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mikewesthad/phaser-navmesh-plugin/issues"
+  },
+  "homepage": "https://github.com/mikewesthad/phaser-navmesh-plugin#readme",
+  "dependencies": {
+    "javascript-astar": "github:mikewesthad/javascript-astar"
+  },
+  "devDependencies": {
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.0.0",
+    "babel-preset-env": "^1.5.2",
+    "browser-sync": "^2.18.12",
+    "concurrently": "^3.4.0",
+    "copy-webpack-plugin": "^4.0.1",
+    "easystarjs": "^0.4.1",
+    "esdoc": "^0.5.2",
+    "expose-loader": "^0.7.3",
+    "gh-pages": "^1.0.0",
+    "phaser-ce": "^2.8.0",
+    "rimraf": "^2.6.1",
+    "webpack": "^2.6.1"
+  }
+}
