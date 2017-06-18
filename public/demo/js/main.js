@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 21);
+/******/ 	return __webpack_require__(__webpack_require__.s = 22);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -567,210 +567,30 @@ return {
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["PIXI"] = __webpack_require__(13);
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["PIXI"] = __webpack_require__(14);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Phaser"] = __webpack_require__(12);
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Phaser"] = __webpack_require__(13);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["p2"] = __webpack_require__(11);
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["p2"] = __webpack_require__(12);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
 /* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__nav_mesh__ = __webpack_require__(9);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-// const triangulate = require("./triangulate");
-
-
-/**
- * This plugin can create navigation meshes for use in Phaser. The navmeshes can be constructed from
- * convex polygons embedded in a Tiled map. Instantiate this using game.plugins.add(NavMeshPlugin).
- *
- * @param {Phaser.Game} game
- * @param {Phaser.PluginManager} manager
- */
-
-var NavMeshPlugin = function (_Phaser$Plugin) {
-    _inherits(NavMeshPlugin, _Phaser$Plugin);
-
-    function NavMeshPlugin(game, manager) {
-        _classCallCheck(this, NavMeshPlugin);
-
-        var _this = _possibleConstructorReturn(this, (NavMeshPlugin.__proto__ || Object.getPrototypeOf(NavMeshPlugin)).call(this, game, manager));
-
-        _this._navMeshes = [];
-        return _this;
-    }
-
-    /**
-     * Load a navmesh from Tiled and switch it to be the current navmesh. Currently assumes that the
-     * polygons are squares!
-     * 
-     * @param {Phaser.Tilemap} tilemap The tilemap that contains polygons under an object layer
-     * @param {string} objectKey The name of the object layer in the tilemap
-     * @param {number} [meshShrinkAmount=0] The amount (in pixels) that the navmesh has been
-     * shrunk around obstacles (a.k.a the amount obstacles have been expanded)
-     * 
-     * @memberof NavMeshPlugin
-     */
-
-
-    _createClass(NavMeshPlugin, [{
-        key: "buildMeshFromTiled",
-        value: function buildMeshFromTiled(tilemap, objectKey) {
-            var meshShrinkAmount = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-
-            // Load up the object layer
-            var rects = tilemap.objects[objectKey] || [];
-            // Loop over the objects and construct a polygon
-            var polygons = [];
-            var _iteratorNormalCompletion = true;
-            var _didIteratorError = false;
-            var _iteratorError = undefined;
-
-            try {
-                for (var _iterator = rects[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                    var r = _step.value;
-
-                    var top = r.y;
-                    var bottom = r.y + r.height;
-                    var left = r.x;
-                    var right = r.x + r.width;
-                    var poly = new Phaser.Polygon(left, top, left, bottom, right, bottom, right, top);
-                    polygons.push(poly);
-                }
-                // Build the navmesh
-            } catch (err) {
-                _didIteratorError = true;
-                _iteratorError = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion && _iterator.return) {
-                        _iterator.return();
-                    }
-                } finally {
-                    if (_didIteratorError) {
-                        throw _iteratorError;
-                    }
-                }
-            }
-
-            var mesh = new __WEBPACK_IMPORTED_MODULE_0__nav_mesh__["a" /* default */](this.game, polygons, meshShrinkAmount);
-            this._navMeshes.push(mesh);
-            return mesh;
-        }
-    }, {
-        key: "destroy",
-        value: function destroy() {
-            var _iteratorNormalCompletion2 = true;
-            var _didIteratorError2 = false;
-            var _iteratorError2 = undefined;
-
-            try {
-                for (var _iterator2 = this._navMeshes[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                    var mesh = _step2.value;
-                    mesh.destroy();
-                }
-            } catch (err) {
-                _didIteratorError2 = true;
-                _iteratorError2 = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                        _iterator2.return();
-                    }
-                } finally {
-                    if (_didIteratorError2) {
-                        throw _iteratorError2;
-                    }
-                }
-            }
-
-            this._navMeshes = [];
-            _get(NavMeshPlugin.prototype.__proto__ || Object.getPrototypeOf(NavMeshPlugin.prototype), "destroy", this).call(this);
-        }
-
-        // /**
-        //  * Build a navmesh from an array of convex polygons. This currently tesselates the polygons into
-        //  * triangles. They aren't as efficient or as well designed as ones made by hand in Tiled. 
-        //  *
-        //  * @param {string} levelName The key to use to store the navmesh in the plugin  
-        //  * @param {[]} hulls An array of convex polygons describing the obstacles in the
-        //  * level. See lighting-plugin/hull-from-tiles.
-        //  *
-        //  * @memberof NavMeshPlugin
-        //  */
-        // buildMesh(levelName, hulls) {
-        //     const contours = this._buildContours(hulls);
-        //     // Get an array of triangulated vertices
-        //     const triangles = triangulate(contours, false); // Counter-clockwise ordering!
-        //     const polygons = [];
-        //     for (let i = 0; i < triangles.length; i += 6) {
-        //         const poly = new Phaser.Polygon(
-        //             // These should be in counter-clockwise order from triangulate
-        //             triangles[i + 0], triangles[i + 1], 
-        //             triangles[i + 2], triangles[i + 3], 
-        //             triangles[i + 4], triangles[i + 5]
-        //         );
-        //         polygons.push(poly);
-        //     }
-        //     const navMesh = new NavMesh(this.game, polygons);
-        //     this._navMeshes[levelName] = navMesh;
-        //     this._currentNavMesh = navMesh;
-        // }
-
-        // /**
-        //  * @param {[]} hulls 
-        //  * @returns 
-        //  * 
-        //  * @memberof NavMeshPlugin
-        //  */
-        // _buildContours(hulls) {
-        //     const w = this.game.width;
-        //     const h = this.game.height;
-        //     // Start the contours
-        //     const contours = [
-        //         // Full screen - counter clockwise
-        //         Float32Array.of(0,0, 0,h, w,h, w,0)
-        //     ];
-        //     // For each convex hull add the contour
-        //     for (const hull of hulls) {
-        //         const contour = [];
-        //         for (const lineInfo of hull) {
-        //             contour.push(lineInfo.line.start.x, lineInfo.line.start.y);
-        //         }
-        //         contours.push(Float32Array.from(contour));
-        //     }
-        //     return contours;
-        // }
-
-    }]);
-
-    return NavMeshPlugin;
-}(Phaser.Plugin);
-
-/* harmony default export */ __webpack_exports__["a"] = (NavMeshPlugin);
+// Fix for webpack not exporting ES6 module default properly when using global mode of UMD. It ends
+// up with someone having to do "PhaserNavmesh.default" instead of "PhaserNavmesh"
+module.exports = __webpack_require__(9).default;
 
 /***/ }),
 /* 7 */
@@ -971,9 +791,198 @@ NavGraph.prototype.markDirty = __WEBPACK_IMPORTED_MODULE_0_javascript_astar___de
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__nav_mesh__ = __webpack_require__(10);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// const triangulate = require("./triangulate");
+
+
+/**
+ * This plugin can create navigation meshes for use in Phaser. The navmeshes can be constructed from
+ * convex polygons embedded in a Tiled map. Instantiate this using game.plugins.add(NavMeshPlugin).
+ *
+ * @param {Phaser.Game} game
+ * @param {Phaser.PluginManager} manager
+ */
+
+var NavMeshPlugin = function (_Phaser$Plugin) {
+    _inherits(NavMeshPlugin, _Phaser$Plugin);
+
+    function NavMeshPlugin(game, manager) {
+        _classCallCheck(this, NavMeshPlugin);
+
+        var _this = _possibleConstructorReturn(this, (NavMeshPlugin.__proto__ || Object.getPrototypeOf(NavMeshPlugin)).call(this, game, manager));
+
+        _this._navMeshes = [];
+        return _this;
+    }
+
+    /**
+     * Load a navmesh from Tiled and switch it to be the current navmesh. Currently assumes that the
+     * polygons are squares!
+     * 
+     * @param {Phaser.Tilemap} tilemap The tilemap that contains polygons under an object layer
+     * @param {string} objectKey The name of the object layer in the tilemap
+     * @param {number} [meshShrinkAmount=0] The amount (in pixels) that the navmesh has been
+     * shrunk around obstacles (a.k.a the amount obstacles have been expanded)
+     * 
+     * @memberof NavMeshPlugin
+     */
+
+
+    _createClass(NavMeshPlugin, [{
+        key: "buildMeshFromTiled",
+        value: function buildMeshFromTiled(tilemap, objectKey) {
+            var meshShrinkAmount = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+
+            // Load up the object layer
+            var rects = tilemap.objects[objectKey] || [];
+            // Loop over the objects and construct a polygon
+            var polygons = [];
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+                for (var _iterator = rects[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var r = _step.value;
+
+                    var top = r.y;
+                    var bottom = r.y + r.height;
+                    var left = r.x;
+                    var right = r.x + r.width;
+                    var poly = new Phaser.Polygon(left, top, left, bottom, right, bottom, right, top);
+                    polygons.push(poly);
+                }
+                // Build the navmesh
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator.return) {
+                        _iterator.return();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
+            }
+
+            var mesh = new __WEBPACK_IMPORTED_MODULE_0__nav_mesh__["a" /* default */](this.game, polygons, meshShrinkAmount);
+            this._navMeshes.push(mesh);
+            return mesh;
+        }
+    }, {
+        key: "destroy",
+        value: function destroy() {
+            var _iteratorNormalCompletion2 = true;
+            var _didIteratorError2 = false;
+            var _iteratorError2 = undefined;
+
+            try {
+                for (var _iterator2 = this._navMeshes[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                    var mesh = _step2.value;
+                    mesh.destroy();
+                }
+            } catch (err) {
+                _didIteratorError2 = true;
+                _iteratorError2 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                        _iterator2.return();
+                    }
+                } finally {
+                    if (_didIteratorError2) {
+                        throw _iteratorError2;
+                    }
+                }
+            }
+
+            this._navMeshes = [];
+            _get(NavMeshPlugin.prototype.__proto__ || Object.getPrototypeOf(NavMeshPlugin.prototype), "destroy", this).call(this);
+        }
+
+        // /**
+        //  * Build a navmesh from an array of convex polygons. This currently tesselates the polygons into
+        //  * triangles. They aren't as efficient or as well designed as ones made by hand in Tiled. 
+        //  *
+        //  * @param {string} levelName The key to use to store the navmesh in the plugin  
+        //  * @param {[]} hulls An array of convex polygons describing the obstacles in the
+        //  * level. See lighting-plugin/hull-from-tiles.
+        //  *
+        //  * @memberof NavMeshPlugin
+        //  */
+        // buildMesh(levelName, hulls) {
+        //     const contours = this._buildContours(hulls);
+        //     // Get an array of triangulated vertices
+        //     const triangles = triangulate(contours, false); // Counter-clockwise ordering!
+        //     const polygons = [];
+        //     for (let i = 0; i < triangles.length; i += 6) {
+        //         const poly = new Phaser.Polygon(
+        //             // These should be in counter-clockwise order from triangulate
+        //             triangles[i + 0], triangles[i + 1], 
+        //             triangles[i + 2], triangles[i + 3], 
+        //             triangles[i + 4], triangles[i + 5]
+        //         );
+        //         polygons.push(poly);
+        //     }
+        //     const navMesh = new NavMesh(this.game, polygons);
+        //     this._navMeshes[levelName] = navMesh;
+        //     this._currentNavMesh = navMesh;
+        // }
+
+        // /**
+        //  * @param {[]} hulls 
+        //  * @returns 
+        //  * 
+        //  * @memberof NavMeshPlugin
+        //  */
+        // _buildContours(hulls) {
+        //     const w = this.game.width;
+        //     const h = this.game.height;
+        //     // Start the contours
+        //     const contours = [
+        //         // Full screen - counter clockwise
+        //         Float32Array.of(0,0, 0,h, w,h, w,0)
+        //     ];
+        //     // For each convex hull add the contour
+        //     for (const hull of hulls) {
+        //         const contour = [];
+        //         for (const lineInfo of hull) {
+        //             contour.push(lineInfo.line.start.x, lineInfo.line.start.y);
+        //         }
+        //         contours.push(Float32Array.from(contour));
+        //     }
+        //     return contours;
+        // }
+
+    }]);
+
+    return NavMeshPlugin;
+}(Phaser.Plugin);
+
+/* harmony default export */ __webpack_exports__["default"] = (NavMeshPlugin);
+
+/***/ }),
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_javascript_astar__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_javascript_astar___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_javascript_astar__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__nav_poly__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__nav_poly__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__nav_graph__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__channel__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils__ = __webpack_require__(1);
@@ -1665,7 +1674,7 @@ var NavMesh = function () {
 /* harmony default export */ __webpack_exports__["a"] = (NavMesh);
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1941,7 +1950,7 @@ var NavPoly = function () {
 /* harmony default export */ __webpack_exports__["a"] = (NavPoly);
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var require;var require;/**
@@ -15584,7 +15593,7 @@ World.prototype.raycast = function(result, ray){
 });
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {/**
@@ -99795,10 +99804,10 @@ PIXI.TextureSilentFail = true;
 * "What matters in this life is not what we do but what we do for others, the legacy we leave and the imprint we make." - Eric Meyer
 */
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)))
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -107345,7 +107354,7 @@ PIXI.TextureUvs = function()
 }).call(this);
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -107535,7 +107544,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -107620,7 +107629,7 @@ var FollowerSprite = function (_Phaser$Sprite) {
 /* harmony default export */ __webpack_exports__["a"] = (FollowerSprite);
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -107661,12 +107670,13 @@ var LoadState = function (_Phaser$State) {
 /* harmony default export */ __webpack_exports__["a"] = (LoadState);
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__library__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__game_objects_follower__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__library___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__library__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__game_objects_follower__ = __webpack_require__(16);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -107713,7 +107723,7 @@ var StartState = function (_Phaser$State) {
 
             // -- NavMesh Setup --
 
-            this.navMeshPlugin = this.game.plugins.add(__WEBPACK_IMPORTED_MODULE_0__library__["a" /* default */]);
+            this.navMeshPlugin = this.game.plugins.add(__WEBPACK_IMPORTED_MODULE_0__library___default.a);
             var navMesh = this.navMeshPlugin.buildMeshFromTiled(tilemap, "navmesh", 12.5);
             this.navMesh = navMesh;
 
@@ -107840,12 +107850,13 @@ var StartState = function (_Phaser$State) {
 /* harmony default export */ __webpack_exports__["a"] = (StartState);
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__library__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__game_objects_follower__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__library___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__library__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__game_objects_follower__ = __webpack_require__(16);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -107892,7 +107903,7 @@ var StartState = function (_Phaser$State) {
             // -- NavMesh Setup --
 
             // Register the plugin with Phaser
-            this.navMeshPlugin = this.game.plugins.add(__WEBPACK_IMPORTED_MODULE_0__library__["a" /* default */]);
+            this.navMeshPlugin = this.game.plugins.add(__WEBPACK_IMPORTED_MODULE_0__library___default.a);
 
             // Load the navMesh from the tilemap object layer "navmesh". The navMesh was created with
             // 12.5 pixels of space around obstacles.
@@ -107980,9 +107991,9 @@ var StartState = function (_Phaser$State) {
 /* harmony default export */ __webpack_exports__["a"] = (StartState);
 
 /***/ }),
-/* 19 */,
 /* 20 */,
-/* 21 */
+/* 21 */,
+/* 22 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -107993,9 +108004,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_p2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_p2__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_phaser__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_phaser___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_phaser__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__states_load__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__states_start__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__states_many_paths__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__states_load__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__states_start__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__states_many_paths__ = __webpack_require__(18);
 // Phaser 2 wasn't intended to be used with npm modules. See webpack config for how these libs are
 // exposed. These need to be imported here so that all other files have access to them from the 
 // global scope.
