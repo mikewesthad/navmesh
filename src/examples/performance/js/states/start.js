@@ -38,8 +38,8 @@ class StartState extends Phaser.State {
         this.easyStar.setGrid(wallLayer, [-1]);
 
         // Configure NavMesh Plugin
-        const navMeshPlugin = this.game.plugins.add(NavMeshPlugin);
-        this.navMesh = navMeshPlugin.buildMeshFromTiled("level-1", tilemap, "navmesh", 12.5);
+        this.navMeshPlugin = this.game.plugins.add(NavMeshPlugin);
+        this.navMesh = this.navMeshPlugin.buildMeshFromTiled(tilemap, "navmesh", 12.5);
 
 
         // -- Compare Performance ---
@@ -99,6 +99,11 @@ class StartState extends Phaser.State {
         message += `\n\tNavMesh is ${longNavVsEasy.toFixed(2)}x faster than EasyStar`;
         
         console.log(message);
+    }
+    
+    shutdown() {
+        // Clean up references and destroy navmeshes
+        this.game.plugins.remove(this.navMeshPlugin, true);
     }
 
     _phaserAStar(start, end) {

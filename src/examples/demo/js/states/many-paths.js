@@ -27,8 +27,8 @@ class StartState extends Phaser.State {
 
         // -- NavMesh Setup --
 
-        const navMeshPlugin = this.game.plugins.add(NavMeshPlugin);
-        const navMesh = navMeshPlugin.buildMeshFromTiled("level-1", tilemap, "navmesh", 12.5);
+        this.navMeshPlugin = this.game.plugins.add(NavMeshPlugin);
+        const navMesh = this.navMeshPlugin.buildMeshFromTiled(tilemap, "navmesh", 12.5);
         this.navMesh = navMesh;
 
 
@@ -72,6 +72,11 @@ class StartState extends Phaser.State {
                 follower.goTo(randomTarget);
             }
         }
+    }
+
+    shutdown() {
+        // Clean up references and destroy navmeshes
+        this.game.plugins.remove(this.navMeshPlugin, true);
     }
 
     _addFollowers(location, num) {

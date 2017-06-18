@@ -54,9 +54,9 @@ Long paths (600 pixels and greater length), average time per iteration:
 // Register the plugin with Phaser
 const navMeshPlugin = this.game.plugins.add(NavMeshPlugin);
 
-// Load the navMesh from the tilemap object layer "navmesh" and store it in the plugin under
-// the key "level-1". The navMesh was created with 12.5 pixels of space around obstacles.
-const navMesh = navMeshPlugin.buildMeshFromTiled("level-1", tilemap, "navmesh", 12.5);
+// Load the navMesh from the tilemap object layer "navmesh." The navMesh was created with 12.5 
+// pixels of space around obstacles.
+const navMesh = navMeshPlugin.buildMeshFromTiled(tilemap, "navmesh", 12.5);
 
 const p1 = new Phaser.Point(100, 400);
 const p2 = new Phaser.Point(700, 200);
@@ -64,13 +64,25 @@ const path = navMeshPlugin.findPath(p1, p2);
 // -> path is now either an array of points, or null if no valid path could be found
 ```
 
+Visually debugging paths:
+
+```js
+navMesh.enableDebug(); // Create a graphics overlay on top of the screen
+navMesh.debugClear(); // Clear the graphics
+// Visualize the navmesh    
+navMesh.debugDrawMesh({
+    drawCentroid: true, drawBounds: false, drawNeighbors: true, drawPortals: true
+});
+// Visualize the path
+const path = navMesh.findPath(follower.position, target, {
+    drawPolyPath: true, drawFinalPath: true
+});
+```
+
 ## TODO
 
-- Add tests vs Phaser astar plugin 
 - Documentation
-    - Better JSDoc coverage
     - Describe the Tiled process. Adding an object layer, setting snapping, making sure vertices overlap...
-- Example usage
 - Allow non-square navmesh from Tiled - any convex shape
 - Custom export that attaches to Phaser game object or exports as a local
 - Reimplement the autotessalation version of the lib
@@ -80,6 +92,7 @@ const path = navMeshPlugin.findPath(p1, p2);
 - There are probably optimization tricks to do when dealing with certain types of shapes. E.g. we are using axis-aligned boxes for the polygons and it is dead simple to calculate if a point is inside one of those...
 - Investigate [Points-of-Visibility](http://www.david-gouveia.com/portfolio/pathfinding-on-a-2d-polygonal-map/) pathfinding to compare speed
 - Using ES6 is probably suboptimal for performance
+- Check against tilemap that is larger than the screen
 
 ## References
 

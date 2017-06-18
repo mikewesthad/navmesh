@@ -25,11 +25,11 @@ class StartState extends Phaser.State {
         // -- NavMesh Setup --
 
         // Register the plugin with Phaser
-        const navMeshPlugin = this.game.plugins.add(NavMeshPlugin);
+        this.navMeshPlugin = this.game.plugins.add(NavMeshPlugin);
 
-        // Load the navMesh from the tilemap object layer "navmesh" and store it in the plugin under
-        // the key "level-1". The navMesh was created with 12.5 pixels of space around obstacles.
-        const navMesh = navMeshPlugin.buildMeshFromTiled("level-1", tilemap, "navmesh", 12.5);
+        // Load the navMesh from the tilemap object layer "navmesh". The navMesh was created with
+        // 12.5 pixels of space around obstacles.
+        const navMesh = this.navMeshPlugin.buildMeshFromTiled(tilemap, "navmesh", 12.5);
 
         // Now you could find a path via navMesh.findPath(startPoint, endPoint)
         
@@ -99,6 +99,11 @@ class StartState extends Phaser.State {
         this.game.input.keyboard.addKey(Phaser.KeyCode.TWO).onDown.add(() => {
             this.game.state.start("many-paths");
         });
+    }
+
+    shutdown() {
+        // Clean up references and destroy navmeshes
+        this.game.plugins.remove(this.navMeshPlugin, true);
     }
 }
 
