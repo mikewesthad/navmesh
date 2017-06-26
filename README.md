@@ -100,6 +100,10 @@ import phaserNavmesh from "phaser-navmesh/src/library";
 this.game.plugins.add(PhaserNavmesh);
 ```
 
+## Create a Nav Mesh
+
+See [guide](./tiled-navmesh-guide.md).
+
 ## Usage
 
 ```js
