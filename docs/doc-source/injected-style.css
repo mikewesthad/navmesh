@@ -2,3 +2,8 @@
 [data-ice="importPath"] {
     display: none;
 }
+
+/* Overriding Style Choices */
+.github-markdown img:not([src*=".svg"]) {
+  box-shadow: none;
+}
