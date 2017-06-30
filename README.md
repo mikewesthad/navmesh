@@ -157,6 +157,8 @@ Helpful resources used while building this plugin:
         - Try libtess in quad mode
     - The astar heuristic & cost functions need another pass. They don't always produce the shortest path. Implement incomplete funneling while building the astar path?
     - The navmesh assumes any polygon can reach any other polygon. This probably should be extended to put connected polygons into groups like patroljs.
+- Extract Phaser dependency
+    - Allow the library to work with an arbitrary mesh while having helper functions that are Phaser specific
 - Testing
     - Check against tilemap that is larger than the screen
 - Research

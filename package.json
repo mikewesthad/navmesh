@@ -16,7 +16,7 @@
     "clean:docs": "rimraf docs",
     "clean:all": "concurrently \"npm run clean:builds\" \"npm run clean:docs\"",
     "doc": "esdoc -c config/esdoc.json",
-    "postdoc": "cp -r doc-source/ docs/",
+    "postdoc": "cp -r doc-source/ docs/ && cp -r doc-source/ docs/manual/",
     "deploy:examples": "gh-pages --branch gh-pages --dist public",
     "predeploy:examples": "npm run \"build:examples\"",
     "deploy:doc": "gh-pages --branch gh-pages --dist docs --dest docs",

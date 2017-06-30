@@ -1,5 +1,13 @@
 {
   "source": "./src/library",
   "destination": "./docs",
+  "manual": {
+    "asset": "./doc-source",
+    "overview": ["README.md"],
+    "tutorial": ["tiled-navmesh-guide.md"],
+    "index": "README.md",
+    "badge": false,
+    "globalIndex": true
+  },
   "styles": ["./doc-source/injected-style.css"]
 }
