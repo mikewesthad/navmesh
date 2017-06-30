@@ -2,8 +2,8 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <base data-ice="baseUrl" href="./">
-  <title data-ice="title">Manual</title>
+  <base data-ice="baseUrl">
+  <title data-ice="title">API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -12,7 +12,7 @@
   <script src="script/manual.js"></script>
 <link data-ice="userStyle" rel="stylesheet" href="user/css/0-injected-style.css">
 </head>
-<body class="layout-container manual-root manual-index" data-ice="rootContainer">
+<body class="layout-container" data-ice="rootContainer">
 
 <header>
   <a href="./">Home</a>
@@ -30,30 +30,16 @@
   </div>
 </header>
 
-<nav class="navigation" data-ice="nav"><div class="manual-toc-root">
-  
-<div data-ice="manual" data-toc-name="tutorial">
-    <ul class="manual-toc">
-      
-    <li data-ice="manualNav" class="indent-h1 manual-color manual-color-tutorial" data-section-count="&#x25A0;&#x25A0;" data-link="manual/tutorial/tiled-navmesh-guide.html"><a href="manual/tutorial/tiled-navmesh-guide.html" data-ice="link">Creating a NavMesh in Tiled</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/tiled-navmesh-guide.html"><a href="manual/tutorial/tiled-navmesh-guide.html#goal" data-ice="link">Goal</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/tiled-navmesh-guide.html"><a href="manual/tutorial/tiled-navmesh-guide.html#snapping-setup" data-ice="link">Snapping Setup</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/tiled-navmesh-guide.html"><a href="manual/tutorial/tiled-navmesh-guide.html#creating-the-mesh" data-ice="link">Creating the Mesh</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/tiled-navmesh-guide.html"><a href="manual/tutorial/tiled-navmesh-guide.html#gaps" data-ice="link">Gaps</a></li>
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/library/nav-mesh-plugin.js~NavMeshPlugin.html">NavMeshPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/library/nav-mesh.js~NavMesh.html">NavMesh</a></span></span></li>
 </ul>
-  </div>
-<div data-ice="manual" data-toc-name="reference">
-    <ul class="manual-toc">
-      
-    <li data-ice="manualNav" class="indent-h1 manual-color manual-color-reference" data-section-count="&#x25A0;" data-link="identifiers.html"><a href="identifiers.html" data-ice="link">Reference</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="identifiers.html"><a href="identifiers.html#class" data-ice="link">Class</a></li>
-</ul>
-  </div>
 </div>
 </nav>
 
-<div class="content" data-ice="content"><div class="github-markdown">
-  <div class="manual-user-index" data-ice="manualUserIndex"><h1 id="navigation-meshes-in-phaser">Navigation Meshes in Phaser</h1>
+<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="navigation-meshes-in-phaser">Navigation Meshes in Phaser</h1>
 <p>A <a href="http://phaser.io/">Phaser</a> plugin for fast pathfinding using navigation meshes.</p>
 <p><a href="https://www.mikewesthad.com/phaser-navmesh/demo/"><img src="./doc-source/single-following-agent.gif" width="400"></a></p>
 <p><a href="https://www.mikewesthad.com/phaser-navmesh/demo/">Interactive demo</a></p>
@@ -190,96 +176,6 @@ const path = navMesh.findPath(follower.position, target, {
 </ul>
 </li>
 </ul>
-</div>
-
-  <p class="manual-badge" data-ice="manualBadge"><img src="./manual-badge.svg"></p>
-
-  <div class="manual-cards">
-    
-  <div class="manual-card-wrap" data-ice="cards">
-      <h1 data-ice="label" class="manual-color manual-color-tutorial" data-section-count="&#x25A0;&#x25A0;"><span data-ice="label-inner">Creating a NavMesh in Tiled</span></h1>
-      <div class="manual-card">
-        <div data-ice="card"><h1>Creating a NavMesh in Tiled</h1><p><a href="http://www.mapeditor.org/">Tiled</a> is an open source tile map editor. If you are already using it to design your levels, then you can also use it to create your nav meshes.</p><p>Tiled allows you to design a map by creating <a href="http://doc.mapeditor.org/manual/layers/">layers</a> of tiles &amp; objects. A tile layer allows you to place your graphics (images from a tileset) into the world. An object layer allows you to store other kinds of information. Phaser can read both tile layers and object layers, so we can use the object layer to represent a nav mesh. In the image below, there is a layer of tiles (called &quot;walls&quot;) and a layer of gray rectangles that represents the nav mesh (called &quot;navmesh&quot;):</p><p><img src="./manual/./doc-source/tiled-guide/tiled-final.png"></p><p>This guide assumes you have some familiarity with Tiled. If you don&apos;t know Tiled, check out gamefromscratch&apos;s video <a href="http://www.gamefromscratch.com/post/2015/10/14/Tiled-Map-Editor-Tutorial-Series.aspx">tutorial series</a>/.</p><h2>Goal</h2><p>The idea is that we want to create an object layer in Tiled that represents where an &quot;agent&quot; (the player, an enemy, an npc, etc.) can move. We will describe those walkable area by placing individual shapes (mainly rectangles). An agent can then &quot;walk&quot; from one shape to another as long as they are connected (i.e. their edges overlap).</p><p>Note: We will also want to take the agent&apos;s size into account when building the shapes. If you have an agent that is 20px wide, then it shouldn&apos;t be allowed to get within 10px of a wall.</p><h2>Snapping Setup</h2><p>In order to place shapes in the nav mesh accurately and ensure that neighboring shapes are &quot;connected,&quot; you&apos;ll want to enable snapping. Open up your map or create a new one, and go to preferences (<code>Edit &#x27F6; Preferences</code>):</p><p><img src="./manual/./doc-source/tiled-guide/tiled-preferences.png"></p><p>Set the fine grid divisions. This allows you to snap objects &quot;in-between&quot; the grid. E.g. on a 25px x 25px tile map with 5 grid divisions, the fine grid would be every 5px.</p><p><img src="./manual/./doc-source/tiled-guide/tiled-preferences-2.png"></p><p>Enable snapping (<code>View &#x27F6; Snapping</code>):</p><p><img src="./manual/./doc-source/tiled-guide/tiled-snapping.png"></p><h2>Creating the Mesh</h2><p>Create a new object layer and name it &quot;navmesh.&quot; Then start adding in rectangles to define your nav mesh. (Note: rectangles are the only Tiled shape currently supported by this plugin.)</p><p><img src="./manual/./doc-source/tiled-guide/tiled-navmesh-layer.gif"></p><p>See the Tiled manual for more information on <a href="http://doc.mapeditor.org/manual/objects/#working-with-objects">objects</a>.</p><h2>Gaps</h2><p>Notice the space being left around the walls? That gap is because the agent is 20px wide. It would get stuck on corners of walls without that gap.</p><p>If you wanted, you <em>could</em> leave that gap out and write more complicated path following logic for your agents that avoids getting stuck. &quot;Baking&quot; the agent size into nav mesh with these gaps makes the path following logic simple.</p></div>
-        <a data-ice="link" href="manual/tutorial/tiled-navmesh-guide.html"></a>
-      </div>
-    </div>
-<div class="manual-card-wrap" data-ice="cards">
-      <h1 data-ice="label" class="manual-color manual-color-reference" data-section-count="&#x25A0;"><span data-ice="label-inner">References</span></h1>
-      <div class="manual-card">
-        <div data-ice="card"><h1>References</h1>
-<div data-ice="classSummary"><h2 id="class">Class Summary</h2><table class="summary" data-ice="summary">
-  <thead><tr><td data-ice="title" colspan="3">Static Public Class Summary</td></tr></thead>
-  <tbody>
-  
-  <tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/library/nav-mesh.js~NavMesh.html">NavMesh</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>The workhorse that represents a navigation mesh built from a series of polygons.</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/library/nav-mesh-plugin.js~NavMeshPlugin.html">NavMeshPlugin</a></span></span><span data-ice="signature">(game: <span>Phaser.Game</span>, manager: <span>Phaser.PluginManager</span>)</span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>This plugin can create navigation meshes for use in Phaser.</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-</tbody>
-</table>
-</div>
-
-
-
-
-
-</div>
-        <a data-ice="link" href="identifiers.html"></a>
-      </div>
-    </div>
-</div>
 </div>
 </div>
 
