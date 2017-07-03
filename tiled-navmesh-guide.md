@@ -6,7 +6,7 @@ Tiled allows you to design a map by creating [layers](http://doc.mapeditor.org/m
 
 <img src="./doc-source/tiled-guide/tiled-final.png">
 
-This guide assumes you have some familiarity with Tiled. If you don't know Tiled, check out gamefromscratch's video [tutorial series](http://www.gamefromscratch.com/post/2015/10/14/Tiled-Map-Editor-Tutorial-Series.aspx)/.
+This guide assumes you have some familiarity with Tiled. If you don't know Tiled, check out gamefromscratch's video [tutorial series](http://www.gamefromscratch.com/post/2015/10/14/Tiled-Map-Editor-Tutorial-Series.aspx).
 
 ## Goal
 
@@ -36,8 +36,8 @@ Create a new object layer and name it "navmesh." Then start adding in rectangles
 
 See the Tiled manual for more information on [objects](http://doc.mapeditor.org/manual/objects/#working-with-objects).
 
-## Gaps
+## Agent Size (Gaps)
 
-Notice the space being left around the walls? That gap is because the agent is 20px wide. It would get stuck on corners of walls without that gap.
+Notice the 10px space left around the walls? That gap is because the agent is 20px wide circle. It would get stuck on corners of walls without that gap. Make sure the gaps you leave are a consistent size - you'll need to pass in the size as the third parameter to `navMeshPlugin.buildMeshFromTiled`.
 
-If you wanted, you _could_ leave that gap out and write more complicated path following logic for your agents that avoids getting stuck. "Baking" the agent size into nav mesh with these gaps makes the path following logic simple.
+If you wanted, you _could_ leave that gap out and write more complicated path following logic for your agents that avoids getting stuck. "Baking" the agent size into nav mesh with these gaps makes the path following logic pretty simple.
