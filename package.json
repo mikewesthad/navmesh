@@ -20,12 +20,14 @@
     "deploy:examples": "gh-pages --branch gh-pages --dist public",
     "predeploy:examples": "npm run \"build:examples\"",
     "deploy:doc": "gh-pages --branch gh-pages --dist docs --dest docs",
-    "predeploy:doc": "npm run doc"
+    "predeploy:doc": "npm run doc",
+    "prettier": "prettier --write ./src/**/*.{js,jsx,json}",
+    "precommit": "lint-staged"
   },
-  "files": [
-    "dist/",
-    "src/library/"
-  ],
+  "lint-staged": {
+    "*.js": ["prettier --write", "git add"]
+  },
+  "files": ["dist/", "src/library/"],
   "browserify": {
     "transform": [
       [
@@ -40,16 +42,9 @@
     "type": "git",
     "url": "git+https://github.com/mikewesthad/phaser-navmesh-plugin.git"
   },
-  "keywords": [
-    "path finding",
-    "navigation mesh",
-    "phaser",
-    "a*"
-  ],
+  "keywords": ["path finding", "navigation mesh", "phaser", "a*"],
   "author": "Michael Hadley",
-  "contributors": [
-    "Rex Twedt"
-  ],
+  "contributors": ["Rex Twedt"],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mikewesthad/phaser-navmesh-plugin/issues"
@@ -67,10 +62,18 @@
     "copy-webpack-plugin": "^4.0.1",
     "easystarjs": "^0.4.1",
     "esdoc": "^0.5.2",
+    "eslint-config-prettier": "^2.4.0",
+    "eslint-plugin-prettier": "^2.2.0",
     "expose-loader": "^0.7.3",
     "gh-pages": "^1.0.0",
+    "husky": "^0.14.3",
+    "lint-staged": "^4.1.3",
     "phaser-ce": "^2.8.0",
+    "prettier": "^1.6.1",
     "rimraf": "^2.6.1",
     "webpack": "^2.6.1"
+  },
+  "prettier": {
+    "printWidth": 100
   }
 }
