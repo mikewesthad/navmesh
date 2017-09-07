@@ -1,4 +1,4 @@
 module.exports = {
-    "files": ["dist", "public"],
-    "server": ["dist", "public"]
+  files: ["dist", "public"],
+  server: ["dist", "public"]
 };

@@ -1,5 +1,5 @@
 // Phaser 2 wasn't intended to be used with npm modules. See webpack config for how these libs are
-// exposed. These need to be imported here so that all other files have access to them from the 
+// exposed. These need to be imported here so that all other files have access to them from the
 // global scope.
 import pixi from "pixi";
 import p2 from "p2";
@@ -10,15 +10,14 @@ import Start from "./states/start";
 import ManyPaths from "./states/many-paths";
 
 const game = new Phaser.Game({
-    width: 750,
-    height: 750,
-    renderer: Phaser.WEBGL,
-    parent: "game-container"
+  width: 750,
+  height: 750,
+  renderer: Phaser.WEBGL,
+  parent: "game-container"
 });
 
 game.state.add("load", Load);
 game.state.add("start", Start);
 game.state.add("many-paths", ManyPaths);
-
 
 game.state.start("load");

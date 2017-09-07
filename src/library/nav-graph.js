@@ -8,23 +8,23 @@ import jsastar from "javascript-astar";
  * @private
  */
 class NavGraph {
-    constructor(navPolygons) {
-        this.nodes = navPolygons;
-        this.init();
-    }
+  constructor(navPolygons) {
+    this.nodes = navPolygons;
+    this.init();
+  }
 
-    neighbors(navPolygon) {
-        return navPolygon.neighbors;
-    }
+  neighbors(navPolygon) {
+    return navPolygon.neighbors;
+  }
 
-    navHeuristic(navPolygon1, navPolygon2) {
-        return navPolygon1.centroidDistance(navPolygon2);
-    }
+  navHeuristic(navPolygon1, navPolygon2) {
+    return navPolygon1.centroidDistance(navPolygon2);
+  }
 
-    destroy() {
-        this.cleanDirty();
-        this.nodes = [];
-    }
+  destroy() {
+    this.cleanDirty();
+    this.nodes = [];
+  }
 }
 
 NavGraph.prototype.init = jsastar.Graph.prototype.init;
