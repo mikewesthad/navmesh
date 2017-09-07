@@ -15,16 +15,16 @@ export default class NavMeshPlugin extends Phaser.Plugin {
   }
 
   /**
-     * Load a navmesh from Tiled and switch it to be the current navmesh. Currently assumes that the
-     * polygons are squares!
-     * 
-     * @param {Phaser.Tilemap} tilemap The tilemap that contains polygons under an object layer
-     * @param {string} objectKey The name of the object layer in the tilemap
-     * @param {number} [meshShrinkAmount=0] The amount (in pixels) that the navmesh has been
-     * shrunk around obstacles (a.k.a the amount obstacles have been expanded)
-     * 
-     * @memberof NavMeshPlugin
-     */
+   * Load a navmesh from Tiled and switch it to be the current navmesh. Currently assumes that the
+   * polygons are squares!
+   * 
+   * @param {Phaser.Tilemap} tilemap The tilemap that contains polygons under an object layer
+   * @param {string} objectKey The name of the object layer in the tilemap
+   * @param {number} [meshShrinkAmount=0] The amount (in pixels) that the navmesh has been
+   * shrunk around obstacles (a.k.a the amount obstacles have been expanded)
+   * 
+   * @memberof NavMeshPlugin
+   */
   buildMeshFromTiled(tilemap, objectKey, meshShrinkAmount = 0) {
     // Load up the object layer
     const rects = tilemap.objects[objectKey] || [];

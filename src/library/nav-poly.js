@@ -19,13 +19,13 @@ const palette = [0x00a0b0, 0x6a4a3c, 0xcc333f, 0xeb6841, 0xedc951];
  */
 class NavPoly {
   /**
-     * Creates an instance of NavPoly.
-     * @param {Phaser.Game} game 
-     * @param {number} id 
-     * @param {Phaser.Polygon} polygon 
-     * 
-     * @memberof NavPoly
-     */
+   * Creates an instance of NavPoly.
+   * @param {Phaser.Game} game 
+   * @param {number} id 
+   * @param {Phaser.Polygon} polygon 
+   * 
+   * @memberof NavPoly
+   */
   constructor(game, id, polygon) {
     this.game = game;
     this.id = id;
@@ -102,16 +102,16 @@ class NavPoly {
   }
 
   /**
-     * Draw the polygon to given graphics object
-     * 
-     * @param {Phaser.Graphics} graphics 
-     * @param {boolean} [drawCentroid=true] Show the approx centroid
-     * @param {boolean} [drawBounds=false] Show the bounding radius
-     * @param {boolean} [drawNeighbors=true] Show the connections to neighbors
-     * @param {boolean} [drawPortals=true] Show the portal edges
-     * 
-     * @memberof NavPoly
-     */
+   * Draw the polygon to given graphics object
+   * 
+   * @param {Phaser.Graphics} graphics 
+   * @param {boolean} [drawCentroid=true] Show the approx centroid
+   * @param {boolean} [drawBounds=false] Show the bounding radius
+   * @param {boolean} [drawNeighbors=true] Show the connections to neighbors
+   * @param {boolean} [drawPortals=true] Show the portal edges
+   * 
+   * @memberof NavPoly
+   */
   draw(
     graphics,
     drawCentroid = true,
