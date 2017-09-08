@@ -342,6 +342,18 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "library/__test__/nav-mesh.test.js",
+    "file/library/__test__/nav-mesh.test.js.html",
+    "library/__test__/nav-mesh.test.js",
+    "file"
+  ],
+  [
+    "library/__test__/utils.test.js",
+    "file/library/__test__/utils.test.js.html",
+    "library/__test__/utils.test.js",
+    "file"
+  ],
+  [
     "library/channel.js",
     "file/library/channel.js.html",
     "library/channel.js",

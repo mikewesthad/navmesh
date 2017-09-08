@@ -35,13 +35,14 @@
 <div data-ice="manual" data-toc-name="overview">
     <ul class="manual-toc">
       
-    <li data-ice="manualNav" class="indent-h1 manual-color manual-color-overview" data-section-count="&#x25A0;&#x25A0;" data-link="manual/overview/README.html"><a href="manual/overview/README.html" data-ice="link">Navigation Meshes in Phaser</a></li>
+    <li data-ice="manualNav" class="indent-h1 manual-color manual-color-overview" data-section-count="&#x25A0;&#x25A0;&#x25A0;" data-link="manual/overview/README.html"><a href="manual/overview/README.html" data-ice="link">Navigation Meshes in Phaser</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/overview/README.html"><a href="manual/overview/README.html#temporary-performance-comparison" data-ice="link">Temporary Performance Comparison</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/overview/README.html"><a href="manual/overview/README.html#installation" data-ice="link">Installation</a></li>
 <li data-ice="manualNav" class="indent-h3" data-link="manual/overview/README.html"><a href="manual/overview/README.html#as-a-script" data-ice="link">As a Script</a></li>
 <li data-ice="manualNav" class="indent-h3" data-link="manual/overview/README.html"><a href="manual/overview/README.html#as-a-module" data-ice="link">As a Module</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/overview/README.html"><a href="manual/overview/README.html#create-a-nav-mesh" data-ice="link">Create a Nav Mesh</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/overview/README.html"><a href="manual/overview/README.html#usage" data-ice="link">Usage</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/overview/README.html"><a href="manual/overview/README.html#development" data-ice="link">Development</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/overview/README.html"><a href="manual/overview/README.html#references" data-ice="link">References</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/overview/README.html"><a href="manual/overview/README.html#todo" data-ice="link">TODO</a></li>
 </ul>
@@ -53,7 +54,7 @@
 <li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/tiled-navmesh-guide.html"><a href="manual/tutorial/tiled-navmesh-guide.html#goal" data-ice="link">Goal</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/tiled-navmesh-guide.html"><a href="manual/tutorial/tiled-navmesh-guide.html#snapping-setup" data-ice="link">Snapping Setup</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/tiled-navmesh-guide.html"><a href="manual/tutorial/tiled-navmesh-guide.html#creating-the-mesh" data-ice="link">Creating the Mesh</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/tiled-navmesh-guide.html"><a href="manual/tutorial/tiled-navmesh-guide.html#gaps" data-ice="link">Gaps</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/tiled-navmesh-guide.html"><a href="manual/tutorial/tiled-navmesh-guide.html#agent-size-gaps-" data-ice="link">Agent Size (Gaps)</a></li>
 </ul>
   </div>
 <div data-ice="manual" data-toc-name="reference">
@@ -76,7 +77,7 @@
 <p><a href="http://www.mapeditor.org/">Tiled</a> is an open source tile map editor. If you are already using it to design your levels, then you can also use it to create your nav meshes.</p>
 <p>Tiled allows you to design a map by creating <a href="http://doc.mapeditor.org/manual/layers/">layers</a> of tiles &amp; objects. A tile layer allows you to place your graphics (images from a tileset) into the world. An object layer allows you to store other kinds of information. Phaser can read both tile layers and object layers, so we can use the object layer to represent a nav mesh. In the image below, there is a layer of tiles (called &quot;walls&quot;) and a layer of gray rectangles that represents the nav mesh (called &quot;navmesh&quot;):</p>
 <p><img src="./manual/./doc-source/tiled-guide/tiled-final.png"></p>
-<p>This guide assumes you have some familiarity with Tiled. If you don&apos;t know Tiled, check out gamefromscratch&apos;s video <a href="http://www.gamefromscratch.com/post/2015/10/14/Tiled-Map-Editor-Tutorial-Series.aspx">tutorial series</a>/.</p>
+<p>This guide assumes you have some familiarity with Tiled. If you don&apos;t know Tiled, check out gamefromscratch&apos;s video <a href="http://www.gamefromscratch.com/post/2015/10/14/Tiled-Map-Editor-Tutorial-Series.aspx">tutorial series</a>.</p>
 <h2 id="goal">Goal</h2>
 <p>The idea is that we want to create an object layer in Tiled that represents where an &quot;agent&quot; (the player, an enemy, an npc, etc.) can move. We will describe those walkable area by placing individual shapes (mainly rectangles). An agent can then &quot;walk&quot; from one shape to another as long as they are connected (i.e. their edges overlap).</p>
 <p>Note: We will also want to take the agent&apos;s size into account when building the shapes. If you have an agent that is 20px wide, then it shouldn&apos;t be allowed to get within 10px of a wall.</p>
@@ -91,9 +92,9 @@
 <p>Create a new object layer and name it &quot;navmesh.&quot; Then start adding in rectangles to define your nav mesh. (Note: rectangles are the only Tiled shape currently supported by this plugin.)</p>
 <p><img src="./manual/./doc-source/tiled-guide/tiled-navmesh-layer.gif"></p>
 <p>See the Tiled manual for more information on <a href="http://doc.mapeditor.org/manual/objects/#working-with-objects">objects</a>.</p>
-<h2 id="gaps">Gaps</h2>
-<p>Notice the space being left around the walls? That gap is because the agent is 20px wide. It would get stuck on corners of walls without that gap.</p>
-<p>If you wanted, you <em>could</em> leave that gap out and write more complicated path following logic for your agents that avoids getting stuck. &quot;Baking&quot; the agent size into nav mesh with these gaps makes the path following logic simple.</p>
+<h2 id="agent-size-gaps-">Agent Size (Gaps)</h2>
+<p>Notice the 10px space left around the walls? That gap is because the agent is 20px wide circle. It would get stuck on corners of walls without that gap. Make sure the gaps you leave are a consistent size - you&apos;ll need to pass in the size as the third parameter to <code>navMeshPlugin.buildMeshFromTiled</code>.</p>
+<p>If you wanted, you <em>could</em> leave that gap out and write more complicated path following logic for your agents that avoids getting stuck. &quot;Baking&quot; the agent size into nav mesh with these gaps makes the path following logic pretty simple.</p>
 </div>
 </div>
 </div>

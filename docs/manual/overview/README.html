@@ -35,13 +35,14 @@
 <div data-ice="manual" data-toc-name="overview">
     <ul class="manual-toc">
       
-    <li data-ice="manualNav" class="indent-h1 manual-color manual-color-overview" data-section-count="&#x25A0;&#x25A0;" data-link="manual/overview/README.html"><a href="manual/overview/README.html" data-ice="link">Navigation Meshes in Phaser</a></li>
+    <li data-ice="manualNav" class="indent-h1 manual-color manual-color-overview" data-section-count="&#x25A0;&#x25A0;&#x25A0;" data-link="manual/overview/README.html"><a href="manual/overview/README.html" data-ice="link">Navigation Meshes in Phaser</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/overview/README.html"><a href="manual/overview/README.html#temporary-performance-comparison" data-ice="link">Temporary Performance Comparison</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/overview/README.html"><a href="manual/overview/README.html#installation" data-ice="link">Installation</a></li>
 <li data-ice="manualNav" class="indent-h3" data-link="manual/overview/README.html"><a href="manual/overview/README.html#as-a-script" data-ice="link">As a Script</a></li>
 <li data-ice="manualNav" class="indent-h3" data-link="manual/overview/README.html"><a href="manual/overview/README.html#as-a-module" data-ice="link">As a Module</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/overview/README.html"><a href="manual/overview/README.html#create-a-nav-mesh" data-ice="link">Create a Nav Mesh</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/overview/README.html"><a href="manual/overview/README.html#usage" data-ice="link">Usage</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/overview/README.html"><a href="manual/overview/README.html#development" data-ice="link">Development</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/overview/README.html"><a href="manual/overview/README.html#references" data-ice="link">References</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/overview/README.html"><a href="manual/overview/README.html#todo" data-ice="link">TODO</a></li>
 </ul>
@@ -53,7 +54,7 @@
 <li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/tiled-navmesh-guide.html"><a href="manual/tutorial/tiled-navmesh-guide.html#goal" data-ice="link">Goal</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/tiled-navmesh-guide.html"><a href="manual/tutorial/tiled-navmesh-guide.html#snapping-setup" data-ice="link">Snapping Setup</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/tiled-navmesh-guide.html"><a href="manual/tutorial/tiled-navmesh-guide.html#creating-the-mesh" data-ice="link">Creating the Mesh</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/tiled-navmesh-guide.html"><a href="manual/tutorial/tiled-navmesh-guide.html#gaps" data-ice="link">Gaps</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/tiled-navmesh-guide.html"><a href="manual/tutorial/tiled-navmesh-guide.html#agent-size-gaps-" data-ice="link">Agent Size (Gaps)</a></li>
 </ul>
   </div>
 <div data-ice="manual" data-toc-name="reference">
@@ -167,6 +168,15 @@ const path = navMesh.findPath(follower.position, target, {
     drawPolyPath: true, drawFinalPath: true
 });</code>
 </code></pre>
+<h2 id="development">Development</h2>
+<p>Pull requests are welcome! If you want to run this repo locally, make sure you have <a href="https://nodejs.org/en/">node</a> installed. Download the repo, open a terminal in the repo folder and run:</p>
+<pre><code><code class="source-code prettyprint">npm install</code>
+</code></pre><p>This will pull all the dependencies. The project is controlled via npm scripts. The main ones to use:</p>
+<ul>
+<li><code>npm run build:all</code> - will build the library into <code>dist/</code> &amp; the examples into <code>public/</code>. You can use this to generate a custom build.</li>
+<li><code>npm run dev</code> - will build, watch and serve the library &amp; examples. A browser window will pop up with links to the examples.</li>
+<li><code>npm run test</code> - will run the tests against the library.</li>
+</ul>
 <h2 id="references">References</h2>
 <p>Helpful resources used while building this plugin:</p>
 <ul>
@@ -186,10 +196,8 @@ const path = navMesh.findPath(follower.position, target, {
 </li>
 <li>Specific Extensions<ul>
 <li>Allow non-square navmesh from Tiled - any convex shape</li>
-<li>Reimplement the autotessalation version of the lib<ul>
+<li>Reimplement the autotessalation version of the lib</li>
 <li>Try libtess in quad mode</li>
-</ul>
-</li>
 <li>The astar heuristic &amp; cost functions need another pass. They don&apos;t always produce the shortest path. Implement incomplete funneling while building the astar path?</li>
 <li>The navmesh assumes any polygon can reach any other polygon. This probably should be extended to put connected polygons into groups like patroljs.</li>
 </ul>
