@@ -1,6 +1,6 @@
 {
   "name": "phaser-navmesh",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A plugin for Phaser for fast pathfinding using navigation meshes",
   "main": "dist/phaser-navmesh.min.js",
   "scripts": {
@@ -26,9 +26,15 @@
     "test": "jest"
   },
   "lint-staged": {
-    "./src/**/*.js": ["prettier --write", "git add"]
+    "./src/**/*.js": [
+      "prettier --write",
+      "git add"
+    ]
   },
-  "files": ["dist/", "src/library/"],
+  "files": [
+    "dist/",
+    "src/library/"
+  ],
   "browserify": {
     "transform": [
       [
@@ -43,9 +49,16 @@
     "type": "git",
     "url": "git+https://github.com/mikewesthad/phaser-navmesh-plugin.git"
   },
-  "keywords": ["path finding", "navigation mesh", "phaser", "a*"],
+  "keywords": [
+    "path finding",
+    "navigation mesh",
+    "phaser",
+    "a*"
+  ],
   "author": "Michael Hadley",
-  "contributors": ["Rex Twedt"],
+  "contributors": [
+    "Rex Twedt"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mikewesthad/phaser-navmesh-plugin/issues"
