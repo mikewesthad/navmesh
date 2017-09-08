@@ -42,8 +42,10 @@ class NavPoly {
     this._color = palette[i];
   }
 
-  constains(point) {
-    return this.polygon.contains(point.x, point.y);
+  contains(point) {
+    // Phaser's polygon check doesn't handle when a point is on one of the edges of the line. Note:
+    // check numerical stability here. It would also be good to optimize this for different shapes.
+    return this.polygon.contains(point.x, point.y) || this._isPointOnEdge(point);
   }
 
   destroy() {
@@ -99,6 +101,13 @@ class NavPoly {
       if (d > boundingRadius) boundingRadius = d;
     }
     return boundingRadius;
+  }
+
+  _isPointOnEdge(point) {
+    for (const edge of this.edges) {
+      if (edge.pointOnSegment(point.x, point.y)) return true;
+    }
+    return false;
   }
 
   /**

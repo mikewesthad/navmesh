@@ -82,13 +82,13 @@ class NavMesh {
       r = navPoly.boundingRadius;
       // Start
       d = navPoly.centroid.distance(startPoint);
-      if (d <= startDistance && d <= r && navPoly.constains(startPoint)) {
+      if (d <= startDistance && d <= r && navPoly.contains(startPoint)) {
         startPoly = navPoly;
         startDistance = d;
       }
       // End
       d = navPoly.centroid.distance(endPoint);
-      if (d <= endDistance && d <= r && navPoly.constains(endPoint)) {
+      if (d <= endDistance && d <= r && navPoly.contains(endPoint)) {
         endPoly = navPoly;
         endDistance = d;
       }
@@ -131,10 +131,21 @@ class NavMesh {
     // No matching polygons locations for the start or end, so no path found
     if (!startPoly || !endPoly) return null;
 
+    // If the start and end polygons are the same, return a direct path
+    if (startPoly === endPoly) {
+      const phaserPath = [startPoint.clone(), endPoint.clone()];
+      if (drawFinalPath) this.debugDrawPath(phaserPath, 0xffd900, 10);
+      return phaserPath;
+    }
+
     // Search!
     const astarPath = jsastar.astar.search(this._graph, startPoly, endPoly, {
       heuristic: this._graph.navHeuristic
     });
+
+    // While the start and end polygons may be valid, no path between them
+    if (astarPath.length === 0) return null;
+
     // jsastar drops the first point from the path, but the funnel algorithm needs it
     astarPath.unshift(startPoly);
 
