@@ -1,5 +1,4 @@
-const path = require("path");
-import { triarea2, almostEqual, angleDifference, areCollinear } from "../../src/library/utils";
+import { triarea2, almostEqual, angleDifference, areCollinear } from "../utils";
 
 describe("almostEqual", () => {
   test("should be false for numbers with a significant difference", () => {
