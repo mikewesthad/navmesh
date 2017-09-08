@@ -26,15 +26,9 @@
     "test": "jest"
   },
   "lint-staged": {
-    "*.js": [
-      "prettier --write",
-      "git add"
-    ]
+    "./src/**/*.js": ["prettier --write", "git add"]
   },
-  "files": [
-    "dist/",
-    "src/library/"
-  ],
+  "files": ["dist/", "src/library/"],
   "browserify": {
     "transform": [
       [
@@ -49,16 +43,9 @@
     "type": "git",
     "url": "git+https://github.com/mikewesthad/phaser-navmesh-plugin.git"
   },
-  "keywords": [
-    "path finding",
-    "navigation mesh",
-    "phaser",
-    "a*"
-  ],
+  "keywords": ["path finding", "navigation mesh", "phaser", "a*"],
   "author": "Michael Hadley",
-  "contributors": [
-    "Rex Twedt"
-  ],
+  "contributors": ["Rex Twedt"],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mikewesthad/phaser-navmesh-plugin/issues"
@@ -77,6 +64,7 @@
     "copy-webpack-plugin": "^4.0.1",
     "easystarjs": "^0.4.1",
     "esdoc": "^0.5.2",
+    "eslint": "^4.6.1",
     "eslint-config-prettier": "^2.4.0",
     "eslint-plugin-prettier": "^2.2.0",
     "expose-loader": "^0.7.3",

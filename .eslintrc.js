@@ -19,5 +19,13 @@ module.exports = {
   },
   globals: {
     Phaser: true
-  }
+  },
+  overrides: [
+    {
+      files: ["**/*test.js"],
+      env: {
+        jest: true
+      }
+    }
+  ]
 };
