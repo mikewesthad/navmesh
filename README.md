@@ -11,9 +11,9 @@ Pathfinding is essentially solving a maze, finding a path between two points whi
 1. Represent the game world in a way that defines what areas are walkable.
 2. Search that representation for the shortest path.
 
-When it comes to 2D pathfinding in [Phaser](http://phaser.io/), the [packaged solution](https://github.com/photonstorm/phaser-plugins) represents the world using [tiles](https://developer.mozilla.org/en-US/docs/Games/Techniques/Tilemaps) (a grid) and then searchs for a path using the [A* algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm). If you have a 50 x 50 tile world, searching for a path involves searching through a representation of the world with up to 2500 locations (nodes).
+When it comes to 2D pathfinding in [Phaser](http://phaser.io/), the [packaged solution](https://github.com/photonstorm/phaser-plugins) represents the world using [tiles](https://developer.mozilla.org/en-US/docs/Games/Techniques/Tilemaps) (a grid) and then searchs for a path using the [A\* algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm). If you have a 50 x 50 tile world, searching for a path involves searching through a representation of the world with up to 2500 locations (nodes).
 
-This plugin uses navigation meshes to simplify that search. Instead of representing the world as a grid of tiles, it represents the walkable areas of the world as a mesh. That means that the representation of the world has far fewer nodes, and hence, can be searched much faster than the grid approach. This approach is 5x - 150x faster than Phaser's A* plugin (see performance section).
+This plugin uses navigation meshes to simplify that search. Instead of representing the world as a grid of tiles, it represents the walkable areas of the world as a mesh. That means that the representation of the world has far fewer nodes, and hence, can be searched much faster than the grid approach. This approach is 5x - 150x faster than Phaser's A\* plugin (see performance section).
 
 The example map below (left) is a 30 x 30 map. As a grid, there are 900 nodes, but as a navmesh (right) there are 27 nodes (colored rectangles).
 
@@ -27,8 +27,8 @@ TODO: make this more readable and add interactive demo
 
 Comparing this navmesh plugin against:
 
-- [Phaser's grid-based A* plugin](https://github.com/photonstorm/phaser-plugins). Navmesh is approximately 5x - 150x faster.
-- A faster, grid-based A* search, [EasyStar.js](https://github.com/prettymuchbryce/easystarjs). Navmesh is approximately 5x - 20x faster.
+- [Phaser's grid-based A\* plugin](https://github.com/photonstorm/phaser-plugins). Navmesh is approximately 5x - 150x faster.
+- A faster, grid-based A\* search, [EasyStar.js](https://github.com/prettymuchbryce/easystarjs). Navmesh is approximately 5x - 20x faster.
 
 Performance depends on the size of the area that needs to be searched. Finding for a path between points that are 50 pixels away is (generally) going to be much faster than finding a path between points that are 5000 pixels away.
 
@@ -137,31 +137,45 @@ const path = navMesh.findPath(follower.position, target, {
 });
 ```
 
+## Development
+
+Pull requests are welcome! If you want to run this repo locally, make sure you have [node](https://nodejs.org/en/) installed. Download the repo, open a terminal in the repo folder and run:
+
+```
+npm install
+```
+
+This will pull all the dependencies. The project is controlled via npm scripts. The main ones to use:
+
+- `npm run build:all` - will build the library into `dist/` & the examples into `public/`. You can use this to generate a custom build.
+- `npm run dev` - will build, watch and serve the library & examples. A browser window will pop up with links to the examples.
+- `npm run test` - will run the tests against the library.
+
 ## References
 
 Helpful resources used while building this plugin:
 
 - Inspired by [PatrolJS](https://github.com/nickjanssen/PatrolJS), an implementation of navmeshes for threejs
 - Navmesh path-finding algorithm explanations:
-    - [Game Path Planning by Julian Ceipek](http://jceipek.com/Olin-Coding-Tutorials/pathing.html)
-    - [Simple Stupid Funnel Algorithm](http://digestingduck.blogspot.com/2010/03/simple-stupid-funnel-algorithm.html)
+  - [Game Path Planning by Julian Ceipek](http://jceipek.com/Olin-Coding-Tutorials/pathing.html)
+  - [Simple Stupid Funnel Algorithm](http://digestingduck.blogspot.com/2010/03/simple-stupid-funnel-algorithm.html)
 - [Advice on astar heuristics](http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html)
 
 ## TODO
 
 - Documentation
-    - Describe the Tiled process. Adding an object layer, setting snapping, making sure vertices overlap...
+  - Describe the Tiled process. Adding an object layer, setting snapping, making sure vertices overlap...
 - Specific Extensions
-    - Allow non-square navmesh from Tiled - any convex shape
-    - Reimplement the autotessalation version of the lib
-        - Try libtess in quad mode
-    - The astar heuristic & cost functions need another pass. They don't always produce the shortest path. Implement incomplete funneling while building the astar path?
-    - The navmesh assumes any polygon can reach any other polygon. This probably should be extended to put connected polygons into groups like patroljs.
+  - Allow non-square navmesh from Tiled - any convex shape
+  - Reimplement the autotessalation version of the lib
+  - Try libtess in quad mode
+  - The astar heuristic & cost functions need another pass. They don't always produce the shortest path. Implement incomplete funneling while building the astar path?
+  - The navmesh assumes any polygon can reach any other polygon. This probably should be extended to put connected polygons into groups like patroljs.
 - Extract Phaser dependency
-    - Allow the library to work with an arbitrary mesh while having helper functions that are Phaser specific
+  - Allow the library to work with an arbitrary mesh while having helper functions that are Phaser specific
 - Testing
-    - Check against tilemap that is larger than the screen
+  - Check against tilemap that is larger than the screen
 - Research
-    - There are probably optimization tricks to do when dealing with certain types of shapes. E.g. we are using axis-aligned boxes for the polygons and it is dead simple to calculate if a point is inside one of those...
-    - Investigate [Points-of-Visibility](http://www.david-gouveia.com/portfolio/pathfinding-on-a-2d-polygonal-map/) pathfinding to compare speed
-    - Using ES6 is probably suboptimal for performance
+  - There are probably optimization tricks to do when dealing with certain types of shapes. E.g. we are using axis-aligned boxes for the polygons and it is dead simple to calculate if a point is inside one of those...
+  - Investigate [Points-of-Visibility](http://www.david-gouveia.com/portfolio/pathfinding-on-a-2d-polygonal-map/) pathfinding to compare speed
+  - Using ES6 is probably suboptimal for performance
