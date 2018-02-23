@@ -89,14 +89,14 @@ npm install --save phaser-navmesh
 To use the babelified and minified library:
 
 ```js
-import phaserNavmesh from "phaser-navmesh";
+import PhaserNavmesh from "phaser-navmesh";
 this.game.plugins.add(PhaserNavmesh);
 ```
 
 To use the raw es6 library (so you can transpile it to match your own project settings):
 
 ```js
-import phaserNavmesh from "phaser-navmesh/src/library";
+import PhaserNavmesh from "phaser-navmesh/src/library";
 this.game.plugins.add(PhaserNavmesh);
 ```
 
@@ -118,7 +118,7 @@ const navMesh = navMeshPlugin.buildMeshFromTiled(tilemap, "navmesh", 12.5);
 
 const p1 = new Phaser.Point(100, 400);
 const p2 = new Phaser.Point(700, 200);
-const path = navMeshPlugin.findPath(p1, p2);
+const path = navMesh.findPath(p1, p2);
 // -> path is now either an array of points, or null if no valid path could be found
 ```
 
