@@ -26,6 +26,15 @@ export default class NavMeshPlugin extends Phaser.Plugin {
    * @memberof NavMeshPlugin
    */
   buildMeshFromTiled(tilemap, objectKey, meshShrinkAmount = 0) {
+    if (!tilemap.objects[objectKey]) {
+      console.warn(
+        `NavMeshPlugin: The given tilemap has no object layer with the name "${objectKey}"`
+      );
+    } else if (tilemap.objects[objectKey].length === 0) {
+      console.warn(
+        `NavMeshPlugin: The "${objectKey}" object layer in the Tilemap has 0 objects in it`
+      );
+    }
     // Load up the object layer
     const rects = tilemap.objects[objectKey] || [];
     // Loop over the objects and construct a polygon
