@@ -4,6 +4,8 @@
   "description": "A plugin for Phaser for fast pathfinding using navigation meshes",
   "main": "dist/phaser-navmesh.min.js",
   "scripts": {
+    "pull-types":
+      "curl https://raw.githubusercontent.com/photonstorm/phaser3-docs/master/typescript/phaser.d.ts --create-dirs --location --output ./types/phaser.d.ts",
     "build:library": "webpack --config config/webpack.config.library.js",
     "build:examples": "webpack --config config/webpack.config.examples.js",
     "build:all": "concurrently \"npm run build:library\" \"npm run build:examples\"",
@@ -26,15 +28,9 @@
     "test": "jest"
   },
   "lint-staged": {
-    "./src/**/*.js": [
-      "prettier --write",
-      "git add"
-    ]
+    "./src/**/*.js": ["prettier --write", "git add"]
   },
-  "files": [
-    "dist/",
-    "src/library/"
-  ],
+  "files": ["dist/", "src/library/"],
   "browserify": {
     "transform": [
       [
@@ -49,16 +45,9 @@
     "type": "git",
     "url": "git+https://github.com/mikewesthad/phaser-navmesh-plugin.git"
   },
-  "keywords": [
-    "path finding",
-    "navigation mesh",
-    "phaser",
-    "a*"
-  ],
+  "keywords": ["path finding", "navigation mesh", "phaser", "a*"],
   "author": "Michael Hadley",
-  "contributors": [
-    "Rex Twedt"
-  ],
+  "contributors": ["Rex Twedt"],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mikewesthad/phaser-navmesh-plugin/issues"
