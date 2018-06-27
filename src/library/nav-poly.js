@@ -1,3 +1,5 @@
+import Phaser from "phaser";
+
 // Debug color palette
 const palette = [0x00a0b0, 0x6a4a3c, 0xcc333f, 0xeb6841, 0xedc951];
 
@@ -8,10 +10,10 @@ const palette = [0x00a0b0, 0x6a4a3c, 0xcc333f, 0xeb6841, 0xedc951];
  *  - neighbors - any navpolys that can be reached from this navpoly
  *  - portals - overlapping edges between neighbors
  *  - centroid - not a true centroid, just an approximation.
- *  - boundingRadius - the radius of a circle at the centroid that fits all the points of the poly 
- * 
+ *  - boundingRadius - the radius of a circle at the centroid that fits all the points of the poly
+ *
  * It implements the properties and fields that javascript-astar needs - weight, toString, isWall
- * and getCost. See GPS test from astar repo for structure: 
+ * and getCost. See GPS test from astar repo for structure:
  * https://github.com/bgrins/javascript-astar/blob/master/test/tests.js
  *
  * @class NavPoly
@@ -20,14 +22,13 @@ const palette = [0x00a0b0, 0x6a4a3c, 0xcc333f, 0xeb6841, 0xedc951];
 class NavPoly {
   /**
    * Creates an instance of NavPoly.
-   * @param {Phaser.Game} game 
-   * @param {number} id 
-   * @param {Phaser.Polygon} polygon 
-   * 
+   * @param {Phaser.Game} game
+   * @param {number} id
+   * @param {Phaser.Polygon} polygon
+   *
    * @memberof NavPoly
    */
-  constructor(game, id, polygon) {
-    this.game = game;
+  constructor(id, polygon) {
     this.id = id;
     this.polygon = polygon;
     this.edges = this._calculateEdges();
@@ -49,7 +50,6 @@ class NavPoly {
   }
 
   destroy() {
-    this.game = null;
     this.neighbors = [];
     this.portals = [];
   }
@@ -74,23 +74,21 @@ class NavPoly {
     for (let i = 1; i < points.length; i++) {
       const p1 = points[i - 1];
       const p2 = points[i];
-      edges.push(new Phaser.Line(p1.x, p1.y, p2.x, p2.y));
+      edges.push(new Phaser.Geom.Line(p1.x, p1.y, p2.x, p2.y));
     }
     const first = points[0];
     const last = points[points.length - 1];
-    edges.push(new Phaser.Line(first.x, first.y, last.x, last.y));
+    edges.push(new Phaser.Geom.Line(first.x, first.y, last.x, last.y));
     return edges;
   }
 
   _calculateCentroid() {
     // NOTE: this is not actually the centroid, it's the average of the vertices - not the same
     // thing!
-    const centroid = new Phaser.Point(0, 0);
+    const centroid = new Phaser.Math.Vector2(0, 0);
     const length = this.polygon.points.length;
-    for (const point of this.polygon.points) {
-      centroid.add(point.x, point.y);
-    }
-    centroid.divide(length, length);
+    this.polygon.points.forEach(p => centroid.add(p));
+    centroid.scale(1 / length);
     return centroid;
   }
 
@@ -112,13 +110,13 @@ class NavPoly {
 
   /**
    * Draw the polygon to given graphics object
-   * 
-   * @param {Phaser.Graphics} graphics 
+   *
+   * @param {Phaser.Graphics} graphics
    * @param {boolean} [drawCentroid=true] Show the approx centroid
    * @param {boolean} [drawBounds=false] Show the bounding radius
    * @param {boolean} [drawNeighbors=true] Show the connections to neighbors
    * @param {boolean} [drawPortals=true] Show the portal edges
-   * 
+   *
    * @memberof NavPoly
    */
   draw(
@@ -128,37 +126,29 @@ class NavPoly {
     drawNeighbors = true,
     drawPortals = true
   ) {
-    graphics.lineWidth = 0;
-    graphics.beginFill(this._color);
-    graphics.drawPolygon(this.polygon);
-    graphics.endFill();
+    graphics.fillStyle(this._color);
+    graphics.fillPoints(this.polygon.points, true);
 
     if (drawCentroid) {
-      graphics.beginFill(0x000000);
-      graphics.drawEllipse(this.centroid.x, this.centroid.y, 4, 4);
-      graphics.endFill();
+      graphics.fillStyle(0x000000);
+      graphics.fillCircle(this.centroid.x, this.centroid.y, 4);
     }
 
     if (drawBounds) {
       graphics.lineStyle(1, 0xffffff);
-      const r = this.boundingRadius;
-      graphics.drawEllipse(this.centroid.x, this.centroid.y, r, r);
+      graphics.strokeCircle(this.centroid.x, this.centroid.y, this.boundingRadius);
     }
 
     if (drawNeighbors) {
       graphics.lineStyle(2, 0x000000);
-      for (const n of this.neighbors) {
-        graphics.moveTo(this.centroid.x, this.centroid.y);
-        graphics.lineTo(n.centroid.x, n.centroid.y);
-      }
+      this.neighbors.forEach(n => {
+        graphics.lineBetween(this.centroid.x, this.centroid.y, n.centroid.x, n.centroid.y);
+      });
     }
 
     if (drawPortals) {
       graphics.lineStyle(10, 0x000000);
-      for (const p of this.portals) {
-        graphics.moveTo(p.start.x, p.start.y);
-        graphics.lineTo(p.end.x, p.end.y);
-      }
+      this.portals.forEach(p => graphics.strokeLineShape(p));
     }
   }
 }

@@ -1,3 +1,4 @@
+import Phaser from "phaser";
 import jsastar from "javascript-astar";
 import NavPoly from "./nav-poly";
 import NavGraph from "./nav-graph";
@@ -6,9 +7,9 @@ import { angleDifference, areCollinear } from "./utils";
 
 /**
  * The workhorse that represents a navigation mesh built from a series of polygons. Once built, the
- * mesh can be asked for a path from one point to another point. It has debug methods for 
+ * mesh can be asked for a path from one point to another point. It has debug methods for
  * visualizing paths and visualizing the individual polygons. Some internal terminology usage:
- * 
+ *
  * - neighbor: a polygon that shares part of an edge with another polygon
  * - portal: when two neighbor's have edges that overlap, the portal is the overlapping line segment
  * - channel: the path of polygons from starting point to end point
@@ -18,22 +19,18 @@ import { angleDifference, areCollinear } from "./utils";
 class NavMesh {
   /**
    * Creates an instance of NavMesh.
-   * 
+   *
    * @param {Phaser.Game} game
    * @param {Phaser.Polygon[]} polygons
    * @param {number} [meshShrinkAmount=0] The amount (in pixels) that the navmesh has been
    * shrunk around obstacles (a.k.a the amount obstacles have been expanded)
    */
-  constructor(game, polygons, meshShrinkAmount = 0) {
-    this.game = game;
+  constructor(polygons, meshShrinkAmount = 0) {
     this._debugGraphics = null;
     this._meshShrinkAmount = meshShrinkAmount;
 
     // Construct NavPoly instances for each polygon
-    this._navPolygons = [];
-    for (const [i, polygon] of polygons.entries()) {
-      this._navPolygons.push(new NavPoly(game, i, polygon));
-    }
+    this._navPolygons = polygons.map((polygon, i) => new NavPoly(i, polygon));
 
     this._calculateNeighbors();
 
@@ -44,15 +41,15 @@ class NavMesh {
   /**
    * Cleanup method to remove references so that navmeshes don't hang around from state to state.
    * You don't have to invoke this directly. If you call destroy on the plugin, it will destroy
-   * all navmeshes that have been created. 
-   * 
+   * all navmeshes that have been created.
+   *
    * @memberof NavMesh
    */
   destroy() {
     this._graph.destroy();
     for (const poly of this._navPolygons) poly.destroy();
     this._navPolygons = [];
-    this.game = null;
+    // this.game = null;
     this.disableDebug();
   }
 
@@ -220,26 +217,26 @@ class NavMesh {
             // Calculate the portal between the two polygons - this needs to be in
             // counter-clockwise order, relative to each polygon
             const [p1, p2] = overlap;
-            let edgeStartAngle = navPoly.centroid.angle(edge.start);
+            let edgeStartAngle = navPoly.centroid.angle(edge.getPointA());
             let a1 = navPoly.centroid.angle(overlap[0]);
             let a2 = navPoly.centroid.angle(overlap[1]);
             let d1 = angleDifference(edgeStartAngle, a1);
             let d2 = angleDifference(edgeStartAngle, a2);
             if (d1 < d2) {
-              navPoly.portals.push(new Phaser.Line(p1.x, p1.y, p2.x, p2.y));
+              navPoly.portals.push(new Phaser.Geom.Line(p1.x, p1.y, p2.x, p2.y));
             } else {
-              navPoly.portals.push(new Phaser.Line(p2.x, p2.y, p1.x, p1.y));
+              navPoly.portals.push(new Phaser.Geom.Line(p2.x, p2.y, p1.x, p1.y));
             }
 
-            edgeStartAngle = otherNavPoly.centroid.angle(otherEdge.start);
+            edgeStartAngle = otherNavPoly.centroid.angle(otherEdge.getPointA());
             a1 = otherNavPoly.centroid.angle(overlap[0]);
             a2 = otherNavPoly.centroid.angle(overlap[1]);
             d1 = angleDifference(edgeStartAngle, a1);
             d2 = angleDifference(edgeStartAngle, a2);
             if (d1 < d2) {
-              otherNavPoly.portals.push(new Phaser.Line(p1.x, p1.y, p2.x, p2.y));
+              otherNavPoly.portals.push(new Phaser.Geom.Line(p1.x, p1.y, p2.x, p2.y));
             } else {
-              otherNavPoly.portals.push(new Phaser.Line(p2.x, p2.y, p1.x, p1.y));
+              otherNavPoly.portals.push(new Phaser.Geom.Line(p2.x, p2.y, p1.x, p1.y));
             }
 
             // Two convex polygons shouldn't be connected more than once! (Unless
@@ -254,10 +251,10 @@ class NavMesh {
   // Algorithm source: http://stackoverflow.com/a/17152247
   _getSegmentOverlap(line1, line2) {
     const points = [
-      { line: line1, point: line1.start },
-      { line: line1, point: line1.end },
-      { line: line2, point: line2.start },
-      { line: line2, point: line2.end }
+      { line: line1, point: line1.getPointA() },
+      { line: line1, point: line1.getPointB() },
+      { line: line2, point: line2.getPointA() },
+      { line: line2, point: line2.getPointB() }
     ];
     points.sort(function(a, b) {
       if (a.point.x < b.point.x) return -1;
@@ -279,11 +276,11 @@ class NavMesh {
 
   /**
    * Project a point onto a polygon in the shortest distance possible.
-   * 
+   *
    * @param {Phaser.Point} point The point to project
    * @param {NavPoly} navPoly The navigation polygon to test against
    * @returns {{point: Phaser.Point, distance: number}}
-   * 
+   *
    * @private
    * @memberof NavMesh
    */
@@ -310,26 +307,26 @@ class NavMesh {
   // Project a point onto a line segment
   // JS Source: http://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
   _projectPointToEdge(point, line) {
-    const a = line.start;
-    const b = line.end;
+    const a = line.getPointA();
+    const b = line.getPointB();
     // Consider the parametric equation for the edge's line, p = a + t (b - a). We want to find
     // where our point lies on the line by solving for t:
     //  t = [(p-a) . (b-a)] / |b-a|^2
     const l2 = this._distanceSquared(a, b);
     let t = ((point.x - a.x) * (b.x - a.x) + (point.y - a.y) * (b.y - a.y)) / l2;
     // We clamp t from [0,1] to handle points outside the segment vw.
-    t = Phaser.Math.clamp(t, 0, 1);
+    t = Phaser.Math.Clamp(t, 0, 1);
     // Project onto the segment
     const p = new Phaser.Point(a.x + t * (b.x - a.x), a.y + t * (b.y - a.y));
     return p;
   }
 
   /**
-   * Enable debug and create graphics overlay (if it hasn't already been created) 
+   * Enable debug and create graphics overlay (if it hasn't already been created)
    */
   enableDebug() {
     if (!this._debugGraphics) {
-      this._debugGraphics = this.game.add.graphics(0, 0);
+      // this._debugGraphics = this.game.add.graphics(0, 0);
       this._debugGraphics.alpha = 0.5;
     }
   }
@@ -346,7 +343,7 @@ class NavMesh {
 
   /**
    * Check whether debug is enabled
-   * 
+   *
    * @returns {boolean}
    */
   isDebugEnabled() {
@@ -371,21 +368,22 @@ class NavMesh {
    * @param {boolean} [options.drawPortals=true] For each polygon, show the portal edges
    */
   debugDrawMesh(
+    graphics,
     { drawCentroid = true, drawBounds = false, drawNeighbors = true, drawPortals = true } = {}
   ) {
-    if (!this._debugGraphics) this.enableDebug();
+    // if (!this._debugGraphics) this.enableDebug();
     // Visualize the navigation mesh
     for (const navPoly of this._navPolygons) {
-      navPoly.draw(this._debugGraphics, drawCentroid, drawBounds, drawNeighbors, drawPortals);
+      navPoly.draw(graphics, drawCentroid, drawBounds, drawNeighbors, drawPortals);
     }
   }
 
   /**
    * Visualize a path (array of points) on the debug graphics overlay
-   * 
-   * @param {Phaser.Point[]} path 
-   * @param {number} [color=0x00FF00] 
-   * @param {number} [thickness=10] 
+   *
+   * @param {Phaser.Point[]} path
+   * @param {number} [color=0x00FF00]
+   * @param {number} [thickness=10]
    */
   debugDrawPath(path, color = 0x00ff00, thickness = 10) {
     if (!this._debugGraphics) this.enableDebug();

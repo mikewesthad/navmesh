@@ -37,8 +37,8 @@ export function angleDifference(x, y) {
 export function areCollinear(line1, line2, errorMargin = 0.0001) {
   // Figure out if the two lines are equal by looking at the area of the triangle formed
   // by their points
-  const area1 = triarea2(line1.start, line1.end, line2.start);
-  const area2 = triarea2(line1.start, line1.end, line2.end);
+  const area1 = triarea2(line1.getPointA(), line1.getPointB(), line2.getPointA());
+  const area2 = triarea2(line1.getPointA(), line1.getPointB(), line2.getPointB());
   if (almostEqual(area1, 0, errorMargin) && almostEqual(area2, 0, errorMargin)) {
     return true;
   } else return false;
