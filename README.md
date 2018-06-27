@@ -2,6 +2,8 @@
 
 A [Phaser](http://phaser.io/) plugin for fast pathfinding using navigation meshes.
 
+Note: using Phaser v3? This plugin was made for Phaser v2. A v3 upgrade was just started on the [feature-phaser-v3-support](https://github.com/mikewesthad/phaser-navmesh/tree/feature-phaser-v3-support) branch.
+
 [<img src="./doc-source/single-following-agent.gif" width="400">](https://www.mikewesthad.com/phaser-navmesh/demo/)
 
 [Interactive demo](https://www.mikewesthad.com/phaser-navmesh/demo/)
