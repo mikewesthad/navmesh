@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import FontFaceObserver from "fontfaceobserver";
 
 export default class Load extends Phaser.Scene {
   preload() {
@@ -14,9 +15,16 @@ export default class Load extends Phaser.Scene {
     this.load.tilemapTiledJSON("map", "tilemaps/map.json");
     this.load.image("tiles", "tilemaps/tiles.png");
     this.load.image("follower", "images/follower.png");
+
+    this.fontLoaded = false;
+    this.fontErrored = false;
+    new FontFaceObserver("Josefin Sans")
+      .load()
+      .then(() => (this.fontLoaded = true))
+      .catch(() => (this.fontErrored = true));
   }
 
-  create() {
-    this.scene.start("start");
+  update() {
+    if (this.fontLoaded || this.fontErrored) this.scene.start("start");
   }
 }
