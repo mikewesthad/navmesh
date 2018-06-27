@@ -11,7 +11,13 @@ const game = new Phaser.Game({
   width: 750,
   height: 750,
   backgroundColor: "#fff",
-  pixelArt: false
+  pixelArt: false,
+  physics: {
+    default: "arcade",
+    arcade: {
+      debug: true
+    }
+  }
 });
 
 game.scene.add("load", Load);

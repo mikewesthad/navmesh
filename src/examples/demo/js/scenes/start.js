@@ -1,6 +1,7 @@
 // import FollowerSprite from "../game-objects/follower";
 import Phaser from "phaser";
 import NavMeshPlugin from "../../../../library"; // Importing directly from library/ for now
+import FollowerSprite from "../game-objects/follower";
 
 export default class Start extends Phaser.Scene {
   create() {
@@ -23,66 +24,53 @@ export default class Start extends Phaser.Scene {
     // // Register the plugin with Phaser
     // this.navMeshPlugin = this.game.plugins.add(NavMeshPlugin);
 
-    const navMeshPlugin = new NavMeshPlugin();
-    const navMesh = navMeshPlugin.buildMeshFromTiled(tilemap, "navmesh", 12.5);
-
     // // Load the navMesh from the tilemap object layer "navmesh". The navMesh was created with
     // // 12.5 pixels of space around obstacles.
     // const navMesh = this.navMeshPlugin.buildMeshFromTiled(tilemap, "navmesh", 12.5);
 
     // Now you could find a path via navMesh.findPath(startPoint, endPoint)
 
-    // // -- Instructions --
+    const navMeshPlugin = new NavMeshPlugin();
+    const navMesh = navMeshPlugin.buildMeshFromTiled(tilemap, "navmesh", 12.5);
 
-    // const style = {
-    //   font: "22px Arial",
-    //   fill: "#ff0044",
-    //   align: "left",
-    //   backgroundColor: "#fff"
-    // };
-    // const pathInfoText = this.game.add.text(10, 5, "Click to find a path!", style);
-    // this.game.add.text(10, 35, "Press 'm' to see navmesh.", style);
-    // this.game.add.text(10, 65, "Press '2' to go to scene 2.", style);
+    // -- Click to Find Path --
 
-    // // -- Click to Find Path --
+    // Graphics overlay for visualizing path
+    const graphics = this.add.graphics(0, 0).setAlpha(0.5);
 
-    // // Graphics overlay for visualizing path
-    // const graphics = this.game.add.graphics(0, 0);
-    // graphics.alpha = 0.5;
+    // Game object that can follow a path (inherits from Phaser.Sprite)
+    const follower = new FollowerSprite(this, 50, 200, navMesh);
 
-    // // Game object that can follow a path (inherits from Phaser.Sprite)
-    // const follower = new FollowerSprite(this.game, 50, 200, navMesh);
+    // On click
+    this.input.on("pointerdown", pointer => {
+      const start = new Phaser.Math.Vector2(follower.x, follower.y);
+      const end = new Phaser.Math.Vector2(pointer.x, pointer.y);
 
-    // // On click
-    // this.game.input.onDown.add(() => {
-    //   // Get the location of the mouse
-    //   const target = this.game.input.activePointer.position.clone();
+      // Tell the follower sprite to find its path to the target
+      follower.goTo(end);
 
-    //   // Tell the follower sprite to find its path to the target
-    //   follower.goTo(target);
+      // // For demo purposes, let's recalculate the path here and draw it on the screen
+      const startTime = performance.now();
+      const path = navMesh.findPath(start, end);
+      // -> path is now an array of points, or null if no valid path found
+      const pathTime = performance.now() - startTime;
 
-    //   // For demo purposes, let's recalculate the path here and draw it on the screen
-    //   const startTime = performance.now();
-    //   const path = navMesh.findPath(follower.position, target);
-    //   // -> path is now an array of points, or null if no valid path found
-    //   const pathTime = performance.now() - startTime;
+      // Draw the start and end of the path
+      graphics.clear();
+      graphics.fillStyle(0xffd900);
+      graphics.fillCircle(start.x, start.y, 10);
+      graphics.fillCircle(end.x, end.y, 10);
 
-    //   // Draw the start and end of the path
-    //   graphics.clear();
-    //   graphics.beginFill(0xffd900);
-    //   graphics.drawEllipse(follower.position.x, follower.position.y, 10, 10);
-    //   graphics.drawEllipse(target.x, target.y, 10, 10);
-    //   graphics.endFill();
-
-    //   // Display the path, if it exists
-    //   if (path) {
-    //     pathInfoText.setText(`Path found in: ${pathTime.toFixed(2)}ms`);
-    //     graphics.lineStyle(5, 0xffd900);
-    //     graphics.drawShape(new Phaser.Polygon(...path));
-    //   } else {
-    //     pathInfoText.setText(`No path found (${pathTime.toFixed(2)}ms)`);
-    //   }
-    // });
+      // Display the path, if it exists
+      if (path) {
+        uiTextLines[0] = `Path found in: ${pathTime.toFixed(2)}ms`;
+        graphics.lineStyle(5, 0xffd900);
+        graphics.strokePoints(path);
+      } else {
+        uiTextLines[0] = `No path found (${pathTime.toFixed(2)}ms)`;
+      }
+      uiText.setText(uiTextLines);
+    });
 
     // Toggle the navmesh visibility on/off
     const debugGraphics = this.add.graphics();
@@ -99,12 +87,20 @@ export default class Start extends Phaser.Scene {
       }
     });
 
-    navMesh.debugDrawMesh(debugGraphics, {
-      drawCentroid: true,
-      drawBounds: true,
-      drawNeighbors: true,
-      drawPortals: true
-    });
+    // -- Instructions --
+
+    const style = {
+      font: "22px Josefin Sans",
+      fill: "#ff0044",
+      padding: { x: 20, y: 10 },
+      backgroundColor: "#fff"
+    };
+    const uiTextLines = [
+      "Click to find a path!",
+      "Press 'm' to see navmesh.",
+      "Press '2' to go to scene 2."
+    ];
+    const uiText = this.add.text(10, 5, this.uiTextLines, style);
 
     // // Scene changer
     // this.game.input.keyboard.addKey(Phaser.KeyCode.TWO).onDown.add(() => {
