@@ -4,16 +4,13 @@
   "description": "A plugin for Phaser for fast pathfinding using navigation meshes",
   "main": "dist/phaser-navmesh.min.js",
   "scripts": {
-    "pull-types":
-      "curl https://raw.githubusercontent.com/photonstorm/phaser3-docs/master/typescript/phaser.d.ts --create-dirs --location --output ./types/phaser.d.ts",
+    "pull-types": "curl https://raw.githubusercontent.com/photonstorm/phaser3-docs/master/typescript/phaser.d.ts --create-dirs --location --output ./types/phaser.d.ts",
     "build:library": "webpack --mode production --config config/webpack.config.library.js",
     "build:examples": "webpack --mode production --config config/webpack.config.examples.js",
     "build:all": "concurrently \"npm run build:library\" \"npm run build:examples\"",
     "watch:library": "webpack --mode development --watch --config config/webpack.config.library.js",
-    "watch:examples":
-      "webpack-dev-server --watch --open --mode development --config config/webpack.config.examples.js",
-    "watch:all": "concurrently \"npm run watch:library\" \"npm run watch:examples\"",
-    "dev": "concurrently \"npm run watch:all\" \"npm run serve\"",
+    "watch:examples": "webpack-dev-server --watch --open --mode development --config config/webpack.config.examples.js",
+    "dev": "concurrently \"npm run watch:library\" \"npm run watch:examples\"",
     "clean:builds": "rimraf dist public",
     "clean:docs": "rimraf docs",
     "clean:all": "concurrently \"npm run clean:builds\" \"npm run clean:docs\"",
@@ -27,9 +24,15 @@
     "test": "jest"
   },
   "lint-staged": {
-    "./src/**/*.js": ["prettier --write", "git add"]
+    "./src/**/*.js": [
+      "prettier --write",
+      "git add"
+    ]
   },
-  "files": ["dist/", "src/library/"],
+  "files": [
+    "dist/",
+    "src/library/"
+  ],
   "browserify": {
     "transform": [
       [
@@ -44,15 +47,23 @@
     "type": "git",
     "url": "git+https://github.com/mikewesthad/phaser-navmesh-plugin.git"
   },
-  "keywords": ["path finding", "navigation mesh", "phaser", "a*"],
+  "keywords": [
+    "path finding",
+    "navigation mesh",
+    "phaser",
+    "a*"
+  ],
   "author": "Michael Hadley",
-  "contributors": ["Rex Twedt"],
+  "contributors": [
+    "Rex Twedt"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mikewesthad/phaser-navmesh-plugin/issues"
   },
   "homepage": "https://github.com/mikewesthad/phaser-navmesh-plugin#readme",
   "dependencies": {
+    "fontfaceobserver": "^2.0.13",
     "javascript-astar": "github:mikewesthad/javascript-astar"
   },
   "devDependencies": {
