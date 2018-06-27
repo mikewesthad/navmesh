@@ -6,13 +6,13 @@
   "scripts": {
     "pull-types":
       "curl https://raw.githubusercontent.com/photonstorm/phaser3-docs/master/typescript/phaser.d.ts --create-dirs --location --output ./types/phaser.d.ts",
-    "build:library": "webpack --config config/webpack.config.library.js",
-    "build:examples": "webpack --config config/webpack.config.examples.js",
+    "build:library": "webpack --mode production --config config/webpack.config.library.js",
+    "build:examples": "webpack --mode production --config config/webpack.config.examples.js",
     "build:all": "concurrently \"npm run build:library\" \"npm run build:examples\"",
-    "watch:library": "webpack --watch --config config/webpack.config.library.js",
-    "watch:examples": "webpack --watch --config config/webpack.config.examples.js",
+    "watch:library": "webpack --mode development --watch --config config/webpack.config.library.js",
+    "watch:examples":
+      "webpack-dev-server --watch --open --mode development --config config/webpack.config.examples.js",
     "watch:all": "concurrently \"npm run watch:library\" \"npm run watch:examples\"",
-    "serve": "browser-sync start --config \"config/browser-sync.config.js\"",
     "dev": "concurrently \"npm run watch:all\" \"npm run serve\"",
     "clean:builds": "rimraf dist public",
     "clean:docs": "rimraf docs",
