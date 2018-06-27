@@ -24,7 +24,6 @@
     "deploy:doc": "gh-pages --branch gh-pages --dist docs --dest docs",
     "predeploy:doc": "npm run doc",
     "prettier": "prettier --write ./src/**/*.{js,jsx,json}",
-    "precommit": "lint-staged",
     "test": "jest"
   },
   "lint-staged": {
@@ -70,9 +69,7 @@
     "eslint-plugin-prettier": "^2.6.1",
     "expose-loader": "^0.7.5",
     "gh-pages": "^1.2.0",
-    "husky": "^0.14.3",
     "jest": "^23.2.0",
-    "lint-staged": "^7.2.0",
     "phaser": "^3.10.1",
     "prettier": "^1.13.6",
     "rimraf": "^2.6.2",
