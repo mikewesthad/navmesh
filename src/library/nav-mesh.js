@@ -162,7 +162,7 @@ class NavMesh {
       }
 
       // Push the portal vertices into the channel
-      channel.push(portal.start, portal.end);
+      channel.push(portal.getPointA(), portal.getPointB());
     }
     channel.push(endPoint);
 
@@ -317,7 +317,7 @@ class NavMesh {
     // We clamp t from [0,1] to handle points outside the segment vw.
     t = Phaser.Math.Clamp(t, 0, 1);
     // Project onto the segment
-    const p = new Phaser.Point(a.x + t * (b.x - a.x), a.y + t * (b.y - a.y));
+    const p = new Phaser.Math.Vector2(a.x + t * (b.x - a.x), a.y + t * (b.y - a.y));
     return p;
   }
 

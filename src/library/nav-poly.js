@@ -101,9 +101,23 @@ class NavPoly {
     return boundingRadius;
   }
 
-  _isPointOnEdge(point) {
+  _isPointOnEdge({ x, y }) {
     for (const edge of this.edges) {
-      if (edge.pointOnSegment(point.x, point.y)) return true;
+      const xMin = edge.left;
+      const xMax = edge.right;
+      const yMin = edge.top;
+      const yMax = edge.bottom;
+
+      // Check if in bounds of segment and compare slope of line start -> xy to line start -> line
+      // end
+      if (
+        x >= xMin &&
+        x <= xMax &&
+        (y >= yMin && y <= yMax) &&
+        (x - xMin) * (yMax - yMin) === (xMax - xMin) * (y - yMin)
+      ) {
+        return true;
+      }
     }
     return false;
   }
