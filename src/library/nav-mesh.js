@@ -1,9 +1,11 @@
-import Phaser from "phaser";
 import jsastar from "javascript-astar";
 import NavPoly from "./nav-poly";
 import NavGraph from "./nav-graph";
 import Channel from "./channel";
-import { angleDifference, areCollinear } from "./utils";
+import { angleDifference, areCollinear, clamp } from "./utils";
+import Vector2 from "./math/vector-2";
+import Line from "./math/line";
+import Polygon from "./math/polygon";
 
 /**
  * The workhorse that represents a navigation mesh built from a series of polygons. Once built, the
@@ -16,7 +18,7 @@ import { angleDifference, areCollinear } from "./utils";
  * - pull the string: run the funnel algorithm on the channel so that the path hugs the edges of the
  *   channel. Equivalent to having a string snaking through a hallway and then pulling it taut.
  */
-class NavMesh {
+export default class NavMesh {
   /**
    * Creates an instance of NavMesh.
    *
@@ -29,8 +31,14 @@ class NavMesh {
     this._debugGraphics = null;
     this._meshShrinkAmount = meshShrinkAmount;
 
+    // TODO: this is temporary
+    const newPolys = polygons.map(points => {
+      const vPoints = points.map(p => new Vector2(p.x, p.y));
+      return new Polygon(vPoints);
+    });
+
     // Construct NavPoly instances for each polygon
-    this._navPolygons = polygons.map((polygon, i) => new NavPoly(i, polygon));
+    this._navPolygons = newPolys.map((polygon, i) => new NavPoly(i, polygon));
 
     this._calculateNeighbors();
 
@@ -162,7 +170,7 @@ class NavMesh {
       }
 
       // Push the portal vertices into the channel
-      channel.push(portal.getPointA(), portal.getPointB());
+      channel.push(portal.start, portal.end);
     }
     channel.push(endPoint);
 
@@ -217,26 +225,26 @@ class NavMesh {
             // Calculate the portal between the two polygons - this needs to be in
             // counter-clockwise order, relative to each polygon
             const [p1, p2] = overlap;
-            let edgeStartAngle = navPoly.centroid.angle(edge.getPointA());
+            let edgeStartAngle = navPoly.centroid.angle(edge.start);
             let a1 = navPoly.centroid.angle(overlap[0]);
             let a2 = navPoly.centroid.angle(overlap[1]);
             let d1 = angleDifference(edgeStartAngle, a1);
             let d2 = angleDifference(edgeStartAngle, a2);
             if (d1 < d2) {
-              navPoly.portals.push(new Phaser.Geom.Line(p1.x, p1.y, p2.x, p2.y));
+              navPoly.portals.push(new Line(p1.x, p1.y, p2.x, p2.y));
             } else {
-              navPoly.portals.push(new Phaser.Geom.Line(p2.x, p2.y, p1.x, p1.y));
+              navPoly.portals.push(new Line(p2.x, p2.y, p1.x, p1.y));
             }
 
-            edgeStartAngle = otherNavPoly.centroid.angle(otherEdge.getPointA());
+            edgeStartAngle = otherNavPoly.centroid.angle(otherEdge.start);
             a1 = otherNavPoly.centroid.angle(overlap[0]);
             a2 = otherNavPoly.centroid.angle(overlap[1]);
             d1 = angleDifference(edgeStartAngle, a1);
             d2 = angleDifference(edgeStartAngle, a2);
             if (d1 < d2) {
-              otherNavPoly.portals.push(new Phaser.Geom.Line(p1.x, p1.y, p2.x, p2.y));
+              otherNavPoly.portals.push(new Line(p1.x, p1.y, p2.x, p2.y));
             } else {
-              otherNavPoly.portals.push(new Phaser.Geom.Line(p2.x, p2.y, p1.x, p1.y));
+              otherNavPoly.portals.push(new Line(p2.x, p2.y, p1.x, p1.y));
             }
 
             // Two convex polygons shouldn't be connected more than once! (Unless
@@ -251,10 +259,10 @@ class NavMesh {
   // Algorithm source: http://stackoverflow.com/a/17152247
   _getSegmentOverlap(line1, line2) {
     const points = [
-      { line: line1, point: line1.getPointA() },
-      { line: line1, point: line1.getPointB() },
-      { line: line2, point: line2.getPointA() },
-      { line: line2, point: line2.getPointB() }
+      { line: line1, point: line1.start },
+      { line: line1, point: line1.end },
+      { line: line2, point: line2.start },
+      { line: line2, point: line2.end }
     ];
     points.sort(function(a, b) {
       if (a.point.x < b.point.x) return -1;
@@ -307,17 +315,17 @@ class NavMesh {
   // Project a point onto a line segment
   // JS Source: http://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
   _projectPointToEdge(point, line) {
-    const a = line.getPointA();
-    const b = line.getPointB();
+    const a = line.start;
+    const b = line.end;
     // Consider the parametric equation for the edge's line, p = a + t (b - a). We want to find
     // where our point lies on the line by solving for t:
     //  t = [(p-a) . (b-a)] / |b-a|^2
     const l2 = this._distanceSquared(a, b);
     let t = ((point.x - a.x) * (b.x - a.x) + (point.y - a.y) * (b.y - a.y)) / l2;
     // We clamp t from [0,1] to handle points outside the segment vw.
-    t = Phaser.Math.Clamp(t, 0, 1);
+    t = clamp(t, 0, 1);
     // Project onto the segment
-    const p = new Phaser.Math.Vector2(a.x + t * (b.x - a.x), a.y + t * (b.y - a.y));
+    const p = new Vector2(a.x + t * (b.x - a.x), a.y + t * (b.y - a.y));
     return p;
   }
 
@@ -386,20 +394,18 @@ class NavMesh {
    * @param {number} [thickness=10]
    */
   debugDrawPath(path, color = 0x00ff00, thickness = 10) {
-    if (!this._debugGraphics) this.enableDebug();
-    if (path.length) {
-      // Draw line for path
-      this._debugGraphics.lineStyle(thickness, color);
-      this._debugGraphics.drawShape(new Phaser.Polygon(...path));
-      this._debugGraphics.beginFill(color);
-      // Draw circle at start and end of path
-      const d = 0.5 * thickness;
-      this._debugGraphics.drawEllipse(path[0].x, path[0].y, d, d);
-      const lastPoint = path[path.length - 1];
-      this._debugGraphics.drawEllipse(lastPoint.x, lastPoint.y, d, d);
-      this._debugGraphics.endFill();
-    }
+    // if (!this._debugGraphics) this.enableDebug();
+    // if (path.length) {
+    //   // Draw line for path
+    //   this._debugGraphics.lineStyle(thickness, color);
+    //   this._debugGraphics.drawShape(new Phaser.Polygon(...path));
+    //   this._debugGraphics.beginFill(color);
+    //   // Draw circle at start and end of path
+    //   const d = 0.5 * thickness;
+    //   this._debugGraphics.drawEllipse(path[0].x, path[0].y, d, d);
+    //   const lastPoint = path[path.length - 1];
+    //   this._debugGraphics.drawEllipse(lastPoint.x, lastPoint.y, d, d);
+    //   this._debugGraphics.endFill();
+    // }
   }
 }
-
-export default NavMesh;

@@ -1,4 +1,5 @@
-import Phaser from "phaser";
+import Line from "./math/line";
+import Vector2 from "./math/vector-2";
 
 // Debug color palette
 const palette = [0x00a0b0, 0x6a4a3c, 0xcc333f, 0xeb6841, 0xedc951];
@@ -31,7 +32,7 @@ class NavPoly {
   constructor(id, polygon) {
     this.id = id;
     this.polygon = polygon;
-    this.edges = this._calculateEdges();
+    this.edges = polygon.edges;
     this.neighbors = [];
     this.portals = [];
     this.centroid = this._calculateCentroid();
@@ -68,27 +69,14 @@ class NavPoly {
     return this.centroidDistance(navPolygon);
   }
 
-  _calculateEdges() {
-    const points = this.polygon.points;
-    const edges = [];
-    for (let i = 1; i < points.length; i++) {
-      const p1 = points[i - 1];
-      const p2 = points[i];
-      edges.push(new Phaser.Geom.Line(p1.x, p1.y, p2.x, p2.y));
-    }
-    const first = points[0];
-    const last = points[points.length - 1];
-    edges.push(new Phaser.Geom.Line(first.x, first.y, last.x, last.y));
-    return edges;
-  }
-
   _calculateCentroid() {
     // NOTE: this is not actually the centroid, it's the average of the vertices - not the same
     // thing!
-    const centroid = new Phaser.Math.Vector2(0, 0);
+    const centroid = new Vector2(0, 0);
     const length = this.polygon.points.length;
     this.polygon.points.forEach(p => centroid.add(p));
-    centroid.scale(1 / length);
+    centroid.x /= length;
+    centroid.y /= length;
     return centroid;
   }
 
@@ -103,21 +91,7 @@ class NavPoly {
 
   _isPointOnEdge({ x, y }) {
     for (const edge of this.edges) {
-      const xMin = edge.left;
-      const xMax = edge.right;
-      const yMin = edge.top;
-      const yMax = edge.bottom;
-
-      // Check if in bounds of segment and compare slope of line start -> xy to line start -> line
-      // end
-      if (
-        x >= xMin &&
-        x <= xMax &&
-        (y >= yMin && y <= yMax) &&
-        (x - xMin) * (yMax - yMin) === (xMax - xMin) * (y - yMin)
-      ) {
-        return true;
-      }
+      if (edge.pointOnSegment(x, y)) return true;
     }
     return false;
   }

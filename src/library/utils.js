@@ -13,6 +13,15 @@ export function triarea2(a, b, c) {
 /**
  * @private
  */
+export function clamp(value, min, max) {
+  if (value < min) value = min;
+  if (value > max) value = max;
+  return value;
+}
+
+/**
+ * @private
+ */
 export function almostEqual(value1, value2, errorMargin = 0.0001) {
   if (Math.abs(value1 - value2) <= errorMargin) return true;
   else return false;
@@ -37,9 +46,18 @@ export function angleDifference(x, y) {
 export function areCollinear(line1, line2, errorMargin = 0.0001) {
   // Figure out if the two lines are equal by looking at the area of the triangle formed
   // by their points
-  const area1 = triarea2(line1.getPointA(), line1.getPointB(), line2.getPointA());
-  const area2 = triarea2(line1.getPointA(), line1.getPointB(), line2.getPointB());
+  const area1 = triarea2(line1.start, line1.end, line2.start);
+  const area2 = triarea2(line1.start, line1.end, line2.end);
   if (almostEqual(area1, 0, errorMargin) && almostEqual(area2, 0, errorMargin)) {
     return true;
   } else return false;
+}
+
+/**
+ * @private
+ */
+export function distance(p1, p2) {
+  const dx = p2.x - p1.x;
+  const dy = p2.y - p1.y;
+  return Math.sqrt(dx * dx + dy * dy);
 }

@@ -48,7 +48,13 @@ export default class NavMeshPlugin {
       const bottom = obj.y + obj.height;
       const left = obj.x;
       const right = obj.x + obj.width;
-      return new Phaser.Geom.Polygon([[left, top], [left, bottom], [right, bottom], [right, top]]);
+      return [
+        { x: left, y: top },
+        { x: left, y: bottom },
+        { x: right, y: bottom },
+        { x: right, y: top }
+      ];
+      // return new Phaser.Geom.Polygon([[left, top], [left, bottom], [right, bottom], [right, top]]);
     });
 
     // Build the navmesh
