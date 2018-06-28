@@ -1,4 +1,7 @@
-import { triarea2, almostEqual, angleDifference, areCollinear } from "../utils";
+import { almostEqual, angleDifference, areCollinear } from "../utils";
+import Line from "../math/line";
+
+const line = (...args) => new Line(...args);
 
 describe("almostEqual", () => {
   test("should be false for numbers with a significant difference", () => {
@@ -12,7 +15,6 @@ describe("almostEqual", () => {
 });
 
 describe("areCollinear", () => {
-  const line = (x1, y1, x2, y2) => ({ start: { x: x1, y: y1 }, end: { x: x2, y: y2 } });
   test("should return false for non-collinear lines", () => {
     expect(areCollinear(line(-5, 0, 5, 0), line(-5, 10, 5, 10))).toEqual(false); // Parallel
     expect(areCollinear(line(0, 0, 10, 10), line(0, 0, 0, 10))).toEqual(false); // Intersecting
