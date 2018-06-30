@@ -1,8 +1,4 @@
-import Line from "./math/line";
 import Vector2 from "./math/vector-2";
-
-// Debug color palette
-const palette = [0x00a0b0, 0x6a4a3c, 0xcc333f, 0xeb6841, 0xedc951];
 
 /**
  * A class that represents a navigable polygon in a navmesh. It is build from a Phaser.Polygon. It
@@ -39,9 +35,10 @@ class NavPoly {
     this.boundingRadius = this._calculateRadius();
 
     this.weight = 1; // jsastar property
+  }
 
-    const i = this.id % palette.length;
-    this._color = palette[i];
+  getPoints() {
+    return this.polygon.points;
   }
 
   contains(point) {
@@ -94,50 +91,6 @@ class NavPoly {
       if (edge.pointOnSegment(x, y)) return true;
     }
     return false;
-  }
-
-  /**
-   * Draw the polygon to given graphics object
-   *
-   * @param {Phaser.Graphics} graphics
-   * @param {boolean} [drawCentroid=true] Show the approx centroid
-   * @param {boolean} [drawBounds=false] Show the bounding radius
-   * @param {boolean} [drawNeighbors=true] Show the connections to neighbors
-   * @param {boolean} [drawPortals=true] Show the portal edges
-   *
-   * @memberof NavPoly
-   */
-  draw(
-    graphics,
-    drawCentroid = true,
-    drawBounds = false,
-    drawNeighbors = true,
-    drawPortals = true
-  ) {
-    graphics.fillStyle(this._color);
-    graphics.fillPoints(this.polygon.points, true);
-
-    if (drawCentroid) {
-      graphics.fillStyle(0x000000);
-      graphics.fillCircle(this.centroid.x, this.centroid.y, 4);
-    }
-
-    if (drawBounds) {
-      graphics.lineStyle(1, 0xffffff);
-      graphics.strokeCircle(this.centroid.x, this.centroid.y, this.boundingRadius);
-    }
-
-    if (drawNeighbors) {
-      graphics.lineStyle(2, 0x000000);
-      this.neighbors.forEach(n => {
-        graphics.lineBetween(this.centroid.x, this.centroid.y, n.centroid.x, n.centroid.y);
-      });
-    }
-
-    if (drawPortals) {
-      graphics.lineStyle(10, 0x000000);
-      this.portals.forEach(p => graphics.strokeLineShape(p));
-    }
   }
 }
 

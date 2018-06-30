@@ -1,6 +1,6 @@
 import jsastar from "javascript-astar";
-import NavPoly from "./nav-poly";
-import NavGraph from "./nav-graph";
+import NavPoly from "./navpoly";
+import NavGraph from "./navgraph";
 import Channel from "./channel";
 import { angleDifference, areCollinear, clamp } from "./utils";
 import Vector2 from "./math/vector-2";
@@ -22,19 +22,17 @@ export default class NavMesh {
   /**
    * Creates an instance of NavMesh.
    *
-   * @param {Phaser.Game} game
    * @param {Phaser.Polygon[]} polygons
    * @param {number} [meshShrinkAmount=0] The amount (in pixels) that the navmesh has been
    * shrunk around obstacles (a.k.a the amount obstacles have been expanded)
    */
-  constructor(polygons, meshShrinkAmount = 0) {
-    this._debugGraphics = null;
+  constructor(meshPolygonPoints, meshShrinkAmount = 0) {
     this._meshShrinkAmount = meshShrinkAmount;
 
     // TODO: this is temporary
-    const newPolys = polygons.map(points => {
-      const vPoints = points.map(p => new Vector2(p.x, p.y));
-      return new Polygon(vPoints);
+    const newPolys = meshPolygonPoints.map(polyPoints => {
+      const vectors = polyPoints.map(p => new Vector2(p.x, p.y));
+      return new Polygon(vectors);
     });
 
     // Construct NavPoly instances for each polygon
@@ -44,6 +42,10 @@ export default class NavMesh {
 
     // Astar graph of connections between polygons
     this._graph = new NavGraph(this._navPolygons);
+  }
+
+  getPolygons() {
+    return this._navPolygons;
   }
 
   /**
@@ -64,36 +66,33 @@ export default class NavMesh {
   /**
    * Find a path from the start point to the end point using this nav mesh.
    *
-   * @param {Phaser.Point} startPoint
-   * @param {Phaser.Point} endPoint
-   * @param {object} [drawOptions={}] Options for controlling debug drawing
-   * @param {boolean} [drawOptions.drawPolyPath=false] Whether or not to visualize the path
-   * through the polygons - e.g. the path that astar found.
-   * @param {boolean} [drawOptions.drawFinalPath=false] Whether or not to visualize the path
-   * through the path that was returned.
+   * @param {Phaser.Point} startVector
+   * @param {Phaser.Point} endVector
    * @returns {Phaser.Point[]|null} An array of points if a path is found, or null if no path
    *
    * @memberof NavMesh
    */
-  findPath(startPoint, endPoint, { drawPolyPath = false, drawFinalPath = false } = {}) {
+  findPath(startPoint, endPoint) {
     let startPoly = null;
     let endPoly = null;
     let startDistance = Number.MAX_VALUE;
     let endDistance = Number.MAX_VALUE;
     let d, r;
+    const startVector = new Vector2(startPoint.x, startPoint.y);
+    const endVector = new Vector2(endPoint.x, endPoint.y);
 
     // Find the closest poly for the starting and ending point
     for (const navPoly of this._navPolygons) {
       r = navPoly.boundingRadius;
       // Start
-      d = navPoly.centroid.distance(startPoint);
-      if (d <= startDistance && d <= r && navPoly.contains(startPoint)) {
+      d = navPoly.centroid.distance(startVector);
+      if (d <= startDistance && d <= r && navPoly.contains(startVector)) {
         startPoly = navPoly;
         startDistance = d;
       }
       // End
-      d = navPoly.centroid.distance(endPoint);
-      if (d <= endDistance && d <= r && navPoly.contains(endPoint)) {
+      d = navPoly.centroid.distance(endVector);
+      if (d <= endDistance && d <= r && navPoly.contains(endVector)) {
         endPoly = navPoly;
         endDistance = d;
       }
@@ -105,11 +104,11 @@ export default class NavMesh {
       for (const navPoly of this._navPolygons) {
         // Check if point is within bounding circle to avoid extra projection calculations
         r = navPoly.boundingRadius + this._meshShrinkAmount;
-        d = navPoly.centroid.distance(startPoint);
+        d = navPoly.centroid.distance(startVector);
         if (d <= r) {
           // Check if projected point is within range of a polgyon and is closer than the
           // previous point
-          const { distance } = this._projectPointToPolygon(startPoint, navPoly);
+          const { distance } = this._projectPointToPolygon(startVector, navPoly);
           if (distance <= this._meshShrinkAmount && distance < startDistance) {
             startPoly = navPoly;
             startDistance = distance;
@@ -122,9 +121,9 @@ export default class NavMesh {
     if (!endPoly && this._meshShrinkAmount > 0) {
       for (const navPoly of this._navPolygons) {
         r = navPoly.boundingRadius + this._meshShrinkAmount;
-        d = navPoly.centroid.distance(endPoint);
+        d = navPoly.centroid.distance(endVector);
         if (d <= r) {
-          const { distance } = this._projectPointToPolygon(endPoint, navPoly);
+          const { distance } = this._projectPointToPolygon(endVector, navPoly);
           if (distance <= this._meshShrinkAmount && distance < endDistance) {
             endPoly = navPoly;
             endDistance = distance;
@@ -137,11 +136,7 @@ export default class NavMesh {
     if (!startPoly || !endPoly) return null;
 
     // If the start and end polygons are the same, return a direct path
-    if (startPoly === endPoly) {
-      const phaserPath = [startPoint.clone(), endPoint.clone()];
-      if (drawFinalPath) this.debugDrawPath(phaserPath, 0xffd900, 10);
-      return phaserPath;
-    }
+    if (startPoly === endPoly) return [startVector, endVector];
 
     // Search!
     const astarPath = jsastar.astar.search(this._graph, startPoly, endPoly, {
@@ -156,7 +151,7 @@ export default class NavMesh {
 
     // We have a path, so now time for the funnel algorithm
     const channel = new Channel();
-    channel.push(startPoint);
+    channel.push(startVector);
     for (let i = 0; i < astarPath.length - 1; i++) {
       const navPolygon = astarPath[i];
       const nextNavPolygon = astarPath[i + 1];
@@ -172,7 +167,7 @@ export default class NavMesh {
       // Push the portal vertices into the channel
       channel.push(portal.start, portal.end);
     }
-    channel.push(endPoint);
+    channel.push(endVector);
 
     // Pull a string along the channel to run the funnel
     channel.stringPull();
@@ -185,13 +180,6 @@ export default class NavMesh {
       if (!lastPoint || !newPoint.equals(lastPoint)) phaserPath.push(newPoint);
       lastPoint = newPoint;
     }
-
-    // Call debug drawing
-    if (drawPolyPath) {
-      const polyPath = astarPath.map(elem => elem.centroid);
-      this.debugDrawPath(polyPath, 0x00ff00, 5);
-    }
-    if (drawFinalPath) this.debugDrawPath(phaserPath, 0xffd900, 10);
 
     return phaserPath;
   }
@@ -327,85 +315,5 @@ export default class NavMesh {
     // Project onto the segment
     const p = new Vector2(a.x + t * (b.x - a.x), a.y + t * (b.y - a.y));
     return p;
-  }
-
-  /**
-   * Enable debug and create graphics overlay (if it hasn't already been created)
-   */
-  enableDebug() {
-    if (!this._debugGraphics) {
-      // this._debugGraphics = this.game.add.graphics(0, 0);
-      this._debugGraphics.alpha = 0.5;
-    }
-  }
-
-  /**
-   * Disable debug and destroy associated graphics
-   */
-  disableDebug() {
-    if (this._debugGraphics) {
-      this._debugGraphics.destroy();
-      this._debugGraphics = null;
-    }
-  }
-
-  /**
-   * Check whether debug is enabled
-   *
-   * @returns {boolean}
-   */
-  isDebugEnabled() {
-    return this._debugGraphics !== null;
-  }
-
-  /**
-   * Clear the debug overlay
-   */
-  debugClear() {
-    if (this._debugGraphics) this._debugGraphics.clear();
-  }
-
-  /**
-   * Visualize the polygons in the nav mesh as an overlay on top of the game
-   *
-   * @param {object} options
-   * @param {boolean} [options.drawCentroid=true] For each polygon, show the approx centroid
-   * @param {boolean} [options.drawBounds=false] For each polygon, show the bounding radius
-   * @param {boolean} [options.drawNeighbors=true] For each polygon, show the connections to
-   * neighbors
-   * @param {boolean} [options.drawPortals=true] For each polygon, show the portal edges
-   */
-  debugDrawMesh(
-    graphics,
-    { drawCentroid = true, drawBounds = false, drawNeighbors = true, drawPortals = true } = {}
-  ) {
-    // if (!this._debugGraphics) this.enableDebug();
-    // Visualize the navigation mesh
-    for (const navPoly of this._navPolygons) {
-      navPoly.draw(graphics, drawCentroid, drawBounds, drawNeighbors, drawPortals);
-    }
-  }
-
-  /**
-   * Visualize a path (array of points) on the debug graphics overlay
-   *
-   * @param {Phaser.Point[]} path
-   * @param {number} [color=0x00FF00]
-   * @param {number} [thickness=10]
-   */
-  debugDrawPath(path, color = 0x00ff00, thickness = 10) {
-    // if (!this._debugGraphics) this.enableDebug();
-    // if (path.length) {
-    //   // Draw line for path
-    //   this._debugGraphics.lineStyle(thickness, color);
-    //   this._debugGraphics.drawShape(new Phaser.Polygon(...path));
-    //   this._debugGraphics.beginFill(color);
-    //   // Draw circle at start and end of path
-    //   const d = 0.5 * thickness;
-    //   this._debugGraphics.drawEllipse(path[0].x, path[0].y, d, d);
-    //   const lastPoint = path[path.length - 1];
-    //   this._debugGraphics.drawEllipse(lastPoint.x, lastPoint.y, d, d);
-    //   this._debugGraphics.endFill();
-    // }
   }
 }
