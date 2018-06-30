@@ -8,8 +8,8 @@ A [Phaser](http://phaser.io/) plugin for fast pathfinding using navigation meshe
 
 Pathfinding is essentially solving a maze, finding a path between two points while avoiding obstacles. When pathfinding in games, we need to:
 
-1. Represent the game world in a way that defines what areas are walkable.
-2. Search that representation for the shortest path.
+1.  Represent the game world in a way that defines what areas are walkable.
+2.  Search that representation for the shortest path.
 
 When it comes to 2D pathfinding in [Phaser](http://phaser.io/), the [packaged solution](https://github.com/photonstorm/phaser-plugins) represents the world using [tiles](https://developer.mozilla.org/en-US/docs/Games/Techniques/Tilemaps) (a grid) and then searchs for a path using the [A\* algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm). If you have a 50 x 50 tile world, searching for a path involves searching through a representation of the world with up to 2500 locations (nodes).
 
@@ -43,7 +43,7 @@ Short paths (150 - 500 pixel length)
         AStart Plugin: 0.02470ms
         EasyStar Plugin: 0.02876ms
         NavMesh Plugin: 0.00575ms
-    
+
     Comparison:
         NavMesh is 4.30x faster than Phaser AStar
         NavMesh is 5.00x faster than EasyStar
@@ -54,7 +54,7 @@ Long paths (600 pixels and greater length), average time per iteration:
         AStart Plugin: 1.38710ms
         EasyStar Plugin: 0.15977ms
         NavMesh Plugin: 0.00738ms
-    
+
     Comparison:
         NavMesh is 187.95x faster than Phaser AStar
         NavMesh is 21.65x faster than EasyStar
@@ -129,11 +129,15 @@ navMesh.enableDebug(); // Creates a Phaser.Graphics overlay on top of the screen
 navMesh.debugClear(); // Clears the overlay
 // Visualize the underlying navmesh
 navMesh.debugDrawMesh({
-    drawCentroid: true, drawBounds: false, drawNeighbors: true, drawPortals: true
+  drawCentroid: true,
+  drawBounds: false,
+  drawNeighbors: true,
+  drawPortals: true
 });
 // Find & visualize a specific path
 const path = navMesh.findPath(follower.position, target, {
-    drawPolyPath: true, drawFinalPath: true
+  drawPolyPath: true,
+  drawFinalPath: true
 });
 ```
 
@@ -143,13 +147,16 @@ Pull requests are welcome! If you want to run this repo locally, make sure you h
 
 ```
 npm install
+npm run bootstrap
 ```
 
-This will pull all the dependencies. The project is controlled via npm scripts. The main ones to use:
+This project uses [lerna](https://github.com/lerna/lerna) to manage multiple packages within one repository. `npm install` will pull the root dependencies and `npm run bootstrap` will use lerna to pull & link dependencies within "packages/". (In my testing, bootstrap could _not_ be run as a "postinstall" script).
 
-- `npm run build:all` - will build the library into `dist/` & the examples into `public/`. You can use this to generate a custom build.
-- `npm run dev` - will build, watch and serve the library & examples. A browser window will pop up with links to the examples.
-- `npm run test` - will run the tests against the library.
+The project is controlled via npm scripts. The main ones to use:
+
+- `npm run build` - will build all the individual packages within "packages/".
+- `npm run dev` - watch & serve the examples. A browser window will pop up with links to the examples. If you are working on the library, this is the easiest way to do "functional testing" by using the library in a game environment.
+- `npm run test` - will run the automated tests against the library.
 
 ## References
 
