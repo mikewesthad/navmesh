@@ -1,10 +1,25 @@
-# Navigation Meshes in Phaser
+# Navigation Meshes in Phaser <!-- omit in toc -->
 
 A [Phaser](http://phaser.io/) plugin for fast pathfinding using navigation meshes.
 
 [<img src="./doc-source/single-following-agent.gif" width="400">](https://www.mikewesthad.com/phaser-navmesh/demo/)
 
 [Interactive demo](https://www.mikewesthad.com/phaser-navmesh/demo/)
+
+Table of Contents:
+
+- [Intro](#intro)
+- [Temporary Performance Comparison](#temporary-performance-comparison)
+- [Installation](#installation)
+  - [As a Script](#as-a-script)
+  - [As a Module](#as-a-module)
+- [Create a Nav Mesh](#create-a-nav-mesh)
+- [Usage](#usage)
+- [Development](#development)
+- [References](#references)
+- [TODO](#todo)
+
+## Intro
 
 Pathfinding is essentially solving a maze, finding a path between two points while avoiding obstacles. When pathfinding in games, we need to:
 
