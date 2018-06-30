@@ -1,3 +1,5 @@
-// Fix for webpack not exporting ES6 module default properly when using global mode of UMD. It ends
-// up with someone having to do "PhaserNavmesh.default" instead of "PhaserNavmesh"
-module.exports = require("./navmesh-plugin").default;
+import PhaserNavMeshPlugin from "./phaser-navmesh-plugin";
+import PhaserNavMesh from "./phaser-navmesh";
+
+export default PhaserNavMeshPlugin;
+export { PhaserNavMesh };
