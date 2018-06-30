@@ -1,6 +1,4 @@
-// import FollowerSprite from "../game-objects/follower";
 import Phaser from "phaser";
-import NavMeshPlugin from "phaser-navmesh/src"; // Import source, not the dist
 import FollowerSprite from "../game-objects/follower";
 
 export default class Start extends Phaser.Scene {
@@ -21,22 +19,19 @@ export default class Start extends Phaser.Scene {
     wallLayer.setCollisionByProperty({ collides: true });
 
     // -- NavMesh Setup --
-    // // Register the plugin with Phaser
-    // this.navMeshPlugin = this.game.plugins.add(NavMeshPlugin);
 
-    // // Load the navMesh from the tilemap object layer "navmesh". The navMesh was created with
-    // // 12.5 pixels of space around obstacles.
-    // const navMesh = this.navMeshPlugin.buildMeshFromTiled(tilemap, "navmesh", 12.5);
+    // Load the navMesh from the tilemap object layer "navmesh". The navMesh was created with
+    // 12.5 pixels of space around obstacles.
+    const objectLayer = tilemap.getObjectLayer("navmesh");
+    const navMesh = this.navMeshPlugin.buildMeshFromTiled("mesh1", objectLayer, 12.5);
 
     // Now you could find a path via navMesh.findPath(startPoint, endPoint)
-
-    const navMeshPlugin = new NavMeshPlugin();
-    const navMesh = navMeshPlugin.buildMeshFromTiled(tilemap, "navmesh", 12.5);
 
     // -- Click to Find Path --
 
     // Graphics overlay for visualizing path
     const graphics = this.add.graphics(0, 0).setAlpha(0.5);
+    navMesh.enableDebug(graphics);
 
     // Game object that can follow a path (inherits from Phaser.Sprite)
     const follower = new FollowerSprite(this, 50, 200, navMesh);
@@ -49,42 +44,31 @@ export default class Start extends Phaser.Scene {
       // Tell the follower sprite to find its path to the target
       follower.goTo(end);
 
-      // // For demo purposes, let's recalculate the path here and draw it on the screen
+      // For demo purposes, let's recalculate the path here and draw it on the screen
       const startTime = performance.now();
       const path = navMesh.findPath(start, end);
       // -> path is now an array of points, or null if no valid path found
       const pathTime = performance.now() - startTime;
 
-      // Draw the start and end of the path
-      graphics.clear();
-      graphics.fillStyle(0xffd900);
-      graphics.fillCircle(start.x, start.y, 10);
-      graphics.fillCircle(end.x, end.y, 10);
+      navMesh.debugDrawClear();
+      navMesh.debugDrawPath(path, 0xffd900);
 
-      // Display the path, if it exists
-      if (path) {
-        uiTextLines[0] = `Path found in: ${pathTime.toFixed(2)}ms`;
-        graphics.lineStyle(5, 0xffd900);
-        graphics.strokePoints(path);
-      } else {
-        uiTextLines[0] = `No path found (${pathTime.toFixed(2)}ms)`;
-      }
+      const formattedTime = pathTime.toFixed(3);
+      uiTextLines[0] = path
+        ? `Path found in: ${formattedTime}ms`
+        : `No path found (${formattedTime}ms)`;
       uiText.setText(uiTextLines);
     });
 
     // Toggle the navmesh visibility on/off
-    const debugGraphics = this.add.graphics();
     this.input.keyboard.on("keydown_M", () => {
-      if (navMesh.isDebugEnabled()) {
-        navMesh.disableDebug();
-      } else {
-        navMesh.debugDrawMesh(debugGraphics, {
-          drawCentroid: true,
-          drawBounds: false,
-          drawNeighbors: false,
-          drawPortals: true
-        });
-      }
+      navMesh.debugDrawClear();
+      navMesh.debugDrawMesh({
+        drawCentroid: true,
+        drawBounds: false,
+        drawNeighbors: false,
+        drawPortals: true
+      });
     });
 
     // -- Instructions --
@@ -100,16 +84,12 @@ export default class Start extends Phaser.Scene {
       "Press 'm' to see navmesh.",
       "Press '2' to go to scene 2."
     ];
-    const uiText = this.add.text(10, 5, this.uiTextLines, style);
+    const uiText = this.add.text(10, 5, uiTextLines, style).setAlpha(0.9);
 
-    // // Scene changer
-    // this.game.input.keyboard.addKey(Phaser.KeyCode.TWO).onDown.add(() => {
-    //   this.game.state.start("many-paths");
-    // });
+    // -- Scene Changer --
+
+    this.input.keyboard.on("keydown_TWO", () => {
+      this.scene.start("many-paths");
+    });
   }
-
-  // shutdown() {
-  //   // Clean up references and destroy navmeshes
-  //   this.game.plugins.remove(this.navMeshPlugin, true);
-  // }
 }

@@ -13,12 +13,14 @@ class FollowerSprite extends Phaser.GameObjects.Sprite {
     this.navMesh = navMesh;
     this.path = null;
     this.currentTarget = null;
+    this.scene = scene;
 
     // Enable arcade physics for moving with velocity
     scene.physics.world.enable(this);
 
     scene.add.existing(this);
     scene.events.on("update", this.update, this);
+    scene.events.once("shutdown", this.destroy, this);
   }
 
   goTo(targetPoint) {
@@ -31,6 +33,10 @@ class FollowerSprite extends Phaser.GameObjects.Sprite {
   }
 
   update(time, deltaTime) {
+    // Bugfix: Phaser's event emitter caches listeners, so it's possible to get updated once after
+    // being destroyed
+    if (!this.body) return;
+
     // Stop any previous movement
     this.body.velocity.set(0);
 
@@ -46,11 +52,11 @@ class FollowerSprite extends Phaser.GameObjects.Sprite {
       }
 
       // Still got a valid target?
-      if (this.currentTarget) this._moveTowards(this.currentTarget, 200, deltaTime / 1000);
+      if (this.currentTarget) this.moveTowards(this.currentTarget, 200, deltaTime / 1000);
     }
   }
 
-  _moveTowards(targetPosition, maxSpeed = 200, elapsedSeconds) {
+  moveTowards(targetPosition, maxSpeed = 200, elapsedSeconds) {
     const { x, y } = targetPosition;
     const angle = Phaser.Math.Angle.Between(this.x, this.y, x, y);
     const distance = Phaser.Math.Distance.Between(this.x, this.y, x, y);
@@ -61,8 +67,8 @@ class FollowerSprite extends Phaser.GameObjects.Sprite {
     this.rotation = angle;
   }
 
-  destory() {
-    this.scene.events.off("update", this.update, this);
+  destroy() {
+    if (this.scene) this.scene.events.off("update", this.update, this);
     super.destroy();
   }
 }
