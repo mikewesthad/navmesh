@@ -165,7 +165,7 @@ npm install
 npm run bootstrap
 ```
 
-This project uses [lerna](https://github.com/lerna/lerna) to manage multiple packages within one repository. `npm install` will pull the root dependencies and `npm run bootstrap` will use lerna to pull & link dependencies within "packages/". (In my testing, bootstrap could _not_ be run as a "postinstall" script).
+This project uses [lerna](https://github.com/lerna/lerna) and [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/) to manage multiple packages within one repository. `npm install` will pull the root dependencies and `npm run bootstrap` will use lerna & yarn to pull and link dependencies within "packages/".
 
 The project is controlled via npm scripts. The main ones to use:
 
@@ -193,11 +193,8 @@ Helpful resources used while building this plugin:
   - Try libtess in quad mode
   - The astar heuristic & cost functions need another pass. They don't always produce the shortest path. Implement incomplete funneling while building the astar path?
   - The navmesh assumes any polygon can reach any other polygon. This probably should be extended to put connected polygons into groups like patroljs.
-- Extract Phaser dependency
-  - Allow the library to work with an arbitrary mesh while having helper functions that are Phaser specific
 - Testing
   - Check against tilemap that is larger than the screen
 - Research
   - There are probably optimization tricks to do when dealing with certain types of shapes. E.g. we are using axis-aligned boxes for the polygons and it is dead simple to calculate if a point is inside one of those...
   - Investigate [Points-of-Visibility](http://www.david-gouveia.com/portfolio/pathfinding-on-a-2d-polygonal-map/) pathfinding to compare speed
-  - Using ES6 is probably suboptimal for performance
