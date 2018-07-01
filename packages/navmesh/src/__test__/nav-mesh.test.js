@@ -1,9 +1,7 @@
-import NavMesh from "../nav-mesh";
+import NavMesh from "../navmesh";
 import Vector2 from "../math/vector-2";
-import Polygon from "../math/polygon";
 
 const v2 = (...args) => new Vector2(...args);
-const poly = (...args) => new Polygon(...args);
 
 describe("An empty NavMesh instance", () => {
   let emptyNavMesh;
