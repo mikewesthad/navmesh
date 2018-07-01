@@ -56,6 +56,7 @@ class StartState extends Phaser.State {
     // Graphics overlay for visualizing path
     const graphics = this.game.add.graphics(0, 0);
     graphics.alpha = 0.5;
+    navMesh.enableDebug(graphics);
 
     // Game object that can follow a path (inherits from Phaser.Sprite)
     const follower = new FollowerSprite(this.game, 50, 200, navMesh);
@@ -74,25 +75,20 @@ class StartState extends Phaser.State {
       // -> path is now an array of points, or null if no valid path found
       const pathTime = performance.now() - startTime;
 
-      // Draw the start and end of the path
-      graphics.clear();
-      graphics.beginFill(0xffd900);
-      graphics.drawEllipse(follower.position.x, follower.position.y, 10, 10);
-      graphics.drawEllipse(target.x, target.y, 10, 10);
-      graphics.endFill();
+      navMesh.debugDrawClear();
+      navMesh.debugDrawPath(path, 0xffd900);
 
       // Display the path, if it exists
-      if (path) {
-        pathInfoText.setText(`Path found in: ${pathTime.toFixed(2)}ms`);
-        graphics.lineStyle(5, 0xffd900);
-        graphics.drawShape(new Phaser.Polygon(...path));
-      } else {
-        pathInfoText.setText(`No path found (${pathTime.toFixed(2)}ms)`);
-      }
+      pathInfoText.setText(
+        path
+          ? `Path found in: ${pathTime.toFixed(2)}ms`
+          : `No path found (${pathTime.toFixed(2)}ms)`
+      );
     });
 
     // Toggle the navmesh visibility on/off
     this.game.input.keyboard.addKey(Phaser.KeyCode.M).onDown.add(() => {
+      navMesh.debugDrawClear();
       navMesh.debugDrawMesh({
         drawCentroid: true,
         drawBounds: false,
