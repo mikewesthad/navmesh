@@ -3,10 +3,10 @@ import PhaserNavMesh from "./phaser-navmesh";
 
 /**
  * This class can create navigation meshes for use in Phaser. The navmeshes can be constructed from
- * convex polygons embedded in a Tiled map. The class that conforms to Phaser's plugin structure.
+ * convex polygons embedded in a Tiled map. The class that conforms to Phaser 3's plugin structure.
  *
  * @export
- * @class NavMeshPlugin
+ * @class PhaserNavMeshPlugin
  */
 export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
   constructor(scene, pluginManager) {
@@ -19,15 +19,35 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
     if (!scene.sys.settings.isBooted) this.systems.events.once("boot", this.boot, this);
   }
 
+  /**
+   * Phaser.Scene lifecycle event
+   * 
+   * @memberof PhaserNavMeshPlugin
+   */
   boot() {
     const emitter = this.systems.events;
     emitter.once("destroy", this.destroy, this);
   }
 
-  // Required by the Phaser PluginManager, but noop in this plugin
+  /**
+   * Phaser.Scene lifecycle event - noop in this plugin, but still required.
+   * 
+   * @memberof PhaserNavMeshPlugin
+   */
   init() {}
+  
+  /**
+   * Phaser.Scene lifecycle event - noop in this plugin, but still required.
+   * 
+   * @memberof PhaserNavMeshPlugin
+   */
   start() {}
 
+  /**
+   * Phaser.Scene lifecycle event - will destroy all navmeshes created.
+   * 
+   * @memberof PhaserNavMeshPlugin
+   */
   destroy() {
     this.systems.events.off("boot", this.boot, this);
     this.systems.events.Object.values(this.phaserNavMeshes).forEach(m => m.destroy());
@@ -36,6 +56,12 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
     this.systems = undefined;
   }
 
+  /**
+   * Destroy a navmesh and remove it from the plugin 
+   *
+   * @param {string} key
+   * @memberof PhaserNavMeshPlugin
+   */
   removeMesh(key) {
     if (this.phaserNavMeshes[key]) {
       this.phaserNavMeshes[key].destroy();
@@ -47,10 +73,9 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
    * Load a navmesh from Tiled. Currently assumes that the polygons are squares! Does not support
    * tilemap layer scaling, rotation or position.
    *
-   * @param {string} key Key to store this navmesh under within the plugin
-   * @param {Phaser.Tilemaps.Tilemap} tilemap The tilemap that contains polygons under an object
-   * layer
-   * @param {string} layerName The name of the object layer in the tilemap
+   * @param {string} key Key to use when storign this navmesh within the plugin.
+   * @param {Phaser.Tilemaps.ObjectLayer} objectLayer The ObjectLayer from a tilemap that contains
+   * the polygons that make up the navmesh.
    * @param {number} [meshShrinkAmount=0] The amount (in pixels) that the navmesh has been shrunk
    * around obstacles (a.k.a the amount obstacles have been expanded)
    *
