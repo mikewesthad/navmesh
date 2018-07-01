@@ -2,6 +2,7 @@
 
 const path = require("path");
 const webpack = require("webpack");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const root = __dirname;
 
 module.exports = function(env, argv) {
@@ -10,14 +11,20 @@ module.exports = function(env, argv) {
   return {
     context: path.join(root, "src"),
     entry: {
-      "navmesh": "./index.js",
+      navmesh: "./index.js",
       "navmesh.min": "./index.js"
     },
     output: {
       filename: "[name].js",
       path: path.resolve(root, "dist"),
-      library: "Navmesh",
-      libraryTarget: "umd"
+      library: "NavMesh",
+      libraryTarget: "umd",
+      libraryExport: "default"
+    },
+    optimization: {
+      minimizer: [
+        new UglifyJsPlugin({ include: /\.min\.js$/ })
+      ]
     },
     module: {
       rules: [
@@ -28,9 +35,6 @@ module.exports = function(env, argv) {
         }
       ]
     },
-    plugins: [
-      new webpack.DefinePlugin({ PRODUCTION: !isDev })
-    ],
     devtool: isDev ? "eval-source-map" : "source-map"
   };
 };
