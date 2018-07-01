@@ -6,6 +6,8 @@ A JS plugin for fast pathfinding using [navigation meshes](https://en.wikipedia.
 
 [Interactive demo](https://www.mikewesthad.com/navmesh/demo/)
 
+(Note: if you are viewing this on GitHub or NPM, you might want to check out the HTML documentation [here](https://www.mikewesthad.com/navmesh/docs/).)
+
 Table of Contents:
 
 - [Intro](#intro)
@@ -33,8 +35,6 @@ This plugin uses navigation meshes to simplify that search. Instead of represent
 The example map below (left) is a 30 x 30 map. As a grid, there are 900 nodes, but as a navmesh (right) there are 27 nodes (colored rectangles).
 
 <img src="./doc-source/combined.png" width="700">
-
-(Note: if you are viewing this on GitHub or NPM, you might want to check out the HTML documentation [here](https://www.mikewesthad.com/navmesh/docs/).)
 
 ## Installation
 
