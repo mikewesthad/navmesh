@@ -9,33 +9,33 @@ import Polygon from "./math/polygon";
 
 /**
  * The workhorse that represents a navigation mesh built from a series of polygons. Once built, the
- * mesh can be asked for a path from one point to another point. It has debug methods for
- * visualizing paths and visualizing the individual polygons. Some internal terminology usage:
- *
+ * mesh can be asked for a path from one point to another point. Some internal terminology usage:
  * - neighbor: a polygon that shares part of an edge with another polygon
  * - portal: when two neighbor's have edges that overlap, the portal is the overlapping line segment
  * - channel: the path of polygons from starting point to end point
  * - pull the string: run the funnel algorithm on the channel so that the path hugs the edges of the
  *   channel. Equivalent to having a string snaking through a hallway and then pulling it taut.
+ *
+ * @class NavMesh
+ * @private
  */
 export default class NavMesh {
   /**
    * Creates an instance of NavMesh.
-   *
-   * @param {Phaser.Polygon[]} polygons
+   * @param {object[][]} meshPolygonPoints Array where each element is an array of point-like
+   * objects that defines a polygon.
    * @param {number} [meshShrinkAmount=0] The amount (in pixels) that the navmesh has been
    * shrunk around obstacles (a.k.a the amount obstacles have been expanded)
+   * @memberof NavMesh
    */
   constructor(meshPolygonPoints, meshShrinkAmount = 0) {
     this._meshShrinkAmount = meshShrinkAmount;
 
-    // TODO: this is temporary
     const newPolys = meshPolygonPoints.map(polyPoints => {
       const vectors = polyPoints.map(p => new Vector2(p.x, p.y));
       return new Polygon(vectors);
     });
 
-    // Construct NavPoly instances for each polygon
     this._navPolygons = newPolys.map((polygon, i) => new NavPoly(i, polygon));
 
     this._calculateNeighbors();
@@ -44,14 +44,18 @@ export default class NavMesh {
     this._graph = new NavGraph(this._navPolygons);
   }
 
+  /**
+   * Get the NavPolys that are in this navmesh.
+   *
+   * @returns {NavPoly[]}
+   * @memberof NavMesh
+   */
   getPolygons() {
     return this._navPolygons;
   }
 
   /**
-   * Cleanup method to remove references so that navmeshes don't hang around from state to state.
-   * You don't have to invoke this directly. If you call destroy on the plugin, it will destroy
-   * all navmeshes that have been created.
+   * Cleanup method to remove references.
    *
    * @memberof NavMesh
    */
@@ -59,16 +63,14 @@ export default class NavMesh {
     this._graph.destroy();
     for (const poly of this._navPolygons) poly.destroy();
     this._navPolygons = [];
-    // this.game = null;
-    this.disableDebug();
   }
 
   /**
    * Find a path from the start point to the end point using this nav mesh.
    *
-   * @param {Phaser.Point} startVector
-   * @param {Phaser.Point} endVector
-   * @returns {Phaser.Point[]|null} An array of points if a path is found, or null if no path
+   * @param {object} startPoint A point-like object in the form {x, y}
+   * @param {object} endPoint A point-like object in the form {x, y}
+   * @returns {Vector2[]|null} An array of points if a path is found, or null if no path
    *
    * @memberof NavMesh
    */

@@ -1,5 +1,6 @@
 /**
  * Twice the area of the triangle formed by a, b and c
+ * @returns {number}
  * @private
  */
 export function triarea2(a, b, c) {
@@ -11,6 +12,8 @@ export function triarea2(a, b, c) {
 }
 
 /**
+ * Clamp value between min and max
+ * @returns {number}
  * @private
  */
 export function clamp(value, min, max) {
@@ -20,6 +23,8 @@ export function clamp(value, min, max) {
 }
 
 /**
+ * Check if two values within a small margin of one another
+ * @returns {boolean}
  * @private
  */
 export function almostEqual(value1, value2, errorMargin = 0.0001) {
@@ -28,7 +33,9 @@ export function almostEqual(value1, value2, errorMargin = 0.0001) {
 }
 
 /**
+ * Find the smallest angle difference between two angles
  * https://gist.github.com/Aaronduino/4068b058f8dbc34b4d3a9eedc8b2cbe0
+ * @returns {number}
  * @private
  */
 export function angleDifference(x, y) {
@@ -41,6 +48,8 @@ export function angleDifference(x, y) {
 }
 
 /**
+ * Check if two lines are collinear (within a marign)
+ * @returns {boolean}
  * @private
  */
 export function areCollinear(line1, line2, errorMargin = 0.0001) {
@@ -51,13 +60,4 @@ export function areCollinear(line1, line2, errorMargin = 0.0001) {
   if (almostEqual(area1, 0, errorMargin) && almostEqual(area2, 0, errorMargin)) {
     return true;
   } else return false;
-}
-
-/**
- * @private
- */
-export function distance(p1, p2) {
-  const dx = p2.x - p1.x;
-  const dy = p2.y - p1.y;
-  return Math.sqrt(dx * dx + dy * dy);
 }

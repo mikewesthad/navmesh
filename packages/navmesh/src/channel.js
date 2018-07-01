@@ -11,12 +11,6 @@ class Channel {
     this.portals = [];
   }
 
-  /**
-   * @param {Phaser.Point} p1
-   * @param {Phaser.Point} p2
-   *
-   * @memberof Channel
-   */
   push(p1, p2 = null) {
     if (p2 === null) p2 = p1;
     this.portals.push({

@@ -1,5 +1,3 @@
-import { distance } from "../utils";
-
 /**
  * Stripped down version of Phaser's Vector2 with just the functionality needed for navmeshes
  *
