@@ -1,0 +1,43 @@
+{
+  "name": "navmesh",
+  "version": "2.0.1",
+  "description": "A library for fast pathfinding using navigation meshes in JS",
+  "main": "dist/navmesh.min.js",
+  "scripts": {
+    "test": "jest",
+    "build": "webpack --mode production",
+    "watch": "webpack --mode development --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "javascript-astar": "github:mikewesthad/javascript-astar"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-jest": "^23.2.0",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "jest": "^23.2.0",
+    "uglifyjs-webpack-plugin": "^1.2.7",
+    "webpack": "^4.14.0",
+    "webpack-cli": "^3.0.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikewesthad/phaser-navmesh-plugin.git"
+  },
+  "keywords": [
+    "path finding",
+    "navigation mesh",
+    "a*"
+  ],
+  "author": "Michael Hadley",
+  "contributors": [
+    "Rex Twedt"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mikewesthad/phaser-navmesh-plugin/issues"
+  },
+  "homepage": "https://github.com/mikewesthad/phaser-navmesh-plugin#readme"
+}

@@ -1,10 +1,5 @@
-# Compiled docs
 docs
-
-# Compiled typings
-typings
-
-# Server-side dependencies
+types
 node_modules
 
 # Ignore files used for publishing to gh-pages

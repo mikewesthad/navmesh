@@ -1,0 +1,3 @@
+{
+  "projects": ["./packages/examples", "./packages/navmesh", "./packages/phaser-navmesh"]
+}
