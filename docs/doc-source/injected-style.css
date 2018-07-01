@@ -1,9 +1,0 @@
-/* Hide confusing import paths at the top of every module */
-[data-ice="importPath"] {
-    display: none;
-}
-
-/* Overriding Style Choices */
-.github-markdown img:not([src*=".svg"]) {
-  box-shadow: none;
-}
