@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("phaser"));
+		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
-		define(["phaser"], factory);
+		define([], factory);
 	else if(typeof exports === 'object')
-		exports["PhaserNavMeshPlugin"] = factory(require("phaser"));
+		exports["Phaser2NavMeshPlugin"] = factory();
 	else
-		root["PhaserNavMeshPlugin"] = factory(root["Phaser"]);
-})(window, function(__WEBPACK_EXTERNAL_MODULE__1__) {
+		root["Phaser2NavMeshPlugin"] = factory();
+})(window, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -504,20 +504,10 @@ return {
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__1__;
-
-/***/ }),
-/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-
-// EXTERNAL MODULE: external {"root":"Phaser","commonjs":"phaser","commonjs2":"phaser","amd":"phaser"}
-var external_root_Phaser_commonjs_phaser_commonjs2_phaser_amd_phaser_ = __webpack_require__(1);
-var external_root_Phaser_commonjs_phaser_commonjs2_phaser_amd_phaser_default = /*#__PURE__*/__webpack_require__.n(external_root_Phaser_commonjs_phaser_commonjs2_phaser_amd_phaser_);
 
 // EXTERNAL MODULE: C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/node_modules/javascript-astar/astar.js
 var astar = __webpack_require__(0);
@@ -1667,65 +1657,67 @@ var navmesh_NavMesh = function () {
 
 
 /* harmony default export */ var src = (navmesh);
-// CONCATENATED MODULE: ./phaser-navmesh.js
-var phaser_navmesh_createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+// CONCATENATED MODULE: ./phaser2-navmesh.js
+var phaser2_navmesh_createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function phaser_navmesh_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function phaser2_navmesh_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
  // import the source - not the dist - no need to double build
 
-
 /**
- * A wrapper around {@link NavMesh} for Phaser 3. Create instances of this class from
- * {@link PhaserNavMeshPlugin}. This is the workhorse that represents a navigation mesh built from a
- * series of polygons. Once built, the mesh can be asked for a path from one point to another point.
+ * A wrapper around {@link NavMesh} for Phaser 2 / Phaser CE. Create instances of this class from
+ * {@link Phaser2NavMeshPlugin}. This is the workhorse that represents a navigation mesh built from
+ * a series of polygons. Once built, the mesh can be asked for a path from one point to another
+ * point.
  *
  * Compared to {@link NavMesh}, this adds visual debugging capabilities and converts paths to
  * Phaser-compatible point instances.
  *
  * @export
- * @class PhaserNavMesh
+ * @class Phaser2NavMesh
  */
 
-var phaser_navmesh_PhaserNavMesh = function () {
+var phaser2_navmesh_Phaser2NavMesh = function () {
   /**
-   * Creates an instance of PhaserNavMesh.
-   * @param {PhaserNavMeshPlugin} plugin The plugin that owns this mesh.
+   * Creates an instance of Phaser2NavMesh.
+   * @param {Phaser2NavMeshPlugin} plugin The plugin that owns this mesh.
    * @param {string} key The key the mesh is stored under within the plugin.
    * @param {object[][]} meshPolygonPoints Array where each element is an array of point-like
    * objects that defines a polygon.
    * @param {number} [meshShrinkAmount=0] The amount (in pixels) that the navmesh has been shrunk
    * around obstacles (a.k.a the amount obstacles have been expanded)
-   * @memberof PhaserNavMesh
+   * @memberof Phaser2NavMesh
    */
-  function PhaserNavMesh(plugin, key, meshPolygonPoints) {
+  function Phaser2NavMesh(plugin, key, meshPolygonPoints) {
     var meshShrinkAmount = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
 
-    phaser_navmesh_classCallCheck(this, PhaserNavMesh);
+    phaser2_navmesh_classCallCheck(this, Phaser2NavMesh);
 
     this.key = key;
     this.plugin = plugin;
-    this.scene = plugin.scene;
+    this.game = plugin.game;
     this.debugGraphics = null;
     this.navMesh = new src(meshPolygonPoints, meshShrinkAmount);
   }
 
   /**
-   * See {@link NavMesh#findPath}. This implements the same functionality, except that the returned path
-   * is converted to Phaser-compatible points.
+   * See {@link NavMesh#findPath}. This implements the same functionality, except that the returned
+   * path is converted to Phaser-compatible points.
    *
    * @param {object} startPoint A point-like object in the form {x, y}
    * @param {object} endPoint A point-like object in the form {x, y}
    * @param {class} [PointClass=Phaser.Geom.Point]
    * @returns {object[]|null} An array of points if a path is found, or null if no path
-   * @memberof PhaserNavMesh
+   * @memberof Phaser2NavMesh
    */
 
 
-  phaser_navmesh_createClass(PhaserNavMesh, [{
+  phaser2_navmesh_createClass(Phaser2NavMesh, [{
     key: "findPath",
     value: function findPath(startPoint, endPoint) {
-      var PointClass = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : external_root_Phaser_commonjs_phaser_commonjs2_phaser_amd_phaser_default.a.Geom.Point;
+      var PointClass = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : Phaser.Point;
 
       var path = this.navMesh.findPath(startPoint, endPoint);
       return path ? path.map(function (_ref) {
@@ -1739,17 +1731,17 @@ var phaser_navmesh_PhaserNavMesh = function () {
      * Enable the debug drawing graphics. If no graphics object is providied, a new instance will be
      * created.
      *
-     * @param {Phaser.GameObjects.Graphics} [graphics] An optional graphics object for the mesh to use
+     * @param {Phaser.Graphics} [graphics] An optional graphics object for the mesh to use
      * for debug drawing. Note, the mesh will destroy this graphics object when the mesh is destroyed.
-     * @returns {Phaser.GameObjects.Graphics} The graphics object this mesh uses.
-     * @memberof PhaserNavMesh
+     * @returns {Phaser.Graphics} The graphics object this mesh uses.
+     * @memberof Phaser2NavMesh
      */
 
   }, {
     key: "enableDebug",
     value: function enableDebug(graphics) {
       if (!graphics && !this.debugGraphics) {
-        this.debugGraphics = this.scene.add.graphics();
+        this.debugGraphics = this.game.add.graphics();
       } else if (graphics) {
         if (this.debugGraphics) this.debugGraphics.destroy();
         this.debugGraphics = graphics;
@@ -1763,7 +1755,7 @@ var phaser_navmesh_PhaserNavMesh = function () {
     /**
      * Hide the debug graphics, but don't destroy it.
      *
-     * @memberof PhaserNavMesh
+     * @memberof Phaser2NavMesh
      */
 
   }, {
@@ -1776,7 +1768,7 @@ var phaser_navmesh_PhaserNavMesh = function () {
      * Returns true if the debug graphics object is enabled and visible.
      *
      * @returns {boolean}
-     * @memberof PhaserNavMesh
+     * @memberof Phaser2NavMesh
      */
 
   }, {
@@ -1788,7 +1780,7 @@ var phaser_navmesh_PhaserNavMesh = function () {
     /**
      * Clear the debug graphics.
      *
-     * @memberof PhaserNavMesh
+     * @memberof Phaser2NavMesh
      */
 
   }, {
@@ -1809,6 +1801,7 @@ var phaser_navmesh_PhaserNavMesh = function () {
      * @param {number[]} [options.palette=[0x00a0b0, 0x6a4a3c, 0xcc333f, 0xeb6841, 0xedc951]] An array
      * of Phaser-compatible format colors to use when drawing the individual polygons. The first poly
      * uses the first color, the second poly uses the second color, etc. 
+     * @memberof Phaser2NavMesh
      */
 
   }, {
@@ -1834,30 +1827,36 @@ var phaser_navmesh_PhaserNavMesh = function () {
 
       navPolys.forEach(function (poly) {
         var color = palette[poly.id % palette.length];
-        _this.debugGraphics.fillStyle(color);
-        _this.debugGraphics.fillPoints(poly.getPoints(), true);
+        _this.debugGraphics.lineWidth = 0;
+        _this.debugGraphics.beginFill(color);
+        _this.debugGraphics.drawPolygon(new (Function.prototype.bind.apply(Phaser.Polygon, [null].concat(_toConsumableArray(poly.getPoints()))))());
+        _this.debugGraphics.endFill();
 
         if (drawCentroid) {
-          _this.debugGraphics.fillStyle(0x000000);
-          _this.debugGraphics.fillCircle(poly.centroid.x, poly.centroid.y, 4);
+          _this.debugGraphics.beginFill(0x000000);
+          _this.debugGraphics.drawEllipse(poly.centroid.x, poly.centroid.y, 4, 4);
+          _this.debugGraphics.endFill();
         }
 
         if (drawBounds) {
           _this.debugGraphics.lineStyle(1, 0xffffff);
-          _this.debugGraphics.strokeCircle(poly.centroid.x, poly.centroid.y, poly.boundingRadius);
+          var r = poly.boundingRadius;
+          _this.debugGraphics.drawEllipse(poly.centroid.x, poly.centroid.y, r, r);
         }
 
         if (drawNeighbors) {
           _this.debugGraphics.lineStyle(2, 0x000000);
           poly.neighbors.forEach(function (n) {
-            _this.debugGraphics.lineBetween(poly.centroid.x, poly.centroid.y, n.centroid.x, n.centroid.y);
+            _this.debugGraphics.moveTo(poly.centroid.x, poly.centroid.y);
+            _this.debugGraphics.lineTo(n.centroid.x, n.centroid.y);
           });
         }
 
         if (drawPortals) {
           _this.debugGraphics.lineStyle(10, 0x000000);
           poly.portals.forEach(function (portal) {
-            return _this.debugGraphics.lineBetween(portal.start.x, portal.start.y, portal.end.x, portal.end.y);
+            _this.debugGraphics.moveTo(portal.start.x, portal.start.y);
+            _this.debugGraphics.lineTo(portal.end.x, portal.end.y);
           });
         }
       });
@@ -1870,6 +1869,7 @@ var phaser_navmesh_PhaserNavMesh = function () {
      * @param {number} [color=0x00FF00]
      * @param {number} [thickness=10]
      * @param {number} [alpha=1]
+     * @memberof Phaser2NavMesh
      */
 
   }, {
@@ -1884,24 +1884,24 @@ var phaser_navmesh_PhaserNavMesh = function () {
       if (path && path.length) {
         // Draw line for path
         this.debugGraphics.lineStyle(thickness, color, alpha);
-        this.debugGraphics.strokePoints(path);
+        this.debugGraphics.drawShape(new (Function.prototype.bind.apply(Phaser.Polygon, [null].concat(_toConsumableArray(path))))());
 
         // Draw circle at start and end of path
-        this.debugGraphics.fillStyle(color, alpha);
-        var d = 1.2 * thickness;
-        this.debugGraphics.fillCircle(path[0].x, path[0].y, d, d);
-
+        this.debugGraphics.beginFill(color, alpha);
+        var d = 0.5 * thickness;
+        this.debugGraphics.drawEllipse(path[0].x, path[0].y, d, d);
         if (path.length > 1) {
           var lastPoint = path[path.length - 1];
-          this.debugGraphics.fillCircle(lastPoint.x, lastPoint.y, d, d);
+          this.debugGraphics.drawEllipse(lastPoint.x, lastPoint.y, d, d);
         }
+        this.debugGraphics.endFill();
       }
     }
 
     /**
      * Destroy the mesh, kill the debug graphic and unregister itself with the plugin.
      *
-     * @memberof PhaserNavMesh
+     * @memberof Phaser2NavMesh
      */
 
   }, {
@@ -1917,14 +1917,14 @@ var phaser_navmesh_PhaserNavMesh = function () {
     }
   }]);
 
-  return PhaserNavMesh;
+  return Phaser2NavMesh;
 }();
 
-/* harmony default export */ var phaser_navmesh = (phaser_navmesh_PhaserNavMesh);
-// CONCATENATED MODULE: ./phaser-navmesh-plugin.js
-var phaser_navmesh_plugin_createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+/* harmony default export */ var phaser2_navmesh = (phaser2_navmesh_Phaser2NavMesh);
+// CONCATENATED MODULE: ./phaser2-navmesh-plugin.js
+var phaser2_navmesh_plugin_createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function phaser_navmesh_plugin_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function phaser2_navmesh_plugin_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
@@ -1932,89 +1932,49 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-
 /**
- * This class can create navigation meshes for use in Phaser 3. The navmeshes can be constructed
- * from convex polygons embedded in a Tiled map. The class that conforms to Phaser 3's plugin
- * structure.
+ * This class can create navigation meshes for use in Phaser 2 / Phaser CE. (For Phaser 3, see
+ * {@link PhaserNavMeshPlugin}.) The navmeshes can be constructed from convex polygons embedded in a
+ * Tiled map. The class that conforms to Phaser 2's plugin structure.
  *
  * @export
- * @class PhaserNavMeshPlugin
+ * @class Phaser2NavMeshPlugin
  */
 
-var phaser_navmesh_plugin_PhaserNavMeshPlugin = function (_Phaser$Plugins$Scene) {
-  _inherits(PhaserNavMeshPlugin, _Phaser$Plugins$Scene);
+var phaser2_navmesh_plugin_Phaser2NavMeshPlugin = function (_Phaser$Plugin) {
+  _inherits(Phaser2NavMeshPlugin, _Phaser$Plugin);
 
-  function PhaserNavMeshPlugin(scene, pluginManager) {
-    phaser_navmesh_plugin_classCallCheck(this, PhaserNavMeshPlugin);
+  function Phaser2NavMeshPlugin(game, pluginManager) {
+    phaser2_navmesh_plugin_classCallCheck(this, Phaser2NavMeshPlugin);
 
-    var _this = _possibleConstructorReturn(this, (PhaserNavMeshPlugin.__proto__ || Object.getPrototypeOf(PhaserNavMeshPlugin)).call(this, scene, pluginManager));
+    var _this = _possibleConstructorReturn(this, (Phaser2NavMeshPlugin.__proto__ || Object.getPrototypeOf(Phaser2NavMeshPlugin)).call(this, game, pluginManager));
 
     _this.phaserNavMeshes = {};
-    _this.scene = scene;
-    _this.systems = scene.sys;
-
-    if (!scene.sys.settings.isBooted) _this.systems.events.once("boot", _this.boot, _this);
     return _this;
   }
 
   /**
-   * Phaser.Scene lifecycle event
-   * 
-   * @memberof PhaserNavMeshPlugin
+   * Destroy all navmeshes created and the plugin itself
+   *
+   * @memberof Phaser2NavMeshPlugin
    */
 
 
-  phaser_navmesh_plugin_createClass(PhaserNavMeshPlugin, [{
-    key: "boot",
-    value: function boot() {
-      var emitter = this.systems.events;
-      emitter.once("destroy", this.destroy, this);
-    }
-
-    /**
-     * Phaser.Scene lifecycle event - noop in this plugin, but still required.
-     * 
-     * @memberof PhaserNavMeshPlugin
-     */
-
-  }, {
-    key: "init",
-    value: function init() {}
-
-    /**
-     * Phaser.Scene lifecycle event - noop in this plugin, but still required.
-     * 
-     * @memberof PhaserNavMeshPlugin
-     */
-
-  }, {
-    key: "start",
-    value: function start() {}
-
-    /**
-     * Phaser.Scene lifecycle event - will destroy all navmeshes created.
-     * 
-     * @memberof PhaserNavMeshPlugin
-     */
-
-  }, {
+  phaser2_navmesh_plugin_createClass(Phaser2NavMeshPlugin, [{
     key: "destroy",
     value: function destroy() {
-      this.systems.events.off("boot", this.boot, this);
       this.systems.events.Object.values(this.phaserNavMeshes).forEach(function (m) {
         return m.destroy();
       });
       this.phaserNavMeshes = [];
-      this.scene = undefined;
-      this.systems = undefined;
+      this.game = undefined;
     }
 
     /**
-     * Destroy a navmesh and remove it from the plugin 
+     * Destroy a navmesh and remove it from the plugin.
      *
      * @param {string} key
-     * @memberof PhaserNavMeshPlugin
+     * @memberof Phaser2NavMeshPlugin
      */
 
   }, {
@@ -2035,8 +1995,8 @@ var phaser_navmesh_plugin_PhaserNavMeshPlugin = function (_Phaser$Plugins$Scene)
      * the polygons that make up the navmesh.
      * @param {number} [meshShrinkAmount=0] The amount (in pixels) that the navmesh has been shrunk
      * around obstacles (a.k.a the amount obstacles have been expanded)
-     * @returns {PhaserNavMesh}
-     * @memberof PhaserNavMeshPlugin
+     * @returns {Phaser2NavMesh}
+     * @memberof Phaser2NavMeshPlugin
      */
 
   }, {
@@ -2054,7 +2014,7 @@ var phaser_navmesh_plugin_PhaserNavMeshPlugin = function (_Phaser$Plugins$Scene)
       }
 
       // Load up the object layer
-      var objects = objectLayer ? objectLayer.objects : [];
+      var objects = objectLayer || [];
 
       // Loop over the objects and construct a polygon - assumes a rectangle for now!
       // TODO: support layer position, scale, rotation
@@ -2066,7 +2026,7 @@ var phaser_navmesh_plugin_PhaserNavMeshPlugin = function (_Phaser$Plugins$Scene)
         return [{ x: left, y: top }, { x: left, y: bottom }, { x: right, y: bottom }, { x: right, y: top }];
       });
 
-      var mesh = new phaser_navmesh(this, key, polygons, meshShrinkAmount);
+      var mesh = new phaser2_navmesh(this, key, polygons, meshShrinkAmount);
 
       this.phaserNavMeshes[key] = mesh;
 
@@ -2074,19 +2034,19 @@ var phaser_navmesh_plugin_PhaserNavMeshPlugin = function (_Phaser$Plugins$Scene)
     }
   }]);
 
-  return PhaserNavMeshPlugin;
-}(external_root_Phaser_commonjs_phaser_commonjs2_phaser_amd_phaser_default.a.Plugins.ScenePlugin);
+  return Phaser2NavMeshPlugin;
+}(Phaser.Plugin);
 
-/* harmony default export */ var phaser_navmesh_plugin = (phaser_navmesh_plugin_PhaserNavMeshPlugin);
+/* harmony default export */ var phaser2_navmesh_plugin = (phaser2_navmesh_plugin_Phaser2NavMeshPlugin);
 // CONCATENATED MODULE: ./index.js
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PhaserNavMesh", function() { return phaser_navmesh; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Phaser2NavMesh", function() { return phaser2_navmesh; });
 
 
 
-/* harmony default export */ var index = __webpack_exports__["default"] = (phaser_navmesh_plugin);
+/* harmony default export */ var index = __webpack_exports__["default"] = (phaser2_navmesh_plugin);
 
 
 /***/ })
 /******/ ])["default"];
 });
-//# sourceMappingURL=phaser-navmesh.js.map
+//# sourceMappingURL=phaser2-navmesh.js.map
