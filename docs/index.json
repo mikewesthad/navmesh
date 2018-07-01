@@ -1,0 +1,3466 @@
+[
+  {
+    "__docId__": 0,
+    "kind": "file",
+    "name": "packages/navmesh/src/channel.js",
+    "content": "// Mostly sourced from PatrolJS at the moment. TODO: come back and reimplement this as an incomplete\r\n// funnel algorithm so astar checks can be more accurate.\r\n\r\nimport { triarea2 } from \"./utils\";\r\n\r\n/**\r\n * @private\r\n */\r\nclass Channel {\r\n  constructor() {\r\n    this.portals = [];\r\n  }\r\n\r\n  push(p1, p2 = null) {\r\n    if (p2 === null) p2 = p1;\r\n    this.portals.push({\r\n      left: p1,\r\n      right: p2\r\n    });\r\n  }\r\n\r\n  stringPull() {\r\n    var portals = this.portals;\r\n    var pts = [];\r\n    // Init scan state\r\n    var portalApex, portalLeft, portalRight;\r\n    var apexIndex = 0,\r\n      leftIndex = 0,\r\n      rightIndex = 0;\r\n\r\n    portalApex = portals[0].left;\r\n    portalLeft = portals[0].left;\r\n    portalRight = portals[0].right;\r\n\r\n    // Add start point.\r\n    pts.push(portalApex);\r\n\r\n    for (var i = 1; i < portals.length; i++) {\r\n      // Find the next portal vertices\r\n      var left = portals[i].left;\r\n      var right = portals[i].right;\r\n\r\n      // Update right vertex.\r\n      if (triarea2(portalApex, portalRight, right) <= 0.0) {\r\n        if (portalApex.equals(portalRight) || triarea2(portalApex, portalLeft, right) > 0.0) {\r\n          // Tighten the funnel.\r\n          portalRight = right;\r\n          rightIndex = i;\r\n        } else {\r\n          // Right vertex just crossed over the left vertex, so the left vertex should\r\n          // now be part of the path.\r\n          pts.push(portalLeft);\r\n\r\n          // Restart scan from portal left point.\r\n\r\n          // Make current left the new apex.\r\n          portalApex = portalLeft;\r\n          apexIndex = leftIndex;\r\n          // Reset portal\r\n          portalLeft = portalApex;\r\n          portalRight = portalApex;\r\n          leftIndex = apexIndex;\r\n          rightIndex = apexIndex;\r\n          // Restart scan\r\n          i = apexIndex;\r\n          continue;\r\n        }\r\n      }\r\n\r\n      // Update left vertex.\r\n      if (triarea2(portalApex, portalLeft, left) >= 0.0) {\r\n        if (portalApex.equals(portalLeft) || triarea2(portalApex, portalRight, left) < 0.0) {\r\n          // Tighten the funnel.\r\n          portalLeft = left;\r\n          leftIndex = i;\r\n        } else {\r\n          // Left vertex just crossed over the right vertex, so the right vertex should\r\n          // now be part of the path\r\n          pts.push(portalRight);\r\n\r\n          // Restart scan from portal right point.\r\n\r\n          // Make current right the new apex.\r\n          portalApex = portalRight;\r\n          apexIndex = rightIndex;\r\n          // Reset portal\r\n          portalLeft = portalApex;\r\n          portalRight = portalApex;\r\n          leftIndex = apexIndex;\r\n          rightIndex = apexIndex;\r\n          // Restart scan\r\n          i = apexIndex;\r\n          continue;\r\n        }\r\n      }\r\n    }\r\n\r\n    if (pts.length === 0 || !pts[pts.length - 1].equals(portals[portals.length - 1].left)) {\r\n      // Append last point to path.\r\n      pts.push(portals[portals.length - 1].left);\r\n    }\r\n\r\n    this.path = pts;\r\n    return pts;\r\n  }\r\n}\r\n\r\nexport default Channel;\r\n",
+    "static": true,
+    "longname": "C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/packages/navmesh/src/channel.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 1,
+    "kind": "class",
+    "name": "Channel",
+    "memberof": "packages/navmesh/src/channel.js",
+    "static": true,
+    "longname": "packages/navmesh/src/channel.js~Channel",
+    "access": "private",
+    "export": true,
+    "importPath": "./packages/navmesh/src/channel.js",
+    "importStyle": "Channel",
+    "description": "",
+    "lineNumber": 9,
+    "interface": false,
+    "ignore": true
+  },
+  {
+    "__docId__": 2,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "packages/navmesh/src/channel.js~Channel",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/channel.js~Channel#constructor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 10,
+    "undocument": true
+  },
+  {
+    "__docId__": 3,
+    "kind": "member",
+    "name": "portals",
+    "memberof": "packages/navmesh/src/channel.js~Channel",
+    "static": false,
+    "longname": "packages/navmesh/src/channel.js~Channel#portals",
+    "access": "public",
+    "description": null,
+    "lineNumber": 11,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*[]"
+      ]
+    }
+  },
+  {
+    "__docId__": 4,
+    "kind": "method",
+    "name": "push",
+    "memberof": "packages/navmesh/src/channel.js~Channel",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/channel.js~Channel#push",
+    "access": "public",
+    "description": null,
+    "lineNumber": 14,
+    "undocument": true,
+    "params": [
+      {
+        "name": "p1",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "p2",
+        "optional": true,
+        "types": [
+          "undefined"
+        ],
+        "defaultValue": "undefined"
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 5,
+    "kind": "method",
+    "name": "stringPull",
+    "memberof": "packages/navmesh/src/channel.js~Channel",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/channel.js~Channel#stringPull",
+    "access": "public",
+    "description": null,
+    "lineNumber": 22,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 6,
+    "kind": "member",
+    "name": "path",
+    "memberof": "packages/navmesh/src/channel.js~Channel",
+    "static": false,
+    "longname": "packages/navmesh/src/channel.js~Channel#path",
+    "access": "public",
+    "description": null,
+    "lineNumber": 103,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 7,
+    "kind": "file",
+    "name": "packages/navmesh/src/index.js",
+    "content": "import NavMesh from \"./navmesh\";\r\n\r\nexport default NavMesh;\r\n",
+    "static": true,
+    "longname": "C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/packages/navmesh/src/index.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 8,
+    "kind": "file",
+    "name": "packages/navmesh/src/math/line.js",
+    "content": "import Vector2 from \"./vector-2\";\r\n\r\n/**\r\n * Stripped down version of Phaser's Line with just the functionality needed for navmeshes\r\n *\r\n * @export\r\n * @class Line\r\n */\r\nexport default class Line {\r\n  constructor(x1, y1, x2, y2) {\r\n    this.start = new Vector2(x1, y1);\r\n    this.end = new Vector2(x2, y2);\r\n\r\n    this.left = Math.min(x1, x2);\r\n    this.right = Math.max(x1, x2);\r\n    this.top = Math.min(y1, y2);\r\n    this.bottom = Math.max(y1, y2);\r\n  }\r\n\r\n  pointOnSegment(x, y) {\r\n    return (\r\n      x >= this.left &&\r\n      x <= this.right &&\r\n      y >= this.top &&\r\n      y <= this.bottom &&\r\n      this.pointOnLine(x, y)\r\n    );\r\n  }\r\n\r\n  pointOnLine(x, y) {\r\n    // Compare slope of line start -> xy to line start -> line end\r\n    return (x - this.left) * (this.bottom - this.top) === (this.right - this.left) * (y - this.top);\r\n  }\r\n}\r\n",
+    "static": true,
+    "longname": "C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/packages/navmesh/src/math/line.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 9,
+    "kind": "class",
+    "name": "Line",
+    "memberof": "packages/navmesh/src/math/line.js",
+    "static": true,
+    "longname": "packages/navmesh/src/math/line.js~Line",
+    "access": "public",
+    "export": true,
+    "importPath": "./packages/navmesh/src/math/line.js",
+    "importStyle": "Line",
+    "description": "Stripped down version of Phaser's Line with just the functionality needed for navmeshes",
+    "lineNumber": 9,
+    "unknown": [
+      {
+        "tagName": "@class",
+        "tagValue": "Line"
+      }
+    ],
+    "interface": false
+  },
+  {
+    "__docId__": 10,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "packages/navmesh/src/math/line.js~Line",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/math/line.js~Line#constructor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 10,
+    "undocument": true
+  },
+  {
+    "__docId__": 11,
+    "kind": "member",
+    "name": "start",
+    "memberof": "packages/navmesh/src/math/line.js~Line",
+    "static": false,
+    "longname": "packages/navmesh/src/math/line.js~Line#start",
+    "access": "public",
+    "description": null,
+    "lineNumber": 11,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 12,
+    "kind": "member",
+    "name": "end",
+    "memberof": "packages/navmesh/src/math/line.js~Line",
+    "static": false,
+    "longname": "packages/navmesh/src/math/line.js~Line#end",
+    "access": "public",
+    "description": null,
+    "lineNumber": 12,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 13,
+    "kind": "member",
+    "name": "left",
+    "memberof": "packages/navmesh/src/math/line.js~Line",
+    "static": false,
+    "longname": "packages/navmesh/src/math/line.js~Line#left",
+    "access": "public",
+    "description": null,
+    "lineNumber": 14,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 14,
+    "kind": "member",
+    "name": "right",
+    "memberof": "packages/navmesh/src/math/line.js~Line",
+    "static": false,
+    "longname": "packages/navmesh/src/math/line.js~Line#right",
+    "access": "public",
+    "description": null,
+    "lineNumber": 15,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 15,
+    "kind": "member",
+    "name": "top",
+    "memberof": "packages/navmesh/src/math/line.js~Line",
+    "static": false,
+    "longname": "packages/navmesh/src/math/line.js~Line#top",
+    "access": "public",
+    "description": null,
+    "lineNumber": 16,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 16,
+    "kind": "member",
+    "name": "bottom",
+    "memberof": "packages/navmesh/src/math/line.js~Line",
+    "static": false,
+    "longname": "packages/navmesh/src/math/line.js~Line#bottom",
+    "access": "public",
+    "description": null,
+    "lineNumber": 17,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 17,
+    "kind": "method",
+    "name": "pointOnSegment",
+    "memberof": "packages/navmesh/src/math/line.js~Line",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/math/line.js~Line#pointOnSegment",
+    "access": "public",
+    "description": null,
+    "lineNumber": 20,
+    "undocument": true,
+    "params": [
+      {
+        "name": "x",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "y",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 18,
+    "kind": "method",
+    "name": "pointOnLine",
+    "memberof": "packages/navmesh/src/math/line.js~Line",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/math/line.js~Line#pointOnLine",
+    "access": "public",
+    "description": null,
+    "lineNumber": 30,
+    "undocument": true,
+    "params": [
+      {
+        "name": "x",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "y",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 19,
+    "kind": "file",
+    "name": "packages/navmesh/src/math/polygon.js",
+    "content": "import Line from \"./line\";\r\n\r\n/**\r\n * Stripped down version of Phaser's Polygon with just the functionality needed for navmeshes\r\n *\r\n * @export\r\n * @class Polygon\r\n */\r\nexport default class Polygon {\r\n  constructor(points, closed = true) {\r\n    this.points = points;\r\n    this.edges = [];\r\n\r\n    for (let i = 1; i < points.length; i++) {\r\n      const p1 = points[i - 1];\r\n      const p2 = points[i];\r\n      this.edges.push(new Line(p1.x, p1.y, p2.x, p2.y));\r\n    }\r\n    if (closed) {\r\n      const first = points[0];\r\n      const last = points[points.length - 1];\r\n      this.edges.push(new Line(first.x, first.y, last.x, last.y));\r\n    }\r\n  }\r\n\r\n  contains(x, y) {\r\n    let inside = false;\r\n\r\n    for (let i = -1, j = this.points.length - 1; ++i < this.points.length; j = i) {\r\n      const ix = this.points[i].x;\r\n      const iy = this.points[i].y;\r\n\r\n      const jx = this.points[j].x;\r\n      const jy = this.points[j].y;\r\n\r\n      if (\r\n        ((iy <= y && y < jy) || (jy <= y && y < iy)) &&\r\n        x < ((jx - ix) * (y - iy)) / (jy - iy) + ix\r\n      ) {\r\n        inside = !inside;\r\n      }\r\n    }\r\n\r\n    return inside;\r\n  }\r\n}\r\n",
+    "static": true,
+    "longname": "C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/packages/navmesh/src/math/polygon.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 20,
+    "kind": "class",
+    "name": "Polygon",
+    "memberof": "packages/navmesh/src/math/polygon.js",
+    "static": true,
+    "longname": "packages/navmesh/src/math/polygon.js~Polygon",
+    "access": "public",
+    "export": true,
+    "importPath": "./packages/navmesh/src/math/polygon.js",
+    "importStyle": "Polygon",
+    "description": "Stripped down version of Phaser's Polygon with just the functionality needed for navmeshes",
+    "lineNumber": 9,
+    "unknown": [
+      {
+        "tagName": "@class",
+        "tagValue": "Polygon"
+      }
+    ],
+    "interface": false
+  },
+  {
+    "__docId__": 21,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "packages/navmesh/src/math/polygon.js~Polygon",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/math/polygon.js~Polygon#constructor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 10,
+    "undocument": true
+  },
+  {
+    "__docId__": 22,
+    "kind": "member",
+    "name": "points",
+    "memberof": "packages/navmesh/src/math/polygon.js~Polygon",
+    "static": false,
+    "longname": "packages/navmesh/src/math/polygon.js~Polygon#points",
+    "access": "public",
+    "description": null,
+    "lineNumber": 11,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 23,
+    "kind": "member",
+    "name": "edges",
+    "memberof": "packages/navmesh/src/math/polygon.js~Polygon",
+    "static": false,
+    "longname": "packages/navmesh/src/math/polygon.js~Polygon#edges",
+    "access": "public",
+    "description": null,
+    "lineNumber": 12,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*[]"
+      ]
+    }
+  },
+  {
+    "__docId__": 24,
+    "kind": "method",
+    "name": "contains",
+    "memberof": "packages/navmesh/src/math/polygon.js~Polygon",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/math/polygon.js~Polygon#contains",
+    "access": "public",
+    "description": null,
+    "lineNumber": 26,
+    "undocument": true,
+    "params": [
+      {
+        "name": "x",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "y",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 25,
+    "kind": "file",
+    "name": "packages/navmesh/src/math/vector-2.js",
+    "content": "/**\r\n * Stripped down version of Phaser's Vector2 with just the functionality needed for navmeshes\r\n *\r\n * @export\r\n * @class Vector2\r\n */\r\nexport default class Vector2 {\r\n  constructor(x, y) {\r\n    this.x = x || 0;\r\n    this.y = y || 0;\r\n  }\r\n\r\n  equals(v) {\r\n    return this.x === v.x && this.y === v.y;\r\n  }\r\n\r\n  angle(v) {\r\n    return Math.atan2(v.y - this.y, v.x - this.x);\r\n  }\r\n\r\n  distance(v) {\r\n    const dx = v.x - this.x;\r\n    const dy = v.y - this.y;\r\n    return Math.sqrt(dx * dx + dy * dy);\r\n  }\r\n\r\n  add(v) {\r\n    this.x += v.x;\r\n    this.y += v.y;\r\n  }\r\n\r\n  subtract(v) {\r\n    this.x -= v.x;\r\n    this.y -= v.y;\r\n  }\r\n\r\n  clone() {\r\n    return new Vector2(this.x, this.y);\r\n  }\r\n}\r\n",
+    "static": true,
+    "longname": "C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/packages/navmesh/src/math/vector-2.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 26,
+    "kind": "class",
+    "name": "Vector2",
+    "memberof": "packages/navmesh/src/math/vector-2.js",
+    "static": true,
+    "longname": "packages/navmesh/src/math/vector-2.js~Vector2",
+    "access": "public",
+    "export": true,
+    "importPath": "./packages/navmesh/src/math/vector-2.js",
+    "importStyle": "Vector2",
+    "description": "Stripped down version of Phaser's Vector2 with just the functionality needed for navmeshes",
+    "lineNumber": 7,
+    "unknown": [
+      {
+        "tagName": "@class",
+        "tagValue": "Vector2"
+      }
+    ],
+    "interface": false
+  },
+  {
+    "__docId__": 27,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "packages/navmesh/src/math/vector-2.js~Vector2",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/math/vector-2.js~Vector2#constructor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 8,
+    "undocument": true
+  },
+  {
+    "__docId__": 28,
+    "kind": "member",
+    "name": "x",
+    "memberof": "packages/navmesh/src/math/vector-2.js~Vector2",
+    "static": false,
+    "longname": "packages/navmesh/src/math/vector-2.js~Vector2#x",
+    "access": "public",
+    "description": null,
+    "lineNumber": 9,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 29,
+    "kind": "member",
+    "name": "y",
+    "memberof": "packages/navmesh/src/math/vector-2.js~Vector2",
+    "static": false,
+    "longname": "packages/navmesh/src/math/vector-2.js~Vector2#y",
+    "access": "public",
+    "description": null,
+    "lineNumber": 10,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 30,
+    "kind": "method",
+    "name": "equals",
+    "memberof": "packages/navmesh/src/math/vector-2.js~Vector2",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/math/vector-2.js~Vector2#equals",
+    "access": "public",
+    "description": null,
+    "lineNumber": 13,
+    "undocument": true,
+    "params": [
+      {
+        "name": "v",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 31,
+    "kind": "method",
+    "name": "angle",
+    "memberof": "packages/navmesh/src/math/vector-2.js~Vector2",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/math/vector-2.js~Vector2#angle",
+    "access": "public",
+    "description": null,
+    "lineNumber": 17,
+    "undocument": true,
+    "params": [
+      {
+        "name": "v",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 32,
+    "kind": "method",
+    "name": "distance",
+    "memberof": "packages/navmesh/src/math/vector-2.js~Vector2",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/math/vector-2.js~Vector2#distance",
+    "access": "public",
+    "description": null,
+    "lineNumber": 21,
+    "undocument": true,
+    "params": [
+      {
+        "name": "v",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 33,
+    "kind": "method",
+    "name": "add",
+    "memberof": "packages/navmesh/src/math/vector-2.js~Vector2",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/math/vector-2.js~Vector2#add",
+    "access": "public",
+    "description": null,
+    "lineNumber": 27,
+    "undocument": true,
+    "params": [
+      {
+        "name": "v",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 36,
+    "kind": "method",
+    "name": "subtract",
+    "memberof": "packages/navmesh/src/math/vector-2.js~Vector2",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/math/vector-2.js~Vector2#subtract",
+    "access": "public",
+    "description": null,
+    "lineNumber": 32,
+    "undocument": true,
+    "params": [
+      {
+        "name": "v",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 39,
+    "kind": "method",
+    "name": "clone",
+    "memberof": "packages/navmesh/src/math/vector-2.js~Vector2",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/math/vector-2.js~Vector2#clone",
+    "access": "public",
+    "description": null,
+    "lineNumber": 37,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 40,
+    "kind": "file",
+    "name": "packages/navmesh/src/navgraph.js",
+    "content": "import jsastar from \"javascript-astar\";\r\n\r\n/**\r\n * Graph for javascript-astar. It implements the functionality for astar. See GPS test from astar\r\n * repo for structure: https://github.com/bgrins/javascript-astar/blob/master/test/tests.js\r\n *\r\n * @class NavGraph\r\n * @private\r\n */\r\nclass NavGraph {\r\n  constructor(navPolygons) {\r\n    this.nodes = navPolygons;\r\n    this.init();\r\n  }\r\n\r\n  neighbors(navPolygon) {\r\n    return navPolygon.neighbors;\r\n  }\r\n\r\n  navHeuristic(navPolygon1, navPolygon2) {\r\n    return navPolygon1.centroidDistance(navPolygon2);\r\n  }\r\n\r\n  destroy() {\r\n    this.cleanDirty();\r\n    this.nodes = [];\r\n  }\r\n}\r\n\r\nNavGraph.prototype.init = jsastar.Graph.prototype.init;\r\nNavGraph.prototype.cleanDirty = jsastar.Graph.prototype.cleanDirty;\r\nNavGraph.prototype.markDirty = jsastar.Graph.prototype.markDirty;\r\n\r\nexport default NavGraph;\r\n",
+    "static": true,
+    "longname": "C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/packages/navmesh/src/navgraph.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 41,
+    "kind": "class",
+    "name": "NavGraph",
+    "memberof": "packages/navmesh/src/navgraph.js",
+    "static": true,
+    "longname": "packages/navmesh/src/navgraph.js~NavGraph",
+    "access": "private",
+    "export": true,
+    "importPath": "./packages/navmesh/src/navgraph.js",
+    "importStyle": "NavGraph",
+    "description": "Graph for javascript-astar. It implements the functionality for astar. See GPS test from astar\nrepo for structure: https://github.com/bgrins/javascript-astar/blob/master/test/tests.js",
+    "lineNumber": 10,
+    "unknown": [
+      {
+        "tagName": "@class",
+        "tagValue": "NavGraph"
+      }
+    ],
+    "interface": false,
+    "ignore": true
+  },
+  {
+    "__docId__": 42,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "packages/navmesh/src/navgraph.js~NavGraph",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/navgraph.js~NavGraph#constructor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 11,
+    "undocument": true
+  },
+  {
+    "__docId__": 43,
+    "kind": "member",
+    "name": "nodes",
+    "memberof": "packages/navmesh/src/navgraph.js~NavGraph",
+    "static": false,
+    "longname": "packages/navmesh/src/navgraph.js~NavGraph#nodes",
+    "access": "public",
+    "description": null,
+    "lineNumber": 12,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 44,
+    "kind": "method",
+    "name": "neighbors",
+    "memberof": "packages/navmesh/src/navgraph.js~NavGraph",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/navgraph.js~NavGraph#neighbors",
+    "access": "public",
+    "description": null,
+    "lineNumber": 16,
+    "undocument": true,
+    "params": [
+      {
+        "name": "navPolygon",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 45,
+    "kind": "method",
+    "name": "navHeuristic",
+    "memberof": "packages/navmesh/src/navgraph.js~NavGraph",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/navgraph.js~NavGraph#navHeuristic",
+    "access": "public",
+    "description": null,
+    "lineNumber": 20,
+    "undocument": true,
+    "params": [
+      {
+        "name": "navPolygon1",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "navPolygon2",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 46,
+    "kind": "method",
+    "name": "destroy",
+    "memberof": "packages/navmesh/src/navgraph.js~NavGraph",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/navgraph.js~NavGraph#destroy",
+    "access": "public",
+    "description": null,
+    "lineNumber": 24,
+    "undocument": true,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 48,
+    "kind": "file",
+    "name": "packages/navmesh/src/navmesh.js",
+    "content": "import jsastar from \"javascript-astar\";\r\nimport NavPoly from \"./navpoly\";\r\nimport NavGraph from \"./navgraph\";\r\nimport Channel from \"./channel\";\r\nimport { angleDifference, areCollinear, clamp } from \"./utils\";\r\nimport Vector2 from \"./math/vector-2\";\r\nimport Line from \"./math/line\";\r\nimport Polygon from \"./math/polygon\";\r\n\r\n/**\r\n * The workhorse that represents a navigation mesh built from a series of polygons. Once built, the\r\n * mesh can be asked for a path from one point to another point. Some internal terminology usage:\r\n * - neighbor: a polygon that shares part of an edge with another polygon\r\n * - portal: when two neighbor's have edges that overlap, the portal is the overlapping line segment\r\n * - channel: the path of polygons from starting point to end point\r\n * - pull the string: run the funnel algorithm on the channel so that the path hugs the edges of the\r\n *   channel. Equivalent to having a string snaking through a hallway and then pulling it taut.\r\n *\r\n * @class NavMesh\r\n */\r\nexport default class NavMesh {\r\n  /**\r\n   * Creates an instance of NavMesh.\r\n   * @param {object[][]} meshPolygonPoints Array where each element is an array of point-like\r\n   * objects that defines a polygon.\r\n   * @param {number} [meshShrinkAmount=0] The amount (in pixels) that the navmesh has been\r\n   * shrunk around obstacles (a.k.a the amount obstacles have been expanded)\r\n   * @memberof NavMesh\r\n   */\r\n  constructor(meshPolygonPoints, meshShrinkAmount = 0) {\r\n    this._meshShrinkAmount = meshShrinkAmount;\r\n\r\n    const newPolys = meshPolygonPoints.map(polyPoints => {\r\n      const vectors = polyPoints.map(p => new Vector2(p.x, p.y));\r\n      return new Polygon(vectors);\r\n    });\r\n\r\n    this._navPolygons = newPolys.map((polygon, i) => new NavPoly(i, polygon));\r\n\r\n    this._calculateNeighbors();\r\n\r\n    // Astar graph of connections between polygons\r\n    this._graph = new NavGraph(this._navPolygons);\r\n  }\r\n\r\n  /**\r\n   * Get the NavPolys that are in this navmesh.\r\n   *\r\n   * @returns {NavPoly[]}\r\n   * @memberof NavMesh\r\n   */\r\n  getPolygons() {\r\n    return this._navPolygons;\r\n  }\r\n\r\n  /**\r\n   * Cleanup method to remove references.\r\n   *\r\n   * @memberof NavMesh\r\n   */\r\n  destroy() {\r\n    this._graph.destroy();\r\n    for (const poly of this._navPolygons) poly.destroy();\r\n    this._navPolygons = [];\r\n  }\r\n\r\n  /**\r\n   * Find a path from the start point to the end point using this nav mesh.\r\n   *\r\n   * @param {object} startPoint A point-like object in the form {x, y}\r\n   * @param {object} endPoint A point-like object in the form {x, y}\r\n   * @returns {Vector2[]|null} An array of points if a path is found, or null if no path\r\n   *\r\n   * @memberof NavMesh\r\n   */\r\n  findPath(startPoint, endPoint) {\r\n    let startPoly = null;\r\n    let endPoly = null;\r\n    let startDistance = Number.MAX_VALUE;\r\n    let endDistance = Number.MAX_VALUE;\r\n    let d, r;\r\n    const startVector = new Vector2(startPoint.x, startPoint.y);\r\n    const endVector = new Vector2(endPoint.x, endPoint.y);\r\n\r\n    // Find the closest poly for the starting and ending point\r\n    for (const navPoly of this._navPolygons) {\r\n      r = navPoly.boundingRadius;\r\n      // Start\r\n      d = navPoly.centroid.distance(startVector);\r\n      if (d <= startDistance && d <= r && navPoly.contains(startVector)) {\r\n        startPoly = navPoly;\r\n        startDistance = d;\r\n      }\r\n      // End\r\n      d = navPoly.centroid.distance(endVector);\r\n      if (d <= endDistance && d <= r && navPoly.contains(endVector)) {\r\n        endPoly = navPoly;\r\n        endDistance = d;\r\n      }\r\n    }\r\n\r\n    // If the start point wasn't inside a polygon, run a more liberal check that allows a point\r\n    // to be within meshShrinkAmount radius of a polygon\r\n    if (!startPoly && this._meshShrinkAmount > 0) {\r\n      for (const navPoly of this._navPolygons) {\r\n        // Check if point is within bounding circle to avoid extra projection calculations\r\n        r = navPoly.boundingRadius + this._meshShrinkAmount;\r\n        d = navPoly.centroid.distance(startVector);\r\n        if (d <= r) {\r\n          // Check if projected point is within range of a polgyon and is closer than the\r\n          // previous point\r\n          const { distance } = this._projectPointToPolygon(startVector, navPoly);\r\n          if (distance <= this._meshShrinkAmount && distance < startDistance) {\r\n            startPoly = navPoly;\r\n            startDistance = distance;\r\n          }\r\n        }\r\n      }\r\n    }\r\n\r\n    // Same check as above, but for the end point\r\n    if (!endPoly && this._meshShrinkAmount > 0) {\r\n      for (const navPoly of this._navPolygons) {\r\n        r = navPoly.boundingRadius + this._meshShrinkAmount;\r\n        d = navPoly.centroid.distance(endVector);\r\n        if (d <= r) {\r\n          const { distance } = this._projectPointToPolygon(endVector, navPoly);\r\n          if (distance <= this._meshShrinkAmount && distance < endDistance) {\r\n            endPoly = navPoly;\r\n            endDistance = distance;\r\n          }\r\n        }\r\n      }\r\n    }\r\n\r\n    // No matching polygons locations for the start or end, so no path found\r\n    if (!startPoly || !endPoly) return null;\r\n\r\n    // If the start and end polygons are the same, return a direct path\r\n    if (startPoly === endPoly) return [startVector, endVector];\r\n\r\n    // Search!\r\n    const astarPath = jsastar.astar.search(this._graph, startPoly, endPoly, {\r\n      heuristic: this._graph.navHeuristic\r\n    });\r\n\r\n    // While the start and end polygons may be valid, no path between them\r\n    if (astarPath.length === 0) return null;\r\n\r\n    // jsastar drops the first point from the path, but the funnel algorithm needs it\r\n    astarPath.unshift(startPoly);\r\n\r\n    // We have a path, so now time for the funnel algorithm\r\n    const channel = new Channel();\r\n    channel.push(startVector);\r\n    for (let i = 0; i < astarPath.length - 1; i++) {\r\n      const navPolygon = astarPath[i];\r\n      const nextNavPolygon = astarPath[i + 1];\r\n\r\n      // Find the portal\r\n      let portal = null;\r\n      for (let i = 0; i < navPolygon.neighbors.length; i++) {\r\n        if (navPolygon.neighbors[i].id === nextNavPolygon.id) {\r\n          portal = navPolygon.portals[i];\r\n        }\r\n      }\r\n\r\n      // Push the portal vertices into the channel\r\n      channel.push(portal.start, portal.end);\r\n    }\r\n    channel.push(endVector);\r\n\r\n    // Pull a string along the channel to run the funnel\r\n    channel.stringPull();\r\n\r\n    // Clone path, excluding duplicates\r\n    let lastPoint = null;\r\n    const phaserPath = [];\r\n    for (const p of channel.path) {\r\n      const newPoint = p.clone();\r\n      if (!lastPoint || !newPoint.equals(lastPoint)) phaserPath.push(newPoint);\r\n      lastPoint = newPoint;\r\n    }\r\n\r\n    return phaserPath;\r\n  }\r\n\r\n  _calculateNeighbors() {\r\n    // Fill out the neighbor information for each navpoly\r\n    for (let i = 0; i < this._navPolygons.length; i++) {\r\n      const navPoly = this._navPolygons[i];\r\n\r\n      for (let j = i + 1; j < this._navPolygons.length; j++) {\r\n        const otherNavPoly = this._navPolygons[j];\r\n\r\n        // Check if the other navpoly is within range to touch\r\n        const d = navPoly.centroid.distance(otherNavPoly.centroid);\r\n        if (d > navPoly.boundingRadius + otherNavPoly.boundingRadius) continue;\r\n\r\n        // The are in range, so check each edge pairing\r\n        for (const edge of navPoly.edges) {\r\n          for (const otherEdge of otherNavPoly.edges) {\r\n            // If edges aren't collinear, not an option for connecting navpolys\r\n            if (!areCollinear(edge, otherEdge)) continue;\r\n\r\n            // If they are collinear, check if they overlap\r\n            const overlap = this._getSegmentOverlap(edge, otherEdge);\r\n            if (!overlap) continue;\r\n\r\n            // Connections are symmetric!\r\n            navPoly.neighbors.push(otherNavPoly);\r\n            otherNavPoly.neighbors.push(navPoly);\r\n\r\n            // Calculate the portal between the two polygons - this needs to be in\r\n            // counter-clockwise order, relative to each polygon\r\n            const [p1, p2] = overlap;\r\n            let edgeStartAngle = navPoly.centroid.angle(edge.start);\r\n            let a1 = navPoly.centroid.angle(overlap[0]);\r\n            let a2 = navPoly.centroid.angle(overlap[1]);\r\n            let d1 = angleDifference(edgeStartAngle, a1);\r\n            let d2 = angleDifference(edgeStartAngle, a2);\r\n            if (d1 < d2) {\r\n              navPoly.portals.push(new Line(p1.x, p1.y, p2.x, p2.y));\r\n            } else {\r\n              navPoly.portals.push(new Line(p2.x, p2.y, p1.x, p1.y));\r\n            }\r\n\r\n            edgeStartAngle = otherNavPoly.centroid.angle(otherEdge.start);\r\n            a1 = otherNavPoly.centroid.angle(overlap[0]);\r\n            a2 = otherNavPoly.centroid.angle(overlap[1]);\r\n            d1 = angleDifference(edgeStartAngle, a1);\r\n            d2 = angleDifference(edgeStartAngle, a2);\r\n            if (d1 < d2) {\r\n              otherNavPoly.portals.push(new Line(p1.x, p1.y, p2.x, p2.y));\r\n            } else {\r\n              otherNavPoly.portals.push(new Line(p2.x, p2.y, p1.x, p1.y));\r\n            }\r\n\r\n            // Two convex polygons shouldn't be connected more than once! (Unless\r\n            // there are unnecessary vertices...)\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n\r\n  // Check two collinear line segments to see if they overlap by sorting the points.\r\n  // Algorithm source: http://stackoverflow.com/a/17152247\r\n  _getSegmentOverlap(line1, line2) {\r\n    const points = [\r\n      { line: line1, point: line1.start },\r\n      { line: line1, point: line1.end },\r\n      { line: line2, point: line2.start },\r\n      { line: line2, point: line2.end }\r\n    ];\r\n    points.sort(function(a, b) {\r\n      if (a.point.x < b.point.x) return -1;\r\n      else if (a.point.x > b.point.x) return 1;\r\n      else {\r\n        if (a.point.y < b.point.y) return -1;\r\n        else if (a.point.y > b.point.y) return 1;\r\n        else return 0;\r\n      }\r\n    });\r\n    // If the first two points in the array come from the same line, no overlap\r\n    const noOverlap = points[0].line === points[1].line;\r\n    // If the two middle points in the array are the same coordinates, then there is a\r\n    // single point of overlap.\r\n    const singlePointOverlap = points[1].point.equals(points[2].point);\r\n    if (noOverlap || singlePointOverlap) return null;\r\n    else return [points[1].point, points[2].point];\r\n  }\r\n\r\n  /**\r\n   * Project a point onto a polygon in the shortest distance possible.\r\n   *\r\n   * @param {Phaser.Point} point The point to project\r\n   * @param {NavPoly} navPoly The navigation polygon to test against\r\n   * @returns {{point: Phaser.Point, distance: number}}\r\n   *\r\n   * @private\r\n   * @memberof NavMesh\r\n   */\r\n  _projectPointToPolygon(point, navPoly) {\r\n    let closestProjection = null;\r\n    let closestDistance = Number.MAX_VALUE;\r\n    for (const edge of navPoly.edges) {\r\n      const projectedPoint = this._projectPointToEdge(point, edge);\r\n      const d = point.distance(projectedPoint);\r\n      if (closestProjection === null || d < closestDistance) {\r\n        closestDistance = d;\r\n        closestProjection = projectedPoint;\r\n      }\r\n    }\r\n    return { point: closestProjection, distance: closestDistance };\r\n  }\r\n\r\n  _distanceSquared(a, b) {\r\n    const dx = b.x - a.x;\r\n    const dy = b.y - a.y;\r\n    return dx * dx + dy * dy;\r\n  }\r\n\r\n  // Project a point onto a line segment\r\n  // JS Source: http://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment\r\n  _projectPointToEdge(point, line) {\r\n    const a = line.start;\r\n    const b = line.end;\r\n    // Consider the parametric equation for the edge's line, p = a + t (b - a). We want to find\r\n    // where our point lies on the line by solving for t:\r\n    //  t = [(p-a) . (b-a)] / |b-a|^2\r\n    const l2 = this._distanceSquared(a, b);\r\n    let t = ((point.x - a.x) * (b.x - a.x) + (point.y - a.y) * (b.y - a.y)) / l2;\r\n    // We clamp t from [0,1] to handle points outside the segment vw.\r\n    t = clamp(t, 0, 1);\r\n    // Project onto the segment\r\n    const p = new Vector2(a.x + t * (b.x - a.x), a.y + t * (b.y - a.y));\r\n    return p;\r\n  }\r\n}\r\n",
+    "static": true,
+    "longname": "C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/packages/navmesh/src/navmesh.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 49,
+    "kind": "class",
+    "name": "NavMesh",
+    "memberof": "packages/navmesh/src/navmesh.js",
+    "static": true,
+    "longname": "packages/navmesh/src/navmesh.js~NavMesh",
+    "access": "public",
+    "export": true,
+    "importPath": "./packages/navmesh/src/navmesh.js",
+    "importStyle": "NavMesh",
+    "description": "The workhorse that represents a navigation mesh built from a series of polygons. Once built, the\nmesh can be asked for a path from one point to another point. Some internal terminology usage:\n- neighbor: a polygon that shares part of an edge with another polygon\n- portal: when two neighbor's have edges that overlap, the portal is the overlapping line segment\n- channel: the path of polygons from starting point to end point\n- pull the string: run the funnel algorithm on the channel so that the path hugs the edges of the\n  channel. Equivalent to having a string snaking through a hallway and then pulling it taut.",
+    "lineNumber": 21,
+    "unknown": [
+      {
+        "tagName": "@class",
+        "tagValue": "NavMesh"
+      }
+    ],
+    "interface": false
+  },
+  {
+    "__docId__": 50,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "packages/navmesh/src/navmesh.js~NavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/navmesh.js~NavMesh#constructor",
+    "access": "public",
+    "description": "Creates an instance of NavMesh.",
+    "lineNumber": 30,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "object[][]"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "meshPolygonPoints",
+        "description": "Array where each element is an array of point-like\nobjects that defines a polygon."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "number"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "0",
+        "defaultRaw": 0,
+        "name": "meshShrinkAmount",
+        "description": "The amount (in pixels) that the navmesh has been\nshrunk around obstacles (a.k.a the amount obstacles have been expanded)"
+      }
+    ]
+  },
+  {
+    "__docId__": 51,
+    "kind": "member",
+    "name": "_meshShrinkAmount",
+    "memberof": "packages/navmesh/src/navmesh.js~NavMesh",
+    "static": false,
+    "longname": "packages/navmesh/src/navmesh.js~NavMesh#_meshShrinkAmount",
+    "access": "private",
+    "description": null,
+    "lineNumber": 31,
+    "undocument": true,
+    "ignore": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 52,
+    "kind": "member",
+    "name": "_navPolygons",
+    "memberof": "packages/navmesh/src/navmesh.js~NavMesh",
+    "static": false,
+    "longname": "packages/navmesh/src/navmesh.js~NavMesh#_navPolygons",
+    "access": "private",
+    "description": null,
+    "lineNumber": 38,
+    "undocument": true,
+    "ignore": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 53,
+    "kind": "member",
+    "name": "_graph",
+    "memberof": "packages/navmesh/src/navmesh.js~NavMesh",
+    "static": false,
+    "longname": "packages/navmesh/src/navmesh.js~NavMesh#_graph",
+    "access": "private",
+    "description": null,
+    "lineNumber": 43,
+    "undocument": true,
+    "ignore": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 54,
+    "kind": "method",
+    "name": "getPolygons",
+    "memberof": "packages/navmesh/src/navmesh.js~NavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/navmesh.js~NavMesh#getPolygons",
+    "access": "public",
+    "description": "Get the NavPolys that are in this navmesh.",
+    "lineNumber": 52,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{NavPoly[]}"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "NavPoly[]"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
+  },
+  {
+    "__docId__": 55,
+    "kind": "method",
+    "name": "destroy",
+    "memberof": "packages/navmesh/src/navmesh.js~NavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/navmesh.js~NavMesh#destroy",
+    "access": "public",
+    "description": "Cleanup method to remove references.",
+    "lineNumber": 61,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 57,
+    "kind": "method",
+    "name": "findPath",
+    "memberof": "packages/navmesh/src/navmesh.js~NavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/navmesh.js~NavMesh#findPath",
+    "access": "public",
+    "description": "Find a path from the start point to the end point using this nav mesh.",
+    "lineNumber": 76,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Vector2[]|null} An array of points if a path is found, or null if no path"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "startPoint",
+        "description": "A point-like object in the form {x, y}"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "endPoint",
+        "description": "A point-like object in the form {x, y}"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Vector2[]",
+        "null"
+      ],
+      "spread": false,
+      "description": "An array of points if a path is found, or null if no path"
+    }
+  },
+  {
+    "__docId__": 58,
+    "kind": "method",
+    "name": "_calculateNeighbors",
+    "memberof": "packages/navmesh/src/navmesh.js~NavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/navmesh.js~NavMesh#_calculateNeighbors",
+    "access": "private",
+    "description": null,
+    "lineNumber": 188,
+    "undocument": true,
+    "ignore": true,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 59,
+    "kind": "method",
+    "name": "_getSegmentOverlap",
+    "memberof": "packages/navmesh/src/navmesh.js~NavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/navmesh.js~NavMesh#_getSegmentOverlap",
+    "access": "private",
+    "description": null,
+    "lineNumber": 249,
+    "undocument": true,
+    "ignore": true,
+    "params": [
+      {
+        "name": "line1",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "line2",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "undefined[]"
+      ]
+    }
+  },
+  {
+    "__docId__": 60,
+    "kind": "method",
+    "name": "_projectPointToPolygon",
+    "memberof": "packages/navmesh/src/navmesh.js~NavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/navmesh.js~NavMesh#_projectPointToPolygon",
+    "access": "private",
+    "description": "Project a point onto a polygon in the shortest distance possible.",
+    "lineNumber": 284,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{{point: Phaser.Point, distance: number}}"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Phaser.Point"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "point",
+        "description": "The point to project"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "NavPoly"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "navPoly",
+        "description": "The navigation polygon to test against"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "{point: Phaser.Point, distance: number}"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "ignore": true
+  },
+  {
+    "__docId__": 61,
+    "kind": "method",
+    "name": "_distanceSquared",
+    "memberof": "packages/navmesh/src/navmesh.js~NavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/navmesh.js~NavMesh#_distanceSquared",
+    "access": "private",
+    "description": null,
+    "lineNumber": 298,
+    "undocument": true,
+    "ignore": true,
+    "params": [
+      {
+        "name": "a",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "b",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 62,
+    "kind": "method",
+    "name": "_projectPointToEdge",
+    "memberof": "packages/navmesh/src/navmesh.js~NavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/navmesh.js~NavMesh#_projectPointToEdge",
+    "access": "private",
+    "description": null,
+    "lineNumber": 306,
+    "undocument": true,
+    "ignore": true,
+    "params": [
+      {
+        "name": "point",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "line",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 63,
+    "kind": "file",
+    "name": "packages/navmesh/src/navpoly.js",
+    "content": "import Vector2 from \"./math/vector-2\";\r\n\r\n/**\r\n * A class that represents a navigable polygon with a navmesh. It is built on top of a\r\n * {@link Polygon}. It implements the properties and fields that javascript-astar needs - weight,\r\n * toString, isWall and getCost. See GPS test from astar repo for structure:\r\n * https://github.com/bgrins/javascript-astar/blob/master/test/tests.js\r\n *\r\n * @class NavPoly\r\n */\r\nexport default class NavPoly {\r\n  /**\r\n   * Creates an instance of NavPoly.\r\n   * @param {number} id\r\n   * @param {Polygon} polygon\r\n   *\r\n   * @memberof NavPoly\r\n   */\r\n  constructor(id, polygon) {\r\n    this.id = id;\r\n    this.polygon = polygon;\r\n    this.edges = polygon.edges;\r\n    this.neighbors = [];\r\n    this.portals = [];\r\n    this.centroid = this.calculateCentroid();\r\n    this.boundingRadius = this.calculateRadius();\r\n\r\n    this.weight = 1; // jsastar property\r\n  }\r\n\r\n  /**\r\n   * Returns an array of points that form the polygon.\r\n   *\r\n   * @returns {Vector2[]}\r\n   * @memberof NavPoly\r\n   */\r\n  getPoints() {\r\n    return this.polygon.points;\r\n  }\r\n\r\n  /**\r\n   * Check if the given point-like object is within the polygon\r\n   *\r\n   * @param {object} point Object of the form {x, y}\r\n   * @returns {boolean}\r\n   * @memberof NavPoly\r\n   */\r\n  contains(point) {\r\n    // Phaser's polygon check doesn't handle when a point is on one of the edges of the line. Note:\r\n    // check numerical stability here. It would also be good to optimize this for different shapes.\r\n    return this.polygon.contains(point.x, point.y) || this.isPointOnEdge(point);\r\n  }\r\n\r\n  /**\r\n   * Only rectangles are supported, so this calculation works, but this is not actually the centroid\r\n   * calculation for a polygon. This is just the average of the vertices - proper centroid of a\r\n   * polygon factors in the area.\r\n   *\r\n   * @returns {Vector2}\r\n   * @memberof NavPoly\r\n   */\r\n  calculateCentroid() {\r\n    const centroid = new Vector2(0, 0);\r\n    const length = this.polygon.points.length;\r\n    this.polygon.points.forEach(p => centroid.add(p));\r\n    centroid.x /= length;\r\n    centroid.y /= length;\r\n    return centroid;\r\n  }\r\n\r\n  /**\r\n   * Calculate the radius of a circle that circumscribes the polygon.\r\n   *\r\n   * @returns {number}\r\n   * @memberof NavPoly\r\n   */\r\n  calculateRadius() {\r\n    let boundingRadius = 0;\r\n    for (const point of this.polygon.points) {\r\n      const d = this.centroid.distance(point);\r\n      if (d > boundingRadius) boundingRadius = d;\r\n    }\r\n    return boundingRadius;\r\n  }\r\n\r\n  /**\r\n   * Check if the given point-like object is on one of the edges of the polygon.\r\n   *\r\n   * @param {object} Point-like object in the form { x, y }\r\n   * @returns {boolean}\r\n   * @memberof NavPoly\r\n   */\r\n  isPointOnEdge({ x, y }) {\r\n    for (const edge of this.edges) {\r\n      if (edge.pointOnSegment(x, y)) return true;\r\n    }\r\n    return false;\r\n  }\r\n\r\n  destroy() {\r\n    this.neighbors = [];\r\n    this.portals = [];\r\n  }\r\n\r\n  // jsastar methods\r\n  toString() {\r\n    return `NavPoly(id: ${this.id} at: ${this.centroid})`;\r\n  }\r\n  isWall() {\r\n    return this.weight === 0;\r\n  }\r\n  centroidDistance(navPolygon) {\r\n    return this.centroid.distance(navPolygon.centroid);\r\n  }\r\n  getCost(navPolygon) {\r\n    return this.centroidDistance(navPolygon);\r\n  }\r\n}\r\n",
+    "static": true,
+    "longname": "C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/packages/navmesh/src/navpoly.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 64,
+    "kind": "class",
+    "name": "NavPoly",
+    "memberof": "packages/navmesh/src/navpoly.js",
+    "static": true,
+    "longname": "packages/navmesh/src/navpoly.js~NavPoly",
+    "access": "public",
+    "export": true,
+    "importPath": "./packages/navmesh/src/navpoly.js",
+    "importStyle": "NavPoly",
+    "description": "A class that represents a navigable polygon with a navmesh. It is built on top of a\n{@link Polygon}. It implements the properties and fields that javascript-astar needs - weight,\ntoString, isWall and getCost. See GPS test from astar repo for structure:\nhttps://github.com/bgrins/javascript-astar/blob/master/test/tests.js",
+    "lineNumber": 11,
+    "unknown": [
+      {
+        "tagName": "@class",
+        "tagValue": "NavPoly"
+      }
+    ],
+    "interface": false
+  },
+  {
+    "__docId__": 65,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "packages/navmesh/src/navpoly.js~NavPoly",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/navpoly.js~NavPoly#constructor",
+    "access": "public",
+    "description": "Creates an instance of NavPoly.",
+    "lineNumber": 19,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "id",
+        "description": ""
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Polygon"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "polygon",
+        "description": ""
+      }
+    ]
+  },
+  {
+    "__docId__": 66,
+    "kind": "member",
+    "name": "id",
+    "memberof": "packages/navmesh/src/navpoly.js~NavPoly",
+    "static": false,
+    "longname": "packages/navmesh/src/navpoly.js~NavPoly#id",
+    "access": "public",
+    "description": null,
+    "lineNumber": 20,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 67,
+    "kind": "member",
+    "name": "polygon",
+    "memberof": "packages/navmesh/src/navpoly.js~NavPoly",
+    "static": false,
+    "longname": "packages/navmesh/src/navpoly.js~NavPoly#polygon",
+    "access": "public",
+    "description": null,
+    "lineNumber": 21,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 68,
+    "kind": "member",
+    "name": "edges",
+    "memberof": "packages/navmesh/src/navpoly.js~NavPoly",
+    "static": false,
+    "longname": "packages/navmesh/src/navpoly.js~NavPoly#edges",
+    "access": "public",
+    "description": null,
+    "lineNumber": 22,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 69,
+    "kind": "member",
+    "name": "neighbors",
+    "memberof": "packages/navmesh/src/navpoly.js~NavPoly",
+    "static": false,
+    "longname": "packages/navmesh/src/navpoly.js~NavPoly#neighbors",
+    "access": "public",
+    "description": null,
+    "lineNumber": 23,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*[]"
+      ]
+    }
+  },
+  {
+    "__docId__": 70,
+    "kind": "member",
+    "name": "portals",
+    "memberof": "packages/navmesh/src/navpoly.js~NavPoly",
+    "static": false,
+    "longname": "packages/navmesh/src/navpoly.js~NavPoly#portals",
+    "access": "public",
+    "description": null,
+    "lineNumber": 24,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*[]"
+      ]
+    }
+  },
+  {
+    "__docId__": 71,
+    "kind": "member",
+    "name": "centroid",
+    "memberof": "packages/navmesh/src/navpoly.js~NavPoly",
+    "static": false,
+    "longname": "packages/navmesh/src/navpoly.js~NavPoly#centroid",
+    "access": "public",
+    "description": null,
+    "lineNumber": 25,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 72,
+    "kind": "member",
+    "name": "boundingRadius",
+    "memberof": "packages/navmesh/src/navpoly.js~NavPoly",
+    "static": false,
+    "longname": "packages/navmesh/src/navpoly.js~NavPoly#boundingRadius",
+    "access": "public",
+    "description": null,
+    "lineNumber": 26,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 73,
+    "kind": "member",
+    "name": "weight",
+    "memberof": "packages/navmesh/src/navpoly.js~NavPoly",
+    "static": false,
+    "longname": "packages/navmesh/src/navpoly.js~NavPoly#weight",
+    "access": "public",
+    "description": null,
+    "lineNumber": 28,
+    "undocument": true,
+    "type": {
+      "types": [
+        "number"
+      ]
+    }
+  },
+  {
+    "__docId__": 74,
+    "kind": "method",
+    "name": "getPoints",
+    "memberof": "packages/navmesh/src/navpoly.js~NavPoly",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/navpoly.js~NavPoly#getPoints",
+    "access": "public",
+    "description": "Returns an array of points that form the polygon.",
+    "lineNumber": 37,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Vector2[]}"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Vector2[]"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
+  },
+  {
+    "__docId__": 75,
+    "kind": "method",
+    "name": "contains",
+    "memberof": "packages/navmesh/src/navpoly.js~NavPoly",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/navpoly.js~NavPoly#contains",
+    "access": "public",
+    "description": "Check if the given point-like object is within the polygon",
+    "lineNumber": 48,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{boolean}"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "point",
+        "description": "Object of the form {x, y}"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 76,
+    "kind": "method",
+    "name": "calculateCentroid",
+    "memberof": "packages/navmesh/src/navpoly.js~NavPoly",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/navpoly.js~NavPoly#calculateCentroid",
+    "access": "public",
+    "description": "Only rectangles are supported, so this calculation works, but this is not actually the centroid\ncalculation for a polygon. This is just the average of the vertices - proper centroid of a\npolygon factors in the area.",
+    "lineNumber": 62,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Vector2}"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Vector2"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
+  },
+  {
+    "__docId__": 77,
+    "kind": "method",
+    "name": "calculateRadius",
+    "memberof": "packages/navmesh/src/navpoly.js~NavPoly",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/navpoly.js~NavPoly#calculateRadius",
+    "access": "public",
+    "description": "Calculate the radius of a circle that circumscribes the polygon.",
+    "lineNumber": 77,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{number}"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "number"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
+  },
+  {
+    "__docId__": 78,
+    "kind": "method",
+    "name": "isPointOnEdge",
+    "memberof": "packages/navmesh/src/navpoly.js~NavPoly",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/navpoly.js~NavPoly#isPointOnEdge",
+    "access": "public",
+    "description": "Check if the given point-like object is on one of the edges of the polygon.",
+    "lineNumber": 93,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{boolean}"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "Point-like",
+        "description": "object in the form { x, y }"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 79,
+    "kind": "method",
+    "name": "destroy",
+    "memberof": "packages/navmesh/src/navpoly.js~NavPoly",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/navpoly.js~NavPoly#destroy",
+    "access": "public",
+    "description": null,
+    "lineNumber": 100,
+    "undocument": true,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 82,
+    "kind": "method",
+    "name": "toString",
+    "memberof": "packages/navmesh/src/navpoly.js~NavPoly",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/navpoly.js~NavPoly#toString",
+    "access": "public",
+    "description": null,
+    "lineNumber": 106,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "string"
+      ]
+    }
+  },
+  {
+    "__docId__": 83,
+    "kind": "method",
+    "name": "isWall",
+    "memberof": "packages/navmesh/src/navpoly.js~NavPoly",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/navpoly.js~NavPoly#isWall",
+    "access": "public",
+    "description": null,
+    "lineNumber": 109,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 84,
+    "kind": "method",
+    "name": "centroidDistance",
+    "memberof": "packages/navmesh/src/navpoly.js~NavPoly",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/navpoly.js~NavPoly#centroidDistance",
+    "access": "public",
+    "description": null,
+    "lineNumber": 112,
+    "undocument": true,
+    "params": [
+      {
+        "name": "navPolygon",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 85,
+    "kind": "method",
+    "name": "getCost",
+    "memberof": "packages/navmesh/src/navpoly.js~NavPoly",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/navmesh/src/navpoly.js~NavPoly#getCost",
+    "access": "public",
+    "description": null,
+    "lineNumber": 115,
+    "undocument": true,
+    "params": [
+      {
+        "name": "navPolygon",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 86,
+    "kind": "file",
+    "name": "packages/navmesh/src/utils.js",
+    "content": "/**\r\n * Twice the area of the triangle formed by a, b and c\r\n * @returns {number}\r\n * @private\r\n */\r\nexport function triarea2(a, b, c) {\r\n  const ax = b.x - a.x;\r\n  const ay = b.y - a.y;\r\n  const bx = c.x - a.x;\r\n  const by = c.y - a.y;\r\n  return bx * ay - ax * by;\r\n}\r\n\r\n/**\r\n * Clamp value between min and max\r\n * @returns {number}\r\n * @private\r\n */\r\nexport function clamp(value, min, max) {\r\n  if (value < min) value = min;\r\n  if (value > max) value = max;\r\n  return value;\r\n}\r\n\r\n/**\r\n * Check if two values within a small margin of one another\r\n * @returns {boolean}\r\n * @private\r\n */\r\nexport function almostEqual(value1, value2, errorMargin = 0.0001) {\r\n  if (Math.abs(value1 - value2) <= errorMargin) return true;\r\n  else return false;\r\n}\r\n\r\n/**\r\n * Find the smallest angle difference between two angles\r\n * https://gist.github.com/Aaronduino/4068b058f8dbc34b4d3a9eedc8b2cbe0\r\n * @returns {number}\r\n * @private\r\n */\r\nexport function angleDifference(x, y) {\r\n  let a = x - y;\r\n  const i = a + Math.PI;\r\n  const j = Math.PI * 2;\r\n  a = i - Math.floor(i / j) * j; // (a+180) % 360; this ensures the correct sign\r\n  a -= Math.PI;\r\n  return a;\r\n}\r\n\r\n/**\r\n * Check if two lines are collinear (within a marign)\r\n * @returns {boolean}\r\n * @private\r\n */\r\nexport function areCollinear(line1, line2, errorMargin = 0.0001) {\r\n  // Figure out if the two lines are equal by looking at the area of the triangle formed\r\n  // by their points\r\n  const area1 = triarea2(line1.start, line1.end, line2.start);\r\n  const area2 = triarea2(line1.start, line1.end, line2.end);\r\n  if (almostEqual(area1, 0, errorMargin) && almostEqual(area2, 0, errorMargin)) {\r\n    return true;\r\n  } else return false;\r\n}\r\n",
+    "static": true,
+    "longname": "C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/packages/navmesh/src/utils.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 87,
+    "kind": "function",
+    "name": "triarea2",
+    "memberof": "packages/navmesh/src/utils.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "packages/navmesh/src/utils.js~triarea2",
+    "access": "private",
+    "export": true,
+    "importPath": "./packages/navmesh/src/utils.js",
+    "importStyle": "{triarea2}",
+    "description": "Twice the area of the triangle formed by a, b and c",
+    "lineNumber": 6,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{number}"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "number"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "ignore": true,
+    "params": [
+      {
+        "name": "a",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "b",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "c",
+        "types": [
+          "*"
+        ]
+      }
+    ]
+  },
+  {
+    "__docId__": 88,
+    "kind": "function",
+    "name": "clamp",
+    "memberof": "packages/navmesh/src/utils.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "packages/navmesh/src/utils.js~clamp",
+    "access": "private",
+    "export": true,
+    "importPath": "./packages/navmesh/src/utils.js",
+    "importStyle": "{clamp}",
+    "description": "Clamp value between min and max",
+    "lineNumber": 19,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{number}"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "number"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "ignore": true,
+    "params": [
+      {
+        "name": "value",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "min",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "max",
+        "types": [
+          "*"
+        ]
+      }
+    ]
+  },
+  {
+    "__docId__": 89,
+    "kind": "function",
+    "name": "almostEqual",
+    "memberof": "packages/navmesh/src/utils.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "packages/navmesh/src/utils.js~almostEqual",
+    "access": "private",
+    "export": true,
+    "importPath": "./packages/navmesh/src/utils.js",
+    "importStyle": "{almostEqual}",
+    "description": "Check if two values within a small margin of one another",
+    "lineNumber": 30,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{boolean}"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "ignore": true,
+    "params": [
+      {
+        "name": "value1",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "value2",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "errorMargin",
+        "optional": true,
+        "types": [
+          "number"
+        ],
+        "defaultRaw": 0.0001,
+        "defaultValue": "0.0001"
+      }
+    ]
+  },
+  {
+    "__docId__": 90,
+    "kind": "function",
+    "name": "angleDifference",
+    "memberof": "packages/navmesh/src/utils.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "packages/navmesh/src/utils.js~angleDifference",
+    "access": "private",
+    "export": true,
+    "importPath": "./packages/navmesh/src/utils.js",
+    "importStyle": "{angleDifference}",
+    "description": "Find the smallest angle difference between two angles\nhttps://gist.github.com/Aaronduino/4068b058f8dbc34b4d3a9eedc8b2cbe0",
+    "lineNumber": 41,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{number}"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "number"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "ignore": true,
+    "params": [
+      {
+        "name": "x",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "y",
+        "types": [
+          "*"
+        ]
+      }
+    ]
+  },
+  {
+    "__docId__": 91,
+    "kind": "function",
+    "name": "areCollinear",
+    "memberof": "packages/navmesh/src/utils.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "packages/navmesh/src/utils.js~areCollinear",
+    "access": "private",
+    "export": true,
+    "importPath": "./packages/navmesh/src/utils.js",
+    "importStyle": "{areCollinear}",
+    "description": "Check if two lines are collinear (within a marign)",
+    "lineNumber": 55,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{boolean}"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "ignore": true,
+    "params": [
+      {
+        "name": "line1",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "line2",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "errorMargin",
+        "optional": true,
+        "types": [
+          "number"
+        ],
+        "defaultRaw": 0.0001,
+        "defaultValue": "0.0001"
+      }
+    ]
+  },
+  {
+    "__docId__": 92,
+    "kind": "file",
+    "name": "packages/phaser-navmesh/src/index.js",
+    "content": "import PhaserNavMeshPlugin from \"./phaser-navmesh-plugin\";\r\nimport PhaserNavMesh from \"./phaser-navmesh\";\r\n\r\nexport default PhaserNavMeshPlugin;\r\nexport { PhaserNavMesh };\r\n",
+    "static": true,
+    "longname": "C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/packages/phaser-navmesh/src/index.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 93,
+    "kind": "file",
+    "name": "packages/phaser-navmesh/src/phaser-navmesh-plugin.js",
+    "content": "import Phaser from \"phaser\";\r\nimport PhaserNavMesh from \"./phaser-navmesh\";\r\n\r\n/**\r\n * This class can create navigation meshes for use in Phaser 3. The navmeshes can be constructed\r\n * from convex polygons embedded in a Tiled map. The class that conforms to Phaser 3's plugin\r\n * structure.\r\n *\r\n * @export\r\n * @class PhaserNavMeshPlugin\r\n */\r\nexport default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {\r\n  constructor(scene, pluginManager) {\r\n    super(scene, pluginManager);\r\n\r\n    this.phaserNavMeshes = {};\r\n    this.scene = scene;\r\n    this.systems = scene.sys;\r\n\r\n    if (!scene.sys.settings.isBooted) this.systems.events.once(\"boot\", this.boot, this);\r\n  }\r\n\r\n  /**\r\n   * Phaser.Scene lifecycle event\r\n   * \r\n   * @memberof PhaserNavMeshPlugin\r\n   */\r\n  boot() {\r\n    const emitter = this.systems.events;\r\n    emitter.once(\"destroy\", this.destroy, this);\r\n  }\r\n\r\n  /**\r\n   * Phaser.Scene lifecycle event - noop in this plugin, but still required.\r\n   * \r\n   * @memberof PhaserNavMeshPlugin\r\n   */\r\n  init() {}\r\n  \r\n  /**\r\n   * Phaser.Scene lifecycle event - noop in this plugin, but still required.\r\n   * \r\n   * @memberof PhaserNavMeshPlugin\r\n   */\r\n  start() {}\r\n\r\n  /**\r\n   * Phaser.Scene lifecycle event - will destroy all navmeshes created.\r\n   * \r\n   * @memberof PhaserNavMeshPlugin\r\n   */\r\n  destroy() {\r\n    this.systems.events.off(\"boot\", this.boot, this);\r\n    this.systems.events.Object.values(this.phaserNavMeshes).forEach(m => m.destroy());\r\n    this.phaserNavMeshes = [];\r\n    this.scene = undefined;\r\n    this.systems = undefined;\r\n  }\r\n\r\n  /**\r\n   * Destroy a navmesh and remove it from the plugin \r\n   *\r\n   * @param {string} key\r\n   * @memberof PhaserNavMeshPlugin\r\n   */\r\n  removeMesh(key) {\r\n    if (this.phaserNavMeshes[key]) {\r\n      this.phaserNavMeshes[key].destroy();\r\n      this.phaserNavMeshes[key] = undefined;\r\n    }\r\n  }\r\n\r\n  /**\r\n   * Load a navmesh from Tiled. Currently assumes that the polygons are squares! Does not support\r\n   * tilemap layer scaling, rotation or position.\r\n   *\r\n   * @param {string} key Key to use when storign this navmesh within the plugin.\r\n   * @param {Phaser.Tilemaps.ObjectLayer} objectLayer The ObjectLayer from a tilemap that contains\r\n   * the polygons that make up the navmesh.\r\n   * @param {number} [meshShrinkAmount=0] The amount (in pixels) that the navmesh has been shrunk\r\n   * around obstacles (a.k.a the amount obstacles have been expanded)\r\n   * @returns {PhaserNavMesh}\r\n   * @memberof PhaserNavMeshPlugin\r\n   */\r\n  buildMeshFromTiled(key, objectLayer, meshShrinkAmount = 0) {\r\n    if (this.phaserNavMeshes[key]) {\r\n      console.warn(`NavMeshPlugin: a navmesh already exists with the given key: ${key}`);\r\n      return this.phaserNavMeshes[key];\r\n    }\r\n\r\n    if (!objectLayer || objectLayer.length === 0) {\r\n      console.warn(\r\n        `NavMeshPlugin: The given tilemap object layer is empty or undefined: ${objectLayer}`\r\n      );\r\n    }\r\n\r\n    // Load up the object layer\r\n    const objects = objectLayer ? objectLayer.objects : [];\r\n\r\n    // Loop over the objects and construct a polygon - assumes a rectangle for now!\r\n    // TODO: support layer position, scale, rotation\r\n    const polygons = objects.map(obj => {\r\n      const top = obj.y;\r\n      const bottom = obj.y + obj.height;\r\n      const left = obj.x;\r\n      const right = obj.x + obj.width;\r\n      return [\r\n        { x: left, y: top },\r\n        { x: left, y: bottom },\r\n        { x: right, y: bottom },\r\n        { x: right, y: top }\r\n      ];\r\n    });\r\n\r\n    const mesh = new PhaserNavMesh(this, key, polygons, meshShrinkAmount);\r\n\r\n    this.phaserNavMeshes[key] = mesh;\r\n\r\n    return mesh;\r\n  }\r\n}\r\n",
+    "static": true,
+    "longname": "C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/packages/phaser-navmesh/src/phaser-navmesh-plugin.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 94,
+    "kind": "class",
+    "name": "PhaserNavMeshPlugin",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh-plugin.js",
+    "static": true,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh-plugin.js~PhaserNavMeshPlugin",
+    "access": "public",
+    "export": true,
+    "importPath": "./packages/phaser-navmesh/src/phaser-navmesh-plugin.js",
+    "importStyle": "PhaserNavMeshPlugin",
+    "description": "This class can create navigation meshes for use in Phaser 3. The navmeshes can be constructed\nfrom convex polygons embedded in a Tiled map. The class that conforms to Phaser 3's plugin\nstructure.",
+    "lineNumber": 12,
+    "unknown": [
+      {
+        "tagName": "@class",
+        "tagValue": "PhaserNavMeshPlugin"
+      }
+    ],
+    "interface": false,
+    "extends": [
+      "phaser~Phaser.Plugins.ScenePlugin"
+    ]
+  },
+  {
+    "__docId__": 95,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh-plugin.js~PhaserNavMeshPlugin",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh-plugin.js~PhaserNavMeshPlugin#constructor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 13,
+    "undocument": true
+  },
+  {
+    "__docId__": 96,
+    "kind": "member",
+    "name": "phaserNavMeshes",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh-plugin.js~PhaserNavMeshPlugin",
+    "static": false,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh-plugin.js~PhaserNavMeshPlugin#phaserNavMeshes",
+    "access": "public",
+    "description": null,
+    "lineNumber": 16,
+    "undocument": true,
+    "type": {
+      "types": [
+        "{}"
+      ]
+    }
+  },
+  {
+    "__docId__": 97,
+    "kind": "member",
+    "name": "scene",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh-plugin.js~PhaserNavMeshPlugin",
+    "static": false,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh-plugin.js~PhaserNavMeshPlugin#scene",
+    "access": "public",
+    "description": null,
+    "lineNumber": 17,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 98,
+    "kind": "member",
+    "name": "systems",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh-plugin.js~PhaserNavMeshPlugin",
+    "static": false,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh-plugin.js~PhaserNavMeshPlugin#systems",
+    "access": "public",
+    "description": null,
+    "lineNumber": 18,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 99,
+    "kind": "method",
+    "name": "boot",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh-plugin.js~PhaserNavMeshPlugin",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh-plugin.js~PhaserNavMeshPlugin#boot",
+    "access": "public",
+    "description": "Phaser.Scene lifecycle event",
+    "lineNumber": 28,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 100,
+    "kind": "method",
+    "name": "init",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh-plugin.js~PhaserNavMeshPlugin",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh-plugin.js~PhaserNavMeshPlugin#init",
+    "access": "public",
+    "description": "Phaser.Scene lifecycle event - noop in this plugin, but still required.",
+    "lineNumber": 38,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 101,
+    "kind": "method",
+    "name": "start",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh-plugin.js~PhaserNavMeshPlugin",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh-plugin.js~PhaserNavMeshPlugin#start",
+    "access": "public",
+    "description": "Phaser.Scene lifecycle event - noop in this plugin, but still required.",
+    "lineNumber": 45,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 102,
+    "kind": "method",
+    "name": "destroy",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh-plugin.js~PhaserNavMeshPlugin",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh-plugin.js~PhaserNavMeshPlugin#destroy",
+    "access": "public",
+    "description": "Phaser.Scene lifecycle event - will destroy all navmeshes created.",
+    "lineNumber": 52,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 106,
+    "kind": "method",
+    "name": "removeMesh",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh-plugin.js~PhaserNavMeshPlugin",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh-plugin.js~PhaserNavMeshPlugin#removeMesh",
+    "access": "public",
+    "description": "Destroy a navmesh and remove it from the plugin ",
+    "lineNumber": 66,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key",
+        "description": ""
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 107,
+    "kind": "method",
+    "name": "buildMeshFromTiled",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh-plugin.js~PhaserNavMeshPlugin",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh-plugin.js~PhaserNavMeshPlugin#buildMeshFromTiled",
+    "access": "public",
+    "description": "Load a navmesh from Tiled. Currently assumes that the polygons are squares! Does not support\ntilemap layer scaling, rotation or position.",
+    "lineNumber": 85,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{PhaserNavMesh}"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key",
+        "description": "Key to use when storign this navmesh within the plugin."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Phaser.Tilemaps.ObjectLayer"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "objectLayer",
+        "description": "The ObjectLayer from a tilemap that contains\nthe polygons that make up the navmesh."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "number"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "0",
+        "defaultRaw": 0,
+        "name": "meshShrinkAmount",
+        "description": "The amount (in pixels) that the navmesh has been shrunk\naround obstacles (a.k.a the amount obstacles have been expanded)"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "PhaserNavMesh"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 108,
+    "kind": "file",
+    "name": "packages/phaser-navmesh/src/phaser-navmesh.js",
+    "content": "import NavMesh from \"navmesh/src\"; // import the source - not the dist - no need to double build\r\nimport Phaser from \"phaser\";\r\n\r\n/**\r\n * A wrapper around {@link NavMesh} for Phaser 3. Create instances of this class from\r\n * {@link PhaserNavMeshPlugin}. This is the workhorse that represents a navigation mesh built from a\r\n * series of polygons. Once built, the mesh can be asked for a path from one point to another point.\r\n *\r\n * Compared to {@link NavMesh}, this adds visual debugging capabilities and converts paths to\r\n * Phaser-compatible point instances.\r\n *\r\n * @export\r\n * @class PhaserNavMesh\r\n */\r\nexport default class PhaserNavMesh {\r\n  /**\r\n   * Creates an instance of PhaserNavMesh.\r\n   * @param {PhaserNavMeshPlugin} plugin The plugin that owns this mesh.\r\n   * @param {string} key The key the mesh is stored under within the plugin.\r\n   * @param {object[][]} meshPolygonPoints Array where each element is an array of point-like\r\n   * objects that defines a polygon.\r\n   * @param {number} [meshShrinkAmount=0] The amount (in pixels) that the navmesh has been shrunk\r\n   * around obstacles (a.k.a the amount obstacles have been expanded)\r\n   * @memberof PhaserNavMesh\r\n   */\r\n  constructor(plugin, key, meshPolygonPoints, meshShrinkAmount = 0) {\r\n    this.key = key;\r\n    this.plugin = plugin;\r\n    this.scene = plugin.scene;\r\n    this.debugGraphics = null;\r\n    this.navMesh = new NavMesh(meshPolygonPoints, meshShrinkAmount);\r\n  }\r\n\r\n  /**\r\n   * See {@link NavMesh#findPath}. This implements the same functionality, except that the returned path\r\n   * is converted to Phaser-compatible points.\r\n   *\r\n   * @param {object} startPoint A point-like object in the form {x, y}\r\n   * @param {object} endPoint A point-like object in the form {x, y}\r\n   * @param {class} [PointClass=Phaser.Geom.Point]\r\n   * @returns {object[]|null} An array of points if a path is found, or null if no path\r\n   * @memberof PhaserNavMesh\r\n   */\r\n  findPath(startPoint, endPoint, PointClass = Phaser.Geom.Point) {\r\n    const path = this.navMesh.findPath(startPoint, endPoint);\r\n    return path ? path.map(({ x, y }) => new PointClass(x, y)) : path;\r\n  }\r\n\r\n  /**\r\n   * Enable the debug drawing graphics. If no graphics object is providied, a new instance will be\r\n   * created.\r\n   *\r\n   * @param {Phaser.GameObjects.Graphics} [graphics] An optional graphics object for the mesh to use\r\n   * for debug drawing. Note, the mesh will destroy this graphics object when the mesh is destroyed.\r\n   * @returns {Phaser.GameObjects.Graphics} The graphics object this mesh uses.\r\n   * @memberof PhaserNavMesh\r\n   */\r\n  enableDebug(graphics) {\r\n    if (!graphics && !this.debugGraphics) {\r\n      this.debugGraphics = this.scene.add.graphics();\r\n    } else if (graphics) {\r\n      if (this.debugGraphics) this.debugGraphics.destroy();\r\n      this.debugGraphics = graphics;\r\n    }\r\n\r\n    this.debugGraphics.visible = true;\r\n\r\n    return this.debugGraphics;\r\n  }\r\n\r\n  /**\r\n   * Hide the debug graphics, but don't destroy it.\r\n   *\r\n   * @memberof PhaserNavMesh\r\n   */\r\n  disableDebug() {\r\n    if (this.debugGraphics) this.debugGraphics.visible = false;\r\n  }\r\n\r\n  /**\r\n   * Returns true if the debug graphics object is enabled and visible.\r\n   *\r\n   * @returns {boolean}\r\n   * @memberof PhaserNavMesh\r\n   */\r\n  isDebugEnabled() {\r\n    return this.debugGraphics && this.debugGraphics.visible;\r\n  }\r\n\r\n  /**\r\n   * Clear the debug graphics.\r\n   *\r\n   * @memberof PhaserNavMesh\r\n   */\r\n  debugDrawClear() {\r\n    if (this.debugGraphics) this.debugGraphics.clear();\r\n  }\r\n\r\n  /**\r\n   * Visualize the polygons in the navmesh by drawing them to the debug graphics.\r\n   *\r\n   * @param {object} options\r\n   * @param {boolean} [options.drawCentroid=true] For each polygon, show the approx centroid\r\n   * @param {boolean} [options.drawBounds=false] For each polygon, show the bounding radius\r\n   * @param {boolean} [options.drawNeighbors=true] For each polygon, show the connections to\r\n   * neighbors\r\n   * @param {boolean} [options.drawPortals=true] For each polygon, show the portal edges\r\n   * @param {number[]} [options.palette=[0x00a0b0, 0x6a4a3c, 0xcc333f, 0xeb6841, 0xedc951]] An array\r\n   * of Phaser-compatible format colors to use when drawing the individual polygons. The first poly\r\n   * uses the first color, the second poly uses the second color, etc. \r\n   */\r\n  debugDrawMesh({\r\n    drawCentroid = true,\r\n    drawBounds = false,\r\n    drawNeighbors = true,\r\n    drawPortals = true,\r\n    palette = [0x00a0b0, 0x6a4a3c, 0xcc333f, 0xeb6841, 0xedc951]\r\n  } = {}) {\r\n    if (!this.debugGraphics) return;\r\n\r\n    const navPolys = this.navMesh.getPolygons();\r\n\r\n    navPolys.forEach(poly => {\r\n      const color = palette[poly.id % palette.length];\r\n      this.debugGraphics.fillStyle(color);\r\n      this.debugGraphics.fillPoints(poly.getPoints(), true);\r\n\r\n      if (drawCentroid) {\r\n        this.debugGraphics.fillStyle(0x000000);\r\n        this.debugGraphics.fillCircle(poly.centroid.x, poly.centroid.y, 4);\r\n      }\r\n\r\n      if (drawBounds) {\r\n        this.debugGraphics.lineStyle(1, 0xffffff);\r\n        this.debugGraphics.strokeCircle(poly.centroid.x, poly.centroid.y, poly.boundingRadius);\r\n      }\r\n\r\n      if (drawNeighbors) {\r\n        this.debugGraphics.lineStyle(2, 0x000000);\r\n        poly.neighbors.forEach(n => {\r\n          this.debugGraphics.lineBetween(\r\n            poly.centroid.x,\r\n            poly.centroid.y,\r\n            n.centroid.x,\r\n            n.centroid.y\r\n          );\r\n        });\r\n      }\r\n\r\n      if (drawPortals) {\r\n        this.debugGraphics.lineStyle(10, 0x000000);\r\n        poly.portals.forEach(portal =>\r\n          this.debugGraphics.lineBetween(portal.start.x, portal.start.y, portal.end.x, portal.end.y)\r\n        );\r\n      }\r\n    });\r\n  }\r\n\r\n  /**\r\n   * Visualize a path (array of points) on the debug graphics.\r\n   *\r\n   * @param {object[]} path Array of point-like objects in the form {x, y} \r\n   * @param {number} [color=0x00FF00]\r\n   * @param {number} [thickness=10]\r\n   * @param {number} [alpha=1]\r\n   */\r\n  debugDrawPath(path, color = 0x00ff00, thickness = 10, alpha = 1) {\r\n    if (!this.debugGraphics) return;\r\n\r\n    if (path && path.length) {\r\n      // Draw line for path\r\n      this.debugGraphics.lineStyle(thickness, color, alpha);\r\n      this.debugGraphics.strokePoints(path);\r\n\r\n      // Draw circle at start and end of path\r\n      this.debugGraphics.fillStyle(color, alpha);\r\n      const d = 1.2 * thickness;\r\n      this.debugGraphics.fillCircle(path[0].x, path[0].y, d, d);\r\n\r\n      if (path.length > 1) {\r\n        const lastPoint = path[path.length - 1];\r\n        this.debugGraphics.fillCircle(lastPoint.x, lastPoint.y, d, d);\r\n      }\r\n    }\r\n  }\r\n\r\n  /**\r\n   * Destroy the mesh, kill the debug graphic and unregister itself with the plugin.\r\n   *\r\n   * @memberof PhaserNavMesh\r\n   */\r\n  destroy() {\r\n    if (this.navMesh) this.navMesh.destroy();\r\n    if (this.debugGraphics) this.debugGraphics.destroy();\r\n    this.plugin.removeMesh(this.key);\r\n    this.navMesh = undefined;\r\n    this.debugGraphics = undefined;\r\n    this.plugin = undefined;\r\n    this.scene = undefined;\r\n  }\r\n}\r\n",
+    "static": true,
+    "longname": "C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/packages/phaser-navmesh/src/phaser-navmesh.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 109,
+    "kind": "class",
+    "name": "PhaserNavMesh",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh.js",
+    "static": true,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh",
+    "access": "public",
+    "export": true,
+    "importPath": "./packages/phaser-navmesh/src/phaser-navmesh.js",
+    "importStyle": "PhaserNavMesh",
+    "description": "A wrapper around {@link NavMesh} for Phaser 3. Create instances of this class from\n{@link PhaserNavMeshPlugin}. This is the workhorse that represents a navigation mesh built from a\nseries of polygons. Once built, the mesh can be asked for a path from one point to another point.\n\nCompared to {@link NavMesh}, this adds visual debugging capabilities and converts paths to\nPhaser-compatible point instances.",
+    "lineNumber": 15,
+    "unknown": [
+      {
+        "tagName": "@class",
+        "tagValue": "PhaserNavMesh"
+      }
+    ],
+    "interface": false
+  },
+  {
+    "__docId__": 110,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh#constructor",
+    "access": "public",
+    "description": "Creates an instance of PhaserNavMesh.",
+    "lineNumber": 26,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "PhaserNavMeshPlugin"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "plugin",
+        "description": "The plugin that owns this mesh."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key",
+        "description": "The key the mesh is stored under within the plugin."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "object[][]"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "meshPolygonPoints",
+        "description": "Array where each element is an array of point-like\nobjects that defines a polygon."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "number"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "0",
+        "defaultRaw": 0,
+        "name": "meshShrinkAmount",
+        "description": "The amount (in pixels) that the navmesh has been shrunk\naround obstacles (a.k.a the amount obstacles have been expanded)"
+      }
+    ]
+  },
+  {
+    "__docId__": 111,
+    "kind": "member",
+    "name": "key",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh",
+    "static": false,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh#key",
+    "access": "public",
+    "description": null,
+    "lineNumber": 27,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 112,
+    "kind": "member",
+    "name": "plugin",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh",
+    "static": false,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh#plugin",
+    "access": "public",
+    "description": null,
+    "lineNumber": 28,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 113,
+    "kind": "member",
+    "name": "scene",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh",
+    "static": false,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh#scene",
+    "access": "public",
+    "description": null,
+    "lineNumber": 29,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 114,
+    "kind": "member",
+    "name": "debugGraphics",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh",
+    "static": false,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh#debugGraphics",
+    "access": "public",
+    "description": null,
+    "lineNumber": 30,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 115,
+    "kind": "member",
+    "name": "navMesh",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh",
+    "static": false,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh#navMesh",
+    "access": "public",
+    "description": null,
+    "lineNumber": 31,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 116,
+    "kind": "method",
+    "name": "findPath",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh#findPath",
+    "access": "public",
+    "description": "See {@link NavMesh#findPath}. This implements the same functionality, except that the returned path\nis converted to Phaser-compatible points.",
+    "lineNumber": 44,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{object[]|null} An array of points if a path is found, or null if no path"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "startPoint",
+        "description": "A point-like object in the form {x, y}"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "endPoint",
+        "description": "A point-like object in the form {x, y}"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "class"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "Phaser.Geom.Point",
+        "defaultRaw": "Phaser.Geom.Point",
+        "name": "PointClass",
+        "description": ""
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "object[]",
+        "null"
+      ],
+      "spread": false,
+      "description": "An array of points if a path is found, or null if no path"
+    }
+  },
+  {
+    "__docId__": 117,
+    "kind": "method",
+    "name": "enableDebug",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh#enableDebug",
+    "access": "public",
+    "description": "Enable the debug drawing graphics. If no graphics object is providied, a new instance will be\ncreated.",
+    "lineNumber": 58,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Phaser.GameObjects.Graphics} The graphics object this mesh uses."
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Phaser.GameObjects.Graphics"
+        ],
+        "spread": false,
+        "optional": true,
+        "name": "graphics",
+        "description": "An optional graphics object for the mesh to use\nfor debug drawing. Note, the mesh will destroy this graphics object when the mesh is destroyed."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Phaser.GameObjects.Graphics"
+      ],
+      "spread": false,
+      "description": "The graphics object this mesh uses."
+    }
+  },
+  {
+    "__docId__": 120,
+    "kind": "method",
+    "name": "disableDebug",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh#disableDebug",
+    "access": "public",
+    "description": "Hide the debug graphics, but don't destroy it.",
+    "lineNumber": 76,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 121,
+    "kind": "method",
+    "name": "isDebugEnabled",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh#isDebugEnabled",
+    "access": "public",
+    "description": "Returns true if the debug graphics object is enabled and visible.",
+    "lineNumber": 86,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{boolean}"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
+  },
+  {
+    "__docId__": 122,
+    "kind": "method",
+    "name": "debugDrawClear",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh#debugDrawClear",
+    "access": "public",
+    "description": "Clear the debug graphics.",
+    "lineNumber": 95,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 123,
+    "kind": "method",
+    "name": "debugDrawMesh",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh#debugDrawMesh",
+    "access": "public",
+    "description": "Visualize the polygons in the navmesh by drawing them to the debug graphics.",
+    "lineNumber": 112,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "options",
+        "description": ""
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "true",
+        "defaultRaw": true,
+        "name": "options.drawCentroid",
+        "description": "For each polygon, show the approx centroid"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "false",
+        "defaultRaw": false,
+        "name": "options.drawBounds",
+        "description": "For each polygon, show the bounding radius"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "true",
+        "defaultRaw": true,
+        "name": "options.drawNeighbors",
+        "description": "For each polygon, show the connections to\nneighbors"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "true",
+        "defaultRaw": true,
+        "name": "options.drawPortals",
+        "description": "For each polygon, show the portal edges"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "number[]"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "[0x00a0b0, 0x6a4a3c, 0xcc333f, 0xeb6841, 0xedc951]",
+        "defaultRaw": "[0x00a0b0, 0x6a4a3c, 0xcc333f, 0xeb6841, 0xedc951]",
+        "name": "options.palette",
+        "description": "An array\nof Phaser-compatible format colors to use when drawing the individual polygons. The first poly\nuses the first color, the second poly uses the second color, etc."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 124,
+    "kind": "method",
+    "name": "debugDrawPath",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh#debugDrawPath",
+    "access": "public",
+    "description": "Visualize a path (array of points) on the debug graphics.",
+    "lineNumber": 167,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "object[]"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "path",
+        "description": "Array of point-like objects in the form {x, y}"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "number"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "0x00FF00",
+        "defaultRaw": "0x00FF00",
+        "name": "color",
+        "description": ""
+      },
+      {
+        "nullable": null,
+        "types": [
+          "number"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "10",
+        "defaultRaw": 10,
+        "name": "thickness",
+        "description": ""
+      },
+      {
+        "nullable": null,
+        "types": [
+          "number"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "1",
+        "defaultRaw": 1,
+        "name": "alpha",
+        "description": ""
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 125,
+    "kind": "method",
+    "name": "destroy",
+    "memberof": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser-navmesh/src/phaser-navmesh.js~PhaserNavMesh#destroy",
+    "access": "public",
+    "description": "Destroy the mesh, kill the debug graphic and unregister itself with the plugin.",
+    "lineNumber": 192,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 130,
+    "kind": "file",
+    "name": "packages/phaser-navmesh/src/triangulate.js",
+    "content": "// TODO: integrate old code that automatically decomposed maps via triangulation\r\n// // const triangulate = require(\"./triangulate\");\r\n//   // /**\r\n//   //  * Build a navmesh from an array of convex polygons. This currently tesselates the polygons into\r\n//   //  * triangles. They aren't as efficient or as well designed as ones made by hand in Tiled.\r\n//   //  *\r\n//   //  * @param {string} levelName The key to use to store the navmesh in the plugin\r\n//   //  * @param {[]} hulls An array of convex polygons describing the obstacles in the\r\n//   //  * level. See lighting-plugin/hull-from-tiles.\r\n//   //  *\r\n//   //  * @memberof NavMeshPlugin\r\n//   //  */\r\n//   // buildMesh(levelName, hulls) {\r\n//   //     const contours = this._buildContours(hulls);\r\n//   //     // Get an array of triangulated vertices\r\n//   //     const triangles = triangulate(contours, false); // Counter-clockwise ordering!\r\n//   //     const polygons = [];\r\n//   //     for (let i = 0; i < triangles.length; i += 6) {\r\n//   //         const poly = new Phaser.Polygon(\r\n//   //             // These should be in counter-clockwise order from triangulate\r\n//   //             triangles[i + 0], triangles[i + 1],\r\n//   //             triangles[i + 2], triangles[i + 3],\r\n//   //             triangles[i + 4], triangles[i + 5]\r\n//   //         );\r\n//   //         polygons.push(poly);\r\n//   //     }\r\n//   //     const navMesh = new NavMesh(this.game, polygons);\r\n//   //     this._navMeshes[levelName] = navMesh;\r\n//   //     this._currentNavMesh = navMesh;\r\n//   // }\r\n\r\n//   // /**\r\n//   //  * @param {[]} hulls\r\n//   //  * @returns\r\n//   //  *\r\n//   //  * @memberof NavMeshPlugin\r\n//   //  */\r\n//   // _buildContours(hulls) {\r\n//   //     const w = this.game.width;\r\n//   //     const h = this.game.height;\r\n//   //     // Start the contours\r\n//   //     const contours = [\r\n//   //         // Full screen - counter clockwise\r\n//   //         Float32Array.of(0,0, 0,h, w,h, w,0)\r\n//   //     ];\r\n//   //     // For each convex hull add the contour\r\n//   //     for (const hull of hulls) {\r\n//   //         const contour = [];\r\n//   //         for (const lineInfo of hull) {\r\n//   //             contour.push(lineInfo.line.start.x, lineInfo.line.start.y);\r\n//   //         }\r\n//   //         contours.push(Float32Array.from(contour));\r\n//   //     }\r\n//   //     return contours;\r\n//   // }\r\n// }\r\n",
+    "static": true,
+    "longname": "C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/packages/phaser-navmesh/src/triangulate.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 131,
+    "kind": "file",
+    "name": "packages/phaser2-navmesh/src/index.js",
+    "content": "import Phaser2NavMeshPlugin from \"./phaser2-navmesh-plugin\";\r\nimport Phaser2NavMesh from \"./phaser2-navmesh\";\r\n\r\nexport default Phaser2NavMeshPlugin;\r\nexport { Phaser2NavMesh };\r\n",
+    "static": true,
+    "longname": "C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/packages/phaser2-navmesh/src/index.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 132,
+    "kind": "file",
+    "name": "packages/phaser2-navmesh/src/phaser2-navmesh-plugin.js",
+    "content": "import Phaser2NavMesh from \"./phaser2-navmesh\";\r\n\r\n/**\r\n * This class can create navigation meshes for use in Phaser 2 / Phaser CE. (For Phaser 3, see\r\n * {@link PhaserNavMeshPlugin}.) The navmeshes can be constructed from convex polygons embedded in a\r\n * Tiled map. The class that conforms to Phaser 2's plugin structure.\r\n *\r\n * @export\r\n * @class Phaser2NavMeshPlugin\r\n */\r\nexport default class Phaser2NavMeshPlugin extends Phaser.Plugin {\r\n  constructor(game, pluginManager) {\r\n    super(game, pluginManager);\r\n\r\n    this.phaserNavMeshes = {};\r\n  }\r\n\r\n  /**\r\n   * Destroy all navmeshes created and the plugin itself\r\n   *\r\n   * @memberof Phaser2NavMeshPlugin\r\n   */\r\n  destroy() {\r\n    this.systems.events.Object.values(this.phaserNavMeshes).forEach(m => m.destroy());\r\n    this.phaserNavMeshes = [];\r\n    this.game = undefined;\r\n  }\r\n\r\n  /**\r\n   * Destroy a navmesh and remove it from the plugin.\r\n   *\r\n   * @param {string} key\r\n   * @memberof Phaser2NavMeshPlugin\r\n   */\r\n  removeMesh(key) {\r\n    if (this.phaserNavMeshes[key]) {\r\n      this.phaserNavMeshes[key].destroy();\r\n      this.phaserNavMeshes[key] = undefined;\r\n    }\r\n  }\r\n\r\n\r\n  /**\r\n   * Load a navmesh from Tiled. Currently assumes that the polygons are squares! Does not support\r\n   * tilemap layer scaling, rotation or position.\r\n   *\r\n   * @param {string} key Key to use when storign this navmesh within the plugin.\r\n   * @param {Phaser.Tilemaps.ObjectLayer} objectLayer The ObjectLayer from a tilemap that contains\r\n   * the polygons that make up the navmesh.\r\n   * @param {number} [meshShrinkAmount=0] The amount (in pixels) that the navmesh has been shrunk\r\n   * around obstacles (a.k.a the amount obstacles have been expanded)\r\n   * @returns {Phaser2NavMesh}\r\n   * @memberof Phaser2NavMeshPlugin\r\n   */\r\n  buildMeshFromTiled(key, objectLayer, meshShrinkAmount = 0) {\r\n    if (this.phaserNavMeshes[key]) {\r\n      console.warn(`NavMeshPlugin: a navmesh already exists with the given key: ${key}`);\r\n      return this.phaserNavMeshes[key];\r\n    }\r\n\r\n    if (!objectLayer || objectLayer.length === 0) {\r\n      console.warn(\r\n        `NavMeshPlugin: The given tilemap object layer is empty or undefined: ${objectLayer}`\r\n      );\r\n    }\r\n\r\n    // Load up the object layer\r\n    const objects = objectLayer || [];\r\n\r\n    // Loop over the objects and construct a polygon - assumes a rectangle for now!\r\n    // TODO: support layer position, scale, rotation\r\n    const polygons = objects.map(obj => {\r\n      const top = obj.y;\r\n      const bottom = obj.y + obj.height;\r\n      const left = obj.x;\r\n      const right = obj.x + obj.width;\r\n      return [\r\n        { x: left, y: top },\r\n        { x: left, y: bottom },\r\n        { x: right, y: bottom },\r\n        { x: right, y: top }\r\n      ];\r\n    });\r\n\r\n    const mesh = new Phaser2NavMesh(this, key, polygons, meshShrinkAmount);\r\n\r\n    this.phaserNavMeshes[key] = mesh;\r\n\r\n    return mesh;\r\n  }\r\n}\r\n",
+    "static": true,
+    "longname": "C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/packages/phaser2-navmesh/src/phaser2-navmesh-plugin.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 133,
+    "kind": "class",
+    "name": "Phaser2NavMeshPlugin",
+    "memberof": "packages/phaser2-navmesh/src/phaser2-navmesh-plugin.js",
+    "static": true,
+    "longname": "packages/phaser2-navmesh/src/phaser2-navmesh-plugin.js~Phaser2NavMeshPlugin",
+    "access": "public",
+    "export": true,
+    "importPath": "./packages/phaser2-navmesh/src/phaser2-navmesh-plugin.js",
+    "importStyle": "Phaser2NavMeshPlugin",
+    "description": "This class can create navigation meshes for use in Phaser 2 / Phaser CE. (For Phaser 3, see\n{@link PhaserNavMeshPlugin}.) The navmeshes can be constructed from convex polygons embedded in a\nTiled map. The class that conforms to Phaser 2's plugin structure.",
+    "lineNumber": 11,
+    "unknown": [
+      {
+        "tagName": "@class",
+        "tagValue": "Phaser2NavMeshPlugin"
+      }
+    ],
+    "interface": false,
+    "extends": [
+      "Phaser~Phaser.Plugin"
+    ]
+  },
+  {
+    "__docId__": 134,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "packages/phaser2-navmesh/src/phaser2-navmesh-plugin.js~Phaser2NavMeshPlugin",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser2-navmesh/src/phaser2-navmesh-plugin.js~Phaser2NavMeshPlugin#constructor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 12,
+    "undocument": true
+  },
+  {
+    "__docId__": 135,
+    "kind": "member",
+    "name": "phaserNavMeshes",
+    "memberof": "packages/phaser2-navmesh/src/phaser2-navmesh-plugin.js~Phaser2NavMeshPlugin",
+    "static": false,
+    "longname": "packages/phaser2-navmesh/src/phaser2-navmesh-plugin.js~Phaser2NavMeshPlugin#phaserNavMeshes",
+    "access": "public",
+    "description": null,
+    "lineNumber": 15,
+    "undocument": true,
+    "type": {
+      "types": [
+        "{}"
+      ]
+    }
+  },
+  {
+    "__docId__": 136,
+    "kind": "method",
+    "name": "destroy",
+    "memberof": "packages/phaser2-navmesh/src/phaser2-navmesh-plugin.js~Phaser2NavMeshPlugin",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser2-navmesh/src/phaser2-navmesh-plugin.js~Phaser2NavMeshPlugin#destroy",
+    "access": "public",
+    "description": "Destroy all navmeshes created and the plugin itself",
+    "lineNumber": 23,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 138,
+    "kind": "member",
+    "name": "game",
+    "memberof": "packages/phaser2-navmesh/src/phaser2-navmesh-plugin.js~Phaser2NavMeshPlugin",
+    "static": false,
+    "longname": "packages/phaser2-navmesh/src/phaser2-navmesh-plugin.js~Phaser2NavMeshPlugin#game",
+    "access": "public",
+    "description": null,
+    "lineNumber": 26,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 139,
+    "kind": "method",
+    "name": "removeMesh",
+    "memberof": "packages/phaser2-navmesh/src/phaser2-navmesh-plugin.js~Phaser2NavMeshPlugin",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser2-navmesh/src/phaser2-navmesh-plugin.js~Phaser2NavMeshPlugin#removeMesh",
+    "access": "public",
+    "description": "Destroy a navmesh and remove it from the plugin.",
+    "lineNumber": 35,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key",
+        "description": ""
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 140,
+    "kind": "method",
+    "name": "buildMeshFromTiled",
+    "memberof": "packages/phaser2-navmesh/src/phaser2-navmesh-plugin.js~Phaser2NavMeshPlugin",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser2-navmesh/src/phaser2-navmesh-plugin.js~Phaser2NavMeshPlugin#buildMeshFromTiled",
+    "access": "public",
+    "description": "Load a navmesh from Tiled. Currently assumes that the polygons are squares! Does not support\ntilemap layer scaling, rotation or position.",
+    "lineNumber": 55,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Phaser2NavMesh}"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key",
+        "description": "Key to use when storign this navmesh within the plugin."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Phaser.Tilemaps.ObjectLayer"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "objectLayer",
+        "description": "The ObjectLayer from a tilemap that contains\nthe polygons that make up the navmesh."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "number"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "0",
+        "defaultRaw": 0,
+        "name": "meshShrinkAmount",
+        "description": "The amount (in pixels) that the navmesh has been shrunk\naround obstacles (a.k.a the amount obstacles have been expanded)"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Phaser2NavMesh"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 141,
+    "kind": "file",
+    "name": "packages/phaser2-navmesh/src/phaser2-navmesh.js",
+    "content": "import NavMesh from \"navmesh/src\"; // import the source - not the dist - no need to double build\r\n\r\n/**\r\n * A wrapper around {@link NavMesh} for Phaser 2 / Phaser CE. Create instances of this class from\r\n * {@link Phaser2NavMeshPlugin}. This is the workhorse that represents a navigation mesh built from\r\n * a series of polygons. Once built, the mesh can be asked for a path from one point to another\r\n * point.\r\n *\r\n * Compared to {@link NavMesh}, this adds visual debugging capabilities and converts paths to\r\n * Phaser-compatible point instances.\r\n *\r\n * @export\r\n * @class Phaser2NavMesh\r\n */\r\nexport default class Phaser2NavMesh {\r\n  /**\r\n   * Creates an instance of Phaser2NavMesh.\r\n   * @param {Phaser2NavMeshPlugin} plugin The plugin that owns this mesh.\r\n   * @param {string} key The key the mesh is stored under within the plugin.\r\n   * @param {object[][]} meshPolygonPoints Array where each element is an array of point-like\r\n   * objects that defines a polygon.\r\n   * @param {number} [meshShrinkAmount=0] The amount (in pixels) that the navmesh has been shrunk\r\n   * around obstacles (a.k.a the amount obstacles have been expanded)\r\n   * @memberof Phaser2NavMesh\r\n   */\r\n  constructor(plugin, key, meshPolygonPoints, meshShrinkAmount = 0) {\r\n    this.key = key;\r\n    this.plugin = plugin;\r\n    this.game = plugin.game;\r\n    this.debugGraphics = null;\r\n    this.navMesh = new NavMesh(meshPolygonPoints, meshShrinkAmount);\r\n  }\r\n\r\n  /**\r\n   * See {@link NavMesh#findPath}. This implements the same functionality, except that the returned\r\n   * path is converted to Phaser-compatible points.\r\n   *\r\n   * @param {object} startPoint A point-like object in the form {x, y}\r\n   * @param {object} endPoint A point-like object in the form {x, y}\r\n   * @param {class} [PointClass=Phaser.Geom.Point]\r\n   * @returns {object[]|null} An array of points if a path is found, or null if no path\r\n   * @memberof Phaser2NavMesh\r\n   */\r\n  findPath(startPoint, endPoint, PointClass = Phaser.Point) {\r\n    const path = this.navMesh.findPath(startPoint, endPoint);\r\n    return path ? path.map(({ x, y }) => new PointClass(x, y)) : path;\r\n  }\r\n\r\n  /**\r\n   * Enable the debug drawing graphics. If no graphics object is providied, a new instance will be\r\n   * created.\r\n   *\r\n   * @param {Phaser.Graphics} [graphics] An optional graphics object for the mesh to use\r\n   * for debug drawing. Note, the mesh will destroy this graphics object when the mesh is destroyed.\r\n   * @returns {Phaser.Graphics} The graphics object this mesh uses.\r\n   * @memberof Phaser2NavMesh\r\n   */\r\n  enableDebug(graphics) {\r\n    if (!graphics && !this.debugGraphics) {\r\n      this.debugGraphics = this.game.add.graphics();\r\n    } else if (graphics) {\r\n      if (this.debugGraphics) this.debugGraphics.destroy();\r\n      this.debugGraphics = graphics;\r\n    }\r\n\r\n    this.debugGraphics.visible = true;\r\n\r\n    return this.debugGraphics;\r\n  }\r\n\r\n  /**\r\n   * Hide the debug graphics, but don't destroy it.\r\n   *\r\n   * @memberof Phaser2NavMesh\r\n   */\r\n  disableDebug() {\r\n    if (this.debugGraphics) this.debugGraphics.visible = false;\r\n  }\r\n\r\n  /**\r\n   * Returns true if the debug graphics object is enabled and visible.\r\n   *\r\n   * @returns {boolean}\r\n   * @memberof Phaser2NavMesh\r\n   */\r\n  isDebugEnabled() {\r\n    return this.debugGraphics && this.debugGraphics.visible;\r\n  }\r\n\r\n  /**\r\n   * Clear the debug graphics.\r\n   *\r\n   * @memberof Phaser2NavMesh\r\n   */\r\n  debugDrawClear() {\r\n    if (this.debugGraphics) this.debugGraphics.clear();\r\n  }\r\n\r\n  /**\r\n   * Visualize the polygons in the navmesh by drawing them to the debug graphics.\r\n   *\r\n   * @param {object} options\r\n   * @param {boolean} [options.drawCentroid=true] For each polygon, show the approx centroid\r\n   * @param {boolean} [options.drawBounds=false] For each polygon, show the bounding radius\r\n   * @param {boolean} [options.drawNeighbors=true] For each polygon, show the connections to\r\n   * neighbors\r\n   * @param {boolean} [options.drawPortals=true] For each polygon, show the portal edges\r\n   * @param {number[]} [options.palette=[0x00a0b0, 0x6a4a3c, 0xcc333f, 0xeb6841, 0xedc951]] An array\r\n   * of Phaser-compatible format colors to use when drawing the individual polygons. The first poly\r\n   * uses the first color, the second poly uses the second color, etc. \r\n   * @memberof Phaser2NavMesh\r\n   */\r\n  debugDrawMesh({\r\n    drawCentroid = true,\r\n    drawBounds = false,\r\n    drawNeighbors = true,\r\n    drawPortals = true,\r\n    palette = [0x00a0b0, 0x6a4a3c, 0xcc333f, 0xeb6841, 0xedc951]\r\n  } = {}) {\r\n    if (!this.debugGraphics) return;\r\n\r\n    const navPolys = this.navMesh.getPolygons();\r\n\r\n    navPolys.forEach(poly => {\r\n      const color = palette[poly.id % palette.length];\r\n      this.debugGraphics.lineWidth = 0;\r\n      this.debugGraphics.beginFill(color);\r\n      this.debugGraphics.drawPolygon(new Phaser.Polygon(...poly.getPoints()));\r\n      this.debugGraphics.endFill();\r\n\r\n      if (drawCentroid) {\r\n        this.debugGraphics.beginFill(0x000000);\r\n        this.debugGraphics.drawEllipse(poly.centroid.x, poly.centroid.y, 4, 4);\r\n        this.debugGraphics.endFill();\r\n      }\r\n\r\n      if (drawBounds) {\r\n        this.debugGraphics.lineStyle(1, 0xffffff);\r\n        const r = poly.boundingRadius;\r\n        this.debugGraphics.drawEllipse(poly.centroid.x, poly.centroid.y, r, r);\r\n      }\r\n\r\n      if (drawNeighbors) {\r\n        this.debugGraphics.lineStyle(2, 0x000000);\r\n        poly.neighbors.forEach(n => {\r\n          this.debugGraphics.moveTo(poly.centroid.x, poly.centroid.y);\r\n          this.debugGraphics.lineTo(n.centroid.x, n.centroid.y);\r\n        });\r\n      }\r\n\r\n      if (drawPortals) {\r\n        this.debugGraphics.lineStyle(10, 0x000000);\r\n        poly.portals.forEach(portal => {\r\n          this.debugGraphics.moveTo(portal.start.x, portal.start.y);\r\n          this.debugGraphics.lineTo(portal.end.x, portal.end.y);\r\n        });\r\n      }\r\n    });\r\n  }\r\n\r\n  /**\r\n   * Visualize a path (array of points) on the debug graphics.\r\n   *\r\n   * @param {object[]} path Array of point-like objects in the form {x, y} \r\n   * @param {number} [color=0x00FF00]\r\n   * @param {number} [thickness=10]\r\n   * @param {number} [alpha=1]\r\n   * @memberof Phaser2NavMesh\r\n   */\r\n  debugDrawPath(path, color = 0x00ff00, thickness = 10, alpha = 1) {\r\n    if (!this.debugGraphics) return;\r\n\r\n    if (path && path.length) {\r\n      // Draw line for path\r\n      this.debugGraphics.lineStyle(thickness, color, alpha);\r\n      this.debugGraphics.drawShape(new Phaser.Polygon(...path));\r\n\r\n      // Draw circle at start and end of path\r\n      this.debugGraphics.beginFill(color, alpha);\r\n      const d = 0.5 * thickness;\r\n      this.debugGraphics.drawEllipse(path[0].x, path[0].y, d, d);\r\n      if (path.length > 1) {\r\n        const lastPoint = path[path.length - 1];\r\n        this.debugGraphics.drawEllipse(lastPoint.x, lastPoint.y, d, d);\r\n      }\r\n      this.debugGraphics.endFill();\r\n    }\r\n  }\r\n\r\n  /**\r\n   * Destroy the mesh, kill the debug graphic and unregister itself with the plugin.\r\n   *\r\n   * @memberof Phaser2NavMesh\r\n   */\r\n  destroy() {\r\n    if (this.navMesh) this.navMesh.destroy();\r\n    if (this.debugGraphics) this.debugGraphics.destroy();\r\n    this.plugin.removeMesh(this.key);\r\n    this.navMesh = undefined;\r\n    this.debugGraphics = undefined;\r\n    this.plugin = undefined;\r\n    this.scene = undefined;\r\n  }\r\n}\r\n",
+    "static": true,
+    "longname": "C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/packages/phaser2-navmesh/src/phaser2-navmesh.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 142,
+    "kind": "class",
+    "name": "Phaser2NavMesh",
+    "memberof": "packages/phaser2-navmesh/src/phaser2-navmesh.js",
+    "static": true,
+    "longname": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh",
+    "access": "public",
+    "export": true,
+    "importPath": "./packages/phaser2-navmesh/src/phaser2-navmesh.js",
+    "importStyle": "Phaser2NavMesh",
+    "description": "A wrapper around {@link NavMesh} for Phaser 2 / Phaser CE. Create instances of this class from\n{@link Phaser2NavMeshPlugin}. This is the workhorse that represents a navigation mesh built from\na series of polygons. Once built, the mesh can be asked for a path from one point to another\npoint.\n\nCompared to {@link NavMesh}, this adds visual debugging capabilities and converts paths to\nPhaser-compatible point instances.",
+    "lineNumber": 15,
+    "unknown": [
+      {
+        "tagName": "@class",
+        "tagValue": "Phaser2NavMesh"
+      }
+    ],
+    "interface": false
+  },
+  {
+    "__docId__": 143,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh#constructor",
+    "access": "public",
+    "description": "Creates an instance of Phaser2NavMesh.",
+    "lineNumber": 26,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Phaser2NavMeshPlugin"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "plugin",
+        "description": "The plugin that owns this mesh."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key",
+        "description": "The key the mesh is stored under within the plugin."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "object[][]"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "meshPolygonPoints",
+        "description": "Array where each element is an array of point-like\nobjects that defines a polygon."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "number"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "0",
+        "defaultRaw": 0,
+        "name": "meshShrinkAmount",
+        "description": "The amount (in pixels) that the navmesh has been shrunk\naround obstacles (a.k.a the amount obstacles have been expanded)"
+      }
+    ]
+  },
+  {
+    "__docId__": 144,
+    "kind": "member",
+    "name": "key",
+    "memberof": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh",
+    "static": false,
+    "longname": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh#key",
+    "access": "public",
+    "description": null,
+    "lineNumber": 27,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 145,
+    "kind": "member",
+    "name": "plugin",
+    "memberof": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh",
+    "static": false,
+    "longname": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh#plugin",
+    "access": "public",
+    "description": null,
+    "lineNumber": 28,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 146,
+    "kind": "member",
+    "name": "game",
+    "memberof": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh",
+    "static": false,
+    "longname": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh#game",
+    "access": "public",
+    "description": null,
+    "lineNumber": 29,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 147,
+    "kind": "member",
+    "name": "debugGraphics",
+    "memberof": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh",
+    "static": false,
+    "longname": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh#debugGraphics",
+    "access": "public",
+    "description": null,
+    "lineNumber": 30,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 148,
+    "kind": "member",
+    "name": "navMesh",
+    "memberof": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh",
+    "static": false,
+    "longname": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh#navMesh",
+    "access": "public",
+    "description": null,
+    "lineNumber": 31,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 149,
+    "kind": "method",
+    "name": "findPath",
+    "memberof": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh#findPath",
+    "access": "public",
+    "description": "See {@link NavMesh#findPath}. This implements the same functionality, except that the returned\npath is converted to Phaser-compatible points.",
+    "lineNumber": 44,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{object[]|null} An array of points if a path is found, or null if no path"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "startPoint",
+        "description": "A point-like object in the form {x, y}"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "endPoint",
+        "description": "A point-like object in the form {x, y}"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "class"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "Phaser.Geom.Point",
+        "defaultRaw": "Phaser.Geom.Point",
+        "name": "PointClass",
+        "description": ""
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "object[]",
+        "null"
+      ],
+      "spread": false,
+      "description": "An array of points if a path is found, or null if no path"
+    }
+  },
+  {
+    "__docId__": 150,
+    "kind": "method",
+    "name": "enableDebug",
+    "memberof": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh#enableDebug",
+    "access": "public",
+    "description": "Enable the debug drawing graphics. If no graphics object is providied, a new instance will be\ncreated.",
+    "lineNumber": 58,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Phaser.Graphics} The graphics object this mesh uses."
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Phaser.Graphics"
+        ],
+        "spread": false,
+        "optional": true,
+        "name": "graphics",
+        "description": "An optional graphics object for the mesh to use\nfor debug drawing. Note, the mesh will destroy this graphics object when the mesh is destroyed."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Phaser.Graphics"
+      ],
+      "spread": false,
+      "description": "The graphics object this mesh uses."
+    }
+  },
+  {
+    "__docId__": 153,
+    "kind": "method",
+    "name": "disableDebug",
+    "memberof": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh#disableDebug",
+    "access": "public",
+    "description": "Hide the debug graphics, but don't destroy it.",
+    "lineNumber": 76,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 154,
+    "kind": "method",
+    "name": "isDebugEnabled",
+    "memberof": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh#isDebugEnabled",
+    "access": "public",
+    "description": "Returns true if the debug graphics object is enabled and visible.",
+    "lineNumber": 86,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{boolean}"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
+  },
+  {
+    "__docId__": 155,
+    "kind": "method",
+    "name": "debugDrawClear",
+    "memberof": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh#debugDrawClear",
+    "access": "public",
+    "description": "Clear the debug graphics.",
+    "lineNumber": 95,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 156,
+    "kind": "method",
+    "name": "debugDrawMesh",
+    "memberof": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh#debugDrawMesh",
+    "access": "public",
+    "description": "Visualize the polygons in the navmesh by drawing them to the debug graphics.",
+    "lineNumber": 113,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "options",
+        "description": ""
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "true",
+        "defaultRaw": true,
+        "name": "options.drawCentroid",
+        "description": "For each polygon, show the approx centroid"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "false",
+        "defaultRaw": false,
+        "name": "options.drawBounds",
+        "description": "For each polygon, show the bounding radius"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "true",
+        "defaultRaw": true,
+        "name": "options.drawNeighbors",
+        "description": "For each polygon, show the connections to\nneighbors"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "true",
+        "defaultRaw": true,
+        "name": "options.drawPortals",
+        "description": "For each polygon, show the portal edges"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "number[]"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "[0x00a0b0, 0x6a4a3c, 0xcc333f, 0xeb6841, 0xedc951]",
+        "defaultRaw": "[0x00a0b0, 0x6a4a3c, 0xcc333f, 0xeb6841, 0xedc951]",
+        "name": "options.palette",
+        "description": "An array\nof Phaser-compatible format colors to use when drawing the individual polygons. The first poly\nuses the first color, the second poly uses the second color, etc."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 157,
+    "kind": "method",
+    "name": "debugDrawPath",
+    "memberof": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh#debugDrawPath",
+    "access": "public",
+    "description": "Visualize a path (array of points) on the debug graphics.",
+    "lineNumber": 170,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "object[]"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "path",
+        "description": "Array of point-like objects in the form {x, y}"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "number"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "0x00FF00",
+        "defaultRaw": "0x00FF00",
+        "name": "color",
+        "description": ""
+      },
+      {
+        "nullable": null,
+        "types": [
+          "number"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "10",
+        "defaultRaw": 10,
+        "name": "thickness",
+        "description": ""
+      },
+      {
+        "nullable": null,
+        "types": [
+          "number"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "1",
+        "defaultRaw": 1,
+        "name": "alpha",
+        "description": ""
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 158,
+    "kind": "method",
+    "name": "destroy",
+    "memberof": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh#destroy",
+    "access": "public",
+    "description": "Destroy the mesh, kill the debug graphic and unregister itself with the plugin.",
+    "lineNumber": 195,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 162,
+    "kind": "member",
+    "name": "scene",
+    "memberof": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh",
+    "static": false,
+    "longname": "packages/phaser2-navmesh/src/phaser2-navmesh.js~Phaser2NavMesh#scene",
+    "access": "public",
+    "description": null,
+    "lineNumber": 202,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "kind": "index",
+    "content": "# Navigation Meshes Overview <!-- omit in toc -->\r\n\r\nA JS plugin for fast pathfinding using [navigation meshes](https://en.wikipedia.org/wiki/Navigation_mesh), with optional wrappers for the Phaser v2 and Phaser v3 game engines.\r\n\r\n[<img src=\"./doc-source/single-following-agent.gif\" width=\"400\">](https://www.mikewesthad.com/navmesh/demo/)\r\n\r\n[Interactive demo](https://www.mikewesthad.com/navmesh/demo/)\r\n\r\nTable of Contents:\r\n\r\n- [Intro](#intro)\r\n- [Installation](#installation)\r\n  - [As a Script](#as-a-script)\r\n  - [As a Module](#as-a-module)\r\n- [Create a Nav Mesh](#create-a-nav-mesh)\r\n- [Usage](#usage)\r\n- [Performance Comparison](#performance-comparison)\r\n- [Development](#development)\r\n- [References](#references)\r\n- [TODO](#todo)\r\n\r\n## Intro\r\n\r\nPathfinding is essentially solving a maze, finding a path between two points while avoiding obstacles. When pathfinding in games, we need to:\r\n\r\n1.  Represent the game world in a way that defines what areas are walkable.\r\n2.  Search that representation for the shortest path.\r\n\r\nWhen it comes to 2D pathfinding in [Phaser](http://phaser.io/), the [packaged solution](https://github.com/photonstorm/phaser-plugins) represents the world using [tiles](https://developer.mozilla.org/en-US/docs/Games/Techniques/Tilemaps) (a grid) and then searchs for a path using the [A\\* algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm). If you have a 50 x 50 tile world, searching for a path involves searching through a representation of the world with up to 2500 locations (nodes).\r\n\r\nThis plugin uses navigation meshes to simplify that search. Instead of representing the world as a grid of tiles, it represents the walkable areas of the world as a mesh. That means that the representation of the world has far fewer nodes, and hence, can be searched much faster than the grid approach. This approach is 5x - 150x faster than Phaser's A\\* plugin (see performance section).\r\n\r\nThe example map below (left) is a 30 x 30 map. As a grid, there are 900 nodes, but as a navmesh (right) there are 27 nodes (colored rectangles).\r\n\r\n<img src=\"./doc-source/combined.png\" width=\"700\">\r\n\r\n(Note: if you are viewing this on GitHub or NPM, you might want to check out the HTML documentation [here](https://www.mikewesthad.com/navmesh/docs/).)\r\n\r\n## Installation\r\n\r\nThis repo contains 3 related JS modules:\r\n\r\n- `navmesh` - core logic, game-engine agnostic, usable outside of Phaser.\r\n- `phaser-navmesh` - Phaser v3 wrapper around `navmesh` that creates a Phaser 3 Scene plugin. Phaser 3 is expected to be a dependency in your project.\r\n- `phaser2-navmesh` - Phaser v2 wrapper around `navmesh` that creates a Phaser 2 game plugin. Phaser 2 or Phaser-ce is expected to be in the global scope.\r\n\r\nYou can use any of them as a script or as a module.\r\n\r\n### As a Script\r\n\r\nDownload the distribution version that you want:\r\n\r\n| navmesh                           | phaser-navmesh                     | phaser2-navmesh                     |\r\n| --------------------------------- | ---------------------------------- | ----------------------------------- |\r\n| [minified][1] & source [map][2]   | [minified][3] & source [map][4]    | [minified][5] & source [map][6]     |\r\n| [unminified][7] & source [map][8] | [unminified][9] & source [map][10] | [unminified][11] & source [map][12] |\r\n| Library Name: NavMesh             | Library Name: PhaserNavMeshPlugin  | Library Name: Phaser2NavMeshPlugin  |\r\n\r\n\r\n[1]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.min.js\r\n[2]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.min.js.map\r\n[3]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.min.js\r\n[4]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.min.js.map\r\n[5]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.min.js\r\n[6]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.min.js.map\r\n[7]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.js\r\n[8]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.js.map\r\n[9]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.js\r\n[10]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.js.map\r\n[11]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.js\r\n[12]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.js.map\r\n\r\nE.g. if you wanted phaser-navmesh\r\n\r\n```html\r\n<script src=\"dist/phaser-navmesh.min.js\"></script>\r\n```\r\n\r\nInside of your own script, you can now use the global PhaserNavMeshPlugin:\r\n\r\n```js\r\nconst game = new Phaser.Game({\r\n  type: Phaser.AUTO,\r\n  width: 750,\r\n  height: 750,\r\n  plugins: {\r\n    scene: [{key: \"NavMeshPlugin\", plugin: PhaserNavMeshPlugin, mapping: \"navMeshPlugin\", start: true }]\r\n  }\r\n});\r\n```\r\n\r\n### As a Module\r\n\r\nInstall the appropriate dependency:\r\n\r\n- `npm install --save navmesh` for usage outside of Phaser\r\n- `npm install --save phaser-navmesh` for Phaser 3\r\n- `npm install --save phaser2-navmesh` for Phaser 2\r\n\r\nTo use the transpiled and minified distribution of the library:\r\n\r\n```js\r\nimport PhaserNavmesh from \"phaser-navmesh\";\r\n```\r\n\r\nTo use the raw library (so you can transpile it to match your own project settings):\r\n\r\n```js\r\nimport PhaserNavmesh from \"phaser-navmesh/src\";\r\n```\r\n\r\n## Create a Nav Mesh\r\n\r\nSee [guide](https://www.mikewesthad.com/navmesh/docs/manual/tiled-navmesh-guide.html).\r\n\r\n## Usage\r\n\r\n```js\r\n// This snippet assumes you've got your tilemap loaded in a variable called \"tilemap\"\r\n\r\n// Register the plugin with Phaser\r\nconst navMeshPlugin = this.game.plugins.add(phaserNavmesh);\r\n\r\n// Load the navMesh from the tilemap object layer \"navmesh.\" The navMesh was created with 12.5\r\n// pixels of space around obstacles.\r\nconst navMesh = navMeshPlugin.buildMeshFromTiled(tilemap, \"navmesh\", 12.5);\r\n\r\nconst p1 = new Phaser.Point(100, 400);\r\nconst p2 = new Phaser.Point(700, 200);\r\nconst path = navMesh.findPath(p1, p2);\r\n// -> path is now either an array of points, or null if no valid path could be found\r\n```\r\n\r\nVisually debugging paths:\r\n\r\n```js\r\nnavMesh.enableDebug(); // Creates a Phaser.Graphics overlay on top of the screen\r\nnavMesh.debugClear(); // Clears the overlay\r\n// Visualize the underlying navmesh\r\nnavMesh.debugDrawMesh({\r\n  drawCentroid: true,\r\n  drawBounds: false,\r\n  drawNeighbors: true,\r\n  drawPortals: true\r\n});\r\n// Find & visualize a specific path\r\nconst path = navMesh.findPath(follower.position, target, {\r\n  drawPolyPath: true,\r\n  drawFinalPath: true\r\n});\r\n```\r\n\r\n## Performance Comparison\r\n\r\n_(Note: these comparisons were done in any earlier verison of the repo before Phaser v3 was released. The plugins tested haven't been released in v3 versions yet, so this section could use an update. That said, the results should be the same.)_\r\n\r\nComparing this navmesh plugin against:\r\n\r\n- [Phaser's grid-based A\\* plugin](https://github.com/photonstorm/phaser-plugins). Navmesh is approximately 5x - 150x faster.\r\n- A faster, grid-based A\\* search, [EasyStar.js](https://github.com/prettymuchbryce/easystarjs). Navmesh is approximately 5x - 20x faster.\r\n\r\nPerformance depends on the size of the area that needs to be searched. Finding for a path between points that are 50 pixels away is (generally) going to be much faster than finding a path between points that are 5000 pixels away.\r\n\r\nDetails (see [src/library/performance](https://github.com/mikewesthad/navmesh/tree/master/src/examples/performance)):\r\n\r\n```\r\nPerformance Comparison, 100000 iterations, 30x30 tilemap\r\n\r\nShort paths (150 - 500 pixel length)\r\n\r\n    Average time per iteration:\r\n        AStart Plugin: 0.02470ms\r\n        EasyStar Plugin: 0.02876ms\r\n        NavMesh Plugin: 0.00575ms\r\n\r\n    Comparison:\r\n        NavMesh is 4.30x faster than Phaser AStar\r\n        NavMesh is 5.00x faster than EasyStar\r\n\r\nLong paths (600 pixels and greater length), average time per iteration:\r\n\r\n    Average time per iteration:\r\n        AStart Plugin: 1.38710ms\r\n        EasyStar Plugin: 0.15977ms\r\n        NavMesh Plugin: 0.00738ms\r\n\r\n    Comparison:\r\n        NavMesh is 187.95x faster than Phaser AStar\r\n        NavMesh is 21.65x faster than EasyStar\r\n```\r\n\r\n## Development\r\n\r\nPull requests are welcome! If you want to run this repo locally, make sure you have [node](https://nodejs.org/en/) installed. Download the repo, open a terminal in the repo folder and run:\r\n\r\n```\r\nnpm install\r\nnpm run bootstrap\r\n```\r\n\r\nThis project uses [lerna](https://github.com/lerna/lerna) and [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/) to manage multiple packages within one repository. `npm install` will pull the root dependencies and `npm run bootstrap` will use lerna & yarn to pull and link dependencies within \"packages/\". This project has the following packages:\r\n\r\n- `navmesh` - core logic, game-engine agnostic\r\n- `phaser-navmesh` - Phaser Plugin v3 wrapper around `navmesh`\r\n- `phaser2-navmesh` - Phaser Plugin v2 wrapper around `navmesh`\r\n\r\nThe project is controlled via npm scripts. The main ones to use:\r\n\r\n- `npm run build` - will build all the individual packages within \"packages/\".\r\n- `npm run dev` - watch & serve the v3 examples. A browser window will pop up with links to the examples. If you are working on the library, this is the easiest way to do \"functional testing\" by using the library in a game environment.\r\n- `npm run test` - will run the automated tests against the library.\r\n\r\n## References\r\n\r\nHelpful resources used while building this plugin:\r\n\r\n- Inspired by [PatrolJS](https://github.com/nickjanssen/PatrolJS), an implementation of navmeshes for threejs\r\n- Navmesh path-finding algorithm explanations:\r\n  - [Game Path Planning by Julian Ceipek](http://jceipek.com/Olin-Coding-Tutorials/pathing.html)\r\n  - [Simple Stupid Funnel Algorithm](http://digestingduck.blogspot.com/2010/03/simple-stupid-funnel-algorithm.html)\r\n- [Advice on astar heuristics](http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html)\r\n\r\n## TODO\r\n\r\n- Documentation\r\n  - Describe the Tiled process. Adding an object layer, setting snapping, making sure vertices overlap...\r\n- Specific Extensions\r\n  - Allow non-square navmesh from Tiled - any convex shape\r\n  - Reimplement the autotessalation version of the lib\r\n  - Try libtess in quad mode\r\n  - The astar heuristic & cost functions need another pass. They don't always produce the shortest path. Implement incomplete funneling while building the astar path?\r\n  - The navmesh assumes any polygon can reach any other polygon. This probably should be extended to put connected polygons into groups like patroljs.\r\n- Testing\r\n  - Check against tilemap that is larger than the screen\r\n- Research\r\n  - There are probably optimization tricks to do when dealing with certain types of shapes. E.g. we are using axis-aligned boxes for the polygons and it is dead simple to calculate if a point is inside one of those...\r\n  - Investigate [Points-of-Visibility](http://www.david-gouveia.com/portfolio/pathfinding-on-a-2d-polygonal-map/) pathfinding to compare speed\r\n",
+    "longname": "C:\\Users\\mikewesthad\\Documents\\GitHub\\phaser-navmesh\\README.md",
+    "name": "./README.md",
+    "static": true,
+    "access": "public"
+  },
+  {
+    "kind": "manualIndex",
+    "globalIndex": true,
+    "content": "# Navigation Meshes Overview <!-- omit in toc -->\r\n\r\nA JS plugin for fast pathfinding using [navigation meshes](https://en.wikipedia.org/wiki/Navigation_mesh), with optional wrappers for the Phaser v2 and Phaser v3 game engines.\r\n\r\n[<img src=\"./doc-source/single-following-agent.gif\" width=\"400\">](https://www.mikewesthad.com/navmesh/demo/)\r\n\r\n[Interactive demo](https://www.mikewesthad.com/navmesh/demo/)\r\n\r\nTable of Contents:\r\n\r\n- [Intro](#intro)\r\n- [Installation](#installation)\r\n  - [As a Script](#as-a-script)\r\n  - [As a Module](#as-a-module)\r\n- [Create a Nav Mesh](#create-a-nav-mesh)\r\n- [Usage](#usage)\r\n- [Performance Comparison](#performance-comparison)\r\n- [Development](#development)\r\n- [References](#references)\r\n- [TODO](#todo)\r\n\r\n## Intro\r\n\r\nPathfinding is essentially solving a maze, finding a path between two points while avoiding obstacles. When pathfinding in games, we need to:\r\n\r\n1.  Represent the game world in a way that defines what areas are walkable.\r\n2.  Search that representation for the shortest path.\r\n\r\nWhen it comes to 2D pathfinding in [Phaser](http://phaser.io/), the [packaged solution](https://github.com/photonstorm/phaser-plugins) represents the world using [tiles](https://developer.mozilla.org/en-US/docs/Games/Techniques/Tilemaps) (a grid) and then searchs for a path using the [A\\* algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm). If you have a 50 x 50 tile world, searching for a path involves searching through a representation of the world with up to 2500 locations (nodes).\r\n\r\nThis plugin uses navigation meshes to simplify that search. Instead of representing the world as a grid of tiles, it represents the walkable areas of the world as a mesh. That means that the representation of the world has far fewer nodes, and hence, can be searched much faster than the grid approach. This approach is 5x - 150x faster than Phaser's A\\* plugin (see performance section).\r\n\r\nThe example map below (left) is a 30 x 30 map. As a grid, there are 900 nodes, but as a navmesh (right) there are 27 nodes (colored rectangles).\r\n\r\n<img src=\"./doc-source/combined.png\" width=\"700\">\r\n\r\n(Note: if you are viewing this on GitHub or NPM, you might want to check out the HTML documentation [here](https://www.mikewesthad.com/navmesh/docs/).)\r\n\r\n## Installation\r\n\r\nThis repo contains 3 related JS modules:\r\n\r\n- `navmesh` - core logic, game-engine agnostic, usable outside of Phaser.\r\n- `phaser-navmesh` - Phaser v3 wrapper around `navmesh` that creates a Phaser 3 Scene plugin. Phaser 3 is expected to be a dependency in your project.\r\n- `phaser2-navmesh` - Phaser v2 wrapper around `navmesh` that creates a Phaser 2 game plugin. Phaser 2 or Phaser-ce is expected to be in the global scope.\r\n\r\nYou can use any of them as a script or as a module.\r\n\r\n### As a Script\r\n\r\nDownload the distribution version that you want:\r\n\r\n| navmesh                           | phaser-navmesh                     | phaser2-navmesh                     |\r\n| --------------------------------- | ---------------------------------- | ----------------------------------- |\r\n| [minified][1] & source [map][2]   | [minified][3] & source [map][4]    | [minified][5] & source [map][6]     |\r\n| [unminified][7] & source [map][8] | [unminified][9] & source [map][10] | [unminified][11] & source [map][12] |\r\n| Library Name: NavMesh             | Library Name: PhaserNavMeshPlugin  | Library Name: Phaser2NavMeshPlugin  |\r\n\r\n\r\n[1]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.min.js\r\n[2]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.min.js.map\r\n[3]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.min.js\r\n[4]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.min.js.map\r\n[5]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.min.js\r\n[6]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.min.js.map\r\n[7]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.js\r\n[8]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.js.map\r\n[9]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.js\r\n[10]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.js.map\r\n[11]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.js\r\n[12]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.js.map\r\n\r\nE.g. if you wanted phaser-navmesh\r\n\r\n```html\r\n<script src=\"dist/phaser-navmesh.min.js\"></script>\r\n```\r\n\r\nInside of your own script, you can now use the global PhaserNavMeshPlugin:\r\n\r\n```js\r\nconst game = new Phaser.Game({\r\n  type: Phaser.AUTO,\r\n  width: 750,\r\n  height: 750,\r\n  plugins: {\r\n    scene: [{key: \"NavMeshPlugin\", plugin: PhaserNavMeshPlugin, mapping: \"navMeshPlugin\", start: true }]\r\n  }\r\n});\r\n```\r\n\r\n### As a Module\r\n\r\nInstall the appropriate dependency:\r\n\r\n- `npm install --save navmesh` for usage outside of Phaser\r\n- `npm install --save phaser-navmesh` for Phaser 3\r\n- `npm install --save phaser2-navmesh` for Phaser 2\r\n\r\nTo use the transpiled and minified distribution of the library:\r\n\r\n```js\r\nimport PhaserNavmesh from \"phaser-navmesh\";\r\n```\r\n\r\nTo use the raw library (so you can transpile it to match your own project settings):\r\n\r\n```js\r\nimport PhaserNavmesh from \"phaser-navmesh/src\";\r\n```\r\n\r\n## Create a Nav Mesh\r\n\r\nSee [guide](https://www.mikewesthad.com/navmesh/docs/manual/tiled-navmesh-guide.html).\r\n\r\n## Usage\r\n\r\n```js\r\n// This snippet assumes you've got your tilemap loaded in a variable called \"tilemap\"\r\n\r\n// Register the plugin with Phaser\r\nconst navMeshPlugin = this.game.plugins.add(phaserNavmesh);\r\n\r\n// Load the navMesh from the tilemap object layer \"navmesh.\" The navMesh was created with 12.5\r\n// pixels of space around obstacles.\r\nconst navMesh = navMeshPlugin.buildMeshFromTiled(tilemap, \"navmesh\", 12.5);\r\n\r\nconst p1 = new Phaser.Point(100, 400);\r\nconst p2 = new Phaser.Point(700, 200);\r\nconst path = navMesh.findPath(p1, p2);\r\n// -> path is now either an array of points, or null if no valid path could be found\r\n```\r\n\r\nVisually debugging paths:\r\n\r\n```js\r\nnavMesh.enableDebug(); // Creates a Phaser.Graphics overlay on top of the screen\r\nnavMesh.debugClear(); // Clears the overlay\r\n// Visualize the underlying navmesh\r\nnavMesh.debugDrawMesh({\r\n  drawCentroid: true,\r\n  drawBounds: false,\r\n  drawNeighbors: true,\r\n  drawPortals: true\r\n});\r\n// Find & visualize a specific path\r\nconst path = navMesh.findPath(follower.position, target, {\r\n  drawPolyPath: true,\r\n  drawFinalPath: true\r\n});\r\n```\r\n\r\n## Performance Comparison\r\n\r\n_(Note: these comparisons were done in any earlier verison of the repo before Phaser v3 was released. The plugins tested haven't been released in v3 versions yet, so this section could use an update. That said, the results should be the same.)_\r\n\r\nComparing this navmesh plugin against:\r\n\r\n- [Phaser's grid-based A\\* plugin](https://github.com/photonstorm/phaser-plugins). Navmesh is approximately 5x - 150x faster.\r\n- A faster, grid-based A\\* search, [EasyStar.js](https://github.com/prettymuchbryce/easystarjs). Navmesh is approximately 5x - 20x faster.\r\n\r\nPerformance depends on the size of the area that needs to be searched. Finding for a path between points that are 50 pixels away is (generally) going to be much faster than finding a path between points that are 5000 pixels away.\r\n\r\nDetails (see [src/library/performance](https://github.com/mikewesthad/navmesh/tree/master/src/examples/performance)):\r\n\r\n```\r\nPerformance Comparison, 100000 iterations, 30x30 tilemap\r\n\r\nShort paths (150 - 500 pixel length)\r\n\r\n    Average time per iteration:\r\n        AStart Plugin: 0.02470ms\r\n        EasyStar Plugin: 0.02876ms\r\n        NavMesh Plugin: 0.00575ms\r\n\r\n    Comparison:\r\n        NavMesh is 4.30x faster than Phaser AStar\r\n        NavMesh is 5.00x faster than EasyStar\r\n\r\nLong paths (600 pixels and greater length), average time per iteration:\r\n\r\n    Average time per iteration:\r\n        AStart Plugin: 1.38710ms\r\n        EasyStar Plugin: 0.15977ms\r\n        NavMesh Plugin: 0.00738ms\r\n\r\n    Comparison:\r\n        NavMesh is 187.95x faster than Phaser AStar\r\n        NavMesh is 21.65x faster than EasyStar\r\n```\r\n\r\n## Development\r\n\r\nPull requests are welcome! If you want to run this repo locally, make sure you have [node](https://nodejs.org/en/) installed. Download the repo, open a terminal in the repo folder and run:\r\n\r\n```\r\nnpm install\r\nnpm run bootstrap\r\n```\r\n\r\nThis project uses [lerna](https://github.com/lerna/lerna) and [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/) to manage multiple packages within one repository. `npm install` will pull the root dependencies and `npm run bootstrap` will use lerna & yarn to pull and link dependencies within \"packages/\". This project has the following packages:\r\n\r\n- `navmesh` - core logic, game-engine agnostic\r\n- `phaser-navmesh` - Phaser Plugin v3 wrapper around `navmesh`\r\n- `phaser2-navmesh` - Phaser Plugin v2 wrapper around `navmesh`\r\n\r\nThe project is controlled via npm scripts. The main ones to use:\r\n\r\n- `npm run build` - will build all the individual packages within \"packages/\".\r\n- `npm run dev` - watch & serve the v3 examples. A browser window will pop up with links to the examples. If you are working on the library, this is the easiest way to do \"functional testing\" by using the library in a game environment.\r\n- `npm run test` - will run the automated tests against the library.\r\n\r\n## References\r\n\r\nHelpful resources used while building this plugin:\r\n\r\n- Inspired by [PatrolJS](https://github.com/nickjanssen/PatrolJS), an implementation of navmeshes for threejs\r\n- Navmesh path-finding algorithm explanations:\r\n  - [Game Path Planning by Julian Ceipek](http://jceipek.com/Olin-Coding-Tutorials/pathing.html)\r\n  - [Simple Stupid Funnel Algorithm](http://digestingduck.blogspot.com/2010/03/simple-stupid-funnel-algorithm.html)\r\n- [Advice on astar heuristics](http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html)\r\n\r\n## TODO\r\n\r\n- Documentation\r\n  - Describe the Tiled process. Adding an object layer, setting snapping, making sure vertices overlap...\r\n- Specific Extensions\r\n  - Allow non-square navmesh from Tiled - any convex shape\r\n  - Reimplement the autotessalation version of the lib\r\n  - Try libtess in quad mode\r\n  - The astar heuristic & cost functions need another pass. They don't always produce the shortest path. Implement incomplete funneling while building the astar path?\r\n  - The navmesh assumes any polygon can reach any other polygon. This probably should be extended to put connected polygons into groups like patroljs.\r\n- Testing\r\n  - Check against tilemap that is larger than the screen\r\n- Research\r\n  - There are probably optimization tricks to do when dealing with certain types of shapes. E.g. we are using axis-aligned boxes for the polygons and it is dead simple to calculate if a point is inside one of those...\r\n  - Investigate [Points-of-Visibility](http://www.david-gouveia.com/portfolio/pathfinding-on-a-2d-polygonal-map/) pathfinding to compare speed\r\n",
+    "longname": "C:\\Users\\mikewesthad\\Documents\\GitHub\\phaser-navmesh\\README.md",
+    "name": "README.md",
+    "static": true,
+    "access": "public"
+  },
+  {
+    "kind": "manual",
+    "longname": "C:\\Users\\mikewesthad\\Documents\\GitHub\\phaser-navmesh\\README.md",
+    "name": "README.md",
+    "content": "# Navigation Meshes Overview <!-- omit in toc -->\r\n\r\nA JS plugin for fast pathfinding using [navigation meshes](https://en.wikipedia.org/wiki/Navigation_mesh), with optional wrappers for the Phaser v2 and Phaser v3 game engines.\r\n\r\n[<img src=\"./doc-source/single-following-agent.gif\" width=\"400\">](https://www.mikewesthad.com/navmesh/demo/)\r\n\r\n[Interactive demo](https://www.mikewesthad.com/navmesh/demo/)\r\n\r\nTable of Contents:\r\n\r\n- [Intro](#intro)\r\n- [Installation](#installation)\r\n  - [As a Script](#as-a-script)\r\n  - [As a Module](#as-a-module)\r\n- [Create a Nav Mesh](#create-a-nav-mesh)\r\n- [Usage](#usage)\r\n- [Performance Comparison](#performance-comparison)\r\n- [Development](#development)\r\n- [References](#references)\r\n- [TODO](#todo)\r\n\r\n## Intro\r\n\r\nPathfinding is essentially solving a maze, finding a path between two points while avoiding obstacles. When pathfinding in games, we need to:\r\n\r\n1.  Represent the game world in a way that defines what areas are walkable.\r\n2.  Search that representation for the shortest path.\r\n\r\nWhen it comes to 2D pathfinding in [Phaser](http://phaser.io/), the [packaged solution](https://github.com/photonstorm/phaser-plugins) represents the world using [tiles](https://developer.mozilla.org/en-US/docs/Games/Techniques/Tilemaps) (a grid) and then searchs for a path using the [A\\* algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm). If you have a 50 x 50 tile world, searching for a path involves searching through a representation of the world with up to 2500 locations (nodes).\r\n\r\nThis plugin uses navigation meshes to simplify that search. Instead of representing the world as a grid of tiles, it represents the walkable areas of the world as a mesh. That means that the representation of the world has far fewer nodes, and hence, can be searched much faster than the grid approach. This approach is 5x - 150x faster than Phaser's A\\* plugin (see performance section).\r\n\r\nThe example map below (left) is a 30 x 30 map. As a grid, there are 900 nodes, but as a navmesh (right) there are 27 nodes (colored rectangles).\r\n\r\n<img src=\"./doc-source/combined.png\" width=\"700\">\r\n\r\n(Note: if you are viewing this on GitHub or NPM, you might want to check out the HTML documentation [here](https://www.mikewesthad.com/navmesh/docs/).)\r\n\r\n## Installation\r\n\r\nThis repo contains 3 related JS modules:\r\n\r\n- `navmesh` - core logic, game-engine agnostic, usable outside of Phaser.\r\n- `phaser-navmesh` - Phaser v3 wrapper around `navmesh` that creates a Phaser 3 Scene plugin. Phaser 3 is expected to be a dependency in your project.\r\n- `phaser2-navmesh` - Phaser v2 wrapper around `navmesh` that creates a Phaser 2 game plugin. Phaser 2 or Phaser-ce is expected to be in the global scope.\r\n\r\nYou can use any of them as a script or as a module.\r\n\r\n### As a Script\r\n\r\nDownload the distribution version that you want:\r\n\r\n| navmesh                           | phaser-navmesh                     | phaser2-navmesh                     |\r\n| --------------------------------- | ---------------------------------- | ----------------------------------- |\r\n| [minified][1] & source [map][2]   | [minified][3] & source [map][4]    | [minified][5] & source [map][6]     |\r\n| [unminified][7] & source [map][8] | [unminified][9] & source [map][10] | [unminified][11] & source [map][12] |\r\n| Library Name: NavMesh             | Library Name: PhaserNavMeshPlugin  | Library Name: Phaser2NavMeshPlugin  |\r\n\r\n\r\n[1]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.min.js\r\n[2]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.min.js.map\r\n[3]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.min.js\r\n[4]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.min.js.map\r\n[5]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.min.js\r\n[6]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.min.js.map\r\n[7]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.js\r\n[8]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.js.map\r\n[9]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.js\r\n[10]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.js.map\r\n[11]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.js\r\n[12]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.js.map\r\n\r\nE.g. if you wanted phaser-navmesh\r\n\r\n```html\r\n<script src=\"dist/phaser-navmesh.min.js\"></script>\r\n```\r\n\r\nInside of your own script, you can now use the global PhaserNavMeshPlugin:\r\n\r\n```js\r\nconst game = new Phaser.Game({\r\n  type: Phaser.AUTO,\r\n  width: 750,\r\n  height: 750,\r\n  plugins: {\r\n    scene: [{key: \"NavMeshPlugin\", plugin: PhaserNavMeshPlugin, mapping: \"navMeshPlugin\", start: true }]\r\n  }\r\n});\r\n```\r\n\r\n### As a Module\r\n\r\nInstall the appropriate dependency:\r\n\r\n- `npm install --save navmesh` for usage outside of Phaser\r\n- `npm install --save phaser-navmesh` for Phaser 3\r\n- `npm install --save phaser2-navmesh` for Phaser 2\r\n\r\nTo use the transpiled and minified distribution of the library:\r\n\r\n```js\r\nimport PhaserNavmesh from \"phaser-navmesh\";\r\n```\r\n\r\nTo use the raw library (so you can transpile it to match your own project settings):\r\n\r\n```js\r\nimport PhaserNavmesh from \"phaser-navmesh/src\";\r\n```\r\n\r\n## Create a Nav Mesh\r\n\r\nSee [guide](https://www.mikewesthad.com/navmesh/docs/manual/tiled-navmesh-guide.html).\r\n\r\n## Usage\r\n\r\n```js\r\n// This snippet assumes you've got your tilemap loaded in a variable called \"tilemap\"\r\n\r\n// Register the plugin with Phaser\r\nconst navMeshPlugin = this.game.plugins.add(phaserNavmesh);\r\n\r\n// Load the navMesh from the tilemap object layer \"navmesh.\" The navMesh was created with 12.5\r\n// pixels of space around obstacles.\r\nconst navMesh = navMeshPlugin.buildMeshFromTiled(tilemap, \"navmesh\", 12.5);\r\n\r\nconst p1 = new Phaser.Point(100, 400);\r\nconst p2 = new Phaser.Point(700, 200);\r\nconst path = navMesh.findPath(p1, p2);\r\n// -> path is now either an array of points, or null if no valid path could be found\r\n```\r\n\r\nVisually debugging paths:\r\n\r\n```js\r\nnavMesh.enableDebug(); // Creates a Phaser.Graphics overlay on top of the screen\r\nnavMesh.debugClear(); // Clears the overlay\r\n// Visualize the underlying navmesh\r\nnavMesh.debugDrawMesh({\r\n  drawCentroid: true,\r\n  drawBounds: false,\r\n  drawNeighbors: true,\r\n  drawPortals: true\r\n});\r\n// Find & visualize a specific path\r\nconst path = navMesh.findPath(follower.position, target, {\r\n  drawPolyPath: true,\r\n  drawFinalPath: true\r\n});\r\n```\r\n\r\n## Performance Comparison\r\n\r\n_(Note: these comparisons were done in any earlier verison of the repo before Phaser v3 was released. The plugins tested haven't been released in v3 versions yet, so this section could use an update. That said, the results should be the same.)_\r\n\r\nComparing this navmesh plugin against:\r\n\r\n- [Phaser's grid-based A\\* plugin](https://github.com/photonstorm/phaser-plugins). Navmesh is approximately 5x - 150x faster.\r\n- A faster, grid-based A\\* search, [EasyStar.js](https://github.com/prettymuchbryce/easystarjs). Navmesh is approximately 5x - 20x faster.\r\n\r\nPerformance depends on the size of the area that needs to be searched. Finding for a path between points that are 50 pixels away is (generally) going to be much faster than finding a path between points that are 5000 pixels away.\r\n\r\nDetails (see [src/library/performance](https://github.com/mikewesthad/navmesh/tree/master/src/examples/performance)):\r\n\r\n```\r\nPerformance Comparison, 100000 iterations, 30x30 tilemap\r\n\r\nShort paths (150 - 500 pixel length)\r\n\r\n    Average time per iteration:\r\n        AStart Plugin: 0.02470ms\r\n        EasyStar Plugin: 0.02876ms\r\n        NavMesh Plugin: 0.00575ms\r\n\r\n    Comparison:\r\n        NavMesh is 4.30x faster than Phaser AStar\r\n        NavMesh is 5.00x faster than EasyStar\r\n\r\nLong paths (600 pixels and greater length), average time per iteration:\r\n\r\n    Average time per iteration:\r\n        AStart Plugin: 1.38710ms\r\n        EasyStar Plugin: 0.15977ms\r\n        NavMesh Plugin: 0.00738ms\r\n\r\n    Comparison:\r\n        NavMesh is 187.95x faster than Phaser AStar\r\n        NavMesh is 21.65x faster than EasyStar\r\n```\r\n\r\n## Development\r\n\r\nPull requests are welcome! If you want to run this repo locally, make sure you have [node](https://nodejs.org/en/) installed. Download the repo, open a terminal in the repo folder and run:\r\n\r\n```\r\nnpm install\r\nnpm run bootstrap\r\n```\r\n\r\nThis project uses [lerna](https://github.com/lerna/lerna) and [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/) to manage multiple packages within one repository. `npm install` will pull the root dependencies and `npm run bootstrap` will use lerna & yarn to pull and link dependencies within \"packages/\". This project has the following packages:\r\n\r\n- `navmesh` - core logic, game-engine agnostic\r\n- `phaser-navmesh` - Phaser Plugin v3 wrapper around `navmesh`\r\n- `phaser2-navmesh` - Phaser Plugin v2 wrapper around `navmesh`\r\n\r\nThe project is controlled via npm scripts. The main ones to use:\r\n\r\n- `npm run build` - will build all the individual packages within \"packages/\".\r\n- `npm run dev` - watch & serve the v3 examples. A browser window will pop up with links to the examples. If you are working on the library, this is the easiest way to do \"functional testing\" by using the library in a game environment.\r\n- `npm run test` - will run the automated tests against the library.\r\n\r\n## References\r\n\r\nHelpful resources used while building this plugin:\r\n\r\n- Inspired by [PatrolJS](https://github.com/nickjanssen/PatrolJS), an implementation of navmeshes for threejs\r\n- Navmesh path-finding algorithm explanations:\r\n  - [Game Path Planning by Julian Ceipek](http://jceipek.com/Olin-Coding-Tutorials/pathing.html)\r\n  - [Simple Stupid Funnel Algorithm](http://digestingduck.blogspot.com/2010/03/simple-stupid-funnel-algorithm.html)\r\n- [Advice on astar heuristics](http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html)\r\n\r\n## TODO\r\n\r\n- Documentation\r\n  - Describe the Tiled process. Adding an object layer, setting snapping, making sure vertices overlap...\r\n- Specific Extensions\r\n  - Allow non-square navmesh from Tiled - any convex shape\r\n  - Reimplement the autotessalation version of the lib\r\n  - Try libtess in quad mode\r\n  - The astar heuristic & cost functions need another pass. They don't always produce the shortest path. Implement incomplete funneling while building the astar path?\r\n  - The navmesh assumes any polygon can reach any other polygon. This probably should be extended to put connected polygons into groups like patroljs.\r\n- Testing\r\n  - Check against tilemap that is larger than the screen\r\n- Research\r\n  - There are probably optimization tricks to do when dealing with certain types of shapes. E.g. we are using axis-aligned boxes for the polygons and it is dead simple to calculate if a point is inside one of those...\r\n  - Investigate [Points-of-Visibility](http://www.david-gouveia.com/portfolio/pathfinding-on-a-2d-polygonal-map/) pathfinding to compare speed\r\n",
+    "static": true,
+    "access": "public"
+  },
+  {
+    "kind": "manual",
+    "longname": "C:\\Users\\mikewesthad\\Documents\\GitHub\\phaser-navmesh\\tiled-navmesh-guide.md",
+    "name": "./tiled-navmesh-guide.md",
+    "content": "# Creating a NavMesh in Tiled\r\n\r\n[Tiled](http://www.mapeditor.org/) is an open source tile map editor. If you are already using it to design your levels, then you can also use it to create your nav meshes.\r\n\r\nTiled allows you to design a map by creating [layers](http://doc.mapeditor.org/manual/layers/) of tiles & objects. A tile layer allows you to place your graphics (images from a tileset) into the world. An object layer allows you to store other kinds of information. Phaser can read both tile layers and object layers, so we can use the object layer to represent a nav mesh. In the image below, there is a layer of tiles (called \"walls\") and a layer of gray rectangles that represents the nav mesh (called \"navmesh\"):\r\n\r\n<img src=\"./doc-source/tiled-guide/tiled-final.png\">\r\n\r\nThis guide assumes you have some familiarity with Tiled. If you don't know Tiled, check out gamefromscratch's video [tutorial series](http://www.gamefromscratch.com/post/2015/10/14/Tiled-Map-Editor-Tutorial-Series.aspx).\r\n\r\n## Goal\r\n\r\nThe idea is that we want to create an object layer in Tiled that represents where an \"agent\" (the player, an enemy, an npc, etc.) can move. We will describe those walkable area by placing individual shapes (mainly rectangles). An agent can then \"walk\" from one shape to another as long as they are connected (i.e. their edges overlap).\r\n\r\nNote: We will also want to take the agent's size into account when building the shapes. If you have an agent that is 20px wide, then it shouldn't be allowed to get within 10px of a wall.\r\n\r\n## Snapping Setup\r\n\r\nIn order to place shapes in the nav mesh accurately and ensure that neighboring shapes are \"connected,\" you'll want to enable snapping. Open up your map or create a new one, and go to preferences (`Edit ⟶ Preferences`):\r\n\r\n<img src=\"./doc-source/tiled-guide/tiled-preferences.png\">\r\n\r\nSet the fine grid divisions. This allows you to snap objects \"in-between\" the grid. E.g. on a 25px x 25px tile map with 5 grid divisions, the fine grid would be every 5px.\r\n\r\n<img src=\"./doc-source/tiled-guide/tiled-preferences-2.png\">\r\n\r\nEnable snapping (`View ⟶ Snapping`):\r\n\r\n<img src=\"./doc-source/tiled-guide/tiled-snapping.png\">\r\n\r\n## Creating the Mesh\r\n\r\nCreate a new object layer and name it \"navmesh.\" Then start adding in rectangles to define your nav mesh. (Note: rectangles are the only Tiled shape currently supported by this plugin.)\r\n\r\n<img src=\"./doc-source/tiled-guide/tiled-navmesh-layer.gif\">\r\n\r\nSee the Tiled manual for more information on [objects](http://doc.mapeditor.org/manual/objects/#working-with-objects).\r\n\r\n## Agent Size (Gaps)\r\n\r\nNotice the 10px space left around the walls? That gap is because the agent is 20px wide circle. It would get stuck on corners of walls without that gap. Make sure the gaps you leave are a consistent size - you'll need to pass in the size as the third parameter to `navMeshPlugin.buildMeshFromTiled`.\r\n\r\nIf you wanted, you _could_ leave that gap out and write more complicated path following logic for your agents that avoids getting stuck. \"Baking\" the agent size into nav mesh with these gaps makes the path following logic pretty simple.",
+    "static": true,
+    "access": "public"
+  }
+]
