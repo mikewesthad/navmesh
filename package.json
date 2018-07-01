@@ -10,26 +10,27 @@
     "watch": "lerna run --parallel watch",
     "pull-types": "curl https://raw.githubusercontent.com/photonstorm/phaser3-docs/master/typescript/phaser.d.ts --create-dirs --location --output ./types/phaser.d.ts",
     "dev": "cd packages/examples && npm run serve",
-    "doc": "esdoc -c config/esdoc.json",
+    "doc": "esdoc -c ./config/esdoc.json",
     "postdoc": "cp -r doc-source/ docs/ && cp -r doc-source/ docs/manual/",
     "deploy:examples": "gh-pages --branch gh-pages --dist public",
     "predeploy:examples": "npm run \"build:examples\"",
     "deploy:doc": "gh-pages --branch gh-pages --dist docs --dest docs",
-    "predeploy:doc": "npm run doc",
-    "prettier": "prettier --write ./src/**/*.{js,jsx,json}"
+    "predeploy:doc": "npm run doc"
   },
   "devDependencies": {
+    "babel-jest": "^23.2.0",
     "concurrently": "^3.6.0",
     "esdoc": "^1.1.0",
+    "esdoc-inject-style-plugin": "^1.0.0",
+    "esdoc-standard-plugin": "^1.0.0",
     "eslint": "^5.0.1",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-prettier": "^2.6.1",
     "gh-pages": "^1.2.0",
+    "jest": "^23.2.0",
     "lerna": "^2.11.0",
     "prettier": "^1.13.6",
-    "yarn": "^1.7.0",
-    "jest": "^23.2.0",
-    "babel-jest": "^23.2.0"
+    "yarn": "^1.7.0"
   },
   "prettier": {
     "printWidth": 100
