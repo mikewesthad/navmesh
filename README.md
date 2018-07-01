@@ -48,24 +48,45 @@ You can use any of them as a script or as a module.
 
 ### As a Script
 
-Download the distribution versions:
+Download the distribution version that you want:
 
-| navmesh | phaser-navmesh | phaser2-navmesh |
-| --- | --- | --- |
-| [minified](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/packages/navmesh/dist/navmesh.min.js) & optional source [map](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/packages/navmesh/dist/navmesh.min.js.map) | [minified](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.min.js) & optional source [map](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.min.js.map) | [minified](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.min.js) & optional source [map](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.min.js.map) |
-| [unminified](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/packages/navmesh/dist/navmesh.js) & optional source [map](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/packages/navmesh/dist/navmesh.js.map) | [unminified](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.js) & optional source [map](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.min.js) | [unminified](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.js) & optional source [map](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.min.js) |
+| navmesh                           | phaser-navmesh                     | phaser2-navmesh                     |
+| --------------------------------- | ---------------------------------- | ----------------------------------- |
+| [minified][1] & source [map][2]   | [minified][3] & source [map][4]    | [minified][5] & source [map][6]     |
+| [unminified][7] & source [map][8] | [unminified][9] & source [map][10] | [unminified][11] & source [map][12] |
+| Library Name: NavMesh             | Library Name: PhaserNavMeshPlugin  | Library Name: Phaser2NavMeshPlugin  |
 
- 
-Download the dist/phaser-navmesh.min.js [here](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/dist/phaser-navmesh.min.js) and include it in your HTML:
+
+[1]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.min.js
+[2]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.min.js.map
+[3]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.min.js
+[4]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.min.js.map
+[5]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.min.js
+[6]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.min.js.map
+[7]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.js
+[8]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.js.map
+[9]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.js
+[10]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.js.map
+[11]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.js
+[12]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.js.map
+
+E.g. if you wanted phaser-navmesh
 
 ```html
 <script src="dist/phaser-navmesh.min.js"></script>
 ```
 
-Inside of your own script, you can now use the global PhaserNavmesh:
+Inside of your own script, you can now use the global PhaserNavMeshPlugin:
 
 ```js
-this.game.plugins.add(PhaserNavmesh);
+const game = new Phaser.Game({
+  type: Phaser.AUTO,
+  width: 750,
+  height: 750,
+  plugins: {
+    scene: [{key: "NavMeshPlugin", plugin: PhaserNavMeshPlugin, mapping: "navMeshPlugin", start: true }]
+  }
+});
 ```
 
 ### As a Module
