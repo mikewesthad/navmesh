@@ -28,8 +28,8 @@ Table of Contents:
 
 Pathfinding is essentially the problem of solving a maze, finding a path between points while avoiding obstacles. When pathfinding in games, we need to:
 
-1.  Represent the game world in a way that defines what areas are walkable.
-2.  Search that representation for the shortest path.
+1. Represent the game world in a way that defines what areas are walkable.
+2. Search that representation for the shortest path.
 
 When it comes to 2D pathfinding, a common approach is to represent the world using [tiles](https://developer.mozilla.org/en-US/docs/Games/Techniques/Tilemaps) (a grid) and then search for a path using the [A\* algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm) ((e.g. [Phaser AStar](https://github.com/photonstorm/phaser-plugins/tree/master/AStar)). If you have a 50 x 50 tile world, searching for a path involves searching through a representation of the world with up to 2500 locations ("nodes").
 
