@@ -38,6 +38,6 @@ See the Tiled manual for more information on [objects](http://doc.mapeditor.org/
 
 ## Agent Size (Gaps)
 
-Notice the 10px space left around the walls? That gap is because the agent is 20px wide circle. It would get stuck on corners of walls without that gap. Make sure the gaps you leave are a consistent size - you'll need to pass in the size as the third parameter to `navMeshPlugin.buildMeshFromTiled`.
+Notice the 10px space left around the walls? That gap is because the agent is 20px wide circle. It would get stuck on corners of walls without that gap. Make sure the gaps you leave are a consistent size - you'll need to pass in the size as the third parameter to `plugin.buildMeshFromTiled`.
 
 If you wanted, you _could_ leave that gap out and write more complicated path following logic for your agents that avoids getting stuck. "Baking" the agent size into nav mesh with these gaps makes the path following logic pretty simple.
