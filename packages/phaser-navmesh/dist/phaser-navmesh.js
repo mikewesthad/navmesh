@@ -1960,7 +1960,7 @@ var phaser_navmesh_plugin_PhaserNavMeshPlugin = function (_Phaser$Plugins$Scene)
 
   /**
    * Phaser.Scene lifecycle event
-   * 
+   *
    * @memberof PhaserNavMeshPlugin
    */
 
@@ -1974,7 +1974,7 @@ var phaser_navmesh_plugin_PhaserNavMeshPlugin = function (_Phaser$Plugins$Scene)
 
     /**
      * Phaser.Scene lifecycle event - noop in this plugin, but still required.
-     * 
+     *
      * @memberof PhaserNavMeshPlugin
      */
 
@@ -1984,7 +1984,7 @@ var phaser_navmesh_plugin_PhaserNavMeshPlugin = function (_Phaser$Plugins$Scene)
 
     /**
      * Phaser.Scene lifecycle event - noop in this plugin, but still required.
-     * 
+     *
      * @memberof PhaserNavMeshPlugin
      */
 
@@ -1994,7 +1994,7 @@ var phaser_navmesh_plugin_PhaserNavMeshPlugin = function (_Phaser$Plugins$Scene)
 
     /**
      * Phaser.Scene lifecycle event - will destroy all navmeshes created.
-     * 
+     *
      * @memberof PhaserNavMeshPlugin
      */
 
@@ -2002,7 +2002,7 @@ var phaser_navmesh_plugin_PhaserNavMeshPlugin = function (_Phaser$Plugins$Scene)
     key: "destroy",
     value: function destroy() {
       this.systems.events.off("boot", this.boot, this);
-      this.systems.events.Object.values(this.phaserNavMeshes).forEach(function (m) {
+      Object.values(this.phaserNavMeshes).forEach(function (m) {
         return m.destroy();
       });
       this.phaserNavMeshes = [];
@@ -2011,7 +2011,7 @@ var phaser_navmesh_plugin_PhaserNavMeshPlugin = function (_Phaser$Plugins$Scene)
     }
 
     /**
-     * Destroy a navmesh and remove it from the plugin 
+     * Destroy a navmesh and remove it from the plugin
      *
      * @param {string} key
      * @memberof PhaserNavMeshPlugin

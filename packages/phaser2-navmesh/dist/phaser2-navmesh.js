@@ -1963,7 +1963,7 @@ var phaser2_navmesh_plugin_Phaser2NavMeshPlugin = function (_Phaser$Plugin) {
   phaser2_navmesh_plugin_createClass(Phaser2NavMeshPlugin, [{
     key: "destroy",
     value: function destroy() {
-      this.systems.events.Object.values(this.phaserNavMeshes).forEach(function (m) {
+      Object.values(this.phaserNavMeshes).forEach(function (m) {
         return m.destroy();
       });
       this.phaserNavMeshes = [];
