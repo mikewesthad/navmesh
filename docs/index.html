@@ -7,11 +7,8 @@
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
-  
-  
   <script src="script/manual.js"></script>
-<link data-ice="userStyle" rel="stylesheet" href="user/css/0-injected-style.css">
-</head>
+<link rel="stylesheet" href="./inject/css/0-injected-style.css"></head>
 <body class="layout-container manual-root manual-index" data-ice="rootContainer">
 
 <header>
@@ -20,7 +17,6 @@
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
   
-  <a data-ice="repoURL" href="https://github.com/mikewesthad/phaser-navmesh-plugin" class="repo-url-github">Repository</a>
   <div class="search-box">
   <span>
     <img src="./image/search.png">
@@ -32,47 +28,55 @@
 
 <nav class="navigation" data-ice="nav"><div class="manual-toc-root">
   
-<div data-ice="manual" data-toc-name="overview">
+<div data-ice="manual">
     <ul class="manual-toc">
       
-    <li data-ice="manualNav" class="indent-h1 manual-color manual-color-overview" data-section-count="&#x25A0;&#x25A0;&#x25A0;" data-link="manual/overview/README.html"><a href="manual/overview/README.html" data-ice="link">Navigation Meshes in Phaser</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/overview/README.html"><a href="manual/overview/README.html#temporary-performance-comparison" data-ice="link">Temporary Performance Comparison</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/overview/README.html"><a href="manual/overview/README.html#installation" data-ice="link">Installation</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/overview/README.html"><a href="manual/overview/README.html#as-a-script" data-ice="link">As a Script</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/overview/README.html"><a href="manual/overview/README.html#as-a-module" data-ice="link">As a Module</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/overview/README.html"><a href="manual/overview/README.html#create-a-nav-mesh" data-ice="link">Create a Nav Mesh</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/overview/README.html"><a href="manual/overview/README.html#usage" data-ice="link">Usage</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/overview/README.html"><a href="manual/overview/README.html#development" data-ice="link">Development</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/overview/README.html"><a href="manual/overview/README.html#references" data-ice="link">References</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/overview/README.html"><a href="manual/overview/README.html#todo" data-ice="link">TODO</a></li>
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/README.html"><a href="manual/README.html" data-ice="link">Navigation Meshes Overview </a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#intro" data-ice="link">Intro</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#installation" data-ice="link">Installation</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/README.html"><a href="manual/README.html#as-a-script" data-ice="link">As a Script</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/README.html"><a href="manual/README.html#as-a-module" data-ice="link">As a Module</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#create-a-nav-mesh" data-ice="link">Create a Nav Mesh</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#usage" data-ice="link">Usage</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#performance-comparison" data-ice="link">Performance Comparison</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#development" data-ice="link">Development</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#references" data-ice="link">References</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#todo" data-ice="link">TODO</a></li>
 </ul>
   </div>
-<div data-ice="manual" data-toc-name="tutorial">
+<div data-ice="manual">
     <ul class="manual-toc">
       
-    <li data-ice="manualNav" class="indent-h1 manual-color manual-color-tutorial" data-section-count="&#x25A0;&#x25A0;" data-link="manual/tutorial/tiled-navmesh-guide.html"><a href="manual/tutorial/tiled-navmesh-guide.html" data-ice="link">Creating a NavMesh in Tiled</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/tiled-navmesh-guide.html"><a href="manual/tutorial/tiled-navmesh-guide.html#goal" data-ice="link">Goal</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/tiled-navmesh-guide.html"><a href="manual/tutorial/tiled-navmesh-guide.html#snapping-setup" data-ice="link">Snapping Setup</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/tiled-navmesh-guide.html"><a href="manual/tutorial/tiled-navmesh-guide.html#creating-the-mesh" data-ice="link">Creating the Mesh</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/tiled-navmesh-guide.html"><a href="manual/tutorial/tiled-navmesh-guide.html#agent-size-gaps-" data-ice="link">Agent Size (Gaps)</a></li>
-</ul>
-  </div>
-<div data-ice="manual" data-toc-name="reference">
-    <ul class="manual-toc">
-      
-    <li data-ice="manualNav" class="indent-h1 manual-color manual-color-reference" data-section-count="&#x25A0;" data-link="identifiers.html"><a href="identifiers.html" data-ice="link">Reference</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="identifiers.html"><a href="identifiers.html#class" data-ice="link">Class</a></li>
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/tiled-navmesh-guide.html"><a href="manual/tiled-navmesh-guide.html" data-ice="link">Creating a NavMesh in Tiled</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/tiled-navmesh-guide.html"><a href="manual/tiled-navmesh-guide.html#goal" data-ice="link">Goal</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/tiled-navmesh-guide.html"><a href="manual/tiled-navmesh-guide.html#snapping-setup" data-ice="link">Snapping Setup</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/tiled-navmesh-guide.html"><a href="manual/tiled-navmesh-guide.html#creating-the-mesh" data-ice="link">Creating the Mesh</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/tiled-navmesh-guide.html"><a href="manual/tiled-navmesh-guide.html#agent-size--gaps-" data-ice="link">Agent Size (Gaps)</a></li>
 </ul>
   </div>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><div class="github-markdown">
-  <div class="manual-user-index" data-ice="manualUserIndex"><h1 id="navigation-meshes-in-phaser">Navigation Meshes in Phaser</h1>
-<p>A <a href="http://phaser.io/">Phaser</a> plugin for fast pathfinding using navigation meshes.</p>
-<p><a href="https://www.mikewesthad.com/phaser-navmesh/demo/"><img src="./doc-source/single-following-agent.gif" width="400"></a></p>
-<p><a href="https://www.mikewesthad.com/phaser-navmesh/demo/">Interactive demo</a></p>
-<p>Pathfinding is essentially solving a maze, finding a path between two points while avoiding obstacles. When pathfinding in games, we need to:</p>
+  <div class="manual-user-index" data-ice="manualUserIndex"><h1 id="navigation-meshes-overview------omit-in-toc----">Navigation Meshes Overview <!-- omit in toc --></h1><p>A JS plugin for fast pathfinding using <a href="https://en.wikipedia.org/wiki/Navigation_mesh">navigation meshes</a>, with optional wrappers for the Phaser v2 and Phaser v3 game engines.</p>
+<p><a href="https://www.mikewesthad.com/navmesh/demo/"><img src="./doc-source/single-following-agent.gif" width="400"></a></p>
+<p><a href="https://www.mikewesthad.com/navmesh/demo/">Interactive demo</a></p>
+<p>Table of Contents:</p>
+<ul>
+<li><a href="#intro">Intro</a></li>
+<li><a href="#installation">Installation</a><ul>
+<li><a href="#as-a-script">As a Script</a></li>
+<li><a href="#as-a-module">As a Module</a></li>
+</ul>
+</li>
+<li><a href="#create-a-nav-mesh">Create a Nav Mesh</a></li>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#performance-comparison">Performance Comparison</a></li>
+<li><a href="#development">Development</a></li>
+<li><a href="#references">References</a></li>
+<li><a href="#todo">TODO</a></li>
+</ul>
+<h2 id="intro">Intro</h2><p>Pathfinding is essentially solving a maze, finding a path between two points while avoiding obstacles. When pathfinding in games, we need to:</p>
 <ol>
 <li>Represent the game world in a way that defines what areas are walkable.</li>
 <li>Search that representation for the shortest path.</li>
@@ -81,16 +85,105 @@
 <p>This plugin uses navigation meshes to simplify that search. Instead of representing the world as a grid of tiles, it represents the walkable areas of the world as a mesh. That means that the representation of the world has far fewer nodes, and hence, can be searched much faster than the grid approach. This approach is 5x - 150x faster than Phaser&apos;s A* plugin (see performance section).</p>
 <p>The example map below (left) is a 30 x 30 map. As a grid, there are 900 nodes, but as a navmesh (right) there are 27 nodes (colored rectangles).</p>
 <p><img src="./doc-source/combined.png" width="700"></p>
-<p>(Note: if you are viewing this on GitHub or NPM, you might want to check out the HTML documentation <a href="https://www.mikewesthad.com/phaser-navmesh/docs/">here</a>.)</p>
-<h2 id="temporary-performance-comparison">Temporary Performance Comparison</h2>
-<p>TODO: make this more readable and add interactive demo</p>
+<p>(Note: if you are viewing this on GitHub or NPM, you might want to check out the HTML documentation <a href="https://www.mikewesthad.com/navmesh/docs/">here</a>.)</p>
+<h2 id="installation">Installation</h2><p>This repo contains 3 related JS modules:</p>
+<ul>
+<li><code>navmesh</code> - core logic, game-engine agnostic, usable outside of Phaser.</li>
+<li><code>phaser-navmesh</code> - Phaser v3 wrapper around <code>navmesh</code> that creates a Phaser 3 Scene plugin. Phaser 3 is expected to be a dependency in your project.</li>
+<li><code>phaser2-navmesh</code> - Phaser v2 wrapper around <code>navmesh</code> that creates a Phaser 2 game plugin. Phaser 2 or Phaser-ce is expected to be in the global scope.</li>
+</ul>
+<p>You can use any of them as a script or as a module.</p>
+<h3 id="as-a-script">As a Script</h3><p>Download the distribution version that you want:</p>
+<table>
+<thead>
+<tr>
+<th>navmesh</th>
+<th>phaser-navmesh</th>
+<th>phaser2-navmesh</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.min.js">minified</a> &amp; source <a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.min.js.map">map</a></td>
+<td><a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.min.js">minified</a> &amp; source <a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.min.js.map">map</a></td>
+<td><a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.min.js">minified</a> &amp; source <a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.min.js.map">map</a></td>
+</tr>
+<tr>
+<td><a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.js">unminified</a> &amp; source <a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.js.map">map</a></td>
+<td><a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.js">unminified</a> &amp; source <a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.js.map">map</a></td>
+<td><a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.js">unminified</a> &amp; source <a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.js.map">map</a></td>
+</tr>
+<tr>
+<td>Library Name: NavMesh</td>
+<td>Library Name: PhaserNavMeshPlugin</td>
+<td>Library Name: Phaser2NavMeshPlugin</td>
+</tr>
+</tbody>
+</table>
+<p>E.g. if you wanted phaser-navmesh</p>
+<pre><code class="lang-html"><code class="source-code prettyprint">&lt;script src=&quot;dist/phaser-navmesh.min.js&quot;&gt;&lt;/script&gt;</code>
+</code></pre>
+<p>Inside of your own script, you can now use the global PhaserNavMeshPlugin:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const game = new Phaser.Game({
+  type: Phaser.AUTO,
+  width: 750,
+  height: 750,
+  plugins: {
+    scene: [{key: &quot;NavMeshPlugin&quot;, plugin: PhaserNavMeshPlugin, mapping: &quot;navMeshPlugin&quot;, start: true }]
+  }
+});</code>
+</code></pre>
+<h3 id="as-a-module">As a Module</h3><p>Install the appropriate dependency:</p>
+<ul>
+<li><code>npm install --save navmesh</code> for usage outside of Phaser</li>
+<li><code>npm install --save phaser-navmesh</code> for Phaser 3</li>
+<li><code>npm install --save phaser2-navmesh</code> for Phaser 2</li>
+</ul>
+<p>To use the transpiled and minified distribution of the library:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">import PhaserNavmesh from &quot;phaser-navmesh&quot;;</code>
+</code></pre>
+<p>To use the raw library (so you can transpile it to match your own project settings):</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">import PhaserNavmesh from &quot;phaser-navmesh/src&quot;;</code>
+</code></pre>
+<h2 id="create-a-nav-mesh">Create a Nav Mesh</h2><p>See <a href="https://www.mikewesthad.com/navmesh/docs/manual/tiled-navmesh-guide.md">guide</a>.</p>
+<h2 id="usage">Usage</h2><pre><code class="lang-js"><code class="source-code prettyprint">// This snippet assumes you&apos;ve got your tilemap loaded in a variable called &quot;tilemap&quot;
+
+// Register the plugin with Phaser
+const navMeshPlugin = this.game.plugins.add(phaserNavmesh);
+
+// Load the navMesh from the tilemap object layer &quot;navmesh.&quot; The navMesh was created with 12.5
+// pixels of space around obstacles.
+const navMesh = navMeshPlugin.buildMeshFromTiled(tilemap, &quot;navmesh&quot;, 12.5);
+
+const p1 = new Phaser.Point(100, 400);
+const p2 = new Phaser.Point(700, 200);
+const path = navMesh.findPath(p1, p2);
+// -&gt; path is now either an array of points, or null if no valid path could be found</code>
+</code></pre>
+<p>Visually debugging paths:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">navMesh.enableDebug(); // Creates a Phaser.Graphics overlay on top of the screen
+navMesh.debugClear(); // Clears the overlay
+// Visualize the underlying navmesh
+navMesh.debugDrawMesh({
+  drawCentroid: true,
+  drawBounds: false,
+  drawNeighbors: true,
+  drawPortals: true
+});
+// Find &amp; visualize a specific path
+const path = navMesh.findPath(follower.position, target, {
+  drawPolyPath: true,
+  drawFinalPath: true
+});</code>
+</code></pre>
+<h2 id="performance-comparison">Performance Comparison</h2><p><em>(Note: these comparisons were done in any earlier verison of the repo before Phaser v3 was released. The plugins tested haven&apos;t been released in v3 versions yet, so this section could use an update. That said, the results should be the same.)</em></p>
 <p>Comparing this navmesh plugin against:</p>
 <ul>
 <li><a href="https://github.com/photonstorm/phaser-plugins">Phaser&apos;s grid-based A* plugin</a>. Navmesh is approximately 5x - 150x faster.</li>
 <li>A faster, grid-based A* search, <a href="https://github.com/prettymuchbryce/easystarjs">EasyStar.js</a>. Navmesh is approximately 5x - 20x faster.</li>
 </ul>
 <p>Performance depends on the size of the area that needs to be searched. Finding for a path between points that are 50 pixels away is (generally) going to be much faster than finding a path between points that are 5000 pixels away.</p>
-<p>Details (see <a href="https://github.com/mikewesthad/phaser-navmesh/tree/master/src/examples/performance">src/library/performance</a>):</p>
+<p>Details (see <a href="https://github.com/mikewesthad/navmesh/tree/master/src/examples/performance">src/library/performance</a>):</p>
 <pre><code><code class="source-code prettyprint">Performance Comparison, 100000 iterations, 30x30 tilemap
 
 Short paths (150 - 500 pixel length)
@@ -114,66 +207,22 @@ Long paths (600 pixels and greater length), average time per iteration:
     Comparison:
         NavMesh is 187.95x faster than Phaser AStar
         NavMesh is 21.65x faster than EasyStar</code>
-</code></pre><h2 id="installation">Installation</h2>
-<p>Whether you include the library as a script tag or import it as a module, Phaser is a dependency. The library expects Phaser to be in the global scope.</p>
-<h3 id="as-a-script">As a Script</h3>
-<p>Download the dist/phaser-navmesh.min.js <a href="https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/dist/phaser-navmesh.min.js">here</a> and include it in your HTML:</p>
-<pre><code class="lang-html"><code class="source-code prettyprint">&lt;script src=&quot;dist/phaser-navmesh.min.js&quot;&gt;&lt;/script&gt;</code>
-</code></pre>
-<p>Inside of your own script, you can now use the global PhaserNavmesh:</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">this.game.plugins.add(PhaserNavmesh);</code>
-</code></pre>
-<h3 id="as-a-module">As a Module</h3>
-<p>Install the dependency:</p>
-<pre><code><code class="source-code prettyprint">npm install --save phaser-navmesh</code>
-</code></pre><p>To use the babelified and minified library:</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">import phaserNavmesh from &quot;phaser-navmesh&quot;;
-this.game.plugins.add(PhaserNavmesh);</code>
-</code></pre>
-<p>To use the raw es6 library (so you can transpile it to match your own project settings):</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">import phaserNavmesh from &quot;phaser-navmesh/src/library&quot;;
-this.game.plugins.add(PhaserNavmesh);</code>
-</code></pre>
-<h2 id="create-a-nav-mesh">Create a Nav Mesh</h2>
-<p>See <a href="./tiled-navmesh-guide.md">guide</a>.</p>
-<h2 id="usage">Usage</h2>
-<pre><code class="lang-js"><code class="source-code prettyprint">// This snippet assumes you&apos;ve got your tilemap loaded in a variable called &quot;tilemap&quot;
-
-// Register the plugin with Phaser
-const navMeshPlugin = this.game.plugins.add(phaserNavmesh);
-
-// Load the navMesh from the tilemap object layer &quot;navmesh.&quot; The navMesh was created with 12.5
-// pixels of space around obstacles.
-const navMesh = navMeshPlugin.buildMeshFromTiled(tilemap, &quot;navmesh&quot;, 12.5);
-
-const p1 = new Phaser.Point(100, 400);
-const p2 = new Phaser.Point(700, 200);
-const path = navMeshPlugin.findPath(p1, p2);
-// -&gt; path is now either an array of points, or null if no valid path could be found</code>
-</code></pre>
-<p>Visually debugging paths:</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">navMesh.enableDebug(); // Creates a Phaser.Graphics overlay on top of the screen
-navMesh.debugClear(); // Clears the overlay
-// Visualize the underlying navmesh
-navMesh.debugDrawMesh({
-    drawCentroid: true, drawBounds: false, drawNeighbors: true, drawPortals: true
-});
-// Find &amp; visualize a specific path
-const path = navMesh.findPath(follower.position, target, {
-    drawPolyPath: true, drawFinalPath: true
-});</code>
-</code></pre>
-<h2 id="development">Development</h2>
-<p>Pull requests are welcome! If you want to run this repo locally, make sure you have <a href="https://nodejs.org/en/">node</a> installed. Download the repo, open a terminal in the repo folder and run:</p>
-<pre><code><code class="source-code prettyprint">npm install</code>
-</code></pre><p>This will pull all the dependencies. The project is controlled via npm scripts. The main ones to use:</p>
+</code></pre><h2 id="development">Development</h2><p>Pull requests are welcome! If you want to run this repo locally, make sure you have <a href="https://nodejs.org/en/">node</a> installed. Download the repo, open a terminal in the repo folder and run:</p>
+<pre><code><code class="source-code prettyprint">npm install
+npm run bootstrap</code>
+</code></pre><p>This project uses <a href="https://github.com/lerna/lerna">lerna</a> and <a href="https://yarnpkg.com/lang/en/docs/workspaces/">yarn workspaces</a> to manage multiple packages within one repository. <code>npm install</code> will pull the root dependencies and <code>npm run bootstrap</code> will use lerna &amp; yarn to pull and link dependencies within &quot;packages/&quot;. This project has the following packages:</p>
 <ul>
-<li><code>npm run build:all</code> - will build the library into <code>dist/</code> &amp; the examples into <code>public/</code>. You can use this to generate a custom build.</li>
-<li><code>npm run dev</code> - will build, watch and serve the library &amp; examples. A browser window will pop up with links to the examples.</li>
-<li><code>npm run test</code> - will run the tests against the library.</li>
+<li><code>navmesh</code> - core logic, game-engine agnostic</li>
+<li><code>phaser-navmesh</code> - Phaser Plugin v3 wrapper around <code>navmesh</code></li>
+<li><code>phaser2-navmesh</code> - Phaser Plugin v2 wrapper around <code>navmesh</code></li>
 </ul>
-<h2 id="references">References</h2>
-<p>Helpful resources used while building this plugin:</p>
+<p>The project is controlled via npm scripts. The main ones to use:</p>
+<ul>
+<li><code>npm run build</code> - will build all the individual packages within &quot;packages/&quot;.</li>
+<li><code>npm run dev</code> - watch &amp; serve the v3 examples. A browser window will pop up with links to the examples. If you are working on the library, this is the easiest way to do &quot;functional testing&quot; by using the library in a game environment.</li>
+<li><code>npm run test</code> - will run the automated tests against the library.</li>
+</ul>
+<h2 id="references">References</h2><p>Helpful resources used while building this plugin:</p>
 <ul>
 <li>Inspired by <a href="https://github.com/nickjanssen/PatrolJS">PatrolJS</a>, an implementation of navmeshes for threejs</li>
 <li>Navmesh path-finding algorithm explanations:<ul>
@@ -183,8 +232,7 @@ const path = navMesh.findPath(follower.position, target, {
 </li>
 <li><a href="http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html">Advice on astar heuristics</a></li>
 </ul>
-<h2 id="todo">TODO</h2>
-<ul>
+<h2 id="todo">TODO</h2><ul>
 <li>Documentation<ul>
 <li>Describe the Tiled process. Adding an object layer, setting snapping, making sure vertices overlap...</li>
 </ul>
@@ -197,10 +245,6 @@ const path = navMesh.findPath(follower.position, target, {
 <li>The navmesh assumes any polygon can reach any other polygon. This probably should be extended to put connected polygons into groups like patroljs.</li>
 </ul>
 </li>
-<li>Extract Phaser dependency<ul>
-<li>Allow the library to work with an arbitrary mesh while having helper functions that are Phaser specific</li>
-</ul>
-</li>
 <li>Testing<ul>
 <li>Check against tilemap that is larger than the screen</li>
 </ul>
@@ -208,26 +252,108 @@ const path = navMesh.findPath(follower.position, target, {
 <li>Research<ul>
 <li>There are probably optimization tricks to do when dealing with certain types of shapes. E.g. we are using axis-aligned boxes for the polygons and it is dead simple to calculate if a point is inside one of those...</li>
 <li>Investigate <a href="http://www.david-gouveia.com/portfolio/pathfinding-on-a-2d-polygonal-map/">Points-of-Visibility</a> pathfinding to compare speed</li>
-<li>Using ES6 is probably suboptimal for performance</li>
 </ul>
 </li>
 </ul>
 </div>
 
-  <p class="manual-badge" data-ice="manualBadge"><img src="./manual-badge.svg"></p>
+  
 
   <div class="manual-cards">
     
   <div class="manual-card-wrap" data-ice="cards">
-      <h1 data-ice="label" class="manual-color manual-color-overview" data-section-count="&#x25A0;&#x25A0;&#x25A0;"><span data-ice="label-inner">Navigation Meshes in Phaser</span></h1>
       <div class="manual-card">
-        <div data-ice="card"><h1>Navigation Meshes in Phaser</h1><p>A <a href="http://phaser.io/">Phaser</a> plugin for fast pathfinding using navigation meshes.</p><p><a href="https://www.mikewesthad.com/phaser-navmesh/demo/"><img src="./manual/./doc-source/single-following-agent.gif" width="400"></a></p><p><a href="https://www.mikewesthad.com/phaser-navmesh/demo/">Interactive demo</a></p><p>Pathfinding is essentially solving a maze, finding a path between two points while avoiding obstacles. When pathfinding in games, we need to:</p><ol>
+        <div data-ice="card"><h1>Navigation Meshes Overview </h1><p>A JS plugin for fast pathfinding using <a href="https://en.wikipedia.org/wiki/Navigation_mesh">navigation meshes</a>, with optional wrappers for the Phaser v2 and Phaser v3 game engines.</p><p><a href="https://www.mikewesthad.com/navmesh/demo/"><img src="./manual/./doc-source/single-following-agent.gif" width="400"></a></p><p><a href="https://www.mikewesthad.com/navmesh/demo/">Interactive demo</a></p><p>Table of Contents:</p><ul>
+<li><a href="#intro">Intro</a></li>
+<li><a href="#installation">Installation</a><ul>
+<li><a href="#as-a-script">As a Script</a></li>
+<li><a href="#as-a-module">As a Module</a></li>
+</ul>
+</li>
+<li><a href="#create-a-nav-mesh">Create a Nav Mesh</a></li>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#performance-comparison">Performance Comparison</a></li>
+<li><a href="#development">Development</a></li>
+<li><a href="#references">References</a></li>
+<li><a href="#todo">TODO</a></li>
+</ul><h2>Intro</h2><p>Pathfinding is essentially solving a maze, finding a path between two points while avoiding obstacles. When pathfinding in games, we need to:</p><ol>
 <li>Represent the game world in a way that defines what areas are walkable.</li>
 <li>Search that representation for the shortest path.</li>
-</ol><p>When it comes to 2D pathfinding in <a href="http://phaser.io/">Phaser</a>, the <a href="https://github.com/photonstorm/phaser-plugins">packaged solution</a> represents the world using <a href="https://developer.mozilla.org/en-US/docs/Games/Techniques/Tilemaps">tiles</a> (a grid) and then searchs for a path using the <a href="https://en.wikipedia.org/wiki/A*_search_algorithm">A* algorithm</a>. If you have a 50 x 50 tile world, searching for a path involves searching through a representation of the world with up to 2500 locations (nodes).</p><p>This plugin uses navigation meshes to simplify that search. Instead of representing the world as a grid of tiles, it represents the walkable areas of the world as a mesh. That means that the representation of the world has far fewer nodes, and hence, can be searched much faster than the grid approach. This approach is 5x - 150x faster than Phaser&apos;s A* plugin (see performance section).</p><p>The example map below (left) is a 30 x 30 map. As a grid, there are 900 nodes, but as a navmesh (right) there are 27 nodes (colored rectangles).</p><p><img src="./manual/./doc-source/combined.png" width="700"></p><p>(Note: if you are viewing this on GitHub or NPM, you might want to check out the HTML documentation <a href="https://www.mikewesthad.com/phaser-navmesh/docs/">here</a>.)</p><h2>Temporary Performance Comparison</h2><p>TODO: make this more readable and add interactive demo</p><p>Comparing this navmesh plugin against:</p><ul>
+</ol><p>When it comes to 2D pathfinding in <a href="http://phaser.io/">Phaser</a>, the <a href="https://github.com/photonstorm/phaser-plugins">packaged solution</a> represents the world using <a href="https://developer.mozilla.org/en-US/docs/Games/Techniques/Tilemaps">tiles</a> (a grid) and then searchs for a path using the <a href="https://en.wikipedia.org/wiki/A*_search_algorithm">A* algorithm</a>. If you have a 50 x 50 tile world, searching for a path involves searching through a representation of the world with up to 2500 locations (nodes).</p><p>This plugin uses navigation meshes to simplify that search. Instead of representing the world as a grid of tiles, it represents the walkable areas of the world as a mesh. That means that the representation of the world has far fewer nodes, and hence, can be searched much faster than the grid approach. This approach is 5x - 150x faster than Phaser&apos;s A* plugin (see performance section).</p><p>The example map below (left) is a 30 x 30 map. As a grid, there are 900 nodes, but as a navmesh (right) there are 27 nodes (colored rectangles).</p><p><img src="./manual/./doc-source/combined.png" width="700"></p><p>(Note: if you are viewing this on GitHub or NPM, you might want to check out the HTML documentation <a href="https://www.mikewesthad.com/navmesh/docs/">here</a>.)</p><h2>Installation</h2><p>This repo contains 3 related JS modules:</p><ul>
+<li><code>navmesh</code> - core logic, game-engine agnostic, usable outside of Phaser.</li>
+<li><code>phaser-navmesh</code> - Phaser v3 wrapper around <code>navmesh</code> that creates a Phaser 3 Scene plugin. Phaser 3 is expected to be a dependency in your project.</li>
+<li><code>phaser2-navmesh</code> - Phaser v2 wrapper around <code>navmesh</code> that creates a Phaser 2 game plugin. Phaser 2 or Phaser-ce is expected to be in the global scope.</li>
+</ul><p>You can use any of them as a script or as a module.</p><h3>As a Script</h3><p>Download the distribution version that you want:</p><table>
+<thead>
+<tr>
+<th>navmesh</th>
+<th>phaser-navmesh</th>
+<th>phaser2-navmesh</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.min.js">minified</a> &amp; source <a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.min.js.map">map</a></td>
+<td><a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.min.js">minified</a> &amp; source <a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.min.js.map">map</a></td>
+<td><a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.min.js">minified</a> &amp; source <a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.min.js.map">map</a></td>
+</tr>
+<tr>
+<td><a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.js">unminified</a> &amp; source <a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.js.map">map</a></td>
+<td><a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.js">unminified</a> &amp; source <a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.js.map">map</a></td>
+<td><a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.js">unminified</a> &amp; source <a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.js.map">map</a></td>
+</tr>
+<tr>
+<td>Library Name: NavMesh</td>
+<td>Library Name: PhaserNavMeshPlugin</td>
+<td>Library Name: Phaser2NavMeshPlugin</td>
+</tr>
+</tbody>
+</table><p>E.g. if you wanted phaser-navmesh</p><pre><code class="lang-html"><code class="source-code prettyprint">&lt;script src=&quot;dist/phaser-navmesh.min.js&quot;&gt;&lt;/script&gt;</code>
+</code></pre><p>Inside of your own script, you can now use the global PhaserNavMeshPlugin:</p><pre><code class="lang-js"><code class="source-code prettyprint">const game = new Phaser.Game({
+  type: Phaser.AUTO,
+  width: 750,
+  height: 750,
+  plugins: {
+    scene: [{key: &quot;NavMeshPlugin&quot;, plugin: PhaserNavMeshPlugin, mapping: &quot;navMeshPlugin&quot;, start: true }]
+  }
+});</code>
+</code></pre><h3>As a Module</h3><p>Install the appropriate dependency:</p><ul>
+<li><code>npm install --save navmesh</code> for usage outside of Phaser</li>
+<li><code>npm install --save phaser-navmesh</code> for Phaser 3</li>
+<li><code>npm install --save phaser2-navmesh</code> for Phaser 2</li>
+</ul><p>To use the transpiled and minified distribution of the library:</p><pre><code class="lang-js"><code class="source-code prettyprint">import PhaserNavmesh from &quot;phaser-navmesh&quot;;</code>
+</code></pre><p>To use the raw library (so you can transpile it to match your own project settings):</p><pre><code class="lang-js"><code class="source-code prettyprint">import PhaserNavmesh from &quot;phaser-navmesh/src&quot;;</code>
+</code></pre><h2>Create a Nav Mesh</h2><p>See <a href="https://www.mikewesthad.com/navmesh/docs/manual/tiled-navmesh-guide.md">guide</a>.</p><h2>Usage</h2><pre><code class="lang-js"><code class="source-code prettyprint">// This snippet assumes you&apos;ve got your tilemap loaded in a variable called &quot;tilemap&quot;
+
+// Register the plugin with Phaser
+const navMeshPlugin = this.game.plugins.add(phaserNavmesh);
+
+// Load the navMesh from the tilemap object layer &quot;navmesh.&quot; The navMesh was created with 12.5
+// pixels of space around obstacles.
+const navMesh = navMeshPlugin.buildMeshFromTiled(tilemap, &quot;navmesh&quot;, 12.5);
+
+const p1 = new Phaser.Point(100, 400);
+const p2 = new Phaser.Point(700, 200);
+const path = navMesh.findPath(p1, p2);
+// -&gt; path is now either an array of points, or null if no valid path could be found</code>
+</code></pre><p>Visually debugging paths:</p><pre><code class="lang-js"><code class="source-code prettyprint">navMesh.enableDebug(); // Creates a Phaser.Graphics overlay on top of the screen
+navMesh.debugClear(); // Clears the overlay
+// Visualize the underlying navmesh
+navMesh.debugDrawMesh({
+  drawCentroid: true,
+  drawBounds: false,
+  drawNeighbors: true,
+  drawPortals: true
+});
+// Find &amp; visualize a specific path
+const path = navMesh.findPath(follower.position, target, {
+  drawPolyPath: true,
+  drawFinalPath: true
+});</code>
+</code></pre><h2>Performance Comparison</h2><p><em>(Note: these comparisons were done in any earlier verison of the repo before Phaser v3 was released. The plugins tested haven&apos;t been released in v3 versions yet, so this section could use an update. That said, the results should be the same.)</em></p><p>Comparing this navmesh plugin against:</p><ul>
 <li><a href="https://github.com/photonstorm/phaser-plugins">Phaser&apos;s grid-based A* plugin</a>. Navmesh is approximately 5x - 150x faster.</li>
 <li>A faster, grid-based A* search, <a href="https://github.com/prettymuchbryce/easystarjs">EasyStar.js</a>. Navmesh is approximately 5x - 20x faster.</li>
-</ul><p>Performance depends on the size of the area that needs to be searched. Finding for a path between points that are 50 pixels away is (generally) going to be much faster than finding a path between points that are 5000 pixels away.</p><p>Details (see <a href="https://github.com/mikewesthad/phaser-navmesh/tree/master/src/examples/performance">src/library/performance</a>):</p><pre><code><code class="source-code prettyprint">Performance Comparison, 100000 iterations, 30x30 tilemap
+</ul><p>Performance depends on the size of the area that needs to be searched. Finding for a path between points that are 50 pixels away is (generally) going to be much faster than finding a path between points that are 5000 pixels away.</p><p>Details (see <a href="https://github.com/mikewesthad/navmesh/tree/master/src/examples/performance">src/library/performance</a>):</p><pre><code><code class="source-code prettyprint">Performance Comparison, 100000 iterations, 30x30 tilemap
 
 Short paths (150 - 500 pixel length)
 
@@ -250,41 +376,16 @@ Long paths (600 pixels and greater length), average time per iteration:
     Comparison:
         NavMesh is 187.95x faster than Phaser AStar
         NavMesh is 21.65x faster than EasyStar</code>
-</code></pre><h2>Installation</h2><p>Whether you include the library as a script tag or import it as a module, Phaser is a dependency. The library expects Phaser to be in the global scope.</p><h3>As a Script</h3><p>Download the dist/phaser-navmesh.min.js <a href="https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/dist/phaser-navmesh.min.js">here</a> and include it in your HTML:</p><pre><code class="lang-html"><code class="source-code prettyprint">&lt;script src=&quot;dist/phaser-navmesh.min.js&quot;&gt;&lt;/script&gt;</code>
-</code></pre><p>Inside of your own script, you can now use the global PhaserNavmesh:</p><pre><code class="lang-js"><code class="source-code prettyprint">this.game.plugins.add(PhaserNavmesh);</code>
-</code></pre><h3>As a Module</h3><p>Install the dependency:</p><pre><code><code class="source-code prettyprint">npm install --save phaser-navmesh</code>
-</code></pre><p>To use the babelified and minified library:</p><pre><code class="lang-js"><code class="source-code prettyprint">import phaserNavmesh from &quot;phaser-navmesh&quot;;
-this.game.plugins.add(PhaserNavmesh);</code>
-</code></pre><p>To use the raw es6 library (so you can transpile it to match your own project settings):</p><pre><code class="lang-js"><code class="source-code prettyprint">import phaserNavmesh from &quot;phaser-navmesh/src/library&quot;;
-this.game.plugins.add(PhaserNavmesh);</code>
-</code></pre><h2>Create a Nav Mesh</h2><p>See <a href="./manual/./tiled-navmesh-guide.md">guide</a>.</p><h2>Usage</h2><pre><code class="lang-js"><code class="source-code prettyprint">// This snippet assumes you&apos;ve got your tilemap loaded in a variable called &quot;tilemap&quot;
-
-// Register the plugin with Phaser
-const navMeshPlugin = this.game.plugins.add(phaserNavmesh);
-
-// Load the navMesh from the tilemap object layer &quot;navmesh.&quot; The navMesh was created with 12.5
-// pixels of space around obstacles.
-const navMesh = navMeshPlugin.buildMeshFromTiled(tilemap, &quot;navmesh&quot;, 12.5);
-
-const p1 = new Phaser.Point(100, 400);
-const p2 = new Phaser.Point(700, 200);
-const path = navMeshPlugin.findPath(p1, p2);
-// -&gt; path is now either an array of points, or null if no valid path could be found</code>
-</code></pre><p>Visually debugging paths:</p><pre><code class="lang-js"><code class="source-code prettyprint">navMesh.enableDebug(); // Creates a Phaser.Graphics overlay on top of the screen
-navMesh.debugClear(); // Clears the overlay
-// Visualize the underlying navmesh
-navMesh.debugDrawMesh({
-    drawCentroid: true, drawBounds: false, drawNeighbors: true, drawPortals: true
-});
-// Find &amp; visualize a specific path
-const path = navMesh.findPath(follower.position, target, {
-    drawPolyPath: true, drawFinalPath: true
-});</code>
-</code></pre><h2>Development</h2><p>Pull requests are welcome! If you want to run this repo locally, make sure you have <a href="https://nodejs.org/en/">node</a> installed. Download the repo, open a terminal in the repo folder and run:</p><pre><code><code class="source-code prettyprint">npm install</code>
-</code></pre><p>This will pull all the dependencies. The project is controlled via npm scripts. The main ones to use:</p><ul>
-<li><code>npm run build:all</code> - will build the library into <code>dist/</code> &amp; the examples into <code>public/</code>. You can use this to generate a custom build.</li>
-<li><code>npm run dev</code> - will build, watch and serve the library &amp; examples. A browser window will pop up with links to the examples.</li>
-<li><code>npm run test</code> - will run the tests against the library.</li>
+</code></pre><h2>Development</h2><p>Pull requests are welcome! If you want to run this repo locally, make sure you have <a href="https://nodejs.org/en/">node</a> installed. Download the repo, open a terminal in the repo folder and run:</p><pre><code><code class="source-code prettyprint">npm install
+npm run bootstrap</code>
+</code></pre><p>This project uses <a href="https://github.com/lerna/lerna">lerna</a> and <a href="https://yarnpkg.com/lang/en/docs/workspaces/">yarn workspaces</a> to manage multiple packages within one repository. <code>npm install</code> will pull the root dependencies and <code>npm run bootstrap</code> will use lerna &amp; yarn to pull and link dependencies within &quot;packages/&quot;. This project has the following packages:</p><ul>
+<li><code>navmesh</code> - core logic, game-engine agnostic</li>
+<li><code>phaser-navmesh</code> - Phaser Plugin v3 wrapper around <code>navmesh</code></li>
+<li><code>phaser2-navmesh</code> - Phaser Plugin v2 wrapper around <code>navmesh</code></li>
+</ul><p>The project is controlled via npm scripts. The main ones to use:</p><ul>
+<li><code>npm run build</code> - will build all the individual packages within &quot;packages/&quot;.</li>
+<li><code>npm run dev</code> - watch &amp; serve the v3 examples. A browser window will pop up with links to the examples. If you are working on the library, this is the easiest way to do &quot;functional testing&quot; by using the library in a game environment.</li>
+<li><code>npm run test</code> - will run the automated tests against the library.</li>
 </ul><h2>References</h2><p>Helpful resources used while building this plugin:</p><ul>
 <li>Inspired by <a href="https://github.com/nickjanssen/PatrolJS">PatrolJS</a>, an implementation of navmeshes for threejs</li>
 <li>Navmesh path-finding algorithm explanations:<ul>
@@ -306,10 +407,6 @@ const path = navMesh.findPath(follower.position, target, {
 <li>The navmesh assumes any polygon can reach any other polygon. This probably should be extended to put connected polygons into groups like patroljs.</li>
 </ul>
 </li>
-<li>Extract Phaser dependency<ul>
-<li>Allow the library to work with an arbitrary mesh while having helper functions that are Phaser specific</li>
-</ul>
-</li>
 <li>Testing<ul>
 <li>Check against tilemap that is larger than the screen</li>
 </ul>
@@ -317,94 +414,16 @@ const path = navMesh.findPath(follower.position, target, {
 <li>Research<ul>
 <li>There are probably optimization tricks to do when dealing with certain types of shapes. E.g. we are using axis-aligned boxes for the polygons and it is dead simple to calculate if a point is inside one of those...</li>
 <li>Investigate <a href="http://www.david-gouveia.com/portfolio/pathfinding-on-a-2d-polygonal-map/">Points-of-Visibility</a> pathfinding to compare speed</li>
-<li>Using ES6 is probably suboptimal for performance</li>
 </ul>
 </li>
 </ul></div>
-        <a data-ice="link" href="manual/overview/README.html"></a>
+        <a data-ice="link" href="manual/README.html"></a>
       </div>
     </div>
 <div class="manual-card-wrap" data-ice="cards">
-      <h1 data-ice="label" class="manual-color manual-color-tutorial" data-section-count="&#x25A0;&#x25A0;"><span data-ice="label-inner">Creating a NavMesh in Tiled</span></h1>
       <div class="manual-card">
         <div data-ice="card"><h1>Creating a NavMesh in Tiled</h1><p><a href="http://www.mapeditor.org/">Tiled</a> is an open source tile map editor. If you are already using it to design your levels, then you can also use it to create your nav meshes.</p><p>Tiled allows you to design a map by creating <a href="http://doc.mapeditor.org/manual/layers/">layers</a> of tiles &amp; objects. A tile layer allows you to place your graphics (images from a tileset) into the world. An object layer allows you to store other kinds of information. Phaser can read both tile layers and object layers, so we can use the object layer to represent a nav mesh. In the image below, there is a layer of tiles (called &quot;walls&quot;) and a layer of gray rectangles that represents the nav mesh (called &quot;navmesh&quot;):</p><p><img src="./manual/./doc-source/tiled-guide/tiled-final.png"></p><p>This guide assumes you have some familiarity with Tiled. If you don&apos;t know Tiled, check out gamefromscratch&apos;s video <a href="http://www.gamefromscratch.com/post/2015/10/14/Tiled-Map-Editor-Tutorial-Series.aspx">tutorial series</a>.</p><h2>Goal</h2><p>The idea is that we want to create an object layer in Tiled that represents where an &quot;agent&quot; (the player, an enemy, an npc, etc.) can move. We will describe those walkable area by placing individual shapes (mainly rectangles). An agent can then &quot;walk&quot; from one shape to another as long as they are connected (i.e. their edges overlap).</p><p>Note: We will also want to take the agent&apos;s size into account when building the shapes. If you have an agent that is 20px wide, then it shouldn&apos;t be allowed to get within 10px of a wall.</p><h2>Snapping Setup</h2><p>In order to place shapes in the nav mesh accurately and ensure that neighboring shapes are &quot;connected,&quot; you&apos;ll want to enable snapping. Open up your map or create a new one, and go to preferences (<code>Edit &#x27F6; Preferences</code>):</p><p><img src="./manual/./doc-source/tiled-guide/tiled-preferences.png"></p><p>Set the fine grid divisions. This allows you to snap objects &quot;in-between&quot; the grid. E.g. on a 25px x 25px tile map with 5 grid divisions, the fine grid would be every 5px.</p><p><img src="./manual/./doc-source/tiled-guide/tiled-preferences-2.png"></p><p>Enable snapping (<code>View &#x27F6; Snapping</code>):</p><p><img src="./manual/./doc-source/tiled-guide/tiled-snapping.png"></p><h2>Creating the Mesh</h2><p>Create a new object layer and name it &quot;navmesh.&quot; Then start adding in rectangles to define your nav mesh. (Note: rectangles are the only Tiled shape currently supported by this plugin.)</p><p><img src="./manual/./doc-source/tiled-guide/tiled-navmesh-layer.gif"></p><p>See the Tiled manual for more information on <a href="http://doc.mapeditor.org/manual/objects/#working-with-objects">objects</a>.</p><h2>Agent Size (Gaps)</h2><p>Notice the 10px space left around the walls? That gap is because the agent is 20px wide circle. It would get stuck on corners of walls without that gap. Make sure the gaps you leave are a consistent size - you&apos;ll need to pass in the size as the third parameter to <code>navMeshPlugin.buildMeshFromTiled</code>.</p><p>If you wanted, you <em>could</em> leave that gap out and write more complicated path following logic for your agents that avoids getting stuck. &quot;Baking&quot; the agent size into nav mesh with these gaps makes the path following logic pretty simple.</p></div>
-        <a data-ice="link" href="manual/tutorial/tiled-navmesh-guide.html"></a>
-      </div>
-    </div>
-<div class="manual-card-wrap" data-ice="cards">
-      <h1 data-ice="label" class="manual-color manual-color-reference" data-section-count="&#x25A0;"><span data-ice="label-inner">References</span></h1>
-      <div class="manual-card">
-        <div data-ice="card"><h1>References</h1>
-<div data-ice="classSummary"><h2 id="class">Class Summary</h2><table class="summary" data-ice="summary">
-  <thead><tr><td data-ice="title" colspan="3">Static Public Class Summary</td></tr></thead>
-  <tbody>
-  
-  <tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/library/nav-mesh.js~NavMesh.html">NavMesh</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>The workhorse that represents a navigation mesh built from a series of polygons.</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/library/nav-mesh-plugin.js~NavMeshPlugin.html">NavMeshPlugin</a></span></span><span data-ice="signature">(game: <span>Phaser.Game</span>, manager: <span>Phaser.PluginManager</span>)</span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>This plugin can create navigation meshes for use in Phaser.</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-</tbody>
-</table>
-</div>
-
-
-
-
-
-</div>
-        <a data-ice="link" href="identifiers.html"></a>
+        <a data-ice="link" href="manual/tiled-navmesh-guide.html"></a>
       </div>
     </div>
 </div>
@@ -412,7 +431,7 @@ const path = navMesh.findPath(follower.position, target, {
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
 </footer>
 
 <script src="script/search_index.js"></script>
