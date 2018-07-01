@@ -21,7 +21,7 @@ export default class Phaser2NavMeshPlugin extends Phaser.Plugin {
    * @memberof Phaser2NavMeshPlugin
    */
   destroy() {
-    this.systems.events.Object.values(this.phaserNavMeshes).forEach(m => m.destroy());
+    Object.values(this.phaserNavMeshes).forEach(m => m.destroy());
     this.phaserNavMeshes = [];
     this.game = undefined;
   }
@@ -38,7 +38,6 @@ export default class Phaser2NavMeshPlugin extends Phaser.Plugin {
       this.phaserNavMeshes[key] = undefined;
     }
   }
-
 
   /**
    * Load a navmesh from Tiled. Currently assumes that the polygons are squares! Does not support

@@ -22,7 +22,7 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
 
   /**
    * Phaser.Scene lifecycle event
-   * 
+   *
    * @memberof PhaserNavMeshPlugin
    */
   boot() {
@@ -32,33 +32,33 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
 
   /**
    * Phaser.Scene lifecycle event - noop in this plugin, but still required.
-   * 
+   *
    * @memberof PhaserNavMeshPlugin
    */
   init() {}
-  
+
   /**
    * Phaser.Scene lifecycle event - noop in this plugin, but still required.
-   * 
+   *
    * @memberof PhaserNavMeshPlugin
    */
   start() {}
 
   /**
    * Phaser.Scene lifecycle event - will destroy all navmeshes created.
-   * 
+   *
    * @memberof PhaserNavMeshPlugin
    */
   destroy() {
     this.systems.events.off("boot", this.boot, this);
-    this.systems.events.Object.values(this.phaserNavMeshes).forEach(m => m.destroy());
+    Object.values(this.phaserNavMeshes).forEach(m => m.destroy());
     this.phaserNavMeshes = [];
     this.scene = undefined;
     this.systems = undefined;
   }
 
   /**
-   * Destroy a navmesh and remove it from the plugin 
+   * Destroy a navmesh and remove it from the plugin
    *
    * @param {string} key
    * @memberof PhaserNavMeshPlugin
