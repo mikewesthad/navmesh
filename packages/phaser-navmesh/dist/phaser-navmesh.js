@@ -2002,10 +2002,11 @@ var phaser_navmesh_plugin_PhaserNavMeshPlugin = function (_Phaser$Plugins$Scene)
     key: "destroy",
     value: function destroy() {
       this.systems.events.off("boot", this.boot, this);
-      Object.values(this.phaserNavMeshes).forEach(function (m) {
+      var meshes = Object.values(this.phaserNavMeshes);
+      this.phaserNavMeshes = [];
+      meshes.forEach(function (m) {
         return m.destroy();
       });
-      this.phaserNavMeshes = [];
       this.scene = undefined;
       this.systems = undefined;
     }
