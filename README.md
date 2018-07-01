@@ -1,10 +1,10 @@
-# Navigation Meshes <!-- omit in toc -->
+# Navigation Meshes Overview <!-- omit in toc -->
 
 A JS plugin for fast pathfinding using [navigation meshes](https://en.wikipedia.org/wiki/Navigation_mesh), with optional wrappers for the Phaser v2 and Phaser v3 game engines.
 
-[<img src="./doc-source/single-following-agent.gif" width="400">](https://www.mikewesthad.com/phaser-navmesh/demo/)
+[<img src="./doc-source/single-following-agent.gif" width="400">](https://www.mikewesthad.com/navmesh/demo/)
 
-[Interactive demo](https://www.mikewesthad.com/phaser-navmesh/demo/)
+[Interactive demo](https://www.mikewesthad.com/navmesh/demo/)
 
 Table of Contents:
 
@@ -34,7 +34,7 @@ The example map below (left) is a 30 x 30 map. As a grid, there are 900 nodes, b
 
 <img src="./doc-source/combined.png" width="700">
 
-(Note: if you are viewing this on GitHub or NPM, you might want to check out the HTML documentation [here](https://www.mikewesthad.com/phaser-navmesh/docs/).)
+(Note: if you are viewing this on GitHub or NPM, you might want to check out the HTML documentation [here](https://www.mikewesthad.com/navmesh/docs/).)
 
 ## Installation
 
@@ -111,7 +111,7 @@ import PhaserNavmesh from "phaser-navmesh/src";
 
 ## Create a Nav Mesh
 
-See [guide](./tiled-navmesh-guide.md).
+See [guide](https://www.mikewesthad.com/navmesh/docs/manual/tiled-navmesh-guide.html).
 
 ## Usage
 
@@ -161,7 +161,7 @@ Comparing this navmesh plugin against:
 
 Performance depends on the size of the area that needs to be searched. Finding for a path between points that are 50 pixels away is (generally) going to be much faster than finding a path between points that are 5000 pixels away.
 
-Details (see [src/library/performance](https://github.com/mikewesthad/phaser-navmesh/tree/master/src/examples/performance)):
+Details (see [src/library/performance](https://github.com/mikewesthad/navmesh/tree/master/src/examples/performance)):
 
 ```
 Performance Comparison, 100000 iterations, 30x30 tilemap
