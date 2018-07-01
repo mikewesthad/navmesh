@@ -18,15 +18,15 @@
     "fontfaceobserver": "^2.0.13",
     "jest": "^23.2.0",
     "phaser-ce": "^2.0.0",
-    "phaser2-navmesh": "*"
+    "phaser2-navmesh": "^2.0.1"
   },
   "devDependencies": {
-    "expose-loader": "^0.7.3",
     "babel-core": "^6.26.3",
     "babel-jest": "^23.2.0",
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.7.0",
     "copy-webpack-plugin": "^4.5.2",
+    "expose-loader": "^0.7.3",
     "webpack": "^4.14.0",
     "webpack-cli": "^3.0.8",
     "webpack-dev-server": "^3.1.4"
