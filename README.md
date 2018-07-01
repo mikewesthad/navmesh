@@ -1,6 +1,6 @@
-# Navigation Meshes in Phaser <!-- omit in toc -->
+# Navigation Meshes <!-- omit in toc -->
 
-A [Phaser](http://phaser.io/) plugin for fast pathfinding using navigation meshes.
+A JS plugin for fast pathfinding using [navigation meshes](https://en.wikipedia.org/wiki/Navigation_mesh), with optional wrappers for the Phaser v2 and Phaser v3 game engines.
 
 [<img src="./doc-source/single-following-agent.gif" width="400">](https://www.mikewesthad.com/phaser-navmesh/demo/)
 
@@ -9,12 +9,12 @@ A [Phaser](http://phaser.io/) plugin for fast pathfinding using navigation meshe
 Table of Contents:
 
 - [Intro](#intro)
-- [Temporary Performance Comparison](#temporary-performance-comparison)
 - [Installation](#installation)
   - [As a Script](#as-a-script)
   - [As a Module](#as-a-module)
 - [Create a Nav Mesh](#create-a-nav-mesh)
 - [Usage](#usage)
+- [Performance Comparison](#performance-comparison)
 - [Development](#development)
 - [References](#references)
 - [TODO](#todo)
@@ -36,48 +36,15 @@ The example map below (left) is a 30 x 30 map. As a grid, there are 900 nodes, b
 
 (Note: if you are viewing this on GitHub or NPM, you might want to check out the HTML documentation [here](https://www.mikewesthad.com/phaser-navmesh/docs/).)
 
-## Temporary Performance Comparison
-
-TODO: make this more readable and add interactive demo
-
-Comparing this navmesh plugin against:
-
-- [Phaser's grid-based A\* plugin](https://github.com/photonstorm/phaser-plugins). Navmesh is approximately 5x - 150x faster.
-- A faster, grid-based A\* search, [EasyStar.js](https://github.com/prettymuchbryce/easystarjs). Navmesh is approximately 5x - 20x faster.
-
-Performance depends on the size of the area that needs to be searched. Finding for a path between points that are 50 pixels away is (generally) going to be much faster than finding a path between points that are 5000 pixels away.
-
-Details (see [src/library/performance](https://github.com/mikewesthad/phaser-navmesh/tree/master/src/examples/performance)):
-
-```
-Performance Comparison, 100000 iterations, 30x30 tilemap
-
-Short paths (150 - 500 pixel length)
-
-    Average time per iteration:
-        AStart Plugin: 0.02470ms
-        EasyStar Plugin: 0.02876ms
-        NavMesh Plugin: 0.00575ms
-
-    Comparison:
-        NavMesh is 4.30x faster than Phaser AStar
-        NavMesh is 5.00x faster than EasyStar
-
-Long paths (600 pixels and greater length), average time per iteration:
-
-    Average time per iteration:
-        AStart Plugin: 1.38710ms
-        EasyStar Plugin: 0.15977ms
-        NavMesh Plugin: 0.00738ms
-
-    Comparison:
-        NavMesh is 187.95x faster than Phaser AStar
-        NavMesh is 21.65x faster than EasyStar
-```
-
 ## Installation
 
-Whether you include the library as a script tag or import it as a module, Phaser is a dependency. The library expects Phaser to be in the global scope.
+This repo contains 3 related JS modules:
+
+- `navmesh` - core logic, game-engine agnostic, usable outside of Phaser.
+- `phaser-navmesh` - Phaser v3 wrapper around `navmesh` that creates a Phaser 3 Scene plugin. Phaser 3 is expected to be a dependency in your project.
+- `phaser2-navmesh` - Phaser v2 wrapper around `navmesh` that creates a Phaser 2 game plugin. Phaser 2 or Phaser-ce is expected to be in the global scope.
+
+You can use any of them as a script or as a module.
 
 ### As a Script
 
@@ -95,24 +62,22 @@ this.game.plugins.add(PhaserNavmesh);
 
 ### As a Module
 
-Install the dependency:
+Install the appropriate dependency:
 
-```
-npm install --save phaser-navmesh
-```
+- `npm install --save navmesh` for usage outside of Phaser
+- `npm install --save phaser-navmesh` for Phaser 3
+- `npm install --save phaser2-navmesh` for Phaser 2
 
-To use the babelified and minified library:
+To use the transpiled and minified distribution of the library:
 
 ```js
 import PhaserNavmesh from "phaser-navmesh";
-this.game.plugins.add(PhaserNavmesh);
 ```
 
-To use the raw es6 library (so you can transpile it to match your own project settings):
+To use the raw library (so you can transpile it to match your own project settings):
 
 ```js
-import PhaserNavmesh from "phaser-navmesh/src/library";
-this.game.plugins.add(PhaserNavmesh);
+import PhaserNavmesh from "phaser-navmesh/src";
 ```
 
 ## Create a Nav Mesh
@@ -156,6 +121,45 @@ const path = navMesh.findPath(follower.position, target, {
 });
 ```
 
+## Performance Comparison
+
+_(Note: these comparisons were done in any earlier verison of the repo before Phaser v3 was released. The plugins tested haven't been released in v3 versions yet, so this section could use an update. That said, the results should be the same.)_
+
+Comparing this navmesh plugin against:
+
+- [Phaser's grid-based A\* plugin](https://github.com/photonstorm/phaser-plugins). Navmesh is approximately 5x - 150x faster.
+- A faster, grid-based A\* search, [EasyStar.js](https://github.com/prettymuchbryce/easystarjs). Navmesh is approximately 5x - 20x faster.
+
+Performance depends on the size of the area that needs to be searched. Finding for a path between points that are 50 pixels away is (generally) going to be much faster than finding a path between points that are 5000 pixels away.
+
+Details (see [src/library/performance](https://github.com/mikewesthad/phaser-navmesh/tree/master/src/examples/performance)):
+
+```
+Performance Comparison, 100000 iterations, 30x30 tilemap
+
+Short paths (150 - 500 pixel length)
+
+    Average time per iteration:
+        AStart Plugin: 0.02470ms
+        EasyStar Plugin: 0.02876ms
+        NavMesh Plugin: 0.00575ms
+
+    Comparison:
+        NavMesh is 4.30x faster than Phaser AStar
+        NavMesh is 5.00x faster than EasyStar
+
+Long paths (600 pixels and greater length), average time per iteration:
+
+    Average time per iteration:
+        AStart Plugin: 1.38710ms
+        EasyStar Plugin: 0.15977ms
+        NavMesh Plugin: 0.00738ms
+
+    Comparison:
+        NavMesh is 187.95x faster than Phaser AStar
+        NavMesh is 21.65x faster than EasyStar
+```
+
 ## Development
 
 Pull requests are welcome! If you want to run this repo locally, make sure you have [node](https://nodejs.org/en/) installed. Download the repo, open a terminal in the repo folder and run:
@@ -165,12 +169,16 @@ npm install
 npm run bootstrap
 ```
 
-This project uses [lerna](https://github.com/lerna/lerna) and [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/) to manage multiple packages within one repository. `npm install` will pull the root dependencies and `npm run bootstrap` will use lerna & yarn to pull and link dependencies within "packages/".
+This project uses [lerna](https://github.com/lerna/lerna) and [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/) to manage multiple packages within one repository. `npm install` will pull the root dependencies and `npm run bootstrap` will use lerna & yarn to pull and link dependencies within "packages/". This project has the following packages:
+
+- `navmesh` - core logic, game-engine agnostic
+- `phaser-navmesh` - Phaser Plugin v3 wrapper around `navmesh`
+- `phaser2-navmesh` - Phaser Plugin v2 wrapper around `navmesh`
 
 The project is controlled via npm scripts. The main ones to use:
 
 - `npm run build` - will build all the individual packages within "packages/".
-- `npm run dev` - watch & serve the examples. A browser window will pop up with links to the examples. If you are working on the library, this is the easiest way to do "functional testing" by using the library in a game environment.
+- `npm run dev` - watch & serve the v3 examples. A browser window will pop up with links to the examples. If you are working on the library, this is the easiest way to do "functional testing" by using the library in a game environment.
 - `npm run test` - will run the automated tests against the library.
 
 ## References
