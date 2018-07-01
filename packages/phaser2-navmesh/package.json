@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "jest": "^23.2.0",
-    "navmesh": "*"
+    "navmesh": "^2.0.0"
   },
   "peerDependencies": {
     "phaser-ce": "^2.0.0"
