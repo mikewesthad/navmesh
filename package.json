@@ -12,8 +12,8 @@
     "dev": "concurrently \"cd packages/examples && npm run serve\" \"cd packages/examples-phaser2 && npm run serve -- --port 8081\"",
     "doc": "esdoc -c ./config/esdoc.json",
     "postdoc": "cp -r doc-source/ docs/ && cp -r doc-source/ docs/manual/",
-    "deploy:examples": "gh-pages --branch gh-pages --dist public",
-    "predeploy:examples": "npm run \"build:examples\"",
+    "deploy:examples": "gh-pages --branch gh-pages --dist packages/examples/public --add",
+    "predeploy:examples": "cd packages/examples && npm run build",
     "deploy:doc": "gh-pages --branch gh-pages --dist docs --dest docs",
     "predeploy:doc": "npm run doc",
     "publish": "lerna publish"
