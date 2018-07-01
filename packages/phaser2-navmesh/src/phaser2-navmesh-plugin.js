@@ -21,8 +21,9 @@ export default class Phaser2NavMeshPlugin extends Phaser.Plugin {
    * @memberof Phaser2NavMeshPlugin
    */
   destroy() {
-    Object.values(this.phaserNavMeshes).forEach(m => m.destroy());
+    const meshes = Object.values(this.phaserNavMeshes);
     this.phaserNavMeshes = [];
+    meshes.forEach(m => m.destroy());
     this.game = undefined;
   }
 
