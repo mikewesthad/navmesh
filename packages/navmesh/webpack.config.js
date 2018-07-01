@@ -1,7 +1,6 @@
 /* eslint-env node */
 
 const path = require("path");
-const webpack = require("webpack");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const root = __dirname;
 
@@ -22,9 +21,7 @@ module.exports = function(env, argv) {
       libraryExport: "default"
     },
     optimization: {
-      minimizer: [
-        new UglifyJsPlugin({ include: /\.min\.js$/ })
-      ]
+      minimizer: [new UglifyJsPlugin({ include: /\.min\.js$/, sourceMap: true })]
     },
     module: {
       rules: [

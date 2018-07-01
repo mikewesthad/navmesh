@@ -1,7 +1,7 @@
 /* eslint-env node */
 
 const path = require("path");
-const webpack = require("webpack");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const root = __dirname;
 
 module.exports = function(env, argv) {
@@ -16,8 +16,20 @@ module.exports = function(env, argv) {
     output: {
       filename: "[name].js",
       path: path.resolve(root, "dist"),
-      library: "PhaserNavmesh",
-      libraryTarget: "umd"
+      library: "PhaserNavMeshPlugin",
+      libraryTarget: "umd",
+      libraryExport: "default"
+    },
+    optimization: {
+      minimizer: [new UglifyJsPlugin({ include: /\.min\.js$/, sourceMap: true })]
+    },
+    externals: {
+      phaser: {
+        root: "Phaser",
+        commonjs: "phaser",
+        commonjs2: "phaser",
+        amd: "phaser"
+      }
     },
     module: {
       rules: [
@@ -28,13 +40,6 @@ module.exports = function(env, argv) {
         }
       ]
     },
-    plugins: [
-      new webpack.DefinePlugin({
-        "typeof CANVAS_RENDERER": JSON.stringify(true),
-        "typeof WEBGL_RENDERER": JSON.stringify(true),
-        PRODUCTION: !isDev
-      })
-    ],
     devtool: isDev ? "eval-source-map" : "source-map"
   };
 };

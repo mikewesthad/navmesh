@@ -1,7 +1,7 @@
 /* eslint-env node */
 
 const path = require("path");
-const webpack = require("webpack");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const root = __dirname;
 
 module.exports = function(env, argv) {
@@ -10,14 +10,21 @@ module.exports = function(env, argv) {
   return {
     context: path.join(root, "src"),
     entry: {
-      "phaser-navmesh": "./index.js",
-      "phaser-navmesh.min": "./index.js"
+      "phaser2-navmesh": "./index.js",
+      "phaser2-navmesh.min": "./index.js"
     },
     output: {
       filename: "[name].js",
       path: path.resolve(root, "dist"),
-      library: "PhaserNavmesh",
-      libraryTarget: "umd"
+      library: "Phaser2NavMeshPlugin",
+      libraryTarget: "umd",
+      libraryExport: "default"
+    },
+    optimization: {
+      minimizer: [new UglifyJsPlugin({ include: /\.min\.js$/, sourceMap: true })]
+    },
+    externals: {
+      phaser: "Phaser"
     },
     module: {
       rules: [
@@ -28,7 +35,6 @@ module.exports = function(env, argv) {
         }
       ]
     },
-    plugins: [new webpack.DefinePlugin({ PRODUCTION: !isDev })],
     devtool: isDev ? "eval-source-map" : "source-map"
   };
 };
