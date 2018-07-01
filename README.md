@@ -48,6 +48,14 @@ You can use any of them as a script or as a module.
 
 ### As a Script
 
+Download the distribution versions:
+
+| navmesh | phaser-navmesh | phaser2-navmesh |
+| --- | --- | --- |
+| [minified](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/packages/navmesh/dist/navmesh.min.js) & optional source [map](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/packages/navmesh/dist/navmesh.min.js.map) | [minified](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.min.js) & optional source [map](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.min.js.map) | [minified](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.min.js) & optional source [map](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.min.js.map) |
+| [unminified](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/packages/navmesh/dist/navmesh.js) & optional source [map](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/packages/navmesh/dist/navmesh.js.map) | [unminified](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.js) & optional source [map](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.min.js) | [unminified](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.js) & optional source [map](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.min.js) |
+
+ 
 Download the dist/phaser-navmesh.min.js [here](https://raw.githubusercontent.com/mikewesthad/phaser-navmesh/master/dist/phaser-navmesh.min.js) and include it in your HTML:
 
 ```html
