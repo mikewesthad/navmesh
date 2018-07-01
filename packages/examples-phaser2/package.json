@@ -1,0 +1,34 @@
+{
+  "name": "examples-phaser2",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "",
+    "build": "webpack --mode production",
+    "watch": "webpack --mode development --watch",
+    "serve": "webpack-dev-server --watch --open --mode development"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "easystarjs": "^0.4.3",
+    "fontfaceobserver": "^2.0.13",
+    "jest": "^23.2.0",
+    "phaser-ce": "^2.0.0",
+    "phaser2-navmesh": "*"
+  },
+  "devDependencies": {
+    "expose-loader": "^0.7.3",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^23.2.0",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "copy-webpack-plugin": "^4.5.2",
+    "webpack": "^4.14.0",
+    "webpack-cli": "^3.0.8",
+    "webpack-dev-server": "^3.1.4"
+  }
+}
