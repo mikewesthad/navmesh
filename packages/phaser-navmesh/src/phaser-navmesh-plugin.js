@@ -2,8 +2,9 @@ import Phaser from "phaser";
 import PhaserNavMesh from "./phaser-navmesh";
 
 /**
- * This class can create navigation meshes for use in Phaser. The navmeshes can be constructed from
- * convex polygons embedded in a Tiled map. The class that conforms to Phaser 3's plugin structure.
+ * This class can create navigation meshes for use in Phaser 3. The navmeshes can be constructed
+ * from convex polygons embedded in a Tiled map. The class that conforms to Phaser 3's plugin
+ * structure.
  *
  * @export
  * @class PhaserNavMeshPlugin
@@ -78,7 +79,7 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
    * the polygons that make up the navmesh.
    * @param {number} [meshShrinkAmount=0] The amount (in pixels) that the navmesh has been shrunk
    * around obstacles (a.k.a the amount obstacles have been expanded)
-   *
+   * @returns {PhaserNavMesh}
    * @memberof PhaserNavMeshPlugin
    */
   buildMeshFromTiled(key, objectLayer, meshShrinkAmount = 0) {

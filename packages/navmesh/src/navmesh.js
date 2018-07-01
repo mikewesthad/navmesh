@@ -17,7 +17,6 @@ import Polygon from "./math/polygon";
  *   channel. Equivalent to having a string snaking through a hallway and then pulling it taut.
  *
  * @class NavMesh
- * @private
  */
 export default class NavMesh {
   /**

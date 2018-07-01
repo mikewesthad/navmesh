@@ -7,7 +7,6 @@ import Vector2 from "./math/vector-2";
  * https://github.com/bgrins/javascript-astar/blob/master/test/tests.js
  *
  * @class NavPoly
- * @private
  */
 export default class NavPoly {
   /**
