@@ -32,16 +32,19 @@
     <ul class="manual-toc">
       
     <li data-ice="manualNav" class="indent-h1" data-link="manual/README.html"><a href="manual/README.html" data-ice="link">Navigation Meshes Overview </a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#intro" data-ice="link">Intro</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#introduction" data-ice="link">Introduction</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#installation" data-ice="link">Installation</a></li>
 <li data-ice="manualNav" class="indent-h3" data-link="manual/README.html"><a href="manual/README.html#as-a-script" data-ice="link">As a Script</a></li>
 <li data-ice="manualNav" class="indent-h3" data-link="manual/README.html"><a href="manual/README.html#as-a-module" data-ice="link">As a Module</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#create-a-nav-mesh" data-ice="link">Create a Nav Mesh</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#creating-a-navigation-mesh" data-ice="link">Creating a Navigation Mesh</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#usage" data-ice="link">Usage</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/README.html"><a href="manual/README.html#navmesh" data-ice="link">navmesh</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/README.html"><a href="manual/README.html#phaser-navmesh" data-ice="link">phaser-navmesh</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/README.html"><a href="manual/README.html#phaser2-navmesh" data-ice="link">phaser2-navmesh</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#performance-comparison" data-ice="link">Performance Comparison</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#development" data-ice="link">Development</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#references" data-ice="link">References</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#todo" data-ice="link">TODO</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#to-dos" data-ice="link">To Dos</a></li>
 </ul>
   </div>
 <div data-ice="manual">
@@ -72,7 +75,7 @@
 <h2 id="creating-the-mesh">Creating the Mesh</h2><p>Create a new object layer and name it &quot;navmesh.&quot; Then start adding in rectangles to define your nav mesh. (Note: rectangles are the only Tiled shape currently supported by this plugin.)</p>
 <p><img src="./manual/./doc-source/tiled-guide/tiled-navmesh-layer.gif"></p>
 <p>See the Tiled manual for more information on <a href="http://doc.mapeditor.org/manual/objects/#working-with-objects">objects</a>.</p>
-<h2 id="agent-size--gaps-">Agent Size (Gaps)</h2><p>Notice the 10px space left around the walls? That gap is because the agent is 20px wide circle. It would get stuck on corners of walls without that gap. Make sure the gaps you leave are a consistent size - you&apos;ll need to pass in the size as the third parameter to <code>navMeshPlugin.buildMeshFromTiled</code>.</p>
+<h2 id="agent-size--gaps-">Agent Size (Gaps)</h2><p>Notice the 10px space left around the walls? That gap is because the agent is 20px wide circle. It would get stuck on corners of walls without that gap. Make sure the gaps you leave are a consistent size - you&apos;ll need to pass in the size as the third parameter to <code>plugin.buildMeshFromTiled</code>.</p>
 <p>If you wanted, you <em>could</em> leave that gap out and write more complicated path following logic for your agents that avoids getting stuck. &quot;Baking&quot; the agent size into nav mesh with these gaps makes the path following logic pretty simple.</p>
 </div>
 </div>
