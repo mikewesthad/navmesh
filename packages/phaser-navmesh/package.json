@@ -9,7 +9,6 @@
     "watch": "webpack --mode development --watch"
   },
   "dependencies": {
-    "jest": "^23.2.0",
     "navmesh": "^2.0.0"
   },
   "peerDependencies": {

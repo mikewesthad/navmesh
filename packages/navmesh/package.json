@@ -9,8 +9,7 @@
     "watch": "webpack --mode development --watch"
   },
   "dependencies": {
-    "javascript-astar": "github:mikewesthad/javascript-astar",
-    "jest": "^23.2.0"
+    "javascript-astar": "github:mikewesthad/javascript-astar"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
