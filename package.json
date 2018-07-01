@@ -6,6 +6,7 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
+    "build:libraries": "concurrently \"cd packages/navmesh && npm run build\" \"cd packages/phaser-navmesh && npm run build\" \"cd packages/phaser2-navmesh && npm run build\"",
     "test": "jest --config ./config/jest.config.json",
     "watch": "lerna run --parallel watch",
     "pull-types": "curl https://raw.githubusercontent.com/photonstorm/phaser3-docs/master/typescript/phaser.d.ts --create-dirs --location --output ./types/phaser.d.ts",
