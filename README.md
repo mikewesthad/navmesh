@@ -21,6 +21,7 @@ Table of Contents:
   - [phaser2-navmesh](#phaser2-navmesh)
 - [Performance Comparison](#performance-comparison)
 - [Development](#development)
+- [Changelogs](#changelogs)
 - [References](#references)
 - [To Dos](#to-dos)
 
@@ -287,6 +288,12 @@ The project is controlled via npm scripts. The main ones to use:
 - `npm run build` - will build all the individual packages within "packages/".
 - `npm run dev` - watch & serve the examples. A browser window will pop up with links to the examples. If you are working on the library, this is the easiest way to do "functional testing" by using the library in a game environment.
 - `npm run test` - will run the automated tests against the library.
+
+## Changelogs
+
+- [Phaser NavMesh (for Phaser v3)](https://github.com/mikewesthad/navmesh/blob/master/packages/phaser-navmesh/README.md)
+- [Phaser 2 NavMesh](https://github.com/mikewesthad/navmesh/blob/master/packages/phaser2-navmesh/README.md)
+- [NavMesh](https://github.com/mikewesthad/navmesh/blob/master/packages/navmesh/README.md)
 
 ## References
 
