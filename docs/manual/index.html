@@ -43,6 +43,7 @@
 <li data-ice="manualNav" class="indent-h3" data-link="manual/README.html"><a href="manual/README.html#phaser2-navmesh" data-ice="link">phaser2-navmesh</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#performance-comparison" data-ice="link">Performance Comparison</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#development" data-ice="link">Development</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#changelogs" data-ice="link">Changelogs</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#references" data-ice="link">References</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#to-dos" data-ice="link">To Dos</a></li>
 </ul>
@@ -82,6 +83,7 @@
 </li>
 <li><a href="#performance-comparison">Performance Comparison</a></li>
 <li><a href="#development">Development</a></li>
+<li><a href="#changelogs">Changelogs</a></li>
 <li><a href="#references">References</a></li>
 <li><a href="#to-dos">To Dos</a></li>
 </ul>
@@ -137,7 +139,9 @@
   width: 750,
   height: 750,
   plugins: {
-    scene: [{key: &quot;NavMeshPlugin&quot;, plugin: PhaserNavMeshPlugin, mapping: &quot;navMeshPlugin&quot;, start: true }]
+    scene: [
+      { key: &quot;NavMeshPlugin&quot;, plugin: PhaserNavMeshPlugin, mapping: &quot;navMeshPlugin&quot;, start: true }
+    ]
   }
 });</code>
 </code></pre>
@@ -155,6 +159,8 @@
 <pre><code class="lang-js"><code class="source-code prettyprint">import PhaserNavMeshPlugin from &quot;phaser-navmesh/src&quot;;</code>
 </code></pre>
 <h2 id="creating-a-navigation-mesh">Creating a Navigation Mesh</h2><p>Before you can dive into the code, you&apos;ll need to create a navigation mesh for your game world. This is a process of defining the walkable areas within you world. You can create it from scratch in code, but it&apos;s far easier to use a tilemap editor like Tiled to do this. See <a href="https://www.mikewesthad.com/navmesh/docs/manual/tiled-navmesh-guide.html">guide</a>.</p>
+<p>Note: the current version of the library only supports <a href="https://www.sparknotes.com/math/geometry1/polygons/section2/">convex polygons</a>.
+There are libraries like <a href="https://github.com/schteppe/poly-decomp.js/">poly-decom.js</a> for decomposing a concave polygon into easier to manage convex polygons. It&apos;s on the to do list to handle any polygon, but I&apos;ve found that automatically decomposing polygons leads to worse performance than hand-mapping the levels with convex polygons.</p>
 <h2 id="usage">Usage</h2><h3 id="navmesh">navmesh</h3><p>If you don&apos;t need the Phaser wrappers, you can construct navmeshes directly from points using the navmesh package:</p>
 <pre><code class="lang-js"><code class="source-code prettyprint">import NavMesh from &quot;navmesh&quot;;
 
@@ -172,12 +178,12 @@
           +-----+
 */
 
-// The mesh is represented as an array where each element contains the points for an indivdual 
+// The mesh is represented as an array where each element contains the points for an indivdual
 // polygon within the mesh.
 const meshPolygonPoints = [
-  [{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 10 }, { x: 0, y: 10 }],     // Polygon 1
-  [{ x: 10, y: 0 }, { x: 20, y: 0 }, { x: 20, y: 10 }, { x: 10, y: 10 }],   // Polygon 2
-  [{ x: 10, y: 0 }, { x: 20, y: 10 }, { x: 20, y: 20 }, { x: 10, y: 20 }]   // Polygon 3
+  [{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 10 }, { x: 0, y: 10 }], // Polygon 1
+  [{ x: 10, y: 0 }, { x: 20, y: 0 }, { x: 20, y: 10 }, { x: 10, y: 10 }], // Polygon 2
+  [{ x: 10, y: 0 }, { x: 20, y: 10 }, { x: 20, y: 20 }, { x: 10, y: 20 }] // Polygon 3
 ];
 const navMesh = new NavMesh(meshPolygonPoints);
 
@@ -222,11 +228,11 @@ function create() {
   const tileset = tilemap.addTilesetImage(&quot;tiles&quot;, &quot;tiles&quot;);
   const wallLayer = tilemap.createStaticLayer(&quot;walls&quot;, tileset);
 
-  // Load the navMesh from the tilemap object layer &quot;navmesh&quot; (created in Tiled). The navMesh was 
+  // Load the navMesh from the tilemap object layer &quot;navmesh&quot; (created in Tiled). The navMesh was
   // created with 12.5 pixels of space around obstacles.
   const objectLayer = tilemap.getObjectLayer(&quot;navmesh&quot;);
   const navMesh = this.navMeshPlugin.buildMeshFromTiled(&quot;mesh&quot;, objectLayer, 12.5);
-  const path = navMesh.findPath({x: 0, y: 0}, {x: 300, y: 400});
+  const path = navMesh.findPath({ x: 0, y: 0 }, { x: 300, y: 400 });
   // &#x2BA1;  path will either be null or an array of Phaser.Geom.Point objects
 }</code>
 </code></pre>
@@ -291,6 +297,11 @@ npm run bootstrap</code>
 <li><code>npm run dev</code> - watch &amp; serve the examples. A browser window will pop up with links to the examples. If you are working on the library, this is the easiest way to do &quot;functional testing&quot; by using the library in a game environment.</li>
 <li><code>npm run test</code> - will run the automated tests against the library.</li>
 </ul>
+<h2 id="changelogs">Changelogs</h2><ul>
+<li><a href="https://github.com/mikewesthad/navmesh/blob/master/packages/phaser-navmesh/README.md">Phaser NavMesh (for Phaser v3)</a></li>
+<li><a href="https://github.com/mikewesthad/navmesh/blob/master/packages/phaser2-navmesh/README.md">Phaser 2 NavMesh</a></li>
+<li><a href="https://github.com/mikewesthad/navmesh/blob/master/packages/navmesh/README.md">NavMesh</a></li>
+</ul>
 <h2 id="references">References</h2><p>Helpful resources used while building this plugin:</p>
 <ul>
 <li>Inspired by <a href="https://github.com/nickjanssen/PatrolJS">PatrolJS</a>, an implementation of navmeshes for threejs</li>
@@ -345,6 +356,7 @@ npm run bootstrap</code>
 </li>
 <li><a href="#performance-comparison">Performance Comparison</a></li>
 <li><a href="#development">Development</a></li>
+<li><a href="#changelogs">Changelogs</a></li>
 <li><a href="#references">References</a></li>
 <li><a href="#to-dos">To Dos</a></li>
 </ul><h2>Introduction</h2><p>Pathfinding is essentially the problem of solving a maze, finding a path between points while avoiding obstacles. When pathfinding in games, we need to:</p><ol>
@@ -385,7 +397,9 @@ npm run bootstrap</code>
   width: 750,
   height: 750,
   plugins: {
-    scene: [{key: &quot;NavMeshPlugin&quot;, plugin: PhaserNavMeshPlugin, mapping: &quot;navMeshPlugin&quot;, start: true }]
+    scene: [
+      { key: &quot;NavMeshPlugin&quot;, plugin: PhaserNavMeshPlugin, mapping: &quot;navMeshPlugin&quot;, start: true }
+    ]
   }
 });</code>
 </code></pre><p>See <a href="#usage">usage</a> for more information on how to use each of the three modules in this repository.</p><h3>As a Module</h3><p>Install the appropriate dependency:</p><ul>
@@ -394,7 +408,8 @@ npm run bootstrap</code>
 <li><code>npm install --save phaser2-navmesh</code> for Phaser 2</li>
 </ul><p>To use the transpiled and minified distribution of the library:</p><pre><code class="lang-js"><code class="source-code prettyprint">import PhaserNavMeshPlugin from &quot;phaser-navmesh&quot;;</code>
 </code></pre><p>To use the raw library (so you can transpile it to match your own project settings):</p><pre><code class="lang-js"><code class="source-code prettyprint">import PhaserNavMeshPlugin from &quot;phaser-navmesh/src&quot;;</code>
-</code></pre><h2>Creating a Navigation Mesh</h2><p>Before you can dive into the code, you&apos;ll need to create a navigation mesh for your game world. This is a process of defining the walkable areas within you world. You can create it from scratch in code, but it&apos;s far easier to use a tilemap editor like Tiled to do this. See <a href="https://www.mikewesthad.com/navmesh/docs/manual/tiled-navmesh-guide.html">guide</a>.</p><h2>Usage</h2><h3>navmesh</h3><p>If you don&apos;t need the Phaser wrappers, you can construct navmeshes directly from points using the navmesh package:</p><pre><code class="lang-js"><code class="source-code prettyprint">import NavMesh from &quot;navmesh&quot;;
+</code></pre><h2>Creating a Navigation Mesh</h2><p>Before you can dive into the code, you&apos;ll need to create a navigation mesh for your game world. This is a process of defining the walkable areas within you world. You can create it from scratch in code, but it&apos;s far easier to use a tilemap editor like Tiled to do this. See <a href="https://www.mikewesthad.com/navmesh/docs/manual/tiled-navmesh-guide.html">guide</a>.</p><p>Note: the current version of the library only supports <a href="https://www.sparknotes.com/math/geometry1/polygons/section2/">convex polygons</a>.
+There are libraries like <a href="https://github.com/schteppe/poly-decomp.js/">poly-decom.js</a> for decomposing a concave polygon into easier to manage convex polygons. It&apos;s on the to do list to handle any polygon, but I&apos;ve found that automatically decomposing polygons leads to worse performance than hand-mapping the levels with convex polygons.</p><h2>Usage</h2><h3>navmesh</h3><p>If you don&apos;t need the Phaser wrappers, you can construct navmeshes directly from points using the navmesh package:</p><pre><code class="lang-js"><code class="source-code prettyprint">import NavMesh from &quot;navmesh&quot;;
 
 /*
   Imaging your game world has three walkable rooms, like this:
@@ -410,12 +425,12 @@ npm run bootstrap</code>
           +-----+
 */
 
-// The mesh is represented as an array where each element contains the points for an indivdual 
+// The mesh is represented as an array where each element contains the points for an indivdual
 // polygon within the mesh.
 const meshPolygonPoints = [
-  [{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 10 }, { x: 0, y: 10 }],     // Polygon 1
-  [{ x: 10, y: 0 }, { x: 20, y: 0 }, { x: 20, y: 10 }, { x: 10, y: 10 }],   // Polygon 2
-  [{ x: 10, y: 0 }, { x: 20, y: 10 }, { x: 20, y: 20 }, { x: 10, y: 20 }]   // Polygon 3
+  [{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 10 }, { x: 0, y: 10 }], // Polygon 1
+  [{ x: 10, y: 0 }, { x: 20, y: 0 }, { x: 20, y: 10 }, { x: 10, y: 10 }], // Polygon 2
+  [{ x: 10, y: 0 }, { x: 20, y: 10 }, { x: 20, y: 20 }, { x: 10, y: 20 }] // Polygon 3
 ];
 const navMesh = new NavMesh(meshPolygonPoints);
 
@@ -457,11 +472,11 @@ function create() {
   const tileset = tilemap.addTilesetImage(&quot;tiles&quot;, &quot;tiles&quot;);
   const wallLayer = tilemap.createStaticLayer(&quot;walls&quot;, tileset);
 
-  // Load the navMesh from the tilemap object layer &quot;navmesh&quot; (created in Tiled). The navMesh was 
+  // Load the navMesh from the tilemap object layer &quot;navmesh&quot; (created in Tiled). The navMesh was
   // created with 12.5 pixels of space around obstacles.
   const objectLayer = tilemap.getObjectLayer(&quot;navmesh&quot;);
   const navMesh = this.navMeshPlugin.buildMeshFromTiled(&quot;mesh&quot;, objectLayer, 12.5);
-  const path = navMesh.findPath({x: 0, y: 0}, {x: 300, y: 400});
+  const path = navMesh.findPath({ x: 0, y: 0 }, { x: 300, y: 400 });
   // &#x2BA1;  path will either be null or an array of Phaser.Geom.Point objects
 }</code>
 </code></pre><p>The plugin comes with some methods for visually debugging your navmesh:</p><pre><code class="lang-js"><code class="source-code prettyprint">navMesh.enableDebug(); // Creates a Phaser.Graphics overlay on top of the screen
@@ -511,6 +526,10 @@ npm run bootstrap</code>
 <li><code>npm run build</code> - will build all the individual packages within &quot;packages/&quot;.</li>
 <li><code>npm run dev</code> - watch &amp; serve the examples. A browser window will pop up with links to the examples. If you are working on the library, this is the easiest way to do &quot;functional testing&quot; by using the library in a game environment.</li>
 <li><code>npm run test</code> - will run the automated tests against the library.</li>
+</ul><h2>Changelogs</h2><ul>
+<li><a href="https://github.com/mikewesthad/navmesh/blob/master/packages/phaser-navmesh/README.md">Phaser NavMesh (for Phaser v3)</a></li>
+<li><a href="https://github.com/mikewesthad/navmesh/blob/master/packages/phaser2-navmesh/README.md">Phaser 2 NavMesh</a></li>
+<li><a href="https://github.com/mikewesthad/navmesh/blob/master/packages/navmesh/README.md">NavMesh</a></li>
 </ul><h2>References</h2><p>Helpful resources used while building this plugin:</p><ul>
 <li>Inspired by <a href="https://github.com/nickjanssen/PatrolJS">PatrolJS</a>, an implementation of navmeshes for threejs</li>
 <li>Navmesh path-finding algorithm explanations:<ul>
