@@ -8,4 +8,4 @@ For usage information, see: [mikewesthad/navmesh](https://github.com/mikewesthad
 
 Version 2.0.4 - 2018-01-03
 
-- Bug: fixed a bug when destroying navmeshes, from [@GGAlanSmithee](https://github.com/GGAlanSmithee)
+- Bug: fixed a bug when destroying navmeshes, thanks to [@GGAlanSmithee](https://github.com/GGAlanSmithee) for pointing it out
