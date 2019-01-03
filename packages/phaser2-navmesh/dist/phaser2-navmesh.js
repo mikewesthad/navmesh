@@ -509,11 +509,11 @@ return {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-// EXTERNAL MODULE: C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/node_modules/javascript-astar/astar.js
+// EXTERNAL MODULE: C:/Users/micha/Documents/GitHub/navmesh/node_modules/javascript-astar/astar.js
 var astar = __webpack_require__(0);
 var astar_default = /*#__PURE__*/__webpack_require__.n(astar);
 
-// CONCATENATED MODULE: C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/packages/navmesh/src/math/vector-2.js
+// CONCATENATED MODULE: C:/Users/micha/Documents/GitHub/navmesh/packages/navmesh/src/math/vector-2.js
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -572,7 +572,7 @@ var Vector2 = function () {
 }();
 
 /* harmony default export */ var vector_2 = (Vector2);
-// CONCATENATED MODULE: C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/packages/navmesh/src/navpoly.js
+// CONCATENATED MODULE: C:/Users/micha/Documents/GitHub/navmesh/packages/navmesh/src/navpoly.js
 var navpoly_createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function navpoly_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -777,7 +777,7 @@ var navpoly_NavPoly = function () {
 }();
 
 /* harmony default export */ var navpoly = (navpoly_NavPoly);
-// CONCATENATED MODULE: C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/packages/navmesh/src/navgraph.js
+// CONCATENATED MODULE: C:/Users/micha/Documents/GitHub/navmesh/packages/navmesh/src/navgraph.js
 var navgraph_createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function navgraph_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -826,7 +826,7 @@ NavGraph.prototype.cleanDirty = astar_default.a.Graph.prototype.cleanDirty;
 NavGraph.prototype.markDirty = astar_default.a.Graph.prototype.markDirty;
 
 /* harmony default export */ var navgraph = (NavGraph);
-// CONCATENATED MODULE: C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/packages/navmesh/src/utils.js
+// CONCATENATED MODULE: C:/Users/micha/Documents/GitHub/navmesh/packages/navmesh/src/utils.js
 /**
  * Twice the area of the triangle formed by a, b and c
  * @returns {number}
@@ -893,7 +893,7 @@ function areCollinear(line1, line2) {
     return true;
   } else return false;
 }
-// CONCATENATED MODULE: C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/packages/navmesh/src/channel.js
+// CONCATENATED MODULE: C:/Users/micha/Documents/GitHub/navmesh/packages/navmesh/src/channel.js
 var channel_createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function channel_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1017,7 +1017,7 @@ var channel_Channel = function () {
 }();
 
 /* harmony default export */ var src_channel = (channel_Channel);
-// CONCATENATED MODULE: C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/packages/navmesh/src/math/line.js
+// CONCATENATED MODULE: C:/Users/micha/Documents/GitHub/navmesh/packages/navmesh/src/math/line.js
 var line_createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function line_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1061,7 +1061,7 @@ var line_Line = function () {
 }();
 
 /* harmony default export */ var math_line = (line_Line);
-// CONCATENATED MODULE: C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/packages/navmesh/src/math/polygon.js
+// CONCATENATED MODULE: C:/Users/micha/Documents/GitHub/navmesh/packages/navmesh/src/math/polygon.js
 var polygon_createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function polygon_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1121,7 +1121,7 @@ var polygon_Polygon = function () {
 }();
 
 /* harmony default export */ var math_polygon = (polygon_Polygon);
-// CONCATENATED MODULE: C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/packages/navmesh/src/navmesh.js
+// CONCATENATED MODULE: C:/Users/micha/Documents/GitHub/navmesh/packages/navmesh/src/navmesh.js
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var navmesh_createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -1653,7 +1653,7 @@ var navmesh_NavMesh = function () {
 }();
 
 /* harmony default export */ var navmesh = (navmesh_NavMesh);
-// CONCATENATED MODULE: C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/packages/navmesh/src/index.js
+// CONCATENATED MODULE: C:/Users/micha/Documents/GitHub/navmesh/packages/navmesh/src/index.js
 
 
 /* harmony default export */ var src = (navmesh);
@@ -1964,7 +1964,7 @@ var phaser2_navmesh_plugin_Phaser2NavMeshPlugin = function (_Phaser$Plugin) {
     key: "destroy",
     value: function destroy() {
       var meshes = Object.values(this.phaserNavMeshes);
-      this.phaserNavMeshes = [];
+      this.phaserNavMeshes = {};
       meshes.forEach(function (m) {
         return m.destroy();
       });
@@ -1972,7 +1972,8 @@ var phaser2_navmesh_plugin_Phaser2NavMeshPlugin = function (_Phaser$Plugin) {
     }
 
     /**
-     * Destroy a navmesh and remove it from the plugin.
+     * Remove the navmesh stored under the given key from the plugin. This does not destroy the
+     * navmesh.
      *
      * @param {string} key
      * @memberof Phaser2NavMeshPlugin
@@ -1981,10 +1982,7 @@ var phaser2_navmesh_plugin_Phaser2NavMeshPlugin = function (_Phaser$Plugin) {
   }, {
     key: "removeMesh",
     value: function removeMesh(key) {
-      if (this.phaserNavMeshes[key]) {
-        this.phaserNavMeshes[key].destroy();
-        this.phaserNavMeshes[key] = undefined;
-      }
+      if (this.phaserNavMeshes[key]) this.phaserNavMeshes[key] = undefined;
     }
 
     /**

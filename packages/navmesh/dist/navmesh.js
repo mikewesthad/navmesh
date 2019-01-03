@@ -509,7 +509,7 @@ return {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-// EXTERNAL MODULE: C:/Users/mikewesthad/Documents/GitHub/phaser-navmesh/node_modules/javascript-astar/astar.js
+// EXTERNAL MODULE: C:/Users/micha/Documents/GitHub/navmesh/node_modules/javascript-astar/astar.js
 var astar = __webpack_require__(0);
 var astar_default = /*#__PURE__*/__webpack_require__.n(astar);
 
