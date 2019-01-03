@@ -119,6 +119,9 @@ import PhaserNavMeshPlugin from "phaser-navmesh/src";
 
 Before you can dive into the code, you'll need to create a navigation mesh for your game world. This is a process of defining the walkable areas within you world. You can create it from scratch in code, but it's far easier to use a tilemap editor like Tiled to do this. See [guide](https://www.mikewesthad.com/navmesh/docs/manual/tiled-navmesh-guide.html).
 
+Note: the current version of the library only supports [convex polygons](https://www.sparknotes.com/math/geometry1/polygons/section2/).
+There are libraries like [poly-decom.js](https://github.com/schteppe/poly-decomp.js/) for decomposing a concave polygon into easier to manage convex polygons. It's on the to do list to handle any polygon, but I've found that automatically decomposing polygons leads to worse performance than hand-mapping the levels with convex polygons.
+
 ## Usage
 
 ### navmesh
