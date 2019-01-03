@@ -29,8 +29,8 @@ Table of Contents:
 
 Pathfinding is essentially the problem of solving a maze, finding a path between points while avoiding obstacles. When pathfinding in games, we need to:
 
-1. Represent the game world in a way that defines what areas are walkable.
-2. Search that representation for the shortest path.
+1.  Represent the game world in a way that defines what areas are walkable.
+2.  Search that representation for the shortest path.
 
 When it comes to 2D pathfinding, a common approach is to represent the world using [tiles](https://developer.mozilla.org/en-US/docs/Games/Techniques/Tilemaps) (a grid) and then search for a path using the [A\* algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm) ((e.g. [Phaser AStar](https://github.com/photonstorm/phaser-plugins/tree/master/AStar)). If you have a 50 x 50 tile world, searching for a path involves searching through a representation of the world with up to 2500 locations ("nodes").
 
@@ -60,7 +60,6 @@ You can drop in any of the transpiled code into your project as a standalone scr
 | [unminified][7] & source [map][8] | [unminified][9] & source [map][10] | [unminified][11] & source [map][12] |
 | Library Name: NavMesh             | Library Name: PhaserNavMeshPlugin  | Library Name: Phaser2NavMeshPlugin  |
 
-
 [1]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.min.js
 [2]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.min.js.map
 [3]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.min.js
@@ -88,7 +87,9 @@ const game = new Phaser.Game({
   width: 750,
   height: 750,
   plugins: {
-    scene: [{key: "NavMeshPlugin", plugin: PhaserNavMeshPlugin, mapping: "navMeshPlugin", start: true }]
+    scene: [
+      { key: "NavMeshPlugin", plugin: PhaserNavMeshPlugin, mapping: "navMeshPlugin", start: true }
+    ]
   }
 });
 ```
@@ -145,12 +146,12 @@ import NavMesh from "navmesh";
           +-----+
 */
 
-// The mesh is represented as an array where each element contains the points for an indivdual 
+// The mesh is represented as an array where each element contains the points for an indivdual
 // polygon within the mesh.
 const meshPolygonPoints = [
-  [{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 10 }, { x: 0, y: 10 }],     // Polygon 1
-  [{ x: 10, y: 0 }, { x: 20, y: 0 }, { x: 20, y: 10 }, { x: 10, y: 10 }],   // Polygon 2
-  [{ x: 10, y: 0 }, { x: 20, y: 10 }, { x: 20, y: 20 }, { x: 10, y: 20 }]   // Polygon 3
+  [{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 10 }, { x: 0, y: 10 }], // Polygon 1
+  [{ x: 10, y: 0 }, { x: 20, y: 0 }, { x: 20, y: 10 }, { x: 10, y: 10 }], // Polygon 2
+  [{ x: 10, y: 0 }, { x: 20, y: 10 }, { x: 20, y: 20 }, { x: 10, y: 20 }] // Polygon 3
 ];
 const navMesh = new NavMesh(meshPolygonPoints);
 
@@ -201,11 +202,11 @@ function create() {
   const tileset = tilemap.addTilesetImage("tiles", "tiles");
   const wallLayer = tilemap.createStaticLayer("walls", tileset);
 
-  // Load the navMesh from the tilemap object layer "navmesh" (created in Tiled). The navMesh was 
+  // Load the navMesh from the tilemap object layer "navmesh" (created in Tiled). The navMesh was
   // created with 12.5 pixels of space around obstacles.
   const objectLayer = tilemap.getObjectLayer("navmesh");
   const navMesh = this.navMeshPlugin.buildMeshFromTiled("mesh", objectLayer, 12.5);
-  const path = navMesh.findPath({x: 0, y: 0}, {x: 300, y: 400});
+  const path = navMesh.findPath({ x: 0, y: 0 }, { x: 300, y: 400 });
   // ⮡  path will either be null or an array of Phaser.Geom.Point objects
 }
 ```
