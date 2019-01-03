@@ -59,16 +59,14 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
   }
 
   /**
-   * Destroy a navmesh and remove it from the plugin
+   * Remove the navmesh stored under the given key from the plugin. This does not destroy the
+   * navmesh.
    *
    * @param {string} key
    * @memberof PhaserNavMeshPlugin
    */
   removeMesh(key) {
-    if (this.phaserNavMeshes[key]) {
-      this.phaserNavMeshes[key].destroy();
-      this.phaserNavMeshes[key] = undefined;
-    }
+    if (this.phaserNavMeshes[key]) this.phaserNavMeshes[key] = undefined;
   }
 
   /**
