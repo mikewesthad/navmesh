@@ -52,7 +52,7 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
   destroy() {
     this.systems.events.off("boot", this.boot, this);
     const meshes = Object.values(this.phaserNavMeshes);
-    this.phaserNavMeshes = [];
+    this.phaserNavMeshes = {};
     meshes.forEach(m => m.destroy());
     this.scene = undefined;
     this.systems = undefined;
