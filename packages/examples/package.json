@@ -17,7 +17,7 @@
     "easystarjs": "^0.4.3",
     "fontfaceobserver": "^2.0.13",
     "jest": "^23.2.0",
-    "phaser": "^3.10.1",
+    "phaser": "^3.16.2",
     "phaser-navmesh": "^2.0.4"
   },
   "devDependencies": {
