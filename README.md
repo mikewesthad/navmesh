@@ -164,7 +164,7 @@ Check out the [API reference](https://www.mikewesthad.com/navmesh/docs/identifie
 
 ### phaser-navmesh
 
-If you are working with Phaser 3, you can use the phaser-navmesh package, which provides a Scene plugin. See this [example](https://github.com/mikewesthad/navmesh/tree/master/packages/examples/src) for more complete usage.
+If you are working with Phaser 3, you can use the phaser-navmesh package, which provides a Scene plugin. Play with a live example on CodeSandbox [here](https://codesandbox.io/s/zq1wvozxll?fontsize=14), or peek at the [examples](https://github.com/mikewesthad/navmesh/tree/master/packages/examples/src) in this repository for more complete usage.
 
 ```js
 import Phaser from "phaser";
