@@ -1,6 +1,7 @@
 docs
 types
 node_modules
+*.log
 
 # Ignore files used for publishing to gh-pages
 .publish
