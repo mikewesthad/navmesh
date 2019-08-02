@@ -18,7 +18,8 @@ module.exports = function(env, argv) {
       path: path.resolve(root, "dist"),
       library: "NavMesh",
       libraryTarget: "umd",
-      libraryExport: "default"
+      libraryExport: "default",
+      globalObject: '(typeof self !== "undefined" ? self : this)'
     },
     optimization: {
       minimizer: [new UglifyJsPlugin({ include: /\.min\.js$/, sourceMap: true })]
