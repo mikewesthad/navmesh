@@ -16,10 +16,10 @@
     "phaser-ce": "^2.0.0"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "babel-loader": "^8.0.6",
     "babel-jest": "^23.2.0",
-    "babel-loader": "^7.1.4",
-    "babel-preset-env": "^1.7.0",
     "jest": "^23.2.0",
     "uglifyjs-webpack-plugin": "^1.2.7",
     "webpack": "^4.14.0",

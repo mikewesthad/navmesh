@@ -16,15 +16,13 @@
   "dependencies": {
     "easystarjs": "^0.4.3",
     "fontfaceobserver": "^2.0.13",
-    "jest": "^23.2.0",
     "phaser-ce": "^2.0.0",
     "phaser2-navmesh": "^2.0.4"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-jest": "^23.2.0",
-    "babel-loader": "^7.1.4",
-    "babel-preset-env": "^1.7.0",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "babel-loader": "^8.0.6",
     "copy-webpack-plugin": "^4.5.2",
     "expose-loader": "^0.7.3",
     "webpack": "^4.14.0",
