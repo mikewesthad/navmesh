@@ -20,19 +20,18 @@
     "publish": "lerna publish"
   },
   "devDependencies": {
-    "babel-jest": "^23.2.0",
-    "concurrently": "^3.6.0",
+    "babel-jest": "^24.8.0",
+    "concurrently": "^4.1.1",
     "esdoc": "^1.1.0",
     "esdoc-inject-style-plugin": "^1.0.0",
     "esdoc-standard-plugin": "^1.0.0",
-    "eslint": "^5.0.1",
-    "eslint-config-prettier": "^2.9.0",
-    "eslint-plugin-prettier": "^2.6.1",
-    "gh-pages": "^1.2.0",
-    "jest": "^23.2.0",
-    "lerna": "^2.11.0",
-    "prettier": "^1.13.6",
-    "yarn": "^1.7.0"
+    "eslint": "^6.1.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "gh-pages": "^2.1.0",
+    "jest": "^24.8.0",
+    "lerna": "^3.16.4",
+    "prettier": "^1.18.2"
   },
   "prettier": {
     "printWidth": 100
