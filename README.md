@@ -277,11 +277,11 @@ Long paths (600 pixels and greater length), average time per iteration:
 Pull requests are welcome (see [todos](#to-dos))! If you want to run this repo locally, make sure you have [node](https://nodejs.org/en/) installed. Download the repo, open a terminal in the repo folder and run:
 
 ```
-npm install
+npx yarn
 npm run bootstrap
 ```
 
-This project uses [lerna](https://github.com/lerna/lerna) and [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/) to manage multiple packages within one repository. `npm install` will pull the root dependencies and `npm run bootstrap` will use lerna & yarn to pull and link dependencies within "packages/". This project has the following packages:
+This project uses [lerna](https://github.com/lerna/lerna) and [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/) to manage multiple packages within one repository. `npx yarn` will pull the root dependencies (and install yarn if needed) and `npm run bootstrap` will use lerna & yarn to pull and link dependencies within "packages/". This project has the following packages:
 
 - `navmesh` - core logic, game-engine agnostic
 - `phaser-navmesh` - Phaser Plugin v3 wrapper around `navmesh`
