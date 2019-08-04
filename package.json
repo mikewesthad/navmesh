@@ -10,7 +10,7 @@
     "test": "jest --config ./config/jest.config.json",
     "watch": "lerna run --parallel watch",
     "pull-types": "curl https://raw.githubusercontent.com/photonstorm/phaser3-docs/master/typescript/phaser.d.ts --create-dirs --location --output ./types/phaser.d.ts",
-    "dev": "concurrently \"cd packages/example-phaser3 && npm run serve\" \"cd packages/examples-phaser2 && npm run serve -- --port 8081\" \"cd packages/examples-node && npm run serve -- -- --port=8082\"",
+    "dev": "concurrently \"cd packages/examples-phaser3 && npm run serve\" \"cd packages/examples-phaser2 && npm run serve -- --port 8081\" \"cd packages/examples-node && npm run serve -- -- --port=8082\"",
     "doc": "esdoc -c ./config/esdoc.json",
     "postdoc": "cp -r doc-source/ docs/ && cp -r doc-source/ docs/manual/",
     "deploy:examples": "gh-pages --branch gh-pages --dist packages/examples/public --add",
