@@ -125,6 +125,12 @@ There are libraries like [poly-decom.js](https://github.com/schteppe/poly-decomp
 
 ## Usage
 
+You can find code snippets for the different use cases below. You can also jump directly to a few example projects in this repository for:
+
+- [phaser 3](https://github.com/mikewesthad/navmesh/tree/master/packages/examples-phaser3)
+- [phaser 2](https://github.com/mikewesthad/navmesh/tree/master/packages/examples-phaser2)
+- [navmesh in a node environment](https://github.com/mikewesthad/navmesh/tree/master/packages/examples-node)
+
 ### navmesh
 
 If you don't need the Phaser wrappers, you can construct navmeshes directly from points using the navmesh package:
@@ -290,7 +296,7 @@ This project uses [lerna](https://github.com/lerna/lerna) and [yarn workspaces](
 The project is controlled via npm scripts. The main ones to use:
 
 - `npm run build` - will build all the individual packages within "packages/".
-- `npm run dev` - watch & serve the examples. A browser window will pop up with links to the examples. If you are working on the library, this is the easiest way to do "functional testing" by using the library in a game environment.
+- `npm run dev` - watch & serve the examples. Phaser 3 examples are at [localhost::8080](http://localhost:8080/), Phaser 2 examples at [localhost::8081](http://localhost:8081/) and node examples at [localhost::8082](http://localhost:8082/). If you are working on the library, this is the easiest way to do "functional testing" by using the library in a game environment.
 - `npm run test` - will run the automated tests against the library.
 
 ## Changelogs
