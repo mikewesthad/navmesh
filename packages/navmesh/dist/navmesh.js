@@ -7,7 +7,7 @@
 		exports["NavMesh"] = factory();
 	else
 		root["NavMesh"] = factory();
-})(window, function() {
+})((typeof self !== "undefined" ? self : this), function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -106,7 +106,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 // http://eloquentjavascript.net/appendix2.html
 (function(definition) {
   /* global module, define */
-  if (typeof module === 'object' && typeof module.exports === 'object') {
+  if ( true && typeof module.exports === 'object') {
     module.exports = definition();
   } else if (true) {
     !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (definition),
@@ -509,75 +509,53 @@ return {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-// EXTERNAL MODULE: C:/Users/micha/Documents/GitHub/navmesh/node_modules/javascript-astar/astar.js
+// EXTERNAL MODULE: D:/GitHub/navmesh/node_modules/javascript-astar/astar.js
 var astar = __webpack_require__(0);
 var astar_default = /*#__PURE__*/__webpack_require__.n(astar);
 
 // CONCATENATED MODULE: ./math/vector-2.js
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 /**
  * Stripped down version of Phaser's Vector2 with just the functionality needed for navmeshes
  *
  * @export
  * @class Vector2
  */
-var Vector2 = function () {
-  function Vector2(x, y) {
-    _classCallCheck(this, Vector2);
-
+class Vector2 {
+  constructor(x, y) {
     this.x = x || 0;
     this.y = y || 0;
   }
 
-  _createClass(Vector2, [{
-    key: "equals",
-    value: function equals(v) {
-      return this.x === v.x && this.y === v.y;
-    }
-  }, {
-    key: "angle",
-    value: function angle(v) {
-      return Math.atan2(v.y - this.y, v.x - this.x);
-    }
-  }, {
-    key: "distance",
-    value: function distance(v) {
-      var dx = v.x - this.x;
-      var dy = v.y - this.y;
-      return Math.sqrt(dx * dx + dy * dy);
-    }
-  }, {
-    key: "add",
-    value: function add(v) {
-      this.x += v.x;
-      this.y += v.y;
-    }
-  }, {
-    key: "subtract",
-    value: function subtract(v) {
-      this.x -= v.x;
-      this.y -= v.y;
-    }
-  }, {
-    key: "clone",
-    value: function clone() {
-      return new Vector2(this.x, this.y);
-    }
-  }]);
+  equals(v) {
+    return this.x === v.x && this.y === v.y;
+  }
 
-  return Vector2;
-}();
+  angle(v) {
+    return Math.atan2(v.y - this.y, v.x - this.x);
+  }
 
-/* harmony default export */ var vector_2 = (Vector2);
+  distance(v) {
+    const dx = v.x - this.x;
+    const dy = v.y - this.y;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  add(v) {
+    this.x += v.x;
+    this.y += v.y;
+  }
+
+  subtract(v) {
+    this.x -= v.x;
+    this.y -= v.y;
+  }
+
+  clone() {
+    return new Vector2(this.x, this.y);
+  }
+
+}
 // CONCATENATED MODULE: ./navpoly.js
-var navpoly_createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function navpoly_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-
 
 /**
  * A class that represents a navigable polygon with a navmesh. It is built on top of a
@@ -588,7 +566,7 @@ function navpoly_classCallCheck(instance, Constructor) { if (!(instance instance
  * @class NavPoly
  */
 
-var navpoly_NavPoly = function () {
+class navpoly_NavPoly {
   /**
    * Creates an instance of NavPoly.
    * @param {number} id
@@ -596,9 +574,7 @@ var navpoly_NavPoly = function () {
    *
    * @memberof NavPoly
    */
-  function NavPoly(id, polygon) {
-    navpoly_classCallCheck(this, NavPoly);
-
+  constructor(id, polygon) {
     this.id = id;
     this.polygon = polygon;
     this.edges = polygon.edges;
@@ -606,10 +582,8 @@ var navpoly_NavPoly = function () {
     this.portals = [];
     this.centroid = this.calculateCentroid();
     this.boundingRadius = this.calculateRadius();
-
     this.weight = 1; // jsastar property
   }
-
   /**
    * Returns an array of points that form the polygon.
    *
@@ -618,171 +592,103 @@ var navpoly_NavPoly = function () {
    */
 
 
-  navpoly_createClass(NavPoly, [{
-    key: "getPoints",
-    value: function getPoints() {
-      return this.polygon.points;
+  getPoints() {
+    return this.polygon.points;
+  }
+  /**
+   * Check if the given point-like object is within the polygon
+   *
+   * @param {object} point Object of the form {x, y}
+   * @returns {boolean}
+   * @memberof NavPoly
+   */
+
+
+  contains(point) {
+    // Phaser's polygon check doesn't handle when a point is on one of the edges of the line. Note:
+    // check numerical stability here. It would also be good to optimize this for different shapes.
+    return this.polygon.contains(point.x, point.y) || this.isPointOnEdge(point);
+  }
+  /**
+   * Only rectangles are supported, so this calculation works, but this is not actually the centroid
+   * calculation for a polygon. This is just the average of the vertices - proper centroid of a
+   * polygon factors in the area.
+   *
+   * @returns {Vector2}
+   * @memberof NavPoly
+   */
+
+
+  calculateCentroid() {
+    const centroid = new Vector2(0, 0);
+    const length = this.polygon.points.length;
+    this.polygon.points.forEach(p => centroid.add(p));
+    centroid.x /= length;
+    centroid.y /= length;
+    return centroid;
+  }
+  /**
+   * Calculate the radius of a circle that circumscribes the polygon.
+   *
+   * @returns {number}
+   * @memberof NavPoly
+   */
+
+
+  calculateRadius() {
+    let boundingRadius = 0;
+
+    for (const point of this.polygon.points) {
+      const d = this.centroid.distance(point);
+      if (d > boundingRadius) boundingRadius = d;
     }
 
-    /**
-     * Check if the given point-like object is within the polygon
-     *
-     * @param {object} point Object of the form {x, y}
-     * @returns {boolean}
-     * @memberof NavPoly
-     */
+    return boundingRadius;
+  }
+  /**
+   * Check if the given point-like object is on one of the edges of the polygon.
+   *
+   * @param {object} Point-like object in the form { x, y }
+   * @returns {boolean}
+   * @memberof NavPoly
+   */
 
-  }, {
-    key: "contains",
-    value: function contains(point) {
-      // Phaser's polygon check doesn't handle when a point is on one of the edges of the line. Note:
-      // check numerical stability here. It would also be good to optimize this for different shapes.
-      return this.polygon.contains(point.x, point.y) || this.isPointOnEdge(point);
+
+  isPointOnEdge({
+    x,
+    y
+  }) {
+    for (const edge of this.edges) {
+      if (edge.pointOnSegment(x, y)) return true;
     }
 
-    /**
-     * Only rectangles are supported, so this calculation works, but this is not actually the centroid
-     * calculation for a polygon. This is just the average of the vertices - proper centroid of a
-     * polygon factors in the area.
-     *
-     * @returns {Vector2}
-     * @memberof NavPoly
-     */
+    return false;
+  }
 
-  }, {
-    key: "calculateCentroid",
-    value: function calculateCentroid() {
-      var centroid = new vector_2(0, 0);
-      var length = this.polygon.points.length;
-      this.polygon.points.forEach(function (p) {
-        return centroid.add(p);
-      });
-      centroid.x /= length;
-      centroid.y /= length;
-      return centroid;
-    }
+  destroy() {
+    this.neighbors = [];
+    this.portals = [];
+  } // jsastar methods
 
-    /**
-     * Calculate the radius of a circle that circumscribes the polygon.
-     *
-     * @returns {number}
-     * @memberof NavPoly
-     */
 
-  }, {
-    key: "calculateRadius",
-    value: function calculateRadius() {
-      var boundingRadius = 0;
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
+  toString() {
+    return `NavPoly(id: ${this.id} at: ${this.centroid})`;
+  }
 
-      try {
-        for (var _iterator = this.polygon.points[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var point = _step.value;
+  isWall() {
+    return this.weight === 0;
+  }
 
-          var d = this.centroid.distance(point);
-          if (d > boundingRadius) boundingRadius = d;
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
+  centroidDistance(navPolygon) {
+    return this.centroid.distance(navPolygon.centroid);
+  }
 
-      return boundingRadius;
-    }
+  getCost(navPolygon) {
+    return this.centroidDistance(navPolygon);
+  }
 
-    /**
-     * Check if the given point-like object is on one of the edges of the polygon.
-     *
-     * @param {object} Point-like object in the form { x, y }
-     * @returns {boolean}
-     * @memberof NavPoly
-     */
-
-  }, {
-    key: "isPointOnEdge",
-    value: function isPointOnEdge(_ref) {
-      var x = _ref.x,
-          y = _ref.y;
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
-
-      try {
-        for (var _iterator2 = this.edges[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var edge = _step2.value;
-
-          if (edge.pointOnSegment(x, y)) return true;
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-            _iterator2.return();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
-          }
-        }
-      }
-
-      return false;
-    }
-  }, {
-    key: "destroy",
-    value: function destroy() {
-      this.neighbors = [];
-      this.portals = [];
-    }
-
-    // jsastar methods
-
-  }, {
-    key: "toString",
-    value: function toString() {
-      return "NavPoly(id: " + this.id + " at: " + this.centroid + ")";
-    }
-  }, {
-    key: "isWall",
-    value: function isWall() {
-      return this.weight === 0;
-    }
-  }, {
-    key: "centroidDistance",
-    value: function centroidDistance(navPolygon) {
-      return this.centroid.distance(navPolygon.centroid);
-    }
-  }, {
-    key: "getCost",
-    value: function getCost(navPolygon) {
-      return this.centroidDistance(navPolygon);
-    }
-  }]);
-
-  return NavPoly;
-}();
-
-/* harmony default export */ var navpoly = (navpoly_NavPoly);
+}
 // CONCATENATED MODULE: ./navgraph.js
-var navgraph_createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function navgraph_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-
 
 /**
  * Graph for javascript-astar. It implements the functionality for astar. See GPS test from astar
@@ -792,39 +698,30 @@ function navgraph_classCallCheck(instance, Constructor) { if (!(instance instanc
  * @private
  */
 
-var NavGraph = function () {
-  function NavGraph(navPolygons) {
-    navgraph_classCallCheck(this, NavGraph);
-
+class NavGraph {
+  constructor(navPolygons) {
     this.nodes = navPolygons;
     this.init();
   }
 
-  navgraph_createClass(NavGraph, [{
-    key: "neighbors",
-    value: function neighbors(navPolygon) {
-      return navPolygon.neighbors;
-    }
-  }, {
-    key: "navHeuristic",
-    value: function navHeuristic(navPolygon1, navPolygon2) {
-      return navPolygon1.centroidDistance(navPolygon2);
-    }
-  }, {
-    key: "destroy",
-    value: function destroy() {
-      this.cleanDirty();
-      this.nodes = [];
-    }
-  }]);
+  neighbors(navPolygon) {
+    return navPolygon.neighbors;
+  }
 
-  return NavGraph;
-}();
+  navHeuristic(navPolygon1, navPolygon2) {
+    return navPolygon1.centroidDistance(navPolygon2);
+  }
+
+  destroy() {
+    this.cleanDirty();
+    this.nodes = [];
+  }
+
+}
 
 NavGraph.prototype.init = astar_default.a.Graph.prototype.init;
 NavGraph.prototype.cleanDirty = astar_default.a.Graph.prototype.cleanDirty;
 NavGraph.prototype.markDirty = astar_default.a.Graph.prototype.markDirty;
-
 /* harmony default export */ var navgraph = (NavGraph);
 // CONCATENATED MODULE: ./utils.js
 /**
@@ -833,196 +730,167 @@ NavGraph.prototype.markDirty = astar_default.a.Graph.prototype.markDirty;
  * @private
  */
 function triarea2(a, b, c) {
-  var ax = b.x - a.x;
-  var ay = b.y - a.y;
-  var bx = c.x - a.x;
-  var by = c.y - a.y;
+  const ax = b.x - a.x;
+  const ay = b.y - a.y;
+  const bx = c.x - a.x;
+  const by = c.y - a.y;
   return bx * ay - ax * by;
 }
-
 /**
  * Clamp value between min and max
  * @returns {number}
  * @private
  */
+
 function clamp(value, min, max) {
   if (value < min) value = min;
   if (value > max) value = max;
   return value;
 }
-
 /**
  * Check if two values within a small margin of one another
  * @returns {boolean}
  * @private
  */
-function almostEqual(value1, value2) {
-  var errorMargin = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0.0001;
 
+function almostEqual(value1, value2, errorMargin = 0.0001) {
   if (Math.abs(value1 - value2) <= errorMargin) return true;else return false;
 }
-
 /**
  * Find the smallest angle difference between two angles
  * https://gist.github.com/Aaronduino/4068b058f8dbc34b4d3a9eedc8b2cbe0
  * @returns {number}
  * @private
  */
+
 function angleDifference(x, y) {
-  var a = x - y;
-  var i = a + Math.PI;
-  var j = Math.PI * 2;
+  let a = x - y;
+  const i = a + Math.PI;
+  const j = Math.PI * 2;
   a = i - Math.floor(i / j) * j; // (a+180) % 360; this ensures the correct sign
+
   a -= Math.PI;
   return a;
 }
-
 /**
  * Check if two lines are collinear (within a marign)
  * @returns {boolean}
  * @private
  */
-function areCollinear(line1, line2) {
-  var errorMargin = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0.0001;
 
+function areCollinear(line1, line2, errorMargin = 0.0001) {
   // Figure out if the two lines are equal by looking at the area of the triangle formed
   // by their points
-  var area1 = triarea2(line1.start, line1.end, line2.start);
-  var area2 = triarea2(line1.start, line1.end, line2.end);
+  const area1 = triarea2(line1.start, line1.end, line2.start);
+  const area2 = triarea2(line1.start, line1.end, line2.end);
+
   if (almostEqual(area1, 0, errorMargin) && almostEqual(area2, 0, errorMargin)) {
     return true;
   } else return false;
 }
 // CONCATENATED MODULE: ./channel.js
-var channel_createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function channel_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 // Mostly sourced from PatrolJS at the moment. TODO: come back and reimplement this as an incomplete
 // funnel algorithm so astar checks can be more accurate.
-
-
 
 /**
  * @private
  */
 
-var channel_Channel = function () {
-  function Channel() {
-    channel_classCallCheck(this, Channel);
-
+class channel_Channel {
+  constructor() {
     this.portals = [];
   }
 
-  channel_createClass(Channel, [{
-    key: "push",
-    value: function push(p1) {
-      var p2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  push(p1, p2 = null) {
+    if (p2 === null) p2 = p1;
+    this.portals.push({
+      left: p1,
+      right: p2
+    });
+  }
 
-      if (p2 === null) p2 = p1;
-      this.portals.push({
-        left: p1,
-        right: p2
-      });
-    }
-  }, {
-    key: "stringPull",
-    value: function stringPull() {
-      var portals = this.portals;
-      var pts = [];
-      // Init scan state
-      var portalApex, portalLeft, portalRight;
-      var apexIndex = 0,
-          leftIndex = 0,
-          rightIndex = 0;
+  stringPull() {
+    var portals = this.portals;
+    var pts = []; // Init scan state
 
-      portalApex = portals[0].left;
-      portalLeft = portals[0].left;
-      portalRight = portals[0].right;
+    var portalApex, portalLeft, portalRight;
+    var apexIndex = 0,
+        leftIndex = 0,
+        rightIndex = 0;
+    portalApex = portals[0].left;
+    portalLeft = portals[0].left;
+    portalRight = portals[0].right; // Add start point.
 
-      // Add start point.
-      pts.push(portalApex);
+    pts.push(portalApex);
 
-      for (var i = 1; i < portals.length; i++) {
-        // Find the next portal vertices
-        var left = portals[i].left;
-        var right = portals[i].right;
+    for (var i = 1; i < portals.length; i++) {
+      // Find the next portal vertices
+      var left = portals[i].left;
+      var right = portals[i].right; // Update right vertex.
 
-        // Update right vertex.
-        if (triarea2(portalApex, portalRight, right) <= 0.0) {
-          if (portalApex.equals(portalRight) || triarea2(portalApex, portalLeft, right) > 0.0) {
-            // Tighten the funnel.
-            portalRight = right;
-            rightIndex = i;
-          } else {
-            // Right vertex just crossed over the left vertex, so the left vertex should
-            // now be part of the path.
-            pts.push(portalLeft);
+      if (triarea2(portalApex, portalRight, right) <= 0.0) {
+        if (portalApex.equals(portalRight) || triarea2(portalApex, portalLeft, right) > 0.0) {
+          // Tighten the funnel.
+          portalRight = right;
+          rightIndex = i;
+        } else {
+          // Right vertex just crossed over the left vertex, so the left vertex should
+          // now be part of the path.
+          pts.push(portalLeft); // Restart scan from portal left point.
+          // Make current left the new apex.
 
-            // Restart scan from portal left point.
+          portalApex = portalLeft;
+          apexIndex = leftIndex; // Reset portal
 
-            // Make current left the new apex.
-            portalApex = portalLeft;
-            apexIndex = leftIndex;
-            // Reset portal
-            portalLeft = portalApex;
-            portalRight = portalApex;
-            leftIndex = apexIndex;
-            rightIndex = apexIndex;
-            // Restart scan
-            i = apexIndex;
-            continue;
-          }
+          portalLeft = portalApex;
+          portalRight = portalApex;
+          leftIndex = apexIndex;
+          rightIndex = apexIndex; // Restart scan
+
+          i = apexIndex;
+          continue;
         }
+      } // Update left vertex.
 
-        // Update left vertex.
-        if (triarea2(portalApex, portalLeft, left) >= 0.0) {
-          if (portalApex.equals(portalLeft) || triarea2(portalApex, portalRight, left) < 0.0) {
-            // Tighten the funnel.
-            portalLeft = left;
-            leftIndex = i;
-          } else {
-            // Left vertex just crossed over the right vertex, so the right vertex should
-            // now be part of the path
-            pts.push(portalRight);
 
-            // Restart scan from portal right point.
+      if (triarea2(portalApex, portalLeft, left) >= 0.0) {
+        if (portalApex.equals(portalLeft) || triarea2(portalApex, portalRight, left) < 0.0) {
+          // Tighten the funnel.
+          portalLeft = left;
+          leftIndex = i;
+        } else {
+          // Left vertex just crossed over the right vertex, so the right vertex should
+          // now be part of the path
+          pts.push(portalRight); // Restart scan from portal right point.
+          // Make current right the new apex.
 
-            // Make current right the new apex.
-            portalApex = portalRight;
-            apexIndex = rightIndex;
-            // Reset portal
-            portalLeft = portalApex;
-            portalRight = portalApex;
-            leftIndex = apexIndex;
-            rightIndex = apexIndex;
-            // Restart scan
-            i = apexIndex;
-            continue;
-          }
+          portalApex = portalRight;
+          apexIndex = rightIndex; // Reset portal
+
+          portalLeft = portalApex;
+          portalRight = portalApex;
+          leftIndex = apexIndex;
+          rightIndex = apexIndex; // Restart scan
+
+          i = apexIndex;
+          continue;
         }
       }
-
-      if (pts.length === 0 || !pts[pts.length - 1].equals(portals[portals.length - 1].left)) {
-        // Append last point to path.
-        pts.push(portals[portals.length - 1].left);
-      }
-
-      this.path = pts;
-      return pts;
     }
-  }]);
 
-  return Channel;
-}();
+    if (pts.length === 0 || !pts[pts.length - 1].equals(portals[portals.length - 1].left)) {
+      // Append last point to path.
+      pts.push(portals[portals.length - 1].left);
+    }
+
+    this.path = pts;
+    return pts;
+  }
+
+}
 
 /* harmony default export */ var channel_0 = (channel_Channel);
 // CONCATENATED MODULE: ./math/line.js
-var line_createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function line_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-
 
 /**
  * Stripped down version of Phaser's Line with just the functionality needed for navmeshes
@@ -1031,42 +899,27 @@ function line_classCallCheck(instance, Constructor) { if (!(instance instanceof 
  * @class Line
  */
 
-var line_Line = function () {
-  function Line(x1, y1, x2, y2) {
-    line_classCallCheck(this, Line);
-
-    this.start = new vector_2(x1, y1);
-    this.end = new vector_2(x2, y2);
-
+class line_Line {
+  constructor(x1, y1, x2, y2) {
+    this.start = new Vector2(x1, y1);
+    this.end = new Vector2(x2, y2);
     this.left = Math.min(x1, x2);
     this.right = Math.max(x1, x2);
     this.top = Math.min(y1, y2);
     this.bottom = Math.max(y1, y2);
   }
 
-  line_createClass(Line, [{
-    key: "pointOnSegment",
-    value: function pointOnSegment(x, y) {
-      return x >= this.left && x <= this.right && y >= this.top && y <= this.bottom && this.pointOnLine(x, y);
-    }
-  }, {
-    key: "pointOnLine",
-    value: function pointOnLine(x, y) {
-      // Compare slope of line start -> xy to line start -> line end
-      return (x - this.left) * (this.bottom - this.top) === (this.right - this.left) * (y - this.top);
-    }
-  }]);
+  pointOnSegment(x, y) {
+    return x >= this.left && x <= this.right && y >= this.top && y <= this.bottom && this.pointOnLine(x, y);
+  }
 
-  return Line;
-}();
+  pointOnLine(x, y) {
+    // Compare slope of line start -> xy to line start -> line end
+    return (x - this.left) * (this.bottom - this.top) === (this.right - this.left) * (y - this.top);
+  }
 
-/* harmony default export */ var math_line = (line_Line);
+}
 // CONCATENATED MODULE: ./math/polygon.js
-var polygon_createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function polygon_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-
 
 /**
  * Stripped down version of Phaser's Polygon with just the functionality needed for navmeshes
@@ -1075,60 +928,43 @@ function polygon_classCallCheck(instance, Constructor) { if (!(instance instance
  * @class Polygon
  */
 
-var polygon_Polygon = function () {
-  function Polygon(points) {
-    var closed = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-
-    polygon_classCallCheck(this, Polygon);
-
+class polygon_Polygon {
+  constructor(points, closed = true) {
     this.points = points;
     this.edges = [];
 
-    for (var i = 1; i < points.length; i++) {
-      var p1 = points[i - 1];
-      var p2 = points[i];
-      this.edges.push(new math_line(p1.x, p1.y, p2.x, p2.y));
+    for (let i = 1; i < points.length; i++) {
+      const p1 = points[i - 1];
+      const p2 = points[i];
+      this.edges.push(new line_Line(p1.x, p1.y, p2.x, p2.y));
     }
+
     if (closed) {
-      var first = points[0];
-      var last = points[points.length - 1];
-      this.edges.push(new math_line(first.x, first.y, last.x, last.y));
+      const first = points[0];
+      const last = points[points.length - 1];
+      this.edges.push(new line_Line(first.x, first.y, last.x, last.y));
     }
   }
 
-  polygon_createClass(Polygon, [{
-    key: "contains",
-    value: function contains(x, y) {
-      var inside = false;
+  contains(x, y) {
+    let inside = false;
 
-      for (var i = -1, j = this.points.length - 1; ++i < this.points.length; j = i) {
-        var ix = this.points[i].x;
-        var iy = this.points[i].y;
+    for (let i = -1, j = this.points.length - 1; ++i < this.points.length; j = i) {
+      const ix = this.points[i].x;
+      const iy = this.points[i].y;
+      const jx = this.points[j].x;
+      const jy = this.points[j].y;
 
-        var jx = this.points[j].x;
-        var jy = this.points[j].y;
-
-        if ((iy <= y && y < jy || jy <= y && y < iy) && x < (jx - ix) * (y - iy) / (jy - iy) + ix) {
-          inside = !inside;
-        }
+      if ((iy <= y && y < jy || jy <= y && y < iy) && x < (jx - ix) * (y - iy) / (jy - iy) + ix) {
+        inside = !inside;
       }
-
-      return inside;
     }
-  }]);
 
-  return Polygon;
-}();
+    return inside;
+  }
 
-/* harmony default export */ var math_polygon = (polygon_Polygon);
+}
 // CONCATENATED MODULE: ./navmesh.js
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-var navmesh_createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function navmesh_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-
 
 
 
@@ -1149,7 +985,7 @@ function navmesh_classCallCheck(instance, Constructor) { if (!(instance instance
  * @class NavMesh
  */
 
-var navmesh_NavMesh = function () {
+class navmesh_NavMesh {
   /**
    * Creates an instance of NavMesh.
    * @param {object[][]} meshPolygonPoints Array where each element is an array of point-like
@@ -1158,30 +994,19 @@ var navmesh_NavMesh = function () {
    * shrunk around obstacles (a.k.a the amount obstacles have been expanded)
    * @memberof NavMesh
    */
-  function NavMesh(meshPolygonPoints) {
-    var meshShrinkAmount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-
-    navmesh_classCallCheck(this, NavMesh);
-
+  constructor(meshPolygonPoints, meshShrinkAmount = 0) {
     this._meshShrinkAmount = meshShrinkAmount;
-
-    var newPolys = meshPolygonPoints.map(function (polyPoints) {
-      var vectors = polyPoints.map(function (p) {
-        return new vector_2(p.x, p.y);
-      });
-      return new math_polygon(vectors);
+    const newPolys = meshPolygonPoints.map(polyPoints => {
+      const vectors = polyPoints.map(p => new Vector2(p.x, p.y));
+      return new polygon_Polygon(vectors);
     });
+    this._navPolygons = newPolys.map((polygon, i) => new navpoly_NavPoly(i, polygon));
 
-    this._navPolygons = newPolys.map(function (polygon, i) {
-      return new navpoly(i, polygon);
-    });
+    this._calculateNeighbors(); // Astar graph of connections between polygons
 
-    this._calculateNeighbors();
 
-    // Astar graph of connections between polygons
     this._graph = new navgraph(this._navPolygons);
   }
-
   /**
    * Get the NavPolys that are in this navmesh.
    *
@@ -1190,473 +1015,297 @@ var navmesh_NavMesh = function () {
    */
 
 
-  navmesh_createClass(NavMesh, [{
-    key: "getPolygons",
-    value: function getPolygons() {
-      return this._navPolygons;
-    }
+  getPolygons() {
+    return this._navPolygons;
+  }
+  /**
+   * Cleanup method to remove references.
+   *
+   * @memberof NavMesh
+   */
 
-    /**
-     * Cleanup method to remove references.
-     *
-     * @memberof NavMesh
-     */
 
-  }, {
-    key: "destroy",
-    value: function destroy() {
-      this._graph.destroy();
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
+  destroy() {
+    this._graph.destroy();
 
-      try {
-        for (var _iterator = this._navPolygons[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var poly = _step.value;
-          poly.destroy();
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
+    for (const poly of this._navPolygons) poly.destroy();
+
+    this._navPolygons = [];
+  }
+  /**
+   * Find a path from the start point to the end point using this nav mesh.
+   *
+   * @param {object} startPoint A point-like object in the form {x, y}
+   * @param {object} endPoint A point-like object in the form {x, y}
+   * @returns {Vector2[]|null} An array of points if a path is found, or null if no path
+   *
+   * @memberof NavMesh
+   */
+
+
+  findPath(startPoint, endPoint) {
+    let startPoly = null;
+    let endPoly = null;
+    let startDistance = Number.MAX_VALUE;
+    let endDistance = Number.MAX_VALUE;
+    let d, r;
+    const startVector = new Vector2(startPoint.x, startPoint.y);
+    const endVector = new Vector2(endPoint.x, endPoint.y); // Find the closest poly for the starting and ending point
+
+    for (const navPoly of this._navPolygons) {
+      r = navPoly.boundingRadius; // Start
+
+      d = navPoly.centroid.distance(startVector);
+
+      if (d <= startDistance && d <= r && navPoly.contains(startVector)) {
+        startPoly = navPoly;
+        startDistance = d;
+      } // End
+
+
+      d = navPoly.centroid.distance(endVector);
+
+      if (d <= endDistance && d <= r && navPoly.contains(endVector)) {
+        endPoly = navPoly;
+        endDistance = d;
       }
+    } // If the start point wasn't inside a polygon, run a more liberal check that allows a point
+    // to be within meshShrinkAmount radius of a polygon
 
-      this._navPolygons = [];
-    }
 
-    /**
-     * Find a path from the start point to the end point using this nav mesh.
-     *
-     * @param {object} startPoint A point-like object in the form {x, y}
-     * @param {object} endPoint A point-like object in the form {x, y}
-     * @returns {Vector2[]|null} An array of points if a path is found, or null if no path
-     *
-     * @memberof NavMesh
-     */
+    if (!startPoly && this._meshShrinkAmount > 0) {
+      for (const navPoly of this._navPolygons) {
+        // Check if point is within bounding circle to avoid extra projection calculations
+        r = navPoly.boundingRadius + this._meshShrinkAmount;
+        d = navPoly.centroid.distance(startVector);
 
-  }, {
-    key: "findPath",
-    value: function findPath(startPoint, endPoint) {
-      var startPoly = null;
-      var endPoly = null;
-      var startDistance = Number.MAX_VALUE;
-      var endDistance = Number.MAX_VALUE;
-      var d = void 0,
-          r = void 0;
-      var startVector = new vector_2(startPoint.x, startPoint.y);
-      var endVector = new vector_2(endPoint.x, endPoint.y);
+        if (d <= r) {
+          // Check if projected point is within range of a polgyon and is closer than the
+          // previous point
+          const {
+            distance
+          } = this._projectPointToPolygon(startVector, navPoly);
 
-      // Find the closest poly for the starting and ending point
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
-
-      try {
-        for (var _iterator2 = this._navPolygons[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var navPoly = _step2.value;
-
-          r = navPoly.boundingRadius;
-          // Start
-          d = navPoly.centroid.distance(startVector);
-          if (d <= startDistance && d <= r && navPoly.contains(startVector)) {
+          if (distance <= this._meshShrinkAmount && distance < startDistance) {
             startPoly = navPoly;
-            startDistance = d;
+            startDistance = distance;
           }
-          // End
-          d = navPoly.centroid.distance(endVector);
-          if (d <= endDistance && d <= r && navPoly.contains(endVector)) {
+        }
+      }
+    } // Same check as above, but for the end point
+
+
+    if (!endPoly && this._meshShrinkAmount > 0) {
+      for (const navPoly of this._navPolygons) {
+        r = navPoly.boundingRadius + this._meshShrinkAmount;
+        d = navPoly.centroid.distance(endVector);
+
+        if (d <= r) {
+          const {
+            distance
+          } = this._projectPointToPolygon(endVector, navPoly);
+
+          if (distance <= this._meshShrinkAmount && distance < endDistance) {
             endPoly = navPoly;
-            endDistance = d;
-          }
-        }
-
-        // If the start point wasn't inside a polygon, run a more liberal check that allows a point
-        // to be within meshShrinkAmount radius of a polygon
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-            _iterator2.return();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
+            endDistance = distance;
           }
         }
       }
+    } // No matching polygons locations for the start or end, so no path found
 
-      if (!startPoly && this._meshShrinkAmount > 0) {
-        var _iteratorNormalCompletion3 = true;
-        var _didIteratorError3 = false;
-        var _iteratorError3 = undefined;
 
-        try {
-          for (var _iterator3 = this._navPolygons[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-            var _navPoly = _step3.value;
+    if (!startPoly || !endPoly) return null; // If the start and end polygons are the same, return a direct path
 
-            // Check if point is within bounding circle to avoid extra projection calculations
-            r = _navPoly.boundingRadius + this._meshShrinkAmount;
-            d = _navPoly.centroid.distance(startVector);
-            if (d <= r) {
-              // Check if projected point is within range of a polgyon and is closer than the
-              // previous point
-              var _projectPointToPolygo = this._projectPointToPolygon(startVector, _navPoly),
-                  distance = _projectPointToPolygo.distance;
+    if (startPoly === endPoly) return [startVector, endVector]; // Search!
 
-              if (distance <= this._meshShrinkAmount && distance < startDistance) {
-                startPoly = _navPoly;
-                startDistance = distance;
-              }
-            }
-          }
-        } catch (err) {
-          _didIteratorError3 = true;
-          _iteratorError3 = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion3 && _iterator3.return) {
-              _iterator3.return();
-            }
-          } finally {
-            if (_didIteratorError3) {
-              throw _iteratorError3;
-            }
-          }
+    const astarPath = astar_default.a.astar.search(this._graph, startPoly, endPoly, {
+      heuristic: this._graph.navHeuristic
+    }); // While the start and end polygons may be valid, no path between them
+
+    if (astarPath.length === 0) return null; // jsastar drops the first point from the path, but the funnel algorithm needs it
+
+    astarPath.unshift(startPoly); // We have a path, so now time for the funnel algorithm
+
+    const channel = new channel_0();
+    channel.push(startVector);
+
+    for (let i = 0; i < astarPath.length - 1; i++) {
+      const navPolygon = astarPath[i];
+      const nextNavPolygon = astarPath[i + 1]; // Find the portal
+
+      let portal = null;
+
+      for (let i = 0; i < navPolygon.neighbors.length; i++) {
+        if (navPolygon.neighbors[i].id === nextNavPolygon.id) {
+          portal = navPolygon.portals[i];
         }
-      }
+      } // Push the portal vertices into the channel
 
-      // Same check as above, but for the end point
-      if (!endPoly && this._meshShrinkAmount > 0) {
-        var _iteratorNormalCompletion4 = true;
-        var _didIteratorError4 = false;
-        var _iteratorError4 = undefined;
 
-        try {
-          for (var _iterator4 = this._navPolygons[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-            var _navPoly2 = _step4.value;
-
-            r = _navPoly2.boundingRadius + this._meshShrinkAmount;
-            d = _navPoly2.centroid.distance(endVector);
-            if (d <= r) {
-              var _projectPointToPolygo2 = this._projectPointToPolygon(endVector, _navPoly2),
-                  _distance = _projectPointToPolygo2.distance;
-
-              if (_distance <= this._meshShrinkAmount && _distance < endDistance) {
-                endPoly = _navPoly2;
-                endDistance = _distance;
-              }
-            }
-          }
-        } catch (err) {
-          _didIteratorError4 = true;
-          _iteratorError4 = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion4 && _iterator4.return) {
-              _iterator4.return();
-            }
-          } finally {
-            if (_didIteratorError4) {
-              throw _iteratorError4;
-            }
-          }
-        }
-      }
-
-      // No matching polygons locations for the start or end, so no path found
-      if (!startPoly || !endPoly) return null;
-
-      // If the start and end polygons are the same, return a direct path
-      if (startPoly === endPoly) return [startVector, endVector];
-
-      // Search!
-      var astarPath = astar_default.a.astar.search(this._graph, startPoly, endPoly, {
-        heuristic: this._graph.navHeuristic
-      });
-
-      // While the start and end polygons may be valid, no path between them
-      if (astarPath.length === 0) return null;
-
-      // jsastar drops the first point from the path, but the funnel algorithm needs it
-      astarPath.unshift(startPoly);
-
-      // We have a path, so now time for the funnel algorithm
-      var channel = new channel_0();
-      channel.push(startVector);
-      for (var i = 0; i < astarPath.length - 1; i++) {
-        var navPolygon = astarPath[i];
-        var nextNavPolygon = astarPath[i + 1];
-
-        // Find the portal
-        var portal = null;
-        for (var _i = 0; _i < navPolygon.neighbors.length; _i++) {
-          if (navPolygon.neighbors[_i].id === nextNavPolygon.id) {
-            portal = navPolygon.portals[_i];
-          }
-        }
-
-        // Push the portal vertices into the channel
-        channel.push(portal.start, portal.end);
-      }
-      channel.push(endVector);
-
-      // Pull a string along the channel to run the funnel
-      channel.stringPull();
-
-      // Clone path, excluding duplicates
-      var lastPoint = null;
-      var phaserPath = [];
-      var _iteratorNormalCompletion5 = true;
-      var _didIteratorError5 = false;
-      var _iteratorError5 = undefined;
-
-      try {
-        for (var _iterator5 = channel.path[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-          var p = _step5.value;
-
-          var newPoint = p.clone();
-          if (!lastPoint || !newPoint.equals(lastPoint)) phaserPath.push(newPoint);
-          lastPoint = newPoint;
-        }
-      } catch (err) {
-        _didIteratorError5 = true;
-        _iteratorError5 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion5 && _iterator5.return) {
-            _iterator5.return();
-          }
-        } finally {
-          if (_didIteratorError5) {
-            throw _iteratorError5;
-          }
-        }
-      }
-
-      return phaserPath;
+      channel.push(portal.start, portal.end);
     }
-  }, {
-    key: "_calculateNeighbors",
-    value: function _calculateNeighbors() {
-      // Fill out the neighbor information for each navpoly
-      for (var i = 0; i < this._navPolygons.length; i++) {
-        var navPoly = this._navPolygons[i];
 
-        for (var j = i + 1; j < this._navPolygons.length; j++) {
-          var otherNavPoly = this._navPolygons[j];
+    channel.push(endVector); // Pull a string along the channel to run the funnel
 
-          // Check if the other navpoly is within range to touch
-          var d = navPoly.centroid.distance(otherNavPoly.centroid);
-          if (d > navPoly.boundingRadius + otherNavPoly.boundingRadius) continue;
+    channel.stringPull(); // Clone path, excluding duplicates
 
-          // The are in range, so check each edge pairing
-          var _iteratorNormalCompletion6 = true;
-          var _didIteratorError6 = false;
-          var _iteratorError6 = undefined;
+    let lastPoint = null;
+    const phaserPath = [];
 
-          try {
-            for (var _iterator6 = navPoly.edges[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-              var edge = _step6.value;
-              var _iteratorNormalCompletion7 = true;
-              var _didIteratorError7 = false;
-              var _iteratorError7 = undefined;
+    for (const p of channel.path) {
+      const newPoint = p.clone();
+      if (!lastPoint || !newPoint.equals(lastPoint)) phaserPath.push(newPoint);
+      lastPoint = newPoint;
+    }
 
-              try {
-                for (var _iterator7 = otherNavPoly.edges[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-                  var otherEdge = _step7.value;
+    return phaserPath;
+  }
 
-                  // If edges aren't collinear, not an option for connecting navpolys
-                  if (!areCollinear(edge, otherEdge)) continue;
+  _calculateNeighbors() {
+    // Fill out the neighbor information for each navpoly
+    for (let i = 0; i < this._navPolygons.length; i++) {
+      const navPoly = this._navPolygons[i];
 
-                  // If they are collinear, check if they overlap
-                  var overlap = this._getSegmentOverlap(edge, otherEdge);
-                  if (!overlap) continue;
+      for (let j = i + 1; j < this._navPolygons.length; j++) {
+        const otherNavPoly = this._navPolygons[j]; // Check if the other navpoly is within range to touch
 
-                  // Connections are symmetric!
-                  navPoly.neighbors.push(otherNavPoly);
-                  otherNavPoly.neighbors.push(navPoly);
+        const d = navPoly.centroid.distance(otherNavPoly.centroid);
+        if (d > navPoly.boundingRadius + otherNavPoly.boundingRadius) continue; // The are in range, so check each edge pairing
 
-                  // Calculate the portal between the two polygons - this needs to be in
-                  // counter-clockwise order, relative to each polygon
+        for (const edge of navPoly.edges) {
+          for (const otherEdge of otherNavPoly.edges) {
+            // If edges aren't collinear, not an option for connecting navpolys
+            if (!areCollinear(edge, otherEdge)) continue; // If they are collinear, check if they overlap
 
-                  var _overlap = _slicedToArray(overlap, 2),
-                      p1 = _overlap[0],
-                      p2 = _overlap[1];
+            const overlap = this._getSegmentOverlap(edge, otherEdge);
 
-                  var edgeStartAngle = navPoly.centroid.angle(edge.start);
-                  var a1 = navPoly.centroid.angle(overlap[0]);
-                  var a2 = navPoly.centroid.angle(overlap[1]);
-                  var d1 = angleDifference(edgeStartAngle, a1);
-                  var d2 = angleDifference(edgeStartAngle, a2);
-                  if (d1 < d2) {
-                    navPoly.portals.push(new math_line(p1.x, p1.y, p2.x, p2.y));
-                  } else {
-                    navPoly.portals.push(new math_line(p2.x, p2.y, p1.x, p1.y));
-                  }
+            if (!overlap) continue; // Connections are symmetric!
 
-                  edgeStartAngle = otherNavPoly.centroid.angle(otherEdge.start);
-                  a1 = otherNavPoly.centroid.angle(overlap[0]);
-                  a2 = otherNavPoly.centroid.angle(overlap[1]);
-                  d1 = angleDifference(edgeStartAngle, a1);
-                  d2 = angleDifference(edgeStartAngle, a2);
-                  if (d1 < d2) {
-                    otherNavPoly.portals.push(new math_line(p1.x, p1.y, p2.x, p2.y));
-                  } else {
-                    otherNavPoly.portals.push(new math_line(p2.x, p2.y, p1.x, p1.y));
-                  }
+            navPoly.neighbors.push(otherNavPoly);
+            otherNavPoly.neighbors.push(navPoly); // Calculate the portal between the two polygons - this needs to be in
+            // counter-clockwise order, relative to each polygon
 
-                  // Two convex polygons shouldn't be connected more than once! (Unless
-                  // there are unnecessary vertices...)
-                }
-              } catch (err) {
-                _didIteratorError7 = true;
-                _iteratorError7 = err;
-              } finally {
-                try {
-                  if (!_iteratorNormalCompletion7 && _iterator7.return) {
-                    _iterator7.return();
-                  }
-                } finally {
-                  if (_didIteratorError7) {
-                    throw _iteratorError7;
-                  }
-                }
-              }
+            const [p1, p2] = overlap;
+            let edgeStartAngle = navPoly.centroid.angle(edge.start);
+            let a1 = navPoly.centroid.angle(overlap[0]);
+            let a2 = navPoly.centroid.angle(overlap[1]);
+            let d1 = angleDifference(edgeStartAngle, a1);
+            let d2 = angleDifference(edgeStartAngle, a2);
+
+            if (d1 < d2) {
+              navPoly.portals.push(new line_Line(p1.x, p1.y, p2.x, p2.y));
+            } else {
+              navPoly.portals.push(new line_Line(p2.x, p2.y, p1.x, p1.y));
             }
-          } catch (err) {
-            _didIteratorError6 = true;
-            _iteratorError6 = err;
-          } finally {
-            try {
-              if (!_iteratorNormalCompletion6 && _iterator6.return) {
-                _iterator6.return();
-              }
-            } finally {
-              if (_didIteratorError6) {
-                throw _iteratorError6;
-              }
-            }
+
+            edgeStartAngle = otherNavPoly.centroid.angle(otherEdge.start);
+            a1 = otherNavPoly.centroid.angle(overlap[0]);
+            a2 = otherNavPoly.centroid.angle(overlap[1]);
+            d1 = angleDifference(edgeStartAngle, a1);
+            d2 = angleDifference(edgeStartAngle, a2);
+
+            if (d1 < d2) {
+              otherNavPoly.portals.push(new line_Line(p1.x, p1.y, p2.x, p2.y));
+            } else {
+              otherNavPoly.portals.push(new line_Line(p2.x, p2.y, p1.x, p1.y));
+            } // Two convex polygons shouldn't be connected more than once! (Unless
+            // there are unnecessary vertices...)
+
           }
         }
       }
     }
+  } // Check two collinear line segments to see if they overlap by sorting the points.
+  // Algorithm source: http://stackoverflow.com/a/17152247
 
-    // Check two collinear line segments to see if they overlap by sorting the points.
-    // Algorithm source: http://stackoverflow.com/a/17152247
 
-  }, {
-    key: "_getSegmentOverlap",
-    value: function _getSegmentOverlap(line1, line2) {
-      var points = [{ line: line1, point: line1.start }, { line: line1, point: line1.end }, { line: line2, point: line2.start }, { line: line2, point: line2.end }];
-      points.sort(function (a, b) {
-        if (a.point.x < b.point.x) return -1;else if (a.point.x > b.point.x) return 1;else {
-          if (a.point.y < b.point.y) return -1;else if (a.point.y > b.point.y) return 1;else return 0;
-        }
-      });
-      // If the first two points in the array come from the same line, no overlap
-      var noOverlap = points[0].line === points[1].line;
-      // If the two middle points in the array are the same coordinates, then there is a
-      // single point of overlap.
-      var singlePointOverlap = points[1].point.equals(points[2].point);
-      if (noOverlap || singlePointOverlap) return null;else return [points[1].point, points[2].point];
-    }
-
-    /**
-     * Project a point onto a polygon in the shortest distance possible.
-     *
-     * @param {Phaser.Point} point The point to project
-     * @param {NavPoly} navPoly The navigation polygon to test against
-     * @returns {{point: Phaser.Point, distance: number}}
-     *
-     * @private
-     * @memberof NavMesh
-     */
-
-  }, {
-    key: "_projectPointToPolygon",
-    value: function _projectPointToPolygon(point, navPoly) {
-      var closestProjection = null;
-      var closestDistance = Number.MAX_VALUE;
-      var _iteratorNormalCompletion8 = true;
-      var _didIteratorError8 = false;
-      var _iteratorError8 = undefined;
-
-      try {
-        for (var _iterator8 = navPoly.edges[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-          var edge = _step8.value;
-
-          var projectedPoint = this._projectPointToEdge(point, edge);
-          var d = point.distance(projectedPoint);
-          if (closestProjection === null || d < closestDistance) {
-            closestDistance = d;
-            closestProjection = projectedPoint;
-          }
-        }
-      } catch (err) {
-        _didIteratorError8 = true;
-        _iteratorError8 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion8 && _iterator8.return) {
-            _iterator8.return();
-          }
-        } finally {
-          if (_didIteratorError8) {
-            throw _iteratorError8;
-          }
-        }
+  _getSegmentOverlap(line1, line2) {
+    const points = [{
+      line: line1,
+      point: line1.start
+    }, {
+      line: line1,
+      point: line1.end
+    }, {
+      line: line2,
+      point: line2.start
+    }, {
+      line: line2,
+      point: line2.end
+    }];
+    points.sort(function (a, b) {
+      if (a.point.x < b.point.x) return -1;else if (a.point.x > b.point.x) return 1;else {
+        if (a.point.y < b.point.y) return -1;else if (a.point.y > b.point.y) return 1;else return 0;
       }
+    }); // If the first two points in the array come from the same line, no overlap
 
-      return { point: closestProjection, distance: closestDistance };
+    const noOverlap = points[0].line === points[1].line; // If the two middle points in the array are the same coordinates, then there is a
+    // single point of overlap.
+
+    const singlePointOverlap = points[1].point.equals(points[2].point);
+    if (noOverlap || singlePointOverlap) return null;else return [points[1].point, points[2].point];
+  }
+  /**
+   * Project a point onto a polygon in the shortest distance possible.
+   *
+   * @param {Phaser.Point} point The point to project
+   * @param {NavPoly} navPoly The navigation polygon to test against
+   * @returns {{point: Phaser.Point, distance: number}}
+   *
+   * @private
+   * @memberof NavMesh
+   */
+
+
+  _projectPointToPolygon(point, navPoly) {
+    let closestProjection = null;
+    let closestDistance = Number.MAX_VALUE;
+
+    for (const edge of navPoly.edges) {
+      const projectedPoint = this._projectPointToEdge(point, edge);
+
+      const d = point.distance(projectedPoint);
+
+      if (closestProjection === null || d < closestDistance) {
+        closestDistance = d;
+        closestProjection = projectedPoint;
+      }
     }
-  }, {
-    key: "_distanceSquared",
-    value: function _distanceSquared(a, b) {
-      var dx = b.x - a.x;
-      var dy = b.y - a.y;
-      return dx * dx + dy * dy;
-    }
 
-    // Project a point onto a line segment
-    // JS Source: http://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
+    return {
+      point: closestProjection,
+      distance: closestDistance
+    };
+  }
 
-  }, {
-    key: "_projectPointToEdge",
-    value: function _projectPointToEdge(point, line) {
-      var a = line.start;
-      var b = line.end;
-      // Consider the parametric equation for the edge's line, p = a + t (b - a). We want to find
-      // where our point lies on the line by solving for t:
-      //  t = [(p-a) . (b-a)] / |b-a|^2
-      var l2 = this._distanceSquared(a, b);
-      var t = ((point.x - a.x) * (b.x - a.x) + (point.y - a.y) * (b.y - a.y)) / l2;
-      // We clamp t from [0,1] to handle points outside the segment vw.
-      t = clamp(t, 0, 1);
-      // Project onto the segment
-      var p = new vector_2(a.x + t * (b.x - a.x), a.y + t * (b.y - a.y));
-      return p;
-    }
-  }]);
+  _distanceSquared(a, b) {
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    return dx * dx + dy * dy;
+  } // Project a point onto a line segment
+  // JS Source: http://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
 
-  return NavMesh;
-}();
 
-/* harmony default export */ var navmesh = (navmesh_NavMesh);
+  _projectPointToEdge(point, line) {
+    const a = line.start;
+    const b = line.end; // Consider the parametric equation for the edge's line, p = a + t (b - a). We want to find
+    // where our point lies on the line by solving for t:
+    //  t = [(p-a) . (b-a)] / |b-a|^2
+
+    const l2 = this._distanceSquared(a, b);
+
+    let t = ((point.x - a.x) * (b.x - a.x) + (point.y - a.y) * (b.y - a.y)) / l2; // We clamp t from [0,1] to handle points outside the segment vw.
+
+    t = clamp(t, 0, 1); // Project onto the segment
+
+    const p = new Vector2(a.x + t * (b.x - a.x), a.y + t * (b.y - a.y));
+    return p;
+  }
+
+}
 // CONCATENATED MODULE: ./index.js
 
-
-/* harmony default export */ var index = __webpack_exports__["default"] = (navmesh);
+/* harmony default export */ var index = __webpack_exports__["default"] = (navmesh_NavMesh);
 
 /***/ })
 /******/ ])["default"];
