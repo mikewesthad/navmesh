@@ -1,6 +1,6 @@
 {
   "name": "phaser-navmesh",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "A plugin for Phaser (v3) for fast pathfinding using navigation meshes",
   "main": "dist/phaser-navmesh.min.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "navmesh": "^2.0.2"
+    "navmesh": "^2.0.3"
   },
   "peerDependencies": {
     "phaser": "^3.0.0"
@@ -18,8 +18,8 @@
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
-    "babel-loader": "^8.0.6",
     "babel-jest": "^23.2.0",
+    "babel-loader": "^8.0.6",
     "jest": "^23.2.0",
     "uglifyjs-webpack-plugin": "^1.2.7",
     "webpack": "^4.14.0",
