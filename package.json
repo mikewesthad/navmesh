@@ -32,7 +32,7 @@
     "jest": "^24.8.0",
     "lerna": "^3.16.4",
     "prettier": "^1.18.2",
-    "yarn": "^1.17.3"
+    "yarn": "^1.22.0"
   },
   "prettier": {
     "printWidth": 100
