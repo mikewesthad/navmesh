@@ -10,20 +10,19 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
+    "core-js": "3",
     "navmesh": "^2.0.3"
   },
   "peerDependencies": {
-    "phaser-ce": "^2.0.0"
+    "phaser-ce": "^2.14.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
-    "babel-jest": "^23.2.0",
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
     "babel-loader": "^8.0.6",
-    "jest": "^23.2.0",
-    "uglifyjs-webpack-plugin": "^1.2.7",
-    "webpack": "^4.14.0",
-    "webpack-cli": "^3.0.8"
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
   },
   "repository": {
     "type": "git",
