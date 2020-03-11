@@ -278,6 +278,10 @@ Long paths (600 pixels and greater length), average time per iteration:
         NavMesh is 21.65x faster than EasyStar
 ```
 
+## Community Examples
+
+- [TypeScript Server Example](https://colyseus-unity3d-navmesh.firebaseapp.com) - Right click to move the agent, see discussion thread [here](https://github.com/mikewesthad/navmesh/issues/11#issuecomment-595211483) with links to source code.
+
 ## Development
 
 Pull requests are welcome (see [todos](#to-dos))! If you want to run this repo locally, make sure you have [node](https://nodejs.org/en/) installed. Download the repo, open a terminal in the repo folder and run:
