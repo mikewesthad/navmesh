@@ -118,6 +118,9 @@ export default class NavMesh {
       }
     }
 
+    // No matching polygons locations for the start, so no path found
+    if (!startPoly) return null;
+
     // Same check as above, but for the end point
     if (!endPoly && this._meshShrinkAmount > 0) {
       for (const navPoly of this._navPolygons) {
@@ -133,8 +136,8 @@ export default class NavMesh {
       }
     }
 
-    // No matching polygons locations for the start or end, so no path found
-    if (!startPoly || !endPoly) return null;
+    // No matching polygons locations for the end, so no path found
+    if (!endPoly) return null;
 
     // If the start and end polygons are the same, return a direct path
     if (startPoly === endPoly) return [startVector, endVector];
