@@ -99,8 +99,27 @@ export default class NavMesh {
       }
     }
 
-    // If the start point wasn't inside a polygon, run a more liberal check that allows a point
+    // If the end point wasn't inside a polygon, run a more liberal check that allows a point
     // to be within meshShrinkAmount radius of a polygon
+    if (!endPoly && this._meshShrinkAmount > 0) {
+      for (const navPoly of this._navPolygons) {
+        r = navPoly.boundingRadius + this._meshShrinkAmount;
+        d = navPoly.centroid.distance(endVector);
+        if (d <= r) {
+          const { distance } = this._projectPointToPolygon(endVector, navPoly);
+          if (distance <= this._meshShrinkAmount && distance < endDistance) {
+            endPoly = navPoly;
+            endDistance = distance;
+          }
+        }
+      }
+    }
+
+    // No matching polygons locations for the end, so no path found
+    // because start point is valid normally, check end point first
+    if (!endPoly) return null;
+
+    // Same check as above, but for the start point
     if (!startPoly && this._meshShrinkAmount > 0) {
       for (const navPoly of this._navPolygons) {
         // Check if point is within bounding circle to avoid extra projection calculations
@@ -118,23 +137,8 @@ export default class NavMesh {
       }
     }
 
-    // Same check as above, but for the end point
-    if (!endPoly && this._meshShrinkAmount > 0) {
-      for (const navPoly of this._navPolygons) {
-        r = navPoly.boundingRadius + this._meshShrinkAmount;
-        d = navPoly.centroid.distance(endVector);
-        if (d <= r) {
-          const { distance } = this._projectPointToPolygon(endVector, navPoly);
-          if (distance <= this._meshShrinkAmount && distance < endDistance) {
-            endPoly = navPoly;
-            endDistance = distance;
-          }
-        }
-      }
-    }
-
-    // No matching polygons locations for the start or end, so no path found
-    if (!startPoly || !endPoly) return null;
+    // No matching polygons locations for the start, so no path found
+    if (!startPoly) return null;
 
     // If the start and end polygons are the same, return a direct path
     if (startPoly === endPoly) return [startVector, endVector];
