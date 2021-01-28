@@ -17,6 +17,7 @@
           {
             "targets": "> 0.25%, not dead",
             "modules": "commonjs",
+            "useBuiltIns": "usage",
             "corejs": 3
           }
         ]
