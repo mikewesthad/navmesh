@@ -42,6 +42,7 @@
 <li data-ice="manualNav" class="indent-h3" data-link="manual/README.html"><a href="manual/README.html#phaser-navmesh" data-ice="link">phaser-navmesh</a></li>
 <li data-ice="manualNav" class="indent-h3" data-link="manual/README.html"><a href="manual/README.html#phaser2-navmesh" data-ice="link">phaser2-navmesh</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#performance-comparison" data-ice="link">Performance Comparison</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#community-examples" data-ice="link">Community Examples</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#development" data-ice="link">Development</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#changelogs" data-ice="link">Changelogs</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#references" data-ice="link">References</a></li>
@@ -161,7 +162,13 @@
 <h2 id="creating-a-navigation-mesh">Creating a Navigation Mesh</h2><p>Before you can dive into the code, you&apos;ll need to create a navigation mesh for your game world. This is a process of defining the walkable areas within you world. You can create it from scratch in code, but it&apos;s far easier to use a tilemap editor like Tiled to do this. See <a href="https://www.mikewesthad.com/navmesh/docs/manual/tiled-navmesh-guide.html">guide</a>.</p>
 <p>Note: the current version of the library only supports <a href="https://www.sparknotes.com/math/geometry1/polygons/section2/">convex polygons</a>.
 There are libraries like <a href="https://github.com/schteppe/poly-decomp.js/">poly-decom.js</a> for decomposing a concave polygon into easier to manage convex polygons. It&apos;s on the to do list to handle any polygon, but I&apos;ve found that automatically decomposing polygons leads to worse performance than hand-mapping the levels with convex polygons.</p>
-<h2 id="usage">Usage</h2><h3 id="navmesh">navmesh</h3><p>If you don&apos;t need the Phaser wrappers, you can construct navmeshes directly from points using the navmesh package:</p>
+<h2 id="usage">Usage</h2><p>You can find code snippets for the different use cases below. You can also jump directly to a few example projects in this repository for:</p>
+<ul>
+<li><a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples-phaser3">phaser 3</a></li>
+<li><a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples-phaser2">phaser 2</a></li>
+<li><a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples-node">navmesh in a node environment</a></li>
+</ul>
+<h3 id="navmesh">navmesh</h3><p>If you don&apos;t need the Phaser wrappers, you can construct navmeshes directly from points using the navmesh package:</p>
 <pre><code class="lang-js"><code class="source-code prettyprint">import NavMesh from &quot;navmesh&quot;;
 
 /*
@@ -183,7 +190,7 @@ There are libraries like <a href="https://github.com/schteppe/poly-decomp.js/">p
 const meshPolygonPoints = [
   [{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 10 }, { x: 0, y: 10 }], // Polygon 1
   [{ x: 10, y: 0 }, { x: 20, y: 0 }, { x: 20, y: 10 }, { x: 10, y: 10 }], // Polygon 2
-  [{ x: 10, y: 0 }, { x: 20, y: 10 }, { x: 20, y: 20 }, { x: 10, y: 20 }] // Polygon 3
+  [{ x: 10, y: 10 }, { x: 20, y: 10 }, { x: 20, y: 20 }, { x: 10, y: 20 }] // Polygon 3
 ];
 const navMesh = new NavMesh(meshPolygonPoints);
 
@@ -192,7 +199,7 @@ const path = navMesh.findPath({ x: 0, y: 0 }, { x: 10, y: 20 });
 // &#x2BA1;  [{ x: 0, y: 0 }, { x: 10, y: 10 }, { x: 10, y: 20 }]</code>
 </code></pre>
 <p>Check out the <a href="https://www.mikewesthad.com/navmesh/docs/identifiers.html#navmesh-src">API reference</a> for more information.</p>
-<h3 id="phaser-navmesh">phaser-navmesh</h3><p>If you are working with Phaser 3, you can use the phaser-navmesh package, which provides a Scene plugin. See this <a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples/src">example</a> for more complete usage.</p>
+<h3 id="phaser-navmesh">phaser-navmesh</h3><p>If you are working with Phaser 3, you can use the phaser-navmesh package, which provides a Scene plugin. Play with a live example on CodeSandbox <a href="https://codesandbox.io/s/zq1wvozxll?fontsize=14">here</a>, or peek at the <a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples/src">examples</a> in this repository for more complete usage.</p>
 <pre><code class="lang-js"><code class="source-code prettyprint">import Phaser from &quot;phaser&quot;;
 import PhaserNavMeshPlugin from &quot;phaser-navmesh&quot;;
 
@@ -282,10 +289,13 @@ Long paths (600 pixels and greater length), average time per iteration:
     Comparison:
         NavMesh is 187.95x faster than Phaser AStar
         NavMesh is 21.65x faster than EasyStar</code>
-</code></pre><h2 id="development">Development</h2><p>Pull requests are welcome (see <a href="#to-dos">todos</a>)! If you want to run this repo locally, make sure you have <a href="https://nodejs.org/en/">node</a> installed. Download the repo, open a terminal in the repo folder and run:</p>
-<pre><code><code class="source-code prettyprint">npm install
+</code></pre><h2 id="community-examples">Community Examples</h2><ul>
+<li><a href="https://colyseus-unity3d-navmesh.firebaseapp.com">TypeScript Server Example</a> - Right click to move the agent, see discussion thread <a href="https://github.com/mikewesthad/navmesh/issues/11#issuecomment-595211483">here</a> with links to source code.</li>
+</ul>
+<h2 id="development">Development</h2><p>Pull requests are welcome (see <a href="#to-dos">todos</a>)! If you want to run this repo locally, make sure you have <a href="https://nodejs.org/en/">node</a> installed. Download the repo, open a terminal in the repo folder and run:</p>
+<pre><code><code class="source-code prettyprint">npx yarn
 npm run bootstrap</code>
-</code></pre><p>This project uses <a href="https://github.com/lerna/lerna">lerna</a> and <a href="https://yarnpkg.com/lang/en/docs/workspaces/">yarn workspaces</a> to manage multiple packages within one repository. <code>npm install</code> will pull the root dependencies and <code>npm run bootstrap</code> will use lerna &amp; yarn to pull and link dependencies within &quot;packages/&quot;. This project has the following packages:</p>
+</code></pre><p>This project uses <a href="https://github.com/lerna/lerna">lerna</a> and <a href="https://yarnpkg.com/lang/en/docs/workspaces/">yarn workspaces</a> to manage multiple packages within one repository. <code>npx yarn</code> will pull the root dependencies (and install yarn if needed) and <code>npm run bootstrap</code> will use lerna &amp; yarn to pull and link dependencies within &quot;packages/&quot;. This project has the following packages:</p>
 <ul>
 <li><code>navmesh</code> - core logic, game-engine agnostic</li>
 <li><code>phaser-navmesh</code> - Phaser Plugin v3 wrapper around <code>navmesh</code></li>
@@ -294,7 +304,7 @@ npm run bootstrap</code>
 <p>The project is controlled via npm scripts. The main ones to use:</p>
 <ul>
 <li><code>npm run build</code> - will build all the individual packages within &quot;packages/&quot;.</li>
-<li><code>npm run dev</code> - watch &amp; serve the examples. A browser window will pop up with links to the examples. If you are working on the library, this is the easiest way to do &quot;functional testing&quot; by using the library in a game environment.</li>
+<li><code>npm run dev</code> - watch &amp; serve the examples. Phaser 3 examples are at <a href="http://localhost:8080/">localhost::8080</a>, Phaser 2 examples at <a href="http://localhost:8081/">localhost::8081</a> and node examples at <a href="http://localhost:8082/">localhost::8082</a>. If you are working on the library, this is the easiest way to do &quot;functional testing&quot; by using the library in a game environment.</li>
 <li><code>npm run test</code> - will run the automated tests against the library.</li>
 </ul>
 <h2 id="changelogs">Changelogs</h2><ul>
@@ -409,7 +419,11 @@ npm run bootstrap</code>
 </ul><p>To use the transpiled and minified distribution of the library:</p><pre><code class="lang-js"><code class="source-code prettyprint">import PhaserNavMeshPlugin from &quot;phaser-navmesh&quot;;</code>
 </code></pre><p>To use the raw library (so you can transpile it to match your own project settings):</p><pre><code class="lang-js"><code class="source-code prettyprint">import PhaserNavMeshPlugin from &quot;phaser-navmesh/src&quot;;</code>
 </code></pre><h2>Creating a Navigation Mesh</h2><p>Before you can dive into the code, you&apos;ll need to create a navigation mesh for your game world. This is a process of defining the walkable areas within you world. You can create it from scratch in code, but it&apos;s far easier to use a tilemap editor like Tiled to do this. See <a href="https://www.mikewesthad.com/navmesh/docs/manual/tiled-navmesh-guide.html">guide</a>.</p><p>Note: the current version of the library only supports <a href="https://www.sparknotes.com/math/geometry1/polygons/section2/">convex polygons</a>.
-There are libraries like <a href="https://github.com/schteppe/poly-decomp.js/">poly-decom.js</a> for decomposing a concave polygon into easier to manage convex polygons. It&apos;s on the to do list to handle any polygon, but I&apos;ve found that automatically decomposing polygons leads to worse performance than hand-mapping the levels with convex polygons.</p><h2>Usage</h2><h3>navmesh</h3><p>If you don&apos;t need the Phaser wrappers, you can construct navmeshes directly from points using the navmesh package:</p><pre><code class="lang-js"><code class="source-code prettyprint">import NavMesh from &quot;navmesh&quot;;
+There are libraries like <a href="https://github.com/schteppe/poly-decomp.js/">poly-decom.js</a> for decomposing a concave polygon into easier to manage convex polygons. It&apos;s on the to do list to handle any polygon, but I&apos;ve found that automatically decomposing polygons leads to worse performance than hand-mapping the levels with convex polygons.</p><h2>Usage</h2><p>You can find code snippets for the different use cases below. You can also jump directly to a few example projects in this repository for:</p><ul>
+<li><a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples-phaser3">phaser 3</a></li>
+<li><a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples-phaser2">phaser 2</a></li>
+<li><a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples-node">navmesh in a node environment</a></li>
+</ul><h3>navmesh</h3><p>If you don&apos;t need the Phaser wrappers, you can construct navmeshes directly from points using the navmesh package:</p><pre><code class="lang-js"><code class="source-code prettyprint">import NavMesh from &quot;navmesh&quot;;
 
 /*
   Imaging your game world has three walkable rooms, like this:
@@ -430,14 +444,14 @@ There are libraries like <a href="https://github.com/schteppe/poly-decomp.js/">p
 const meshPolygonPoints = [
   [{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 10 }, { x: 0, y: 10 }], // Polygon 1
   [{ x: 10, y: 0 }, { x: 20, y: 0 }, { x: 20, y: 10 }, { x: 10, y: 10 }], // Polygon 2
-  [{ x: 10, y: 0 }, { x: 20, y: 10 }, { x: 20, y: 20 }, { x: 10, y: 20 }] // Polygon 3
+  [{ x: 10, y: 10 }, { x: 20, y: 10 }, { x: 20, y: 20 }, { x: 10, y: 20 }] // Polygon 3
 ];
 const navMesh = new NavMesh(meshPolygonPoints);
 
 // Find a path from the top left of room 1 to the bottom left of room 3
 const path = navMesh.findPath({ x: 0, y: 0 }, { x: 10, y: 20 });
 // &#x2BA1;  [{ x: 0, y: 0 }, { x: 10, y: 10 }, { x: 10, y: 20 }]</code>
-</code></pre><p>Check out the <a href="https://www.mikewesthad.com/navmesh/docs/identifiers.html#navmesh-src">API reference</a> for more information.</p><h3>phaser-navmesh</h3><p>If you are working with Phaser 3, you can use the phaser-navmesh package, which provides a Scene plugin. See this <a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples/src">example</a> for more complete usage.</p><pre><code class="lang-js"><code class="source-code prettyprint">import Phaser from &quot;phaser&quot;;
+</code></pre><p>Check out the <a href="https://www.mikewesthad.com/navmesh/docs/identifiers.html#navmesh-src">API reference</a> for more information.</p><h3>phaser-navmesh</h3><p>If you are working with Phaser 3, you can use the phaser-navmesh package, which provides a Scene plugin. Play with a live example on CodeSandbox <a href="https://codesandbox.io/s/zq1wvozxll?fontsize=14">here</a>, or peek at the <a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples/src">examples</a> in this repository for more complete usage.</p><pre><code class="lang-js"><code class="source-code prettyprint">import Phaser from &quot;phaser&quot;;
 import PhaserNavMeshPlugin from &quot;phaser-navmesh&quot;;
 
 const game = new Phaser.Game({
@@ -516,15 +530,17 @@ Long paths (600 pixels and greater length), average time per iteration:
     Comparison:
         NavMesh is 187.95x faster than Phaser AStar
         NavMesh is 21.65x faster than EasyStar</code>
-</code></pre><h2>Development</h2><p>Pull requests are welcome (see <a href="#to-dos">todos</a>)! If you want to run this repo locally, make sure you have <a href="https://nodejs.org/en/">node</a> installed. Download the repo, open a terminal in the repo folder and run:</p><pre><code><code class="source-code prettyprint">npm install
+</code></pre><h2>Community Examples</h2><ul>
+<li><a href="https://colyseus-unity3d-navmesh.firebaseapp.com">TypeScript Server Example</a> - Right click to move the agent, see discussion thread <a href="https://github.com/mikewesthad/navmesh/issues/11#issuecomment-595211483">here</a> with links to source code.</li>
+</ul><h2>Development</h2><p>Pull requests are welcome (see <a href="#to-dos">todos</a>)! If you want to run this repo locally, make sure you have <a href="https://nodejs.org/en/">node</a> installed. Download the repo, open a terminal in the repo folder and run:</p><pre><code><code class="source-code prettyprint">npx yarn
 npm run bootstrap</code>
-</code></pre><p>This project uses <a href="https://github.com/lerna/lerna">lerna</a> and <a href="https://yarnpkg.com/lang/en/docs/workspaces/">yarn workspaces</a> to manage multiple packages within one repository. <code>npm install</code> will pull the root dependencies and <code>npm run bootstrap</code> will use lerna &amp; yarn to pull and link dependencies within &quot;packages/&quot;. This project has the following packages:</p><ul>
+</code></pre><p>This project uses <a href="https://github.com/lerna/lerna">lerna</a> and <a href="https://yarnpkg.com/lang/en/docs/workspaces/">yarn workspaces</a> to manage multiple packages within one repository. <code>npx yarn</code> will pull the root dependencies (and install yarn if needed) and <code>npm run bootstrap</code> will use lerna &amp; yarn to pull and link dependencies within &quot;packages/&quot;. This project has the following packages:</p><ul>
 <li><code>navmesh</code> - core logic, game-engine agnostic</li>
 <li><code>phaser-navmesh</code> - Phaser Plugin v3 wrapper around <code>navmesh</code></li>
 <li><code>phaser2-navmesh</code> - Phaser Plugin v2 wrapper around <code>navmesh</code></li>
 </ul><p>The project is controlled via npm scripts. The main ones to use:</p><ul>
 <li><code>npm run build</code> - will build all the individual packages within &quot;packages/&quot;.</li>
-<li><code>npm run dev</code> - watch &amp; serve the examples. A browser window will pop up with links to the examples. If you are working on the library, this is the easiest way to do &quot;functional testing&quot; by using the library in a game environment.</li>
+<li><code>npm run dev</code> - watch &amp; serve the examples. Phaser 3 examples are at <a href="http://localhost:8080/">localhost::8080</a>, Phaser 2 examples at <a href="http://localhost:8081/">localhost::8081</a> and node examples at <a href="http://localhost:8082/">localhost::8082</a>. If you are working on the library, this is the easiest way to do &quot;functional testing&quot; by using the library in a game environment.</li>
 <li><code>npm run test</code> - will run the automated tests against the library.</li>
 </ul><h2>Changelogs</h2><ul>
 <li><a href="https://github.com/mikewesthad/navmesh/blob/master/packages/phaser-navmesh/README.md">Phaser NavMesh (for Phaser v3)</a></li>
