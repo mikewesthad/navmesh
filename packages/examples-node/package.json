@@ -1,7 +1,7 @@
 {
   "name": "examples-node",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -15,9 +15,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "navmesh": "^2.0.3",
+    "navmesh": "^2.0.4",
     "nodemon": "^2.0.2",
     "yargs": "^15.1.0"
-  },
-  "devDependencies": {}
+  }
 }

@@ -1,7 +1,7 @@
 {
   "name": "examples-phaser2",
   "private": true,
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,7 @@
     "easystarjs": "^0.4.3",
     "fontfaceobserver": "^2.1.0",
     "phaser-ce": "^2.14.0",
-    "phaser2-navmesh": "^2.0.5"
+    "phaser2-navmesh": "^2.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
