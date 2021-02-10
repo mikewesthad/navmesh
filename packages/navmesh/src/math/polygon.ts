@@ -1,13 +1,19 @@
+import { Point } from "../common-types";
 import Line from "./line";
 
 /**
- * Stripped down version of Phaser's Polygon with just the functionality needed for navmeshes
+ * Stripped down version of Phaser's Polygon with just the functionality needed for navmeshes.
  *
  * @export
  * @class Polygon
  */
 export default class Polygon {
-  constructor(points, closed = true) {
+  public edges: Line[];
+  public points: Point[];
+  private isClosed: boolean;
+
+  constructor(points: Point[], closed = true) {
+    this.isClosed = closed;
     this.points = points;
     this.edges = [];
 
@@ -16,14 +22,15 @@ export default class Polygon {
       const p2 = points[i];
       this.edges.push(new Line(p1.x, p1.y, p2.x, p2.y));
     }
-    if (closed) {
+
+    if (this.isClosed) {
       const first = points[0];
       const last = points[points.length - 1];
       this.edges.push(new Line(first.x, first.y, last.x, last.y));
     }
   }
 
-  contains(x, y) {
+  public contains(x: number, y: number) {
     let inside = false;
 
     for (let i = -1, j = this.points.length - 1; ++i < this.points.length; j = i) {
