@@ -1,10 +1,10 @@
 import NavMesh from "../navmesh";
 import Vector2 from "../math/vector-2";
 
-const v2 = (...args) => new Vector2(...args);
+const v2 = (x: number, y: number) => new Vector2(x, y);
 
 describe("An empty NavMesh instance", () => {
-  let emptyNavMesh;
+  let emptyNavMesh: NavMesh;
   beforeAll(() => (emptyNavMesh = new NavMesh([])));
 
   it("should not throw an error on construction", () => {
@@ -18,7 +18,7 @@ describe("An empty NavMesh instance", () => {
 });
 
 describe("A simple, fully connected NavMesh instance", () => {
-  let navMesh;
+  let navMesh: NavMesh;
   /*
     - - - - -
     - 1 - 2 -
@@ -53,7 +53,7 @@ describe("A simple, fully connected NavMesh instance", () => {
 });
 
 describe("A NavMesh instance with two islands", () => {
-  let navMesh;
+  let navMesh: NavMesh;
   /*
     - - -   - - -
     - 1 -   - 2 -
@@ -73,7 +73,7 @@ describe("A NavMesh instance with two islands", () => {
 });
 
 describe("A NavMesh instance with a corner", () => {
-  let navMesh;
+  let navMesh: NavMesh;
   /*
     - - - - -
     - 1 - 2 -

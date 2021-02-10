@@ -1,7 +1,7 @@
 import { almostEqual, angleDifference, areCollinear } from "../utils";
 import Line from "../math/line";
 
-const line = (...args) => new Line(...args);
+const line = (x1: number, y1: number, x2: number, y2: number) => new Line(x1, y1, x2, y2);
 
 describe("almostEqual", () => {
   test("should be false for numbers with a significant difference", () => {
