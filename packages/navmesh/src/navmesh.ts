@@ -2,10 +2,14 @@ import jsastar from "javascript-astar";
 import NavPoly from "./navpoly";
 import NavGraph from "./navgraph";
 import Channel from "./channel";
-import { angleDifference, areCollinear, clamp } from "./utils";
+import { angleDifference, areCollinear, clamp, distanceSquared, projectPointToEdge } from "./utils";
 import Vector2 from "./math/vector-2";
 import Line from "./math/line";
 import Polygon from "./math/polygon";
+import { Point } from "./common-types";
+
+/** Lightweight representation of a Polygon as a series of points. */
+export type PolyPoints = Point[];
 
 /**
  * The workhorse that represents a navigation mesh built from a series of polygons. Once built, the
@@ -15,65 +19,57 @@ import Polygon from "./math/polygon";
  * - channel: the path of polygons from starting point to end point
  * - pull the string: run the funnel algorithm on the channel so that the path hugs the edges of the
  *   channel. Equivalent to having a string snaking through a hallway and then pulling it taut.
- *
- * @class NavMesh
  */
 export default class NavMesh {
-  /**
-   * Creates an instance of NavMesh.
-   * @param {object[][]} meshPolygonPoints Array where each element is an array of point-like
-   * objects that defines a polygon.
-   * @param {number} [meshShrinkAmount=0] The amount (in pixels) that the navmesh has been
-   * shrunk around obstacles (a.k.a the amount obstacles have been expanded)
-   * @memberof NavMesh
-   */
-  constructor(meshPolygonPoints, meshShrinkAmount = 0) {
-    this._meshShrinkAmount = meshShrinkAmount;
+  private meshShrinkAmount: number;
+  private navPolygons: NavPoly[];
+  private graph: NavGraph;
 
-    const newPolys = meshPolygonPoints.map(polyPoints => {
-      const vectors = polyPoints.map(p => new Vector2(p.x, p.y));
+  /**
+   * @param meshPolygonPoints Array where each element is an array of point-like objects that
+   * defines a polygon.
+   * @param meshShrinkAmount The amount (in pixels) that the navmesh has been shrunk around
+   * obstacles (a.k.a the amount obstacles have been expanded).
+   */
+  public constructor(meshPolygonPoints: PolyPoints[], meshShrinkAmount = 0) {
+    this.meshShrinkAmount = meshShrinkAmount;
+
+    // Convert the PolyPoints[] into NavPoly instances.
+    const newPolys = meshPolygonPoints.map((polyPoints) => {
+      const vectors = polyPoints.map((p) => new Vector2(p.x, p.y));
       return new Polygon(vectors);
     });
+    this.navPolygons = newPolys.map((polygon, i) => new NavPoly(i, polygon));
 
-    this._navPolygons = newPolys.map((polygon, i) => new NavPoly(i, polygon));
-
-    this._calculateNeighbors();
+    this.calculateNeighbors();
 
     // Astar graph of connections between polygons
-    this._graph = new NavGraph(this._navPolygons);
+    this.graph = new NavGraph(this.navPolygons);
   }
 
   /**
    * Get the NavPolys that are in this navmesh.
-   *
-   * @returns {NavPoly[]}
-   * @memberof NavMesh
    */
-  getPolygons() {
-    return this._navPolygons;
+  public getPolygons() {
+    return this.navPolygons;
   }
 
   /**
    * Cleanup method to remove references.
-   *
-   * @memberof NavMesh
    */
-  destroy() {
-    this._graph.destroy();
-    for (const poly of this._navPolygons) poly.destroy();
-    this._navPolygons = [];
+  public destroy() {
+    this.graph.destroy();
+    for (const poly of this.navPolygons) poly.destroy();
+    this.navPolygons = [];
   }
 
   /**
    * Find a path from the start point to the end point using this nav mesh.
-   *
    * @param {object} startPoint A point-like object in the form {x, y}
    * @param {object} endPoint A point-like object in the form {x, y}
    * @returns {Vector2[]|null} An array of points if a path is found, or null if no path
-   *
-   * @memberof NavMesh
    */
-  findPath(startPoint, endPoint) {
+  public findPath(startPoint: Point, endPoint: Point) {
     let startPoly = null;
     let endPoly = null;
     let startDistance = Number.MAX_VALUE;
@@ -83,7 +79,7 @@ export default class NavMesh {
     const endVector = new Vector2(endPoint.x, endPoint.y);
 
     // Find the closest poly for the starting and ending point
-    for (const navPoly of this._navPolygons) {
+    for (const navPoly of this.navPolygons) {
       r = navPoly.boundingRadius;
       // Start
       d = navPoly.centroid.distance(startVector);
@@ -101,13 +97,13 @@ export default class NavMesh {
 
     // If the end point wasn't inside a polygon, run a more liberal check that allows a point
     // to be within meshShrinkAmount radius of a polygon
-    if (!endPoly && this._meshShrinkAmount > 0) {
-      for (const navPoly of this._navPolygons) {
-        r = navPoly.boundingRadius + this._meshShrinkAmount;
+    if (!endPoly && this.meshShrinkAmount > 0) {
+      for (const navPoly of this.navPolygons) {
+        r = navPoly.boundingRadius + this.meshShrinkAmount;
         d = navPoly.centroid.distance(endVector);
         if (d <= r) {
-          const { distance } = this._projectPointToPolygon(endVector, navPoly);
-          if (distance <= this._meshShrinkAmount && distance < endDistance) {
+          const { distance } = this.projectPointToPolygon(endVector, navPoly);
+          if (distance <= this.meshShrinkAmount && distance < endDistance) {
             endPoly = navPoly;
             endDistance = distance;
           }
@@ -120,16 +116,16 @@ export default class NavMesh {
     if (!endPoly) return null;
 
     // Same check as above, but for the start point
-    if (!startPoly && this._meshShrinkAmount > 0) {
-      for (const navPoly of this._navPolygons) {
+    if (!startPoly && this.meshShrinkAmount > 0) {
+      for (const navPoly of this.navPolygons) {
         // Check if point is within bounding circle to avoid extra projection calculations
-        r = navPoly.boundingRadius + this._meshShrinkAmount;
+        r = navPoly.boundingRadius + this.meshShrinkAmount;
         d = navPoly.centroid.distance(startVector);
         if (d <= r) {
           // Check if projected point is within range of a polgyon and is closer than the
           // previous point
-          const { distance } = this._projectPointToPolygon(startVector, navPoly);
-          if (distance <= this._meshShrinkAmount && distance < startDistance) {
+          const { distance } = this.projectPointToPolygon(startVector, navPoly);
+          if (distance <= this.meshShrinkAmount && distance < startDistance) {
             startPoly = navPoly;
             startDistance = distance;
           }
@@ -144,8 +140,8 @@ export default class NavMesh {
     if (startPoly === endPoly) return [startVector, endVector];
 
     // Search!
-    const astarPath = jsastar.astar.search(this._graph, startPoly, endPoly, {
-      heuristic: this._graph.navHeuristic
+    const astarPath = jsastar.astar.search(this.graph, startPoly, endPoly, {
+      heuristic: this.graph.navHeuristic,
     });
 
     // While the start and end polygons may be valid, no path between them
@@ -168,6 +164,7 @@ export default class NavMesh {
           portal = navPolygon.portals[i];
         }
       }
+      if (!portal) throw new Error("Path was supposed to be found, but portal is missing!");
 
       // Push the portal vertices into the channel
       channel.push(portal.start, portal.end);
@@ -189,13 +186,13 @@ export default class NavMesh {
     return phaserPath;
   }
 
-  _calculateNeighbors() {
+  private calculateNeighbors() {
     // Fill out the neighbor information for each navpoly
-    for (let i = 0; i < this._navPolygons.length; i++) {
-      const navPoly = this._navPolygons[i];
+    for (let i = 0; i < this.navPolygons.length; i++) {
+      const navPoly = this.navPolygons[i];
 
-      for (let j = i + 1; j < this._navPolygons.length; j++) {
-        const otherNavPoly = this._navPolygons[j];
+      for (let j = i + 1; j < this.navPolygons.length; j++) {
+        const otherNavPoly = this.navPolygons[j];
 
         // Check if the other navpoly is within range to touch
         const d = navPoly.centroid.distance(otherNavPoly.centroid);
@@ -208,7 +205,7 @@ export default class NavMesh {
             if (!areCollinear(edge, otherEdge)) continue;
 
             // If they are collinear, check if they overlap
-            const overlap = this._getSegmentOverlap(edge, otherEdge);
+            const overlap = this.getSegmentOverlap(edge, otherEdge);
             if (!overlap) continue;
 
             // Connections are symmetric!
@@ -250,14 +247,14 @@ export default class NavMesh {
 
   // Check two collinear line segments to see if they overlap by sorting the points.
   // Algorithm source: http://stackoverflow.com/a/17152247
-  _getSegmentOverlap(line1, line2) {
+  private getSegmentOverlap(line1: Line, line2: Line) {
     const points = [
       { line: line1, point: line1.start },
       { line: line1, point: line1.end },
       { line: line2, point: line2.start },
-      { line: line2, point: line2.end }
+      { line: line2, point: line2.end },
     ];
-    points.sort(function(a, b) {
+    points.sort(function (a, b) {
       if (a.point.x < b.point.x) return -1;
       else if (a.point.x > b.point.x) return 1;
       else {
@@ -281,15 +278,12 @@ export default class NavMesh {
    * @param {Phaser.Point} point The point to project
    * @param {NavPoly} navPoly The navigation polygon to test against
    * @returns {{point: Phaser.Point, distance: number}}
-   *
-   * @private
-   * @memberof NavMesh
    */
-  _projectPointToPolygon(point, navPoly) {
+  private projectPointToPolygon(point: Vector2, navPoly: NavPoly) {
     let closestProjection = null;
     let closestDistance = Number.MAX_VALUE;
     for (const edge of navPoly.edges) {
-      const projectedPoint = this._projectPointToEdge(point, edge);
+      const projectedPoint = projectPointToEdge(point, edge);
       const d = point.distance(projectedPoint);
       if (closestProjection === null || d < closestDistance) {
         closestDistance = d;
@@ -297,28 +291,5 @@ export default class NavMesh {
       }
     }
     return { point: closestProjection, distance: closestDistance };
-  }
-
-  _distanceSquared(a, b) {
-    const dx = b.x - a.x;
-    const dy = b.y - a.y;
-    return dx * dx + dy * dy;
-  }
-
-  // Project a point onto a line segment
-  // JS Source: http://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
-  _projectPointToEdge(point, line) {
-    const a = line.start;
-    const b = line.end;
-    // Consider the parametric equation for the edge's line, p = a + t (b - a). We want to find
-    // where our point lies on the line by solving for t:
-    //  t = [(p-a) . (b-a)] / |b-a|^2
-    const l2 = this._distanceSquared(a, b);
-    let t = ((point.x - a.x) * (b.x - a.x) + (point.y - a.y) * (b.y - a.y)) / l2;
-    // We clamp t from [0,1] to handle points outside the segment vw.
-    t = clamp(t, 0, 1);
-    // Project onto the segment
-    const p = new Vector2(a.x + t * (b.x - a.x), a.y + t * (b.y - a.y));
-    return p;
   }
 }
