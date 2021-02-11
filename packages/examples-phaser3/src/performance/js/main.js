@@ -1,9 +1,7 @@
 import Phaser from "phaser";
 import Load from "./scenes/load";
 import Start from "./scenes/start";
-
-// Import "phaser-navmesh" for transpiled code and "phaser-navmesh/src" for non-transpiled code
-import PhaserNavMesh from "phaser-navmesh/src";
+import PhaserNavMesh from "phaser-navmesh";
 
 const game = new Phaser.Game({
   type: Phaser.AUTO,
