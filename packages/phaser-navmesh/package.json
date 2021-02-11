@@ -3,6 +3,7 @@
   "version": "2.0.6",
   "description": "A plugin for Phaser (v3) for fast pathfinding using navigation meshes",
   "main": "dist/phaser-navmesh.min.js",
+  "types": "dist/phaser-navmesh.d.ts",
   "scripts": {
     "test": "",
     "tsc": "tsc",
