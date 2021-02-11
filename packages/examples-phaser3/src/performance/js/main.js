@@ -16,10 +16,10 @@ const game = new Phaser.Game({
         key: "NavMeshPlugin", // Key to store the plugin class under in cache
         plugin: PhaserNavMesh, // Class that constructs plugins
         mapping: "navMeshPlugin", // Property mapping to use for the scene, e.g. this.navMeshPlugin
-        start: true
-      }
-    ]
-  }
+        start: true,
+      },
+    ],
+  },
 });
 
 game.scene.add("load", Load);
