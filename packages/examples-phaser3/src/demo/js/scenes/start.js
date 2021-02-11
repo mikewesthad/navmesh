@@ -37,7 +37,7 @@ export default class Start extends Phaser.Scene {
     const follower = new FollowerSprite(this, 50, 200, navMesh);
 
     // On click
-    this.input.on("pointerdown", pointer => {
+    this.input.on("pointerdown", (pointer) => {
       const start = new Phaser.Math.Vector2(follower.x, follower.y);
       const end = new Phaser.Math.Vector2(pointer.x, pointer.y);
 
@@ -67,7 +67,7 @@ export default class Start extends Phaser.Scene {
         drawCentroid: true,
         drawBounds: false,
         drawNeighbors: false,
-        drawPortals: true
+        drawPortals: true,
       });
     });
 
@@ -77,12 +77,12 @@ export default class Start extends Phaser.Scene {
       font: "22px Josefin Sans",
       fill: "#ff0044",
       padding: { x: 20, y: 10 },
-      backgroundColor: "#fff"
+      backgroundColor: "#fff",
     };
     const uiTextLines = [
       "Click to find a path!",
       "Press 'm' to see navmesh.",
-      "Press '2' to go to scene 2."
+      "Press '2' to go to scene 2.",
     ];
     const uiText = this.add.text(10, 5, uiTextLines, style).setAlpha(0.9);
 
