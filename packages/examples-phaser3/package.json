@@ -8,7 +8,7 @@
     "test": "",
     "build": "webpack --mode production",
     "watch": "webpack --mode development --watch",
-    "serve": "webpack-dev-server --watch --open --mode development"
+    "serve": "webpack serve --open --mode development"
   },
   "keywords": [],
   "author": "",
