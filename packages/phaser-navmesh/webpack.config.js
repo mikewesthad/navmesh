@@ -11,8 +11,8 @@ module.exports = function (env, argv) {
     mode: isDev ? "development" : "production",
     context: path.join(root, "src"),
     entry: {
-      "phaser-navmesh": "./index.ts",
-      "phaser-navmesh.min": "./index.ts",
+      "phaser-navmesh-plugin": "./index.ts",
+      "phaser-navmesh-plugin.min": "./index.ts",
     },
     output: {
       filename: "[name].js",
