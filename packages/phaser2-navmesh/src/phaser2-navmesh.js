@@ -115,13 +115,13 @@ export default class Phaser2NavMesh {
     drawBounds = false,
     drawNeighbors = true,
     drawPortals = true,
-    palette = [0x00a0b0, 0x6a4a3c, 0xcc333f, 0xeb6841, 0xedc951]
+    palette = [0x00a0b0, 0x6a4a3c, 0xcc333f, 0xeb6841, 0xedc951],
   } = {}) {
     if (!this.debugGraphics) return;
 
     const navPolys = this.navMesh.getPolygons();
 
-    navPolys.forEach(poly => {
+    navPolys.forEach((poly) => {
       const color = palette[poly.id % palette.length];
       this.debugGraphics.lineWidth = 0;
       this.debugGraphics.beginFill(color);
@@ -142,7 +142,7 @@ export default class Phaser2NavMesh {
 
       if (drawNeighbors) {
         this.debugGraphics.lineStyle(2, 0x000000);
-        poly.neighbors.forEach(n => {
+        poly.neighbors.forEach((n) => {
           this.debugGraphics.moveTo(poly.centroid.x, poly.centroid.y);
           this.debugGraphics.lineTo(n.centroid.x, n.centroid.y);
         });
@@ -150,7 +150,7 @@ export default class Phaser2NavMesh {
 
       if (drawPortals) {
         this.debugGraphics.lineStyle(10, 0x000000);
-        poly.portals.forEach(portal => {
+        poly.portals.forEach((portal) => {
           this.debugGraphics.moveTo(portal.start.x, portal.start.y);
           this.debugGraphics.lineTo(portal.end.x, portal.end.y);
         });
