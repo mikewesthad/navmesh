@@ -5,7 +5,7 @@ const path = require("path");
 const webpack = require("webpack");
 const root = __dirname;
 
-module.exports = function(env, argv) {
+module.exports = function (env, argv) {
   const isDev = argv.mode === "development";
 
   return {
@@ -13,30 +13,32 @@ module.exports = function(env, argv) {
     context: path.join(root, "src"),
     entry: {
       "demo/js/main": "./demo/js/main.js",
-      "performance/js/main": "./performance/js/main.js"
+      "performance/js/main": "./performance/js/main.js",
     },
     output: {
       filename: "[name].js",
-      path: path.resolve(root, "public")
+      path: path.resolve(root, "public"),
     },
     module: {
       rules: [
         {
           test: /\.js$/,
           exclude: /node_modules/,
-          use: { loader: "babel-loader", options: { root: "../../" } }
-        }
-      ]
+          use: { loader: "babel-loader", options: { root: "../../" } },
+        },
+      ],
     },
     plugins: [
-      new CopyWebpackPlugin([{ from: "**/*" }], { ignore: ["**/js/**/*"] }),
+      new CopyWebpackPlugin({
+        patterns: [{ from: "**/*", globOptions: { ignore: ["**/js/**/*"] } }],
+      }),
 
       new webpack.DefinePlugin({
         "typeof CANVAS_RENDERER": JSON.stringify(true),
         "typeof WEBGL_RENDERER": JSON.stringify(true),
-        PRODUCTION: !isDev
-      })
+        PRODUCTION: !isDev,
+      }),
     ],
-    devtool: isDev ? "eval-source-map" : "source-map"
+    devtool: isDev ? "eval-source-map" : "source-map",
   };
 };
