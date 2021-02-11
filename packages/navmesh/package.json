@@ -16,12 +16,12 @@
     "javascript-astar": "github:mikewesthad/javascript-astar"
   },
   "devDependencies": {
-    "eslint": "^7.19.0",
     "@babel/core": "^7.12.13",
     "@babel/preset-env": "^7.12.13",
     "@types/jest": "^26.0.20",
     "babel-jest": "^26.6.3",
     "babel-loader": "^8.2.2",
+    "eslint": "^7.19.0",
     "jest": "^26.6.3",
     "ts-jest": "^26.5.1",
     "ts-loader": "^8.0.17",
