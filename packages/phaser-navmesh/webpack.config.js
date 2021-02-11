@@ -11,8 +11,8 @@ module.exports = function (env, argv) {
     mode: isDev ? "development" : "production",
     context: path.join(root, "src"),
     entry: {
-      "phaser-navmesh": "./index.js",
-      "phaser-navmesh.min": "./index.js",
+      "phaser-navmesh": "./index.ts",
+      "phaser-navmesh.min": "./index.ts",
     },
     output: {
       filename: "[name].js",
@@ -31,6 +31,9 @@ module.exports = function (env, argv) {
         commonjs2: "phaser",
         amd: "phaser",
       },
+    },
+    resolve: {
+      extensions: [".ts", ".js"],
     },
     module: {
       rules: [
