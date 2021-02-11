@@ -1,7 +1,7 @@
 /* eslint-env node */
 
 const path = require("path");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 const root = __dirname;
 
 module.exports = function (env, argv) {
@@ -22,7 +22,7 @@ module.exports = function (env, argv) {
       globalObject: '(typeof self !== "undefined" ? self : this)',
     },
     optimization: {
-      minimizer: [new UglifyJsPlugin({ include: /\.min\.js$/, sourceMap: true })],
+      minimizer: [new TerserPlugin({ include: /\.min\.js$/ })],
     },
     resolve: {
       extensions: [".ts", ".js"],
