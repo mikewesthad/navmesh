@@ -6,10 +6,7 @@ import { angleDifference, areCollinear, clamp, distanceSquared, projectPointToEd
 import Vector2 from "./math/vector-2";
 import Line from "./math/line";
 import Polygon from "./math/polygon";
-import { Point } from "./common-types";
-
-/** Lightweight representation of a Polygon as a series of points. */
-export type PolyPoints = Point[];
+import { Point, PolyPoints } from "./common-types";
 
 /**
  * The workhorse that represents a navigation mesh built from a series of polygons. Once built, the
