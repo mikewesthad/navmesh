@@ -15,7 +15,7 @@ export default class ManyPaths extends Phaser.Scene {
     // Load the named layers - first parameter corresponds to layer name in Tiled
     tilemap.createStaticLayer("bg", wallTileset);
 
-    const wallLayer = tilemap.createStaticLayer("walls", wallTileset);
+    const wallLayer = tilemap.createLayer("walls", wallTileset);
     wallLayer.setCollisionByProperty({ collides: true });
     this.wallLayer = wallLayer;
 
@@ -33,18 +33,15 @@ export default class ManyPaths extends Phaser.Scene {
       font: "22px Josefin Sans",
       fill: "#ff0044",
       padding: { x: 20, y: 10 },
-      backgroundColor: "#fff"
+      backgroundColor: "#fff",
     };
     this.uiTextLines = [
       "Click to add followers",
       "Press '1' to go to scene 1.",
       "Followers: ",
-      "FPS: "
+      "FPS: ",
     ];
-    this.uiText = this.add
-      .text(10, 5, this.uiTextLines, style)
-      .setAlpha(0.9)
-      .setDepth(1000000);
+    this.uiText = this.add.text(10, 5, this.uiTextLines, style).setAlpha(0.9).setDepth(1000000);
 
     // -- Click to Add Follower --
 
@@ -53,7 +50,7 @@ export default class ManyPaths extends Phaser.Scene {
     this.addFollowers(200, 200, 25);
 
     // On click
-    this.input.on("pointerdown", pointer => {
+    this.input.on("pointerdown", (pointer) => {
       const worldPoint = pointer.positionToCamera(this.cameras.main);
       if (!wallLayer.hasTileAtWorldXY(worldPoint.x, worldPoint.y)) {
         this.addFollowers(pointer.x, pointer.y, 25);
@@ -72,7 +69,7 @@ export default class ManyPaths extends Phaser.Scene {
     this.uiTextLines[3] = `FPS: ${(1000 / delta).toFixed(2)}`;
     this.uiText.setText(this.uiTextLines);
 
-    this.followers.forEach(follower => {
+    this.followers.forEach((follower) => {
       if (!follower.currentTarget) {
         const randomTarget = this.getRandomEmptyPoint();
         follower.goTo(randomTarget);
@@ -100,7 +97,7 @@ export default class ManyPaths extends Phaser.Scene {
     // Convert from tile location to pixel location (at center of tile)
     return {
       x: tileX * this.tilemap.tileWidth + this.tilemap.tileWidth / 2,
-      y: tileY * this.tilemap.tileHeight + this.tilemap.tileHeight / 2
+      y: tileY * this.tilemap.tileHeight + this.tilemap.tileHeight / 2,
     };
   }
 }
