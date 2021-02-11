@@ -1,4 +1,4 @@
-import NavMesh from "navmesh/src"; // import the source - not the dist - no need to double build
+import NavMesh from "navmesh";
 
 /**
  * A wrapper around {@link NavMesh} for Phaser 2 / Phaser CE. Create instances of this class from
