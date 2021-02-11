@@ -15,18 +15,18 @@
   "license": "ISC",
   "dependencies": {
     "core-js": "3",
-    "easystarjs": "^0.4.3",
+    "easystarjs": "^0.4.4",
     "fontfaceobserver": "^2.1.0",
-    "phaser": "^3.22.0",
+    "phaser": "^3.52.0",
     "phaser-navmesh": "^2.0.6"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.4",
-    "@babel/preset-env": "^7.8.4",
-    "babel-loader": "^8.0.6",
-    "copy-webpack-plugin": "^5.1.1",
-    "webpack": "^4.41.6",
-    "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3"
+    "@babel/core": "^7.12.13",
+    "@babel/preset-env": "^7.12.13",
+    "babel-loader": "^8.2.2",
+    "copy-webpack-plugin": "^7.0.0",
+    "webpack": "^5.21.2",
+    "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^3.11.2"
   }
 }
