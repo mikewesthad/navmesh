@@ -7,8 +7,8 @@
   "scripts": {
     "test": "",
     "build": "",
-    "watch": "nodemon index.js",
-    "serve": "npm run watch"
+    "watch": "nodemon src/index.js",
+    "serve": "npm run watch",
   },
   "keywords": [],
   "author": "",
