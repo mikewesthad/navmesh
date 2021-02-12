@@ -3,8 +3,8 @@
     [
       "@babel/preset-env",
       {
+        "targets": "> 0.25%, not dead, not ie 11",
         "useBuiltIns": "usage",
-        "targets": "> 0.25%, not dead",
         "corejs": 3
       }
     ]
@@ -15,8 +15,8 @@
         [
           "@babel/preset-env",
           {
-            "targets": "> 0.25%, not dead",
             "modules": "commonjs",
+            "targets": "> 0.25%, not dead, not ie 11",
             "useBuiltIns": "usage",
             "corejs": 3
           }
