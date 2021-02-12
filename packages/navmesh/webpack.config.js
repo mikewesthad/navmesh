@@ -11,18 +11,14 @@ module.exports = function (env, argv) {
     context: path.join(root, "src"),
     entry: {
       navmesh: "./index.ts",
-      "navmesh.min": "./index.ts",
     },
     output: {
-      filename: "[name].js",
+      filename: "navmesh.js",
       path: path.resolve(root, "dist"),
       library: "NavMesh",
       libraryTarget: "umd",
       libraryExport: "default",
       globalObject: '(typeof self !== "undefined" ? self : this)',
-    },
-    optimization: {
-      minimizer: [new TerserPlugin({ include: /\.min\.js$/ })],
     },
     resolve: {
       extensions: [".ts", ".js"],
