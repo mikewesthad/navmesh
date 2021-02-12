@@ -9,6 +9,8 @@
     "build": "",
     "watch": "nodemon src/index.js",
     "serve": "npm run watch",
+    "watch:ts": "nodemon --watch \"src/**\" --ext \"ts,json\" --exec \"ts-node src/typed-demo.ts\"",
+    "serve:ts": "npm run watch"
   },
   "keywords": [],
   "author": "",
@@ -18,5 +20,11 @@
     "navmesh": "^2.0.4",
     "nodemon": "^2.0.2",
     "yargs": "^15.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.11",
+    "@types/node": "^14.14.27",
+    "@types/yargs": "^16.0.0",
+    "ts-node": "^9.1.1"
   }
 }
