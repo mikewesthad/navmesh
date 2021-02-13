@@ -17,7 +17,7 @@ module.exports = function (env, argv) {
       libraryExport: "default",
     },
     externals: {
-      phaser: "Phaser",
+      "phaser-ce": "Phaser",
     },
     resolve: {
       extensions: [".ts", ".js"],
