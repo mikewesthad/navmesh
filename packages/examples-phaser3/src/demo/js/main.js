@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import Load from "./scenes/load";
 import Start from "./scenes/start";
 import ManyPaths from "./scenes/many-paths";
-import * as NavMeshPlugin from "phaser-navmesh";
+import NavMeshPlugin from "phaser-navmesh";
 
 const game = new Phaser.Game({
   type: Phaser.AUTO,
