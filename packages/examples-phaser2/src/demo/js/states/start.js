@@ -45,7 +45,7 @@ class StartState extends Phaser.State {
       font: "22px Arial",
       fill: "#ff0044",
       align: "left",
-      backgroundColor: "#fff"
+      backgroundColor: "#fff",
     };
     const pathInfoText = this.game.add.text(10, 5, "Click to find a path!", style);
     this.game.add.text(10, 35, "Press 'm' to see navmesh.", style);
@@ -92,7 +92,7 @@ class StartState extends Phaser.State {
         drawCentroid: true,
         drawBounds: false,
         drawNeighbors: false,
-        drawPortals: true
+        drawPortals: true,
       });
     });
   }
