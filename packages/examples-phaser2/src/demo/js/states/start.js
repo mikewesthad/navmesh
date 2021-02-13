@@ -1,3 +1,4 @@
+import Phaser from "phaser";
 import PhaserNavMesh from "phaser2-navmesh";
 import FollowerSprite from "../game-objects/follower";
 

@@ -1,8 +1,8 @@
 // Phaser 2 wasn't intended to be used with npm modules. See webpack config for how these libs are
 // exposed. These need to be imported here so that all other files have access to them from the
 // global scope.
-import pixi from "pixi";
-import p2 from "p2";
+import "pixi";
+import "p2";
 import Phaser from "phaser";
 
 import Load from "./states/load";

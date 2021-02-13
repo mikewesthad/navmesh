@@ -1,3 +1,5 @@
+import Phaser from "phaser";
+
 export default class FollowerSprite extends Phaser.Sprite {
   constructor(game, x, y, navMesh) {
     super(game, x, y, "follower");
