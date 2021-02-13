@@ -3,7 +3,8 @@
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules/**"],
   "compilerOptions": {
-    "target": "ESNext",
+    "module": "ES6",
+    "target": "ES5",
     "outDir": "./dist",
   }  
 }

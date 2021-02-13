@@ -34,12 +34,19 @@ module.exports = function (env, argv) {
           use: "ts-loader",
           exclude: /node_modules/,
         },
-        {
-          test: /\.js$/,
-          exclude: /node_modules/,
-          // Configure babel to look for the root babel.config.json with rootMode.
-          use: { loader: "babel-loader", options: { rootMode: "upward" } },
-        },
+
+        // For some reason babel breaks UMD loading
+        // {
+        //   test: /\.js$/,
+        //   exclude: /node_modules/,
+        //   // Configure babel to look for the root babel.config.json with rootMode.
+        //   use: {
+        //     loader: "babel-loader",
+        //     options: {
+        //       rootMode: "upward",
+        //     },
+        //   },
+        // },
       ],
     },
     devtool: isDev ? "eval-source-map" : "source-map",
