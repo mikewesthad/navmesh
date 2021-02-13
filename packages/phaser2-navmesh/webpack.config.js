@@ -17,7 +17,7 @@ module.exports = function (env, argv) {
       libraryExport: "default",
     },
     externals: {
-      "phaser": {
+      phaser: {
         commonjs: "phaser",
         commonjs2: "phaser",
         amd: "phaser",
