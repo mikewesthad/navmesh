@@ -9,8 +9,8 @@ export default class StartState extends Phaser.Scene {
     const tilemap = this.add.tilemap("map");
     this.tilemap = tilemap;
     const wallTileset = tilemap.addTilesetImage("tiles", "tiles");
-    tilemap.createStaticLayer("bg", wallTileset);
-    const wallLayer = tilemap.createStaticLayer("walls", wallTileset);
+    tilemap.createLayer("bg", wallTileset);
+    const wallLayer = tilemap.createLayer("walls", wallTileset);
     wallLayer.setCollisionByProperty({ collides: true });
     this.wallLayer = wallLayer;
 
