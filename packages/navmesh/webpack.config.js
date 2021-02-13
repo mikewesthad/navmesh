@@ -1,7 +1,6 @@
 /* eslint-env node */
 
 const path = require("path");
-const TerserPlugin = require("terser-webpack-plugin");
 const root = __dirname;
 
 module.exports = function (env, argv) {
@@ -9,9 +8,7 @@ module.exports = function (env, argv) {
 
   return {
     context: path.join(root, "src"),
-    entry: {
-      navmesh: "./index.ts",
-    },
+    entry: "./index.ts",
     output: {
       filename: "navmesh.js",
       path: path.resolve(root, "dist"),
