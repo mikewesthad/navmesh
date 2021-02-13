@@ -13,9 +13,9 @@ export default class Start extends Phaser.Scene {
     const wallTileset = tilemap.addTilesetImage("tiles", "tiles");
 
     // Load the named layers - first parameter corresponds to layer name in Tiled
-    tilemap.createStaticLayer("bg", wallTileset);
+    tilemap.createLayer("bg", wallTileset);
 
-    const wallLayer = tilemap.createStaticLayer("walls", wallTileset);
+    const wallLayer = tilemap.createLayer("walls", wallTileset);
     wallLayer.setCollisionByProperty({ collides: true });
 
     // -- NavMesh Setup --
@@ -61,7 +61,7 @@ export default class Start extends Phaser.Scene {
     });
 
     // Toggle the navmesh visibility on/off
-    this.input.keyboard.on("keydown_M", () => {
+    this.input.keyboard.on("keydown-M", () => {
       navMesh.debugDrawClear();
       navMesh.debugDrawMesh({
         drawCentroid: true,
@@ -87,8 +87,7 @@ export default class Start extends Phaser.Scene {
     const uiText = this.add.text(10, 5, uiTextLines, style).setAlpha(0.9);
 
     // -- Scene Changer --
-
-    this.input.keyboard.on("keydown_TWO", () => {
+    this.input.keyboard.on("keydown-TWO", () => {
       this.scene.start("many-paths");
     });
   }

@@ -13,7 +13,7 @@ export default class ManyPaths extends Phaser.Scene {
     const wallTileset = tilemap.addTilesetImage("tiles", "tiles");
 
     // Load the named layers - first parameter corresponds to layer name in Tiled
-    tilemap.createStaticLayer("bg", wallTileset);
+    tilemap.createLayer("bg", wallTileset);
 
     const wallLayer = tilemap.createLayer("walls", wallTileset);
     wallLayer.setCollisionByProperty({ collides: true });
@@ -59,7 +59,7 @@ export default class ManyPaths extends Phaser.Scene {
 
     // -- Scene Changer --
 
-    this.input.keyboard.on("keydown_ONE", () => {
+    this.input.keyboard.on("keydown-ONE", () => {
       this.scene.start("start");
     });
   }
