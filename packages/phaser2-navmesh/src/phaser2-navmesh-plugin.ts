@@ -1,56 +1,46 @@
 import Phaser2NavMesh from "./phaser2-navmesh";
+import Phaser from "phaser-ce";
 
 /**
  * This class can create navigation meshes for use in Phaser 2 / Phaser CE. (For Phaser 3, see
  * {@link PhaserNavMeshPlugin}.) The navmeshes can be constructed from convex polygons embedded in a
  * Tiled map. The class that conforms to Phaser 2's plugin structure.
- *
- * @export
- * @class Phaser2NavMeshPlugin
  */
 export default class Phaser2NavMeshPlugin extends Phaser.Plugin {
-  constructor(game, pluginManager) {
-    super(game, pluginManager);
+  private phaserNavMeshes: Record<string, Phaser2NavMesh> = {};
 
-    this.phaserNavMeshes = {};
+  constructor(game: Phaser.Game, pluginManager: Phaser.PluginManager) {
+    super(game, pluginManager);
   }
 
-  /**
-   * Destroy all navmeshes created and the plugin itself
-   *
-   * @memberof Phaser2NavMeshPlugin
-   */
+  /** Destroy all navmeshes created and the plugin itself. */
   destroy() {
     const meshes = Object.values(this.phaserNavMeshes);
     this.phaserNavMeshes = {};
-    meshes.forEach(m => m.destroy());
-    this.game = undefined;
+    meshes.forEach((m) => m.destroy());
   }
 
   /**
    * Remove the navmesh stored under the given key from the plugin. This does not destroy the
    * navmesh.
    *
-   * @param {string} key
-   * @memberof Phaser2NavMeshPlugin
+   * @param key
    */
-  removeMesh(key) {
-    if (this.phaserNavMeshes[key]) this.phaserNavMeshes[key] = undefined;
+  removeMesh(key: string) {
+    if (this.phaserNavMeshes[key]) delete this.phaserNavMeshes[key];
   }
 
   /**
    * Load a navmesh from Tiled. Currently assumes that the polygons are squares! Does not support
    * tilemap layer scaling, rotation or position.
    *
-   * @param {string} key Key to use when storign this navmesh within the plugin.
-   * @param {Phaser.Tilemaps.ObjectLayer} objectLayer The ObjectLayer from a tilemap that contains
+   * @param key Key to use when storing this navmesh within the plugin.
+   * @param objectLayer The ObjectLayer from a tilemap that contains
    * the polygons that make up the navmesh.
-   * @param {number} [meshShrinkAmount=0] The amount (in pixels) that the navmesh has been shrunk
+   * @param The amount (in pixels) that the navmesh has been shrunk
    * around obstacles (a.k.a the amount obstacles have been expanded)
-   * @returns {Phaser2NavMesh}
-   * @memberof Phaser2NavMeshPlugin
    */
-  buildMeshFromTiled(key, objectLayer, meshShrinkAmount = 0) {
+  buildMeshFromTiled(key: string, objectLayer: any[], meshShrinkAmount = 0) {
     if (this.phaserNavMeshes[key]) {
       console.warn(`NavMeshPlugin: a navmesh already exists with the given key: ${key}`);
       return this.phaserNavMeshes[key];
@@ -67,7 +57,7 @@ export default class Phaser2NavMeshPlugin extends Phaser.Plugin {
 
     // Loop over the objects and construct a polygon - assumes a rectangle for now!
     // TODO: support layer position, scale, rotation
-    const polygons = objects.map(obj => {
+    const polygons = objects.map((obj) => {
       const top = obj.y;
       const bottom = obj.y + obj.height;
       const left = obj.x;
@@ -76,7 +66,7 @@ export default class Phaser2NavMeshPlugin extends Phaser.Plugin {
         { x: left, y: top },
         { x: left, y: bottom },
         { x: right, y: bottom },
-        { x: right, y: top }
+        { x: right, y: top },
       ];
     });
 
