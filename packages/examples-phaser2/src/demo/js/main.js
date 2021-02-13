@@ -12,7 +12,7 @@ const game = new Phaser.Game({
   width: 750,
   height: 750,
   renderer: Phaser.WEBGL,
-  parent: "game-container"
+  parent: "game-container",
 });
 
 game.state.add("load", Load);
