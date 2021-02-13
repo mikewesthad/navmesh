@@ -1,5 +1,4 @@
-// Import "phaser-navmesh" for transpiled code and "phaser-navmesh/src" for non-transpiled code
-import PhaserNavMesh from "phaser2-navmesh/src";
+import PhaserNavMesh from "phaser2-navmesh";
 import FollowerSprite from "../game-objects/follower";
 
 class StartState extends Phaser.State {
