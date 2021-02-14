@@ -14,7 +14,6 @@ module.exports = function (env, argv) {
       path: path.resolve(root, "dist"),
       library: "Phaser2NavMeshPlugin",
       libraryTarget: "umd",
-      libraryExport: "default",
     },
     externals: {
       phaser: {
