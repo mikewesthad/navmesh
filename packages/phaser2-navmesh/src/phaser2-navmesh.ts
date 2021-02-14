@@ -1,5 +1,4 @@
-import NavMesh, { PolyPoints } from "navmesh";
-import { Point } from "phaser-ce";
+import NavMesh, { PolyPoints, Point } from "navmesh";
 import Phaser2NavMeshPlugin from "./phaser2-navmesh-plugin";
 
 /**
@@ -166,7 +165,7 @@ export default class Phaser2NavMesh {
     if (path && path.length) {
       // Draw line for path
       this.debugGraphics.lineStyle(thickness, color, alpha);
-      this.debugGraphics.drawShape(new Phaser.Polygon(...path));
+      this.debugGraphics.drawShape(new Phaser.Polygon(...(path as Phaser.Point[])));
 
       // Draw circle at start and end of path
       this.debugGraphics.beginFill(color, alpha);
