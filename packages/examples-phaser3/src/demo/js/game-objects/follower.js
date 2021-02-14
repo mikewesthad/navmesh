@@ -1,3 +1,5 @@
+import Phaser from "phaser";
+
 class FollowerSprite extends Phaser.GameObjects.Sprite {
   /**
    * @param {Phaser.Scene} scene
