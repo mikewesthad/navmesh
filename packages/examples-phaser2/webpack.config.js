@@ -22,7 +22,9 @@ module.exports = function (env, argv) {
       rules: [
         {
           test: /\.js$/,
-          exclude: /node_modules/,
+          // Exclude phaser2-navmesh here when in a monorepo, because the resolved path isn't
+          // through node_modules. In a project outside of the monorepo, you shouldn't need this.
+          exclude: /node_modules|phaser2-navmesh/,
           // Configure babel to look for the root babel.config.json with rootMode.
           use: { loader: "babel-loader", options: { rootMode: "upward" } },
         },
