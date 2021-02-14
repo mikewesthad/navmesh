@@ -22,6 +22,7 @@
     "@babel/core": "^7.12.16",
     "@babel/preset-env": "^7.12.16",
     "babel-loader": "^8.2.2",
+    "clean-webpack-plugin": "^3.0.0",
     "ts-loader": "^8.0.17",
     "typescript": "^4.1.5",
     "webpack": "^5.21.2",

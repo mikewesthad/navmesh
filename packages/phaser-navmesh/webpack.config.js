@@ -2,6 +2,7 @@
 
 const path = require("path");
 const root = __dirname;
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = function (env, argv) {
   const isDev = argv.mode === "development";
@@ -16,6 +17,7 @@ module.exports = function (env, argv) {
       libraryTarget: "umd",
       libraryExport: "default",
     },
+    plugins: [new CleanWebpackPlugin()],
     externals: {
       phaser: {
         root: "Phaser",
