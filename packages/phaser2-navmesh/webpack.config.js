@@ -37,12 +37,7 @@ module.exports = function (env, argv) {
           test: /\.js$/,
           exclude: /node_modules/,
           // Configure babel to look for the root babel.config.json with rootMode.
-          use: {
-            loader: "babel-loader",
-            options: {
-              rootMode: "upward",
-            },
-          },
+          use: { loader: "babel-loader", options: { rootMode: "upward" } },
         },
       ],
     },
