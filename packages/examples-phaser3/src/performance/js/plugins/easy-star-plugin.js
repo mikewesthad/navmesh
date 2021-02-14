@@ -2,7 +2,8 @@
  * Modified from PathFinderPlugin: https://github.com/appsbu-de/phaser_plugin_pathfinding
  */
 
-const EasyStar = require("easystarjs");
+import EasyStar from "easystarjs";
+import Phaser from "phaser";
 
 /**
  * A plugin that is powered by easystarjs. Easystar is forced to be synchronous in order to make

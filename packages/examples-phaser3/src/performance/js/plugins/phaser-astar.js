@@ -1,5 +1,7 @@
 /* eslint-disable */
 
+import Phaser from "phaser";
+
 /**
  * The MIT License (MIT)
 
