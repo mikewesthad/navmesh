@@ -1,5 +1,4 @@
 import Phaser2NavMesh from "./phaser2-navmesh";
-import Phaser from "phaser";
 
 /**
  * This class can create navigation meshes for use in Phaser 2 / Phaser CE. (For Phaser 3, see
