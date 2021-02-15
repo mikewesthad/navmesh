@@ -1,0 +1,21 @@
+{
+  "extends": "./config/tsconfig.base.json",
+  "typedocOptions": {
+    "out": "docs",
+    "name": "NavMesh Packages",
+    "readme": "./README.md",
+    "entryPoints": [
+      "./packages/navmesh/src/index.ts",
+      "./packages/phaser2-navmesh/src/index.ts",
+      "./packages/phaser-navmesh/src/index.ts"
+    ]
+  },
+  "include": [
+    "./packages/navmesh/src/index.ts",
+    "./packages/phaser2-navmesh/src/index.ts",
+    "./packages/phaser-navmesh/src/index.ts"
+  ],
+  "compilerOptions": {
+    "target": "ESNext"
+  }
+}
