@@ -21,7 +21,7 @@
     "deploy:doc": "gh-pages --branch gh-pages --dist docs --dest docs",
     "predeploy:doc": "npm run doc",
     "publish": "lerna publish",
-    "prettier": "prettier --write \"packages/*/src/**/*.{js,ts,json}\""
+    "prettier": "yarn workspaces run prettier --write \"src/**/*.{js,ts,json}\""
   },
   "devDependencies": {
     "babel-jest": "^26.6.3",
