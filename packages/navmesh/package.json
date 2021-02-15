@@ -4,6 +4,10 @@
   "description": "A library for fast pathfinding using navigation meshes in JS",
   "main": "dist/navmesh.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "src",
+    "dist"
+  ],
   "scripts": {
     "test": "jest",
     "tsc": "tsc",

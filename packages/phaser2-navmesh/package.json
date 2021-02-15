@@ -4,6 +4,10 @@
   "description": "A plugin for Phaser (v2) for fast pathfinding using navigation meshes",
   "main": "dist/phaser2-navmesh-plugin.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "src",
+    "dist"
+  ],
   "scripts": {
     "test": "",
     "tsc": "tsc",
