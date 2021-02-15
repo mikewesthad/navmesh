@@ -26,9 +26,6 @@
   "devDependencies": {
     "babel-jest": "^26.6.3",
     "concurrently": "^5.3.0",
-    "esdoc": "^1.1.0",
-    "esdoc-inject-style-plugin": "^1.0.0",
-    "esdoc-standard-plugin": "^1.0.0",
     "eslint": "^7.19.0",
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-prettier": "^3.3.1",
@@ -36,6 +33,7 @@
     "jest": "^26.6.3",
     "lerna": "^3.22.1",
     "prettier": "^2.2.1",
+    "typedoc": "^0.20.24",
     "yarn": "^1.22.10"
   },
   "prettier": {
