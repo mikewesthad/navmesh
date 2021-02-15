@@ -1,4 +1,7 @@
-import NavMesh, { PolyPoints, Point } from "navmesh";
+// Directly importing the TS version - no need to double bundle.
+/// <reference path="../../navmesh/src/javascript-astar.d.ts" />
+import NavMesh, { Point, PolyPoints } from "navmesh/src";
+
 import Phaser2NavMeshPlugin from "./phaser2-navmesh-plugin";
 
 /**
