@@ -9,8 +9,9 @@ import Polygon from "./math/polygon";
 import { Point, PolyPoints } from "./common-types";
 
 /**
- * The workhorse that represents a navigation mesh built from a series of polygons. Once built, the
- * mesh can be asked for a path from one point to another point. Some internal terminology usage:
+ * The `NavMesh` class is the workhorse that represents a navigation mesh built from a series of
+ * polygons. Once built, the mesh can be asked for a path from one point to another point. Some
+ * internal terminology usage:
  * - neighbor: a polygon that shares part of an edge with another polygon
  * - portal: when two neighbor's have edges that overlap, the portal is the overlapping line segment
  * - channel: the path of polygons from starting point to end point
