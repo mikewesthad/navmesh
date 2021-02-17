@@ -290,8 +290,9 @@ Long paths (600 pixels and greater length), average time per iteration:
 Pull requests are welcome (see [todos](#to-dos))! If you want to run this repo locally, make sure you have [node](https://nodejs.org/en/) installed. Download the repo, open a terminal in the repo folder and run:
 
 ```
-npx yarn
-npm run bootstrap
+npm i -g yarn
+yarn
+yarn bootstrap
 ```
 
 This project uses [lerna](https://github.com/lerna/lerna) and [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/) to manage multiple packages within one repository. `npx yarn` will pull the root dependencies (and install yarn if needed) and `npm run bootstrap` will use lerna & yarn to pull and link dependencies within "packages/". This project has the following packages:
@@ -302,9 +303,26 @@ This project uses [lerna](https://github.com/lerna/lerna) and [yarn workspaces](
 
 The project is controlled via npm scripts. The main ones to use:
 
-- `npm run build` - will build all the individual packages within "packages/".
-- `npm run dev` - watch & serve the examples. Phaser 3 examples are at [localhost::8080](http://localhost:8080/), Phaser 2 examples at [localhost::8081](http://localhost:8081/) and node examples at [localhost::8082](http://localhost:8082/). If you are working on the library, this is the easiest way to do "functional testing" by using the library in a game environment.
-- `npm run test` - will run the automated tests against the library.
+- `yarn build:libs` - will build production versions of the three libraries within "packages/".
+- `yarn test` - will run the automated tests against the libraries.
+- `serve:examples` - will build, serve and watch the three examples. Phaser 3 examples are at [localhost::8080](http://localhost:8080/), Phaser 2 examples at [localhost::8081](http://localhost:8081/) and node examples at [localhost::8082](http://localhost:8082/).
+- `yarn dev` - watch the libraries & serve the examples.  If you are working on the library, this is the easiest way to do "functional testing" by using the library in a game environment.
+- `yarn dev:phaser3`, `yarn dev:phaser2`, `yarn dev:node` - these will watch the relevant libraries and serve one the corresponding example. Useful for dev on a specific library.
+
+A few tips, because Lerna + Yarn is complicated, and I keep forgetting these:
+
+- Running a command in a workspace:
+  - `yarn workspace <workspace_name> <command>` 
+  - Example: `yarn workspace navmesh add typescript --dev`
+- Running a command in a set of workspaces:
+  - `lerna run --parallel watch --scope <scope>`
+  - Example: `lerna run --parallel build --scope '{navmesh,phaser-navmesh,phaser-navmesh}'`
+- Add a dev dependency to the root:
+  - `yarn add <dependency> --dev -W`
+- Running a command in all workspaces:
+  - `yarn workspaces <command>` 
+  - Example: `yarn workspaces build`
+  - `lerna run --parallel watch`
 
 ## Changelogs
 
