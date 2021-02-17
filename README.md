@@ -22,6 +22,7 @@ Table of Contents:
   - [phaser-navmesh](#phaser-navmesh)
   - [phaser2-navmesh](#phaser2-navmesh)
 - [Performance Comparison](#performance-comparison)
+- [Community Examples](#community-examples)
 - [Development](#development)
 - [Changelogs](#changelogs)
 - [References](#references)
