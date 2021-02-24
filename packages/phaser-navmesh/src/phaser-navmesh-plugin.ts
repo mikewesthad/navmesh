@@ -31,6 +31,13 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
   /** Phaser.Scene lifecycle event - will destroy all navmeshes created. */
   public destroy() {
     this.systems.events.off("boot", this.boot, this);
+    this.removeAllMeshes();
+  }
+
+  /**
+   * Remove all the meshes from the navmesh.
+   */
+  public removeAllMeshes() {
     const meshes = Object.values(this.phaserNavMeshes);
     this.phaserNavMeshes = {};
     meshes.forEach((m) => m.destroy());
