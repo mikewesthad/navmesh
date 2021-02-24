@@ -14,6 +14,13 @@ export default class Phaser2NavMeshPlugin extends Phaser.Plugin {
 
   /** Destroy all navmeshes created and the plugin itself. */
   destroy() {
+    this.removeAllMeshes();
+  }
+
+  /**
+   * Remove all the meshes from the navmesh.
+   */
+  public removeAllMeshes() {
     const meshes = Object.values(this.phaserNavMeshes);
     this.phaserNavMeshes = {};
     meshes.forEach((m) => m.destroy());
