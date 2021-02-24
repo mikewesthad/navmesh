@@ -6,6 +6,10 @@ For usage information, see: [mikewesthad/navmesh](https://github.com/mikewesthad
 
 ## Changelog
 
+Version 2.1.0 - 2021-02-24
+
+- Converted library to TypeScript.
+
 Version 2.0.4 - 2021-01-26
 
 - Internal optimization [#26](https://github.com/mikewesthad/navmesh/pull/26): thanks to [@herohan](https://github.com/herohan) and seowoo.
