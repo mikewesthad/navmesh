@@ -14,7 +14,6 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
 
   public constructor(scene: Phaser.Scene, pluginManager: Phaser.Plugins.PluginManager) {
     super(scene, pluginManager);
-    if (!scene.sys.settings.isBooted) this.systems.events.once("boot", this.boot, this);
   }
 
   /** Phaser.Scene lifecycle event */
