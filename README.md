@@ -53,9 +53,7 @@ You can use any of them as a script or as a module in your bundler of choice.
 
 ### As a Script
 
-You can drop in any of the transpiled code into your project as a standalone script. Download the version that you want:
-
-TBD
+You can drop in any of the transpiled code into your project as a standalone script. Download the version that you want from the [GitHub release](https://github.com/mikewesthad/navmesh/releases/tag/2.1.0).
 
 E.g. if you wanted phaser-navmesh, you would add this to your HTML:
 
