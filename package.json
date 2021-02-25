@@ -5,7 +5,7 @@
   ],
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "build:libs": "lerna run --parallel build --scope '{navmesh,phaser-navmesh,phaser-navmesh}'",
+    "build:libs": "lerna run --parallel build --scope '{navmesh,phaser-navmesh,phaser2-navmesh}'",
     "test": "jest --config ./config/jest.config.json",
     "watch": "lerna run --parallel watch",
     "watch:libs": "lerna run --parallel watch --scope '{navmesh,phaser-navmesh,phaser-navmesh}'",
