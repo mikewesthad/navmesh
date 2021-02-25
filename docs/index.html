@@ -1,602 +1,439 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html class="default no-js">
 <head>
-  <meta charset="utf-8">
-  <base data-ice="baseUrl" href="./">
-  <title data-ice="title">Manual</title>
-  <link type="text/css" rel="stylesheet" href="css/style.css">
-  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
-  <script src="script/prettify/prettify.js"></script>
-  <script src="script/manual.js"></script>
-<link rel="stylesheet" href="./inject/css/0-injected-style.css"></head>
-<body class="layout-container manual-root manual-index" data-ice="rootContainer">
-
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>NavMesh Packages</title>
+	<meta name="description" content="Documentation for NavMesh Packages">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+	<script async src="assets/js/search.js" id="search-script"></script>
+</head>
+<body>
 <header>
-  <a href="./">Home</a>
-  
-  <a href="identifiers.html">Reference</a>
-  <a href="source.html">Source</a>
-  
-  <div class="search-box">
-  <span>
-    <img src="./image/search.png">
-    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
-  </span>
-    <ul class="search-result"></ul>
-  </div>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">NavMesh Packages</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<h1>NavMesh Packages</h1>
+		</div>
+	</div>
 </header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#navigation-meshes-overview-" id="navigation-meshes-overview-" style="color: inherit; text-decoration: none;">
+					<h1>Navigation Meshes Overview <!-- omit in toc --></h1>
+				</a>
+				<p>A JS plugin for fast pathfinding using <a href="https://en.wikipedia.org/wiki/Navigation_mesh">navigation meshes</a>, with optional wrappers for the Phaser v2 and Phaser v3 game engines.</p>
+				<p><a href="https://www.mikewesthad.com/navmesh/demo/"><img src="./doc-source/single-following-agent.gif" width="400"></a></p>
+				<p><a href="https://www.mikewesthad.com/navmesh/demo/">Interactive demo</a></p>
+				<p>(Note: if you are viewing this on GitHub or NPM, you might want to check out the HTML documentation <a href="https://www.mikewesthad.com/navmesh/docs/">here</a>.)</p>
+				<p>Table of Contents:</p>
+				<ul>
+					<li><a href="#introduction">Introduction</a></li>
+					<li><a href="#installation">Installation</a><ul>
+							<li><a href="#as-a-script">As a Script</a></li>
+							<li><a href="#as-a-module">As a Module</a></li>
+						</ul>
+					</li>
+					<li><a href="#creating-a-navigation-mesh">Creating a Navigation Mesh</a></li>
+					<li><a href="#usage">Usage</a><ul>
+							<li><a href="#navmesh">navmesh</a></li>
+							<li><a href="#phaser-navmesh">phaser-navmesh</a></li>
+							<li><a href="#phaser2-navmesh">phaser2-navmesh</a></li>
+						</ul>
+					</li>
+					<li><a href="#performance-comparison">Performance Comparison</a></li>
+					<li><a href="#community-examples">Community Examples</a></li>
+					<li><a href="#development">Development</a></li>
+					<li><a href="#changelogs">Changelogs</a></li>
+					<li><a href="#references">References</a></li>
+					<li><a href="#to-dos">To Dos</a></li>
+				</ul>
+				<a href="#introduction" id="introduction" style="color: inherit; text-decoration: none;">
+					<h2>Introduction</h2>
+				</a>
+				<p>Pathfinding is essentially the problem of solving a maze, finding a path between points while avoiding obstacles. When pathfinding in games, we need to:</p>
+				<ol>
+					<li> Represent the game world in a way that defines what areas are walkable.</li>
+					<li> Search that representation for the shortest path.</li>
+				</ol>
+				<p>When it comes to 2D pathfinding, a common approach is to represent the world using <a href="https://developer.mozilla.org/en-US/docs/Games/Techniques/Tilemaps">tiles</a> (a grid) and then search for a path using the <a href="https://en.wikipedia.org/wiki/A*_search_algorithm">A* algorithm</a> (e.g. <a href="https://github.com/photonstorm/phaser-plugins/tree/master/AStar">Phaser AStar</a>). If you have a 50 x 50 tile world, searching for a path involves searching through a representation of the world with up to 2500 locations/nodes (50 x 50 = 2500).</p>
+				<p>This plugin uses navigation meshes to simplify that search. Instead of representing the world as a grid of tiles, it represents the walkable areas of the world as a mesh. That means that the representation of the world has far fewer nodes, and hence, can be searched much faster than the grid approach. This approach is 5x - 150x faster than Phaser&#39;s A* plugin (see performance section), depending on the mesh.</p>
+				<p>The example map below (left) is a 30 x 30 map. As a grid, there are 900 nodes, but as a navmesh (right) there are 27 nodes (colored rectangles).</p>
+				<img src="./doc-source/combined.png" width="700">
+				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+					<h2>Installation</h2>
+				</a>
+				<p>This repository contains 3 related JS packages:</p>
+				<ul>
+					<li><code>navmesh</code> - core logic, game-engine agnostic, usable outside of Phaser.</li>
+					<li><code>phaser-navmesh</code> - Phaser v3 wrapper around <code>navmesh</code> that creates a Phaser 3 Scene plugin. Phaser 3 is expected to be a dependency in your project.</li>
+					<li><code>phaser2-navmesh</code> - Phaser v2 wrapper around <code>navmesh</code> that creates a Phaser 2 game plugin. Phaser 2 or Phaser-ce is expected to be in the global scope.</li>
+				</ul>
+				<p>You can use any of them as a script or as a module in your bundler of choice.</p>
+				<a href="#as-a-script" id="as-a-script" style="color: inherit; text-decoration: none;">
+					<h3>As a Script</h3>
+				</a>
+				<p>You can drop in any of the transpiled code into your project as a standalone script. Download the version that you want:</p>
+				<p>TBD</p>
+				<p>E.g. if you wanted phaser-navmesh, you would add this to your HTML:</p>
+				<pre><code class="language-html"><span style="color: #800000">&lt;script</span><span style="color: #000000FF"> </span><span style="color: #FF0000">src</span><span style="color: #000000FF">=</span><span style="color: #0000FF">&quot;phaser-navmesh.min.js&quot;</span><span style="color: #800000">&gt;&lt;/script&gt;</span>
+</code></pre>
+				<p>Inside of your own script, you can now use the global variable <code>PhaserNavMeshPlugin</code> (see library name in the above table), e.g.</p>
+				<pre><code class="language-js"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">game</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #001080">Phaser</span><span style="color: #000000">.</span><span style="color: #795E26">Game</span><span style="color: #000000">({</span>
+<span style="color: #000000">  </span><span style="color: #001080">type:</span><span style="color: #000000"> </span><span style="color: #001080">Phaser</span><span style="color: #000000">.</span><span style="color: #0070C1">AUTO</span><span style="color: #000000">,</span>
+<span style="color: #000000">  </span><span style="color: #001080">width:</span><span style="color: #000000"> </span><span style="color: #098658">750</span><span style="color: #000000">,</span>
+<span style="color: #000000">  </span><span style="color: #001080">height:</span><span style="color: #000000"> </span><span style="color: #098658">750</span><span style="color: #000000">,</span>
+<span style="color: #000000">  </span><span style="color: #001080">plugins:</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #001080">scene:</span><span style="color: #000000"> [</span>
+<span style="color: #000000">      { </span><span style="color: #001080">key:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;NavMeshPlugin&quot;</span><span style="color: #000000">, </span><span style="color: #001080">plugin:</span><span style="color: #000000"> </span><span style="color: #001080">PhaserNavMeshPlugin</span><span style="color: #000000">, </span><span style="color: #001080">mapping:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;navMeshPlugin&quot;</span><span style="color: #000000">, </span><span style="color: #001080">start:</span><span style="color: #000000"> </span><span style="color: #0000FF">true</span><span style="color: #000000"> }</span>
+<span style="color: #000000">    ]</span>
+<span style="color: #000000">  }</span>
+<span style="color: #000000">});</span>
+</code></pre>
+				<p>See <a href="#usage">usage</a> for more information on how to use each of the three modules in this repository.</p>
+				<a href="#as-a-module" id="as-a-module" style="color: inherit; text-decoration: none;">
+					<h3>As a Module</h3>
+				</a>
+				<p>Install the appropriate dependency:</p>
+				<ul>
+					<li><code>npm install --save navmesh</code> for usage outside of Phaser</li>
+					<li><code>npm install --save phaser-navmesh</code> for Phaser 3</li>
+					<li><code>npm install --save phaser2-navmesh</code> for Phaser 2</li>
+				</ul>
+				<p>To use the transpiled and minified distribution of the library:</p>
+				<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">PhaserNavMeshPlugin</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;phaser-navmesh&quot;</span><span style="color: #000000">;</span>
+</code></pre>
+				<p>To use the raw library (so you can transpile it to match your own project settings):</p>
+				<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">PhaserNavMeshPlugin</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;phaser-navmesh/src&quot;</span><span style="color: #000000">;</span>
+</code></pre>
+				<a href="#creating-a-navigation-mesh" id="creating-a-navigation-mesh" style="color: inherit; text-decoration: none;">
+					<h2>Creating a Navigation Mesh</h2>
+				</a>
+				<p>Before you can dive into the code, you&#39;ll need to create a navigation mesh for your game world. This is a process of defining the walkable areas within you world. You can create it from scratch in code, but it&#39;s far easier to use a tilemap editor like Tiled to do this. See <a href="https://github.com/mikewesthad/navmesh/blob/master/tiled-navmesh-guide.md">guide</a>.</p>
+				<p>Note: the current version of the library only supports <a href="https://www.sparknotes.com/math/geometry1/polygons/section2/">convex polygons</a>. There are libraries like <a href="https://github.com/schteppe/poly-decomp.js/">poly-decom.js</a> for decomposing a concave polygon into easier to manage convex polygons. It&#39;s on the to do list to handle any polygon, but I&#39;ve found that automatically decomposing polygons leads to worse performance than hand-mapping the levels with convex polygons.</p>
+				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+					<h2>Usage</h2>
+				</a>
+				<p>You can find code snippets for the different use cases below. You can also jump directly to a few example projects in this repository for:</p>
+				<ul>
+					<li><a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples-phaser3">phaser 3</a></li>
+					<li><a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples-phaser2">phaser 2</a></li>
+					<li><a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples-node">navmesh in a node environment</a></li>
+				</ul>
+				<a href="#navmesh" id="navmesh" style="color: inherit; text-decoration: none;">
+					<h3>navmesh</h3>
+				</a>
+				<p>If you don&#39;t need the Phaser wrappers, you can construct navmeshes directly from points using the navmesh package:</p>
+				<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">NavMesh</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;navmesh&quot;</span><span style="color: #000000">;</span>
 
-<nav class="navigation" data-ice="nav"><div class="manual-toc-root">
-  
-<div data-ice="manual">
-    <ul class="manual-toc">
-      
-    <li data-ice="manualNav" class="indent-h1" data-link="manual/README.html"><a href="manual/README.html" data-ice="link">Navigation Meshes Overview </a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#introduction" data-ice="link">Introduction</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#installation" data-ice="link">Installation</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/README.html"><a href="manual/README.html#as-a-script" data-ice="link">As a Script</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/README.html"><a href="manual/README.html#as-a-module" data-ice="link">As a Module</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#creating-a-navigation-mesh" data-ice="link">Creating a Navigation Mesh</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#usage" data-ice="link">Usage</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/README.html"><a href="manual/README.html#navmesh" data-ice="link">navmesh</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/README.html"><a href="manual/README.html#phaser-navmesh" data-ice="link">phaser-navmesh</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/README.html"><a href="manual/README.html#phaser2-navmesh" data-ice="link">phaser2-navmesh</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#performance-comparison" data-ice="link">Performance Comparison</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#community-examples" data-ice="link">Community Examples</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#development" data-ice="link">Development</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#changelogs" data-ice="link">Changelogs</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#references" data-ice="link">References</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/README.html"><a href="manual/README.html#to-dos" data-ice="link">To Dos</a></li>
-</ul>
-  </div>
-<div data-ice="manual">
-    <ul class="manual-toc">
-      
-    <li data-ice="manualNav" class="indent-h1" data-link="manual/tiled-navmesh-guide.html"><a href="manual/tiled-navmesh-guide.html" data-ice="link">Creating a NavMesh in Tiled</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/tiled-navmesh-guide.html"><a href="manual/tiled-navmesh-guide.html#goal" data-ice="link">Goal</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/tiled-navmesh-guide.html"><a href="manual/tiled-navmesh-guide.html#snapping-setup" data-ice="link">Snapping Setup</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/tiled-navmesh-guide.html"><a href="manual/tiled-navmesh-guide.html#creating-the-mesh" data-ice="link">Creating the Mesh</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/tiled-navmesh-guide.html"><a href="manual/tiled-navmesh-guide.html#agent-size--gaps-" data-ice="link">Agent Size (Gaps)</a></li>
-</ul>
-  </div>
+<span style="color: #008000">/*</span>
+<span style="color: #008000">  Imaging your game world has three walkable rooms, like this:</span>
+
+<span style="color: #008000">    +-----+-----+</span>
+<span style="color: #008000">    |     |     |</span>
+<span style="color: #008000">    |  1  |  2  |</span>
+<span style="color: #008000">    |     |     |</span>
+<span style="color: #008000">    +-----------+</span>
+<span style="color: #008000">          |     |</span>
+<span style="color: #008000">          |  3  |</span>
+<span style="color: #008000">          |     |</span>
+<span style="color: #008000">          +-----+</span>
+<span style="color: #008000">*/</span>
+
+<span style="color: #008000">// The mesh is represented as an array where each element contains the points for an indivdual</span>
+<span style="color: #008000">// polygon within the mesh.</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">meshPolygonPoints</span><span style="color: #000000"> = [</span>
+<span style="color: #000000">  [{ </span><span style="color: #001080">x:</span><span style="color: #000000"> </span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #001080">y:</span><span style="color: #000000"> </span><span style="color: #098658">0</span><span style="color: #000000"> }, { </span><span style="color: #001080">x:</span><span style="color: #000000"> </span><span style="color: #098658">10</span><span style="color: #000000">, </span><span style="color: #001080">y:</span><span style="color: #000000"> </span><span style="color: #098658">0</span><span style="color: #000000"> }, { </span><span style="color: #001080">x:</span><span style="color: #000000"> </span><span style="color: #098658">10</span><span style="color: #000000">, </span><span style="color: #001080">y:</span><span style="color: #000000"> </span><span style="color: #098658">10</span><span style="color: #000000"> }, { </span><span style="color: #001080">x:</span><span style="color: #000000"> </span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #001080">y:</span><span style="color: #000000"> </span><span style="color: #098658">10</span><span style="color: #000000"> }], </span><span style="color: #008000">// Polygon 1</span>
+<span style="color: #000000">  [{ </span><span style="color: #001080">x:</span><span style="color: #000000"> </span><span style="color: #098658">10</span><span style="color: #000000">, </span><span style="color: #001080">y:</span><span style="color: #000000"> </span><span style="color: #098658">0</span><span style="color: #000000"> }, { </span><span style="color: #001080">x:</span><span style="color: #000000"> </span><span style="color: #098658">20</span><span style="color: #000000">, </span><span style="color: #001080">y:</span><span style="color: #000000"> </span><span style="color: #098658">0</span><span style="color: #000000"> }, { </span><span style="color: #001080">x:</span><span style="color: #000000"> </span><span style="color: #098658">20</span><span style="color: #000000">, </span><span style="color: #001080">y:</span><span style="color: #000000"> </span><span style="color: #098658">10</span><span style="color: #000000"> }, { </span><span style="color: #001080">x:</span><span style="color: #000000"> </span><span style="color: #098658">10</span><span style="color: #000000">, </span><span style="color: #001080">y:</span><span style="color: #000000"> </span><span style="color: #098658">10</span><span style="color: #000000"> }], </span><span style="color: #008000">// Polygon 2</span>
+<span style="color: #000000">  [{ </span><span style="color: #001080">x:</span><span style="color: #000000"> </span><span style="color: #098658">10</span><span style="color: #000000">, </span><span style="color: #001080">y:</span><span style="color: #000000"> </span><span style="color: #098658">10</span><span style="color: #000000"> }, { </span><span style="color: #001080">x:</span><span style="color: #000000"> </span><span style="color: #098658">20</span><span style="color: #000000">, </span><span style="color: #001080">y:</span><span style="color: #000000"> </span><span style="color: #098658">10</span><span style="color: #000000"> }, { </span><span style="color: #001080">x:</span><span style="color: #000000"> </span><span style="color: #098658">20</span><span style="color: #000000">, </span><span style="color: #001080">y:</span><span style="color: #000000"> </span><span style="color: #098658">20</span><span style="color: #000000"> }, { </span><span style="color: #001080">x:</span><span style="color: #000000"> </span><span style="color: #098658">10</span><span style="color: #000000">, </span><span style="color: #001080">y:</span><span style="color: #000000"> </span><span style="color: #098658">20</span><span style="color: #000000"> }] </span><span style="color: #008000">// Polygon 3</span>
+<span style="color: #000000">];</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">navMesh</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">NavMesh</span><span style="color: #000000">(</span><span style="color: #001080">meshPolygonPoints</span><span style="color: #000000">);</span>
+
+<span style="color: #008000">// Find a path from the top left of room 1 to the bottom left of room 3</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">path</span><span style="color: #000000"> = </span><span style="color: #001080">navMesh</span><span style="color: #000000">.</span><span style="color: #795E26">findPath</span><span style="color: #000000">({ </span><span style="color: #001080">x:</span><span style="color: #000000"> </span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #001080">y:</span><span style="color: #000000"> </span><span style="color: #098658">0</span><span style="color: #000000"> }, { </span><span style="color: #001080">x:</span><span style="color: #000000"> </span><span style="color: #098658">10</span><span style="color: #000000">, </span><span style="color: #001080">y:</span><span style="color: #000000"> </span><span style="color: #098658">20</span><span style="color: #000000"> });</span>
+<span style="color: #008000">// ⮡  [{ x: 0, y: 0 }, { x: 10, y: 10 }, { x: 10, y: 20 }]</span>
+</code></pre>
+				<p>Check out the <a href="https://www.mikewesthad.com/navmesh/docs/modules/navmesh.html">API reference</a> for more information.</p>
+				<a href="#phaser-navmesh" id="phaser-navmesh" style="color: inherit; text-decoration: none;">
+					<h3>phaser-navmesh</h3>
+				</a>
+				<p>If you are working with Phaser 3, you can use the phaser-navmesh package, which provides a Scene plugin. Play with a live example on CodeSandbox <a href="https://codesandbox.io/s/zq1wvozxll?fontsize=14">here</a>, or peek at the <a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples/src">examples</a> in this repository for more complete usage.</p>
+				<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">Phaser</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;phaser&quot;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">PhaserNavMeshPlugin</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;phaser-navmesh&quot;</span><span style="color: #000000">;</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">game</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #001080">Phaser</span><span style="color: #000000">.</span><span style="color: #795E26">Game</span><span style="color: #000000">({</span>
+<span style="color: #000000">  </span><span style="color: #001080">type:</span><span style="color: #000000"> </span><span style="color: #001080">Phaser</span><span style="color: #000000">.</span><span style="color: #0070C1">AUTO</span><span style="color: #000000">,</span>
+<span style="color: #000000">  </span><span style="color: #001080">parent:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;game-container&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">  </span><span style="color: #001080">width:</span><span style="color: #000000"> </span><span style="color: #098658">750</span><span style="color: #000000">,</span>
+<span style="color: #000000">  </span><span style="color: #001080">height:</span><span style="color: #000000"> </span><span style="color: #098658">750</span><span style="color: #000000">,</span>
+<span style="color: #000000">  </span><span style="color: #001080">plugins:</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #001080">scene:</span><span style="color: #000000"> [</span>
+<span style="color: #000000">      {</span>
+<span style="color: #000000">        </span><span style="color: #001080">key:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;PhaserNavMeshPlugin&quot;</span><span style="color: #000000">, </span><span style="color: #008000">// Key to store the plugin class under in cache</span>
+<span style="color: #000000">        </span><span style="color: #001080">plugin:</span><span style="color: #000000"> </span><span style="color: #001080">PhaserNavMeshPlugin</span><span style="color: #000000">, </span><span style="color: #008000">// Class that constructs plugins</span>
+<span style="color: #000000">        </span><span style="color: #001080">mapping:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;navMeshPlugin&quot;</span><span style="color: #000000">, </span><span style="color: #008000">// Property mapping to use for the scene, e.g. this.navMeshPlugin</span>
+<span style="color: #000000">        </span><span style="color: #001080">start:</span><span style="color: #000000"> </span><span style="color: #0000FF">true</span>
+<span style="color: #000000">      }</span>
+<span style="color: #000000">    ]</span>
+<span style="color: #000000">  },</span>
+<span style="color: #000000">  </span><span style="color: #001080">scene:</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #001080">preload:</span><span style="color: #000000"> </span><span style="color: #001080">preload</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">create:</span><span style="color: #000000"> </span><span style="color: #001080">create</span>
+<span style="color: #000000">  }</span>
+<span style="color: #000000">});</span>
+
+<span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">preload</span><span style="color: #000000">() {</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">load</span><span style="color: #000000">.</span><span style="color: #795E26">tilemapTiledJSON</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;map&quot;</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;tilemaps/map.json&quot;</span><span style="color: #000000">);</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">load</span><span style="color: #000000">.</span><span style="color: #795E26">image</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;tiles&quot;</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;tilemaps/tiles.png&quot;</span><span style="color: #000000">);</span>
+<span style="color: #000000">}</span>
+
+<span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">create</span><span style="color: #000000">() {</span>
+<span style="color: #000000">  </span><span style="color: #008000">// Set up a tilemap with at least one layer</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">tilemap</span><span style="color: #000000"> = </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">add</span><span style="color: #000000">.</span><span style="color: #795E26">tilemap</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;map&quot;</span><span style="color: #000000">);</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">tileset</span><span style="color: #000000"> = </span><span style="color: #001080">tilemap</span><span style="color: #000000">.</span><span style="color: #795E26">addTilesetImage</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;tiles&quot;</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;tiles&quot;</span><span style="color: #000000">);</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">wallLayer</span><span style="color: #000000"> = </span><span style="color: #001080">tilemap</span><span style="color: #000000">.</span><span style="color: #795E26">createStaticLayer</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;walls&quot;</span><span style="color: #000000">, </span><span style="color: #001080">tileset</span><span style="color: #000000">);</span>
+
+<span style="color: #000000">  </span><span style="color: #008000">// Load the navMesh from the tilemap object layer &quot;navmesh&quot; (created in Tiled). The navMesh was</span>
+<span style="color: #000000">  </span><span style="color: #008000">// created with 12.5 pixels of space around obstacles.</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">objectLayer</span><span style="color: #000000"> = </span><span style="color: #001080">tilemap</span><span style="color: #000000">.</span><span style="color: #795E26">getObjectLayer</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;navmesh&quot;</span><span style="color: #000000">);</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">navMesh</span><span style="color: #000000"> = </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">navMeshPlugin</span><span style="color: #000000">.</span><span style="color: #795E26">buildMeshFromTiled</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;mesh&quot;</span><span style="color: #000000">, </span><span style="color: #001080">objectLayer</span><span style="color: #000000">, </span><span style="color: #098658">12.5</span><span style="color: #000000">);</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">path</span><span style="color: #000000"> = </span><span style="color: #001080">navMesh</span><span style="color: #000000">.</span><span style="color: #795E26">findPath</span><span style="color: #000000">({ </span><span style="color: #001080">x:</span><span style="color: #000000"> </span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #001080">y:</span><span style="color: #000000"> </span><span style="color: #098658">0</span><span style="color: #000000"> }, { </span><span style="color: #001080">x:</span><span style="color: #000000"> </span><span style="color: #098658">300</span><span style="color: #000000">, </span><span style="color: #001080">y:</span><span style="color: #000000"> </span><span style="color: #098658">400</span><span style="color: #000000"> });</span>
+<span style="color: #000000">  </span><span style="color: #008000">// ⮡  path will either be null or an array of Phaser.Geom.Point objects</span>
+<span style="color: #000000">}</span>
+</code></pre>
+				<p>The plugin comes with some methods for visually debugging your navmesh:</p>
+				<pre><code class="language-js"><span style="color: #001080">navMesh</span><span style="color: #000000">.</span><span style="color: #795E26">enableDebug</span><span style="color: #000000">(); </span><span style="color: #008000">// Creates a Phaser.Graphics overlay on top of the screen</span>
+<span style="color: #001080">navMesh</span><span style="color: #000000">.</span><span style="color: #795E26">debugDrawClear</span><span style="color: #000000">(); </span><span style="color: #008000">// Clears the overlay</span>
+<span style="color: #008000">// Visualize the underlying navmesh</span>
+<span style="color: #001080">navMesh</span><span style="color: #000000">.</span><span style="color: #795E26">debugDrawMesh</span><span style="color: #000000">({</span>
+<span style="color: #000000">  </span><span style="color: #001080">drawCentroid:</span><span style="color: #000000"> </span><span style="color: #0000FF">true</span><span style="color: #000000">,</span>
+<span style="color: #000000">  </span><span style="color: #001080">drawBounds:</span><span style="color: #000000"> </span><span style="color: #0000FF">false</span><span style="color: #000000">,</span>
+<span style="color: #000000">  </span><span style="color: #001080">drawNeighbors:</span><span style="color: #000000"> </span><span style="color: #0000FF">true</span><span style="color: #000000">,</span>
+<span style="color: #000000">  </span><span style="color: #001080">drawPortals:</span><span style="color: #000000"> </span><span style="color: #0000FF">true</span>
+<span style="color: #000000">});</span>
+<span style="color: #008000">// Visualize an individual path</span>
+<span style="color: #001080">navMesh</span><span style="color: #000000">.</span><span style="color: #795E26">debugDrawPath</span><span style="color: #000000">(</span><span style="color: #001080">path</span><span style="color: #000000">, </span><span style="color: #098658">0xffd900</span><span style="color: #000000">);</span>
+</code></pre>
+				<p>Check out the <a href="https://www.mikewesthad.com/navmesh/docs/modules/phaser_navmesh.html">API reference</a> for more information.</p>
+				<a href="#phaser2-navmesh" id="phaser2-navmesh" style="color: inherit; text-decoration: none;">
+					<h3>phaser2-navmesh</h3>
+				</a>
+				<p>If you are working with Phaser 2, you can use the phaser2-navmesh package, which provides a game plugin. See this <a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples-phaser2/src">example</a> for more complete usage. You can also look at the <a href="#phaser-navmesh">previous section</a> for Phaser usage.</p>
+				<a href="#performance-comparison" id="performance-comparison" style="color: inherit; text-decoration: none;">
+					<h2>Performance Comparison</h2>
+				</a>
+				<p><em>(Note: these comparisons were done in any earlier verison of the repo before Phaser v3 was released. The plugins tested haven&#39;t been released in v3 versions yet, so this section could use an update. That said, the results should be the same.)</em></p>
+				<p>Comparing this navmesh plugin against:</p>
+				<ul>
+					<li><a href="https://github.com/photonstorm/phaser-plugins">Phaser&#39;s grid-based A* plugin</a>. Navmesh is approximately 5x - 150x faster.</li>
+					<li>A faster, grid-based A* search, <a href="https://github.com/prettymuchbryce/easystarjs">EasyStar.js</a>. Navmesh is approximately 5x - 20x faster.</li>
+				</ul>
+				<p>Performance depends on the size of the area that needs to be searched. Finding for a path between points that are 50 pixels away is (generally) going to be much faster than finding a path between points that are 5000 pixels away.</p>
+				<p>Details (see <a href="https://github.com/mikewesthad/navmesh/tree/master/src/examples/performance">src/library/performance</a>):</p>
+				<pre><code><span style="color: #001080">Performance</span><span style="color: #000000"> </span><span style="color: #001080">Comparison</span><span style="color: #000000">, </span><span style="color: #098658">100000</span><span style="color: #000000"> </span><span style="color: #001080">iterations</span><span style="color: #000000">, 30</span><span style="color: #001080">x30</span><span style="color: #000000"> </span><span style="color: #001080">tilemap</span>
+
+<span style="color: #001080">Short</span><span style="color: #000000"> </span><span style="color: #795E26">paths</span><span style="color: #000000"> (</span><span style="color: #098658">150</span><span style="color: #000000"> - </span><span style="color: #098658">500</span><span style="color: #000000"> </span><span style="color: #001080">pixel</span><span style="color: #000000"> </span><span style="color: #001080">length</span><span style="color: #000000">)</span>
+
+<span style="color: #000000">    </span><span style="color: #001080">Average</span><span style="color: #000000"> </span><span style="color: #001080">time</span><span style="color: #000000"> </span><span style="color: #001080">per</span><span style="color: #000000"> iteration:</span>
+<span style="color: #000000">        </span><span style="color: #001080">AStart</span><span style="color: #000000"> Plugin: 0.02470</span><span style="color: #001080">ms</span>
+<span style="color: #000000">        </span><span style="color: #001080">EasyStar</span><span style="color: #000000"> Plugin: 0.02876</span><span style="color: #001080">ms</span>
+<span style="color: #000000">        </span><span style="color: #001080">NavMesh</span><span style="color: #000000"> Plugin: 0.00575</span><span style="color: #001080">ms</span>
+
+<span style="color: #000000">    Comparison:</span>
+<span style="color: #000000">        </span><span style="color: #001080">NavMesh</span><span style="color: #000000"> </span><span style="color: #001080">is</span><span style="color: #000000"> 4.30</span><span style="color: #001080">x</span><span style="color: #000000"> </span><span style="color: #001080">faster</span><span style="color: #000000"> </span><span style="color: #001080">than</span><span style="color: #000000"> </span><span style="color: #001080">Phaser</span><span style="color: #000000"> </span><span style="color: #001080">AStar</span>
+<span style="color: #000000">        </span><span style="color: #001080">NavMesh</span><span style="color: #000000"> </span><span style="color: #001080">is</span><span style="color: #000000"> 5.00</span><span style="color: #001080">x</span><span style="color: #000000"> </span><span style="color: #001080">faster</span><span style="color: #000000"> </span><span style="color: #001080">than</span><span style="color: #000000"> </span><span style="color: #001080">EasyStar</span>
+
+<span style="color: #001080">Long</span><span style="color: #000000"> </span><span style="color: #795E26">paths</span><span style="color: #000000"> (</span><span style="color: #098658">600</span><span style="color: #000000"> </span><span style="color: #001080">pixels</span><span style="color: #000000"> </span><span style="color: #001080">and</span><span style="color: #000000"> </span><span style="color: #001080">greater</span><span style="color: #000000"> </span><span style="color: #001080">length</span><span style="color: #000000">), </span><span style="color: #001080">average</span><span style="color: #000000"> </span><span style="color: #001080">time</span><span style="color: #000000"> </span><span style="color: #001080">per</span><span style="color: #000000"> iteration:</span>
+
+<span style="color: #000000">    </span><span style="color: #001080">Average</span><span style="color: #000000"> </span><span style="color: #001080">time</span><span style="color: #000000"> </span><span style="color: #001080">per</span><span style="color: #000000"> iteration:</span>
+<span style="color: #000000">        </span><span style="color: #001080">AStart</span><span style="color: #000000"> Plugin: 1.38710</span><span style="color: #001080">ms</span>
+<span style="color: #000000">        </span><span style="color: #001080">EasyStar</span><span style="color: #000000"> Plugin: 0.15977</span><span style="color: #001080">ms</span>
+<span style="color: #000000">        </span><span style="color: #001080">NavMesh</span><span style="color: #000000"> Plugin: 0.00738</span><span style="color: #001080">ms</span>
+
+<span style="color: #000000">    Comparison:</span>
+<span style="color: #000000">        </span><span style="color: #001080">NavMesh</span><span style="color: #000000"> </span><span style="color: #001080">is</span><span style="color: #000000"> 187.95</span><span style="color: #001080">x</span><span style="color: #000000"> </span><span style="color: #001080">faster</span><span style="color: #000000"> </span><span style="color: #001080">than</span><span style="color: #000000"> </span><span style="color: #001080">Phaser</span><span style="color: #000000"> </span><span style="color: #001080">AStar</span>
+<span style="color: #000000">        </span><span style="color: #001080">NavMesh</span><span style="color: #000000"> </span><span style="color: #001080">is</span><span style="color: #000000"> 21.65</span><span style="color: #001080">x</span><span style="color: #000000"> </span><span style="color: #001080">faster</span><span style="color: #000000"> </span><span style="color: #001080">than</span><span style="color: #000000"> </span><span style="color: #001080">EasyStar</span>
+</code></pre>
+				<a href="#community-examples" id="community-examples" style="color: inherit; text-decoration: none;">
+					<h2>Community Examples</h2>
+				</a>
+				<ul>
+					<li><a href="https://colyseus-unity3d-navmesh.firebaseapp.com">TypeScript Server Example</a> - Right click to move the agent, see discussion thread <a href="https://github.com/mikewesthad/navmesh/issues/11#issuecomment-595211483">here</a> with links to source code.</li>
+				</ul>
+				<a href="#development" id="development" style="color: inherit; text-decoration: none;">
+					<h2>Development</h2>
+				</a>
+				<p>Pull requests are welcome (see <a href="#to-dos">todos</a>)! If you want to run this repo locally, make sure you have <a href="https://nodejs.org/en/">node</a> installed. Download the repo, open a terminal in the repo folder and run:</p>
+				<pre><code><span style="color: #001080">npm</span><span style="color: #000000"> </span><span style="color: #001080">i</span><span style="color: #000000"> -</span><span style="color: #001080">g</span><span style="color: #000000"> </span><span style="color: #001080">yarn</span>
+<span style="color: #001080">yarn</span>
+<span style="color: #001080">yarn</span><span style="color: #000000"> </span><span style="color: #001080">bootstrap</span>
+</code></pre>
+				<p>This project uses <a href="https://github.com/lerna/lerna">lerna</a> and <a href="https://yarnpkg.com/lang/en/docs/workspaces/">yarn workspaces</a> to manage multiple packages within one repository. <code>npx yarn</code> will pull the root dependencies (and install yarn if needed) and <code>npm run bootstrap</code> will use lerna &amp; yarn to pull and link dependencies within &quot;packages/&quot;. This project has the following packages:</p>
+				<ul>
+					<li><code>navmesh</code> - core logic, game-engine agnostic</li>
+					<li><code>phaser-navmesh</code> - Phaser Plugin v3 wrapper around <code>navmesh</code></li>
+					<li><code>phaser2-navmesh</code> - Phaser Plugin v2 wrapper around <code>navmesh</code></li>
+				</ul>
+				<p>The project is controlled via npm scripts. The main ones to use:</p>
+				<ul>
+					<li><code>yarn build:libs</code> - will build production versions of the three libraries within &quot;packages/&quot;.</li>
+					<li><code>yarn test</code> - will run the automated tests against the libraries.</li>
+					<li><code>serve:examples</code> - will build, serve and watch the three examples. Phaser 3 examples are at <a href="http://localhost:8080/">localhost::8080</a>, Phaser 2 examples at <a href="http://localhost:8081/">localhost::8081</a> and node examples at <a href="http://localhost:8082/">localhost::8082</a>.</li>
+					<li><code>yarn dev</code> - watch the libraries &amp; serve the examples.  If you are working on the library, this is the easiest way to do &quot;functional testing&quot; by using the library in a game environment.</li>
+					<li><code>yarn dev:phaser3</code>, <code>yarn dev:phaser2</code>, <code>yarn dev:node</code> - these will watch the relevant libraries and serve one the corresponding example. Useful for dev on a specific library.</li>
+				</ul>
+				<p>A few tips, because Lerna + Yarn is complicated, and I keep forgetting these:</p>
+				<ul>
+					<li>Running a command in a workspace:<ul>
+							<li><code>yarn workspace &lt;workspace_name&gt; &lt;command&gt;</code> </li>
+							<li>Example: <code>yarn workspace navmesh add typescript --dev</code></li>
+						</ul>
+					</li>
+					<li>Running a command in a set of workspaces:<ul>
+							<li><code>lerna run --parallel watch --scope &lt;scope&gt;</code></li>
+							<li>Example: <code>lerna run --parallel build --scope &#39;{navmesh,phaser-navmesh,phaser-navmesh}&#39;</code></li>
+						</ul>
+					</li>
+					<li>Add a dev dependency to the root:<ul>
+							<li><code>yarn add &lt;dependency&gt; --dev -W</code></li>
+						</ul>
+					</li>
+					<li>Running a command in all workspaces:<ul>
+							<li><code>yarn workspaces &lt;command&gt;</code> </li>
+							<li>Example: <code>yarn workspaces build</code></li>
+							<li><code>lerna run --parallel watch</code></li>
+						</ul>
+					</li>
+				</ul>
+				<a href="#changelogs" id="changelogs" style="color: inherit; text-decoration: none;">
+					<h2>Changelogs</h2>
+				</a>
+				<ul>
+					<li><a href="https://github.com/mikewesthad/navmesh/blob/master/packages/phaser-navmesh/README.md">Phaser NavMesh (for Phaser v3)</a></li>
+					<li><a href="https://github.com/mikewesthad/navmesh/blob/master/packages/phaser2-navmesh/README.md">Phaser 2 NavMesh</a></li>
+					<li><a href="https://github.com/mikewesthad/navmesh/blob/master/packages/navmesh/README.md">NavMesh</a></li>
+				</ul>
+				<a href="#references" id="references" style="color: inherit; text-decoration: none;">
+					<h2>References</h2>
+				</a>
+				<p>Helpful resources used while building this plugin:</p>
+				<ul>
+					<li>Inspired by <a href="https://github.com/nickjanssen/PatrolJS">PatrolJS</a>, an implementation of navmeshes for threejs</li>
+					<li>Navmesh path-finding algorithm explanations:<ul>
+							<li><a href="http://jceipek.com/Olin-Coding-Tutorials/pathing.html">Game Path Planning by Julian Ceipek</a></li>
+							<li><a href="http://digestingduck.blogspot.com/2010/03/simple-stupid-funnel-algorithm.html">Simple Stupid Funnel Algorithm</a></li>
+						</ul>
+					</li>
+					<li><a href="http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html">Advice on astar heuristics</a></li>
+				</ul>
+				<a href="#to-dos" id="to-dos" style="color: inherit; text-decoration: none;">
+					<h2>To Dos</h2>
+				</a>
+				<ul>
+					<li>Features<ul>
+							<li>Allow non-square navmesh polygons from Tiled - ideally, any convex shape.</li>
+							<li>Reimplement the autotessalation version of the lib &amp; try libtess in quad mode.</li>
+							<li>The astar heuristic &amp; cost functions need another pass. They don&#39;t always produce the shortest path. Implement incomplete funneling while building the astar path?</li>
+							<li>The navmesh assumes any polygon can reach any other polygon. This probably should be extended to put connected polygons into groups like patroljs.</li>
+							<li>Better warnings for devs - warn on empty map, warn on disconnected map, warn if polygons are malformed.</li>
+							<li>Factor in the layer position / scale / rotation</li>
+						</ul>
+					</li>
+					<li>Testing<ul>
+							<li>Check against tilemap that is larger than the screen</li>
+						</ul>
+					</li>
+					<li>Research<ul>
+							<li>There are probably optimization tricks to do when dealing with certain types of shapes. E.g. we are using axis-aligned boxes for the polygons and it is dead simple to calculate if a point is inside one of those...</li>
+							<li>Investigate <a href="http://www.david-gouveia.com/portfolio/pathfinding-on-a-2d-polygonal-map/">Points-of-Visibility</a> pathfinding to compare speed</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="modules.html">Modules</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/navmesh.html">navmesh</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/phaser_navmesh.html">phaser-<wbr>navmesh</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/phaser2_navmesh.html">phaser2-<wbr>navmesh</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
 </div>
-</nav>
-
-<div class="content" data-ice="content"><div class="github-markdown">
-  <div class="manual-user-index" data-ice="manualUserIndex"><h1 id="navigation-meshes-overview------omit-in-toc----">Navigation Meshes Overview <!-- omit in toc --></h1><p>A JS plugin for fast pathfinding using <a href="https://en.wikipedia.org/wiki/Navigation_mesh">navigation meshes</a>, with optional wrappers for the Phaser v2 and Phaser v3 game engines.</p>
-<p><a href="https://www.mikewesthad.com/navmesh/demo/"><img src="./doc-source/single-following-agent.gif" width="400"></a></p>
-<p><a href="https://www.mikewesthad.com/navmesh/demo/">Interactive demo</a></p>
-<p>(Note: if you are viewing this on GitHub or NPM, you might want to check out the HTML documentation <a href="https://www.mikewesthad.com/navmesh/docs/">here</a>.)</p>
-<p>Table of Contents:</p>
-<ul>
-<li><a href="#introduction">Introduction</a></li>
-<li><a href="#installation">Installation</a><ul>
-<li><a href="#as-a-script">As a Script</a></li>
-<li><a href="#as-a-module">As a Module</a></li>
-</ul>
-</li>
-<li><a href="#creating-a-navigation-mesh">Creating a Navigation Mesh</a></li>
-<li><a href="#usage">Usage</a><ul>
-<li><a href="#navmesh">navmesh</a></li>
-<li><a href="#phaser-navmesh">phaser-navmesh</a></li>
-<li><a href="#phaser2-navmesh">phaser2-navmesh</a></li>
-</ul>
-</li>
-<li><a href="#performance-comparison">Performance Comparison</a></li>
-<li><a href="#development">Development</a></li>
-<li><a href="#changelogs">Changelogs</a></li>
-<li><a href="#references">References</a></li>
-<li><a href="#to-dos">To Dos</a></li>
-</ul>
-<h2 id="introduction">Introduction</h2><p>Pathfinding is essentially the problem of solving a maze, finding a path between points while avoiding obstacles. When pathfinding in games, we need to:</p>
-<ol>
-<li>Represent the game world in a way that defines what areas are walkable.</li>
-<li>Search that representation for the shortest path.</li>
-</ol>
-<p>When it comes to 2D pathfinding, a common approach is to represent the world using <a href="https://developer.mozilla.org/en-US/docs/Games/Techniques/Tilemaps">tiles</a> (a grid) and then search for a path using the <a href="https://en.wikipedia.org/wiki/A*_search_algorithm">A* algorithm</a> ((e.g. <a href="https://github.com/photonstorm/phaser-plugins/tree/master/AStar">Phaser AStar</a>). If you have a 50 x 50 tile world, searching for a path involves searching through a representation of the world with up to 2500 locations (&quot;nodes&quot;).</p>
-<p>This plugin uses navigation meshes to simplify that search. Instead of representing the world as a grid of tiles, it represents the walkable areas of the world as a mesh. That means that the representation of the world has far fewer nodes, and hence, can be searched much faster than the grid approach. This approach is 5x - 150x faster than Phaser&apos;s A* plugin (see performance section), depending on the mesh.</p>
-<p>The example map below (left) is a 30 x 30 map. As a grid, there are 900 nodes, but as a navmesh (right) there are 27 nodes (colored rectangles).</p>
-<p><img src="./doc-source/combined.png" width="700"></p>
-<h2 id="installation">Installation</h2><p>This repository contains 3 related JS packages:</p>
-<ul>
-<li><code>navmesh</code> - core logic, game-engine agnostic, usable outside of Phaser.</li>
-<li><code>phaser-navmesh</code> - Phaser v3 wrapper around <code>navmesh</code> that creates a Phaser 3 Scene plugin. Phaser 3 is expected to be a dependency in your project.</li>
-<li><code>phaser2-navmesh</code> - Phaser v2 wrapper around <code>navmesh</code> that creates a Phaser 2 game plugin. Phaser 2 or Phaser-ce is expected to be in the global scope.</li>
-</ul>
-<p>You can use any of them as a script or as a module in your bundler of choice.</p>
-<h3 id="as-a-script">As a Script</h3><p>You can drop in any of the transpiled code into your project as a standalone script. Download the version that you want:</p>
-<table>
-<thead>
-<tr>
-<th>navmesh</th>
-<th>phaser-navmesh</th>
-<th>phaser2-navmesh</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.min.js">minified</a> &amp; source <a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.min.js.map">map</a></td>
-<td><a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.min.js">minified</a> &amp; source <a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.min.js.map">map</a></td>
-<td><a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.min.js">minified</a> &amp; source <a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.min.js.map">map</a></td>
-</tr>
-<tr>
-<td><a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.js">unminified</a> &amp; source <a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.js.map">map</a></td>
-<td><a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.js">unminified</a> &amp; source <a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.js.map">map</a></td>
-<td><a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.js">unminified</a> &amp; source <a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.js.map">map</a></td>
-</tr>
-<tr>
-<td>Library Name: NavMesh</td>
-<td>Library Name: PhaserNavMeshPlugin</td>
-<td>Library Name: Phaser2NavMeshPlugin</td>
-</tr>
-</tbody>
-</table>
-<p>E.g. if you wanted phaser-navmesh, you would add this to your HTML:</p>
-<pre><code class="lang-html"><code class="source-code prettyprint">&lt;script src=&quot;phaser-navmesh.min.js&quot;&gt;&lt;/script&gt;</code>
-</code></pre>
-<p>Inside of your own script, you can now use the global variable <code>PhaserNavMeshPlugin</code> (see library name in the above table), e.g.</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">const game = new Phaser.Game({
-  type: Phaser.AUTO,
-  width: 750,
-  height: 750,
-  plugins: {
-    scene: [
-      { key: &quot;NavMeshPlugin&quot;, plugin: PhaserNavMeshPlugin, mapping: &quot;navMeshPlugin&quot;, start: true }
-    ]
-  }
-});</code>
-</code></pre>
-<p>See <a href="#usage">usage</a> for more information on how to use each of the three modules in this repository.</p>
-<h3 id="as-a-module">As a Module</h3><p>Install the appropriate dependency:</p>
-<ul>
-<li><code>npm install --save navmesh</code> for usage outside of Phaser</li>
-<li><code>npm install --save phaser-navmesh</code> for Phaser 3</li>
-<li><code>npm install --save phaser2-navmesh</code> for Phaser 2</li>
-</ul>
-<p>To use the transpiled and minified distribution of the library:</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">import PhaserNavMeshPlugin from &quot;phaser-navmesh&quot;;</code>
-</code></pre>
-<p>To use the raw library (so you can transpile it to match your own project settings):</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">import PhaserNavMeshPlugin from &quot;phaser-navmesh/src&quot;;</code>
-</code></pre>
-<h2 id="creating-a-navigation-mesh">Creating a Navigation Mesh</h2><p>Before you can dive into the code, you&apos;ll need to create a navigation mesh for your game world. This is a process of defining the walkable areas within you world. You can create it from scratch in code, but it&apos;s far easier to use a tilemap editor like Tiled to do this. See <a href="https://www.mikewesthad.com/navmesh/docs/manual/tiled-navmesh-guide.html">guide</a>.</p>
-<p>Note: the current version of the library only supports <a href="https://www.sparknotes.com/math/geometry1/polygons/section2/">convex polygons</a>.
-There are libraries like <a href="https://github.com/schteppe/poly-decomp.js/">poly-decom.js</a> for decomposing a concave polygon into easier to manage convex polygons. It&apos;s on the to do list to handle any polygon, but I&apos;ve found that automatically decomposing polygons leads to worse performance than hand-mapping the levels with convex polygons.</p>
-<h2 id="usage">Usage</h2><p>You can find code snippets for the different use cases below. You can also jump directly to a few example projects in this repository for:</p>
-<ul>
-<li><a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples-phaser3">phaser 3</a></li>
-<li><a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples-phaser2">phaser 2</a></li>
-<li><a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples-node">navmesh in a node environment</a></li>
-</ul>
-<h3 id="navmesh">navmesh</h3><p>If you don&apos;t need the Phaser wrappers, you can construct navmeshes directly from points using the navmesh package:</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">import NavMesh from &quot;navmesh&quot;;
-
-/*
-  Imaging your game world has three walkable rooms, like this:
-
-    +-----+-----+
-    |     |     |
-    |  1  |  2  |
-    |     |     |
-    +-----------+
-          |     |
-          |  3  |
-          |     |
-          +-----+
-*/
-
-// The mesh is represented as an array where each element contains the points for an indivdual
-// polygon within the mesh.
-const meshPolygonPoints = [
-  [{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 10 }, { x: 0, y: 10 }], // Polygon 1
-  [{ x: 10, y: 0 }, { x: 20, y: 0 }, { x: 20, y: 10 }, { x: 10, y: 10 }], // Polygon 2
-  [{ x: 10, y: 10 }, { x: 20, y: 10 }, { x: 20, y: 20 }, { x: 10, y: 20 }] // Polygon 3
-];
-const navMesh = new NavMesh(meshPolygonPoints);
-
-// Find a path from the top left of room 1 to the bottom left of room 3
-const path = navMesh.findPath({ x: 0, y: 0 }, { x: 10, y: 20 });
-// &#x2BA1;  [{ x: 0, y: 0 }, { x: 10, y: 10 }, { x: 10, y: 20 }]</code>
-</code></pre>
-<p>Check out the <a href="https://www.mikewesthad.com/navmesh/docs/identifiers.html#navmesh-src">API reference</a> for more information.</p>
-<h3 id="phaser-navmesh">phaser-navmesh</h3><p>If you are working with Phaser 3, you can use the phaser-navmesh package, which provides a Scene plugin. Play with a live example on CodeSandbox <a href="https://codesandbox.io/s/zq1wvozxll?fontsize=14">here</a>, or peek at the <a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples/src">examples</a> in this repository for more complete usage.</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">import Phaser from &quot;phaser&quot;;
-import PhaserNavMeshPlugin from &quot;phaser-navmesh&quot;;
-
-const game = new Phaser.Game({
-  type: Phaser.AUTO,
-  parent: &quot;game-container&quot;,
-  width: 750,
-  height: 750,
-  plugins: {
-    scene: [
-      {
-        key: &quot;PhaserNavMeshPlugin&quot;, // Key to store the plugin class under in cache
-        plugin: PhaserNavMeshPlugin, // Class that constructs plugins
-        mapping: &quot;navMeshPlugin&quot;, // Property mapping to use for the scene, e.g. this.navMeshPlugin
-        start: true
-      }
-    ]
-  },
-  scene: {
-    preload: preload,
-    create: create
-  }
-});
-
-function preload() {
-  this.load.tilemapTiledJSON(&quot;map&quot;, &quot;tilemaps/map.json&quot;);
-  this.load.image(&quot;tiles&quot;, &quot;tilemaps/tiles.png&quot;);
-}
-
-function create() {
-  // Set up a tilemap with at least one layer
-  const tilemap = this.add.tilemap(&quot;map&quot;);
-  const tileset = tilemap.addTilesetImage(&quot;tiles&quot;, &quot;tiles&quot;);
-  const wallLayer = tilemap.createStaticLayer(&quot;walls&quot;, tileset);
-
-  // Load the navMesh from the tilemap object layer &quot;navmesh&quot; (created in Tiled). The navMesh was
-  // created with 12.5 pixels of space around obstacles.
-  const objectLayer = tilemap.getObjectLayer(&quot;navmesh&quot;);
-  const navMesh = this.navMeshPlugin.buildMeshFromTiled(&quot;mesh&quot;, objectLayer, 12.5);
-  const path = navMesh.findPath({ x: 0, y: 0 }, { x: 300, y: 400 });
-  // &#x2BA1;  path will either be null or an array of Phaser.Geom.Point objects
-}</code>
-</code></pre>
-<p>The plugin comes with some methods for visually debugging your navmesh:</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">navMesh.enableDebug(); // Creates a Phaser.Graphics overlay on top of the screen
-navMesh.debugDrawClear(); // Clears the overlay
-// Visualize the underlying navmesh
-navMesh.debugDrawMesh({
-  drawCentroid: true,
-  drawBounds: false,
-  drawNeighbors: true,
-  drawPortals: true
-});
-// Visualize an individual path
-navMesh.debugDrawPath(path, 0xffd900);</code>
-</code></pre>
-<p>Check out the <a href="https://www.mikewesthad.com/navmesh/docs/identifiers.html#phaser-navmesh-src">API reference</a> for more information.</p>
-<h3 id="phaser2-navmesh">phaser2-navmesh</h3><p>If you are working with Phaser 2, you can use the phaser2-navmesh package, which provides a game plugin. See this <a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples-phaser2/src">example</a> for more complete usage. You can also look at the <a href="#phaser-navmesh">previous section</a> for Phaser usage.</p>
-<h2 id="performance-comparison">Performance Comparison</h2><p><em>(Note: these comparisons were done in any earlier verison of the repo before Phaser v3 was released. The plugins tested haven&apos;t been released in v3 versions yet, so this section could use an update. That said, the results should be the same.)</em></p>
-<p>Comparing this navmesh plugin against:</p>
-<ul>
-<li><a href="https://github.com/photonstorm/phaser-plugins">Phaser&apos;s grid-based A* plugin</a>. Navmesh is approximately 5x - 150x faster.</li>
-<li>A faster, grid-based A* search, <a href="https://github.com/prettymuchbryce/easystarjs">EasyStar.js</a>. Navmesh is approximately 5x - 20x faster.</li>
-</ul>
-<p>Performance depends on the size of the area that needs to be searched. Finding for a path between points that are 50 pixels away is (generally) going to be much faster than finding a path between points that are 5000 pixels away.</p>
-<p>Details (see <a href="https://github.com/mikewesthad/navmesh/tree/master/src/examples/performance">src/library/performance</a>):</p>
-<pre><code><code class="source-code prettyprint">Performance Comparison, 100000 iterations, 30x30 tilemap
-
-Short paths (150 - 500 pixel length)
-
-    Average time per iteration:
-        AStart Plugin: 0.02470ms
-        EasyStar Plugin: 0.02876ms
-        NavMesh Plugin: 0.00575ms
-
-    Comparison:
-        NavMesh is 4.30x faster than Phaser AStar
-        NavMesh is 5.00x faster than EasyStar
-
-Long paths (600 pixels and greater length), average time per iteration:
-
-    Average time per iteration:
-        AStart Plugin: 1.38710ms
-        EasyStar Plugin: 0.15977ms
-        NavMesh Plugin: 0.00738ms
-
-    Comparison:
-        NavMesh is 187.95x faster than Phaser AStar
-        NavMesh is 21.65x faster than EasyStar</code>
-</code></pre><h2 id="community-examples">Community Examples</h2><ul>
-<li><a href="https://colyseus-unity3d-navmesh.firebaseapp.com">TypeScript Server Example</a> - Right click to move the agent, see discussion thread <a href="https://github.com/mikewesthad/navmesh/issues/11#issuecomment-595211483">here</a> with links to source code.</li>
-</ul>
-<h2 id="development">Development</h2><p>Pull requests are welcome (see <a href="#to-dos">todos</a>)! If you want to run this repo locally, make sure you have <a href="https://nodejs.org/en/">node</a> installed. Download the repo, open a terminal in the repo folder and run:</p>
-<pre><code><code class="source-code prettyprint">npx yarn
-npm run bootstrap</code>
-</code></pre><p>This project uses <a href="https://github.com/lerna/lerna">lerna</a> and <a href="https://yarnpkg.com/lang/en/docs/workspaces/">yarn workspaces</a> to manage multiple packages within one repository. <code>npx yarn</code> will pull the root dependencies (and install yarn if needed) and <code>npm run bootstrap</code> will use lerna &amp; yarn to pull and link dependencies within &quot;packages/&quot;. This project has the following packages:</p>
-<ul>
-<li><code>navmesh</code> - core logic, game-engine agnostic</li>
-<li><code>phaser-navmesh</code> - Phaser Plugin v3 wrapper around <code>navmesh</code></li>
-<li><code>phaser2-navmesh</code> - Phaser Plugin v2 wrapper around <code>navmesh</code></li>
-</ul>
-<p>The project is controlled via npm scripts. The main ones to use:</p>
-<ul>
-<li><code>npm run build</code> - will build all the individual packages within &quot;packages/&quot;.</li>
-<li><code>npm run dev</code> - watch &amp; serve the examples. Phaser 3 examples are at <a href="http://localhost:8080/">localhost::8080</a>, Phaser 2 examples at <a href="http://localhost:8081/">localhost::8081</a> and node examples at <a href="http://localhost:8082/">localhost::8082</a>. If you are working on the library, this is the easiest way to do &quot;functional testing&quot; by using the library in a game environment.</li>
-<li><code>npm run test</code> - will run the automated tests against the library.</li>
-</ul>
-<h2 id="changelogs">Changelogs</h2><ul>
-<li><a href="https://github.com/mikewesthad/navmesh/blob/master/packages/phaser-navmesh/README.md">Phaser NavMesh (for Phaser v3)</a></li>
-<li><a href="https://github.com/mikewesthad/navmesh/blob/master/packages/phaser2-navmesh/README.md">Phaser 2 NavMesh</a></li>
-<li><a href="https://github.com/mikewesthad/navmesh/blob/master/packages/navmesh/README.md">NavMesh</a></li>
-</ul>
-<h2 id="references">References</h2><p>Helpful resources used while building this plugin:</p>
-<ul>
-<li>Inspired by <a href="https://github.com/nickjanssen/PatrolJS">PatrolJS</a>, an implementation of navmeshes for threejs</li>
-<li>Navmesh path-finding algorithm explanations:<ul>
-<li><a href="http://jceipek.com/Olin-Coding-Tutorials/pathing.html">Game Path Planning by Julian Ceipek</a></li>
-<li><a href="http://digestingduck.blogspot.com/2010/03/simple-stupid-funnel-algorithm.html">Simple Stupid Funnel Algorithm</a></li>
-</ul>
-</li>
-<li><a href="http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html">Advice on astar heuristics</a></li>
-</ul>
-<h2 id="to-dos">To Dos</h2><ul>
-<li>Features<ul>
-<li>Allow non-square navmesh polygons from Tiled - ideally, any convex shape.</li>
-<li>Reimplement the autotessalation version of the lib &amp; try libtess in quad mode.</li>
-<li>The astar heuristic &amp; cost functions need another pass. They don&apos;t always produce the shortest path. Implement incomplete funneling while building the astar path?</li>
-<li>The navmesh assumes any polygon can reach any other polygon. This probably should be extended to put connected polygons into groups like patroljs.</li>
-<li>Better warnings for devs - warn on empty map, warn on disconnected map, warn if polygons are malformed.</li>
-<li>Factor in the layer position / scale / rotation</li>
-</ul>
-</li>
-<li>Testing<ul>
-<li>Check against tilemap that is larger than the screen</li>
-</ul>
-</li>
-<li>Research<ul>
-<li>There are probably optimization tricks to do when dealing with certain types of shapes. E.g. we are using axis-aligned boxes for the polygons and it is dead simple to calculate if a point is inside one of those...</li>
-<li>Investigate <a href="http://www.david-gouveia.com/portfolio/pathfinding-on-a-2d-polygonal-map/">Points-of-Visibility</a> pathfinding to compare speed</li>
-</ul>
-</li>
-</ul>
-</div>
-
-  
-
-  <div class="manual-cards">
-    
-  <div class="manual-card-wrap" data-ice="cards">
-      <div class="manual-card">
-        <div data-ice="card"><h1>Navigation Meshes Overview </h1><p>A JS plugin for fast pathfinding using <a href="https://en.wikipedia.org/wiki/Navigation_mesh">navigation meshes</a>, with optional wrappers for the Phaser v2 and Phaser v3 game engines.</p><p><a href="https://www.mikewesthad.com/navmesh/demo/"><img src="./manual/./doc-source/single-following-agent.gif" width="400"></a></p><p><a href="https://www.mikewesthad.com/navmesh/demo/">Interactive demo</a></p><p>(Note: if you are viewing this on GitHub or NPM, you might want to check out the HTML documentation <a href="https://www.mikewesthad.com/navmesh/docs/">here</a>.)</p><p>Table of Contents:</p><ul>
-<li><a href="#introduction">Introduction</a></li>
-<li><a href="#installation">Installation</a><ul>
-<li><a href="#as-a-script">As a Script</a></li>
-<li><a href="#as-a-module">As a Module</a></li>
-</ul>
-</li>
-<li><a href="#creating-a-navigation-mesh">Creating a Navigation Mesh</a></li>
-<li><a href="#usage">Usage</a><ul>
-<li><a href="#navmesh">navmesh</a></li>
-<li><a href="#phaser-navmesh">phaser-navmesh</a></li>
-<li><a href="#phaser2-navmesh">phaser2-navmesh</a></li>
-</ul>
-</li>
-<li><a href="#performance-comparison">Performance Comparison</a></li>
-<li><a href="#development">Development</a></li>
-<li><a href="#changelogs">Changelogs</a></li>
-<li><a href="#references">References</a></li>
-<li><a href="#to-dos">To Dos</a></li>
-</ul><h2>Introduction</h2><p>Pathfinding is essentially the problem of solving a maze, finding a path between points while avoiding obstacles. When pathfinding in games, we need to:</p><ol>
-<li>Represent the game world in a way that defines what areas are walkable.</li>
-<li>Search that representation for the shortest path.</li>
-</ol><p>When it comes to 2D pathfinding, a common approach is to represent the world using <a href="https://developer.mozilla.org/en-US/docs/Games/Techniques/Tilemaps">tiles</a> (a grid) and then search for a path using the <a href="https://en.wikipedia.org/wiki/A*_search_algorithm">A* algorithm</a> ((e.g. <a href="https://github.com/photonstorm/phaser-plugins/tree/master/AStar">Phaser AStar</a>). If you have a 50 x 50 tile world, searching for a path involves searching through a representation of the world with up to 2500 locations (&quot;nodes&quot;).</p><p>This plugin uses navigation meshes to simplify that search. Instead of representing the world as a grid of tiles, it represents the walkable areas of the world as a mesh. That means that the representation of the world has far fewer nodes, and hence, can be searched much faster than the grid approach. This approach is 5x - 150x faster than Phaser&apos;s A* plugin (see performance section), depending on the mesh.</p><p>The example map below (left) is a 30 x 30 map. As a grid, there are 900 nodes, but as a navmesh (right) there are 27 nodes (colored rectangles).</p><p><img src="./manual/./doc-source/combined.png" width="700"></p><h2>Installation</h2><p>This repository contains 3 related JS packages:</p><ul>
-<li><code>navmesh</code> - core logic, game-engine agnostic, usable outside of Phaser.</li>
-<li><code>phaser-navmesh</code> - Phaser v3 wrapper around <code>navmesh</code> that creates a Phaser 3 Scene plugin. Phaser 3 is expected to be a dependency in your project.</li>
-<li><code>phaser2-navmesh</code> - Phaser v2 wrapper around <code>navmesh</code> that creates a Phaser 2 game plugin. Phaser 2 or Phaser-ce is expected to be in the global scope.</li>
-</ul><p>You can use any of them as a script or as a module in your bundler of choice.</p><h3>As a Script</h3><p>You can drop in any of the transpiled code into your project as a standalone script. Download the version that you want:</p><table>
-<thead>
-<tr>
-<th>navmesh</th>
-<th>phaser-navmesh</th>
-<th>phaser2-navmesh</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.min.js">minified</a> &amp; source <a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.min.js.map">map</a></td>
-<td><a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.min.js">minified</a> &amp; source <a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.min.js.map">map</a></td>
-<td><a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.min.js">minified</a> &amp; source <a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.min.js.map">map</a></td>
-</tr>
-<tr>
-<td><a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.js">unminified</a> &amp; source <a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.js.map">map</a></td>
-<td><a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.js">unminified</a> &amp; source <a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.js.map">map</a></td>
-<td><a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.js">unminified</a> &amp; source <a href="https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.js.map">map</a></td>
-</tr>
-<tr>
-<td>Library Name: NavMesh</td>
-<td>Library Name: PhaserNavMeshPlugin</td>
-<td>Library Name: Phaser2NavMeshPlugin</td>
-</tr>
-</tbody>
-</table><p>E.g. if you wanted phaser-navmesh, you would add this to your HTML:</p><pre><code class="lang-html"><code class="source-code prettyprint">&lt;script src=&quot;phaser-navmesh.min.js&quot;&gt;&lt;/script&gt;</code>
-</code></pre><p>Inside of your own script, you can now use the global variable <code>PhaserNavMeshPlugin</code> (see library name in the above table), e.g.</p><pre><code class="lang-js"><code class="source-code prettyprint">const game = new Phaser.Game({
-  type: Phaser.AUTO,
-  width: 750,
-  height: 750,
-  plugins: {
-    scene: [
-      { key: &quot;NavMeshPlugin&quot;, plugin: PhaserNavMeshPlugin, mapping: &quot;navMeshPlugin&quot;, start: true }
-    ]
-  }
-});</code>
-</code></pre><p>See <a href="#usage">usage</a> for more information on how to use each of the three modules in this repository.</p><h3>As a Module</h3><p>Install the appropriate dependency:</p><ul>
-<li><code>npm install --save navmesh</code> for usage outside of Phaser</li>
-<li><code>npm install --save phaser-navmesh</code> for Phaser 3</li>
-<li><code>npm install --save phaser2-navmesh</code> for Phaser 2</li>
-</ul><p>To use the transpiled and minified distribution of the library:</p><pre><code class="lang-js"><code class="source-code prettyprint">import PhaserNavMeshPlugin from &quot;phaser-navmesh&quot;;</code>
-</code></pre><p>To use the raw library (so you can transpile it to match your own project settings):</p><pre><code class="lang-js"><code class="source-code prettyprint">import PhaserNavMeshPlugin from &quot;phaser-navmesh/src&quot;;</code>
-</code></pre><h2>Creating a Navigation Mesh</h2><p>Before you can dive into the code, you&apos;ll need to create a navigation mesh for your game world. This is a process of defining the walkable areas within you world. You can create it from scratch in code, but it&apos;s far easier to use a tilemap editor like Tiled to do this. See <a href="https://www.mikewesthad.com/navmesh/docs/manual/tiled-navmesh-guide.html">guide</a>.</p><p>Note: the current version of the library only supports <a href="https://www.sparknotes.com/math/geometry1/polygons/section2/">convex polygons</a>.
-There are libraries like <a href="https://github.com/schteppe/poly-decomp.js/">poly-decom.js</a> for decomposing a concave polygon into easier to manage convex polygons. It&apos;s on the to do list to handle any polygon, but I&apos;ve found that automatically decomposing polygons leads to worse performance than hand-mapping the levels with convex polygons.</p><h2>Usage</h2><p>You can find code snippets for the different use cases below. You can also jump directly to a few example projects in this repository for:</p><ul>
-<li><a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples-phaser3">phaser 3</a></li>
-<li><a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples-phaser2">phaser 2</a></li>
-<li><a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples-node">navmesh in a node environment</a></li>
-</ul><h3>navmesh</h3><p>If you don&apos;t need the Phaser wrappers, you can construct navmeshes directly from points using the navmesh package:</p><pre><code class="lang-js"><code class="source-code prettyprint">import NavMesh from &quot;navmesh&quot;;
-
-/*
-  Imaging your game world has three walkable rooms, like this:
-
-    +-----+-----+
-    |     |     |
-    |  1  |  2  |
-    |     |     |
-    +-----------+
-          |     |
-          |  3  |
-          |     |
-          +-----+
-*/
-
-// The mesh is represented as an array where each element contains the points for an indivdual
-// polygon within the mesh.
-const meshPolygonPoints = [
-  [{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 10 }, { x: 0, y: 10 }], // Polygon 1
-  [{ x: 10, y: 0 }, { x: 20, y: 0 }, { x: 20, y: 10 }, { x: 10, y: 10 }], // Polygon 2
-  [{ x: 10, y: 10 }, { x: 20, y: 10 }, { x: 20, y: 20 }, { x: 10, y: 20 }] // Polygon 3
-];
-const navMesh = new NavMesh(meshPolygonPoints);
-
-// Find a path from the top left of room 1 to the bottom left of room 3
-const path = navMesh.findPath({ x: 0, y: 0 }, { x: 10, y: 20 });
-// &#x2BA1;  [{ x: 0, y: 0 }, { x: 10, y: 10 }, { x: 10, y: 20 }]</code>
-</code></pre><p>Check out the <a href="https://www.mikewesthad.com/navmesh/docs/identifiers.html#navmesh-src">API reference</a> for more information.</p><h3>phaser-navmesh</h3><p>If you are working with Phaser 3, you can use the phaser-navmesh package, which provides a Scene plugin. Play with a live example on CodeSandbox <a href="https://codesandbox.io/s/zq1wvozxll?fontsize=14">here</a>, or peek at the <a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples/src">examples</a> in this repository for more complete usage.</p><pre><code class="lang-js"><code class="source-code prettyprint">import Phaser from &quot;phaser&quot;;
-import PhaserNavMeshPlugin from &quot;phaser-navmesh&quot;;
-
-const game = new Phaser.Game({
-  type: Phaser.AUTO,
-  parent: &quot;game-container&quot;,
-  width: 750,
-  height: 750,
-  plugins: {
-    scene: [
-      {
-        key: &quot;PhaserNavMeshPlugin&quot;, // Key to store the plugin class under in cache
-        plugin: PhaserNavMeshPlugin, // Class that constructs plugins
-        mapping: &quot;navMeshPlugin&quot;, // Property mapping to use for the scene, e.g. this.navMeshPlugin
-        start: true
-      }
-    ]
-  },
-  scene: {
-    preload: preload,
-    create: create
-  }
-});
-
-function preload() {
-  this.load.tilemapTiledJSON(&quot;map&quot;, &quot;tilemaps/map.json&quot;);
-  this.load.image(&quot;tiles&quot;, &quot;tilemaps/tiles.png&quot;);
-}
-
-function create() {
-  // Set up a tilemap with at least one layer
-  const tilemap = this.add.tilemap(&quot;map&quot;);
-  const tileset = tilemap.addTilesetImage(&quot;tiles&quot;, &quot;tiles&quot;);
-  const wallLayer = tilemap.createStaticLayer(&quot;walls&quot;, tileset);
-
-  // Load the navMesh from the tilemap object layer &quot;navmesh&quot; (created in Tiled). The navMesh was
-  // created with 12.5 pixels of space around obstacles.
-  const objectLayer = tilemap.getObjectLayer(&quot;navmesh&quot;);
-  const navMesh = this.navMeshPlugin.buildMeshFromTiled(&quot;mesh&quot;, objectLayer, 12.5);
-  const path = navMesh.findPath({ x: 0, y: 0 }, { x: 300, y: 400 });
-  // &#x2BA1;  path will either be null or an array of Phaser.Geom.Point objects
-}</code>
-</code></pre><p>The plugin comes with some methods for visually debugging your navmesh:</p><pre><code class="lang-js"><code class="source-code prettyprint">navMesh.enableDebug(); // Creates a Phaser.Graphics overlay on top of the screen
-navMesh.debugDrawClear(); // Clears the overlay
-// Visualize the underlying navmesh
-navMesh.debugDrawMesh({
-  drawCentroid: true,
-  drawBounds: false,
-  drawNeighbors: true,
-  drawPortals: true
-});
-// Visualize an individual path
-navMesh.debugDrawPath(path, 0xffd900);</code>
-</code></pre><p>Check out the <a href="https://www.mikewesthad.com/navmesh/docs/identifiers.html#phaser-navmesh-src">API reference</a> for more information.</p><h3>phaser2-navmesh</h3><p>If you are working with Phaser 2, you can use the phaser2-navmesh package, which provides a game plugin. See this <a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples-phaser2/src">example</a> for more complete usage. You can also look at the <a href="#phaser-navmesh">previous section</a> for Phaser usage.</p><h2>Performance Comparison</h2><p><em>(Note: these comparisons were done in any earlier verison of the repo before Phaser v3 was released. The plugins tested haven&apos;t been released in v3 versions yet, so this section could use an update. That said, the results should be the same.)</em></p><p>Comparing this navmesh plugin against:</p><ul>
-<li><a href="https://github.com/photonstorm/phaser-plugins">Phaser&apos;s grid-based A* plugin</a>. Navmesh is approximately 5x - 150x faster.</li>
-<li>A faster, grid-based A* search, <a href="https://github.com/prettymuchbryce/easystarjs">EasyStar.js</a>. Navmesh is approximately 5x - 20x faster.</li>
-</ul><p>Performance depends on the size of the area that needs to be searched. Finding for a path between points that are 50 pixels away is (generally) going to be much faster than finding a path between points that are 5000 pixels away.</p><p>Details (see <a href="https://github.com/mikewesthad/navmesh/tree/master/src/examples/performance">src/library/performance</a>):</p><pre><code><code class="source-code prettyprint">Performance Comparison, 100000 iterations, 30x30 tilemap
-
-Short paths (150 - 500 pixel length)
-
-    Average time per iteration:
-        AStart Plugin: 0.02470ms
-        EasyStar Plugin: 0.02876ms
-        NavMesh Plugin: 0.00575ms
-
-    Comparison:
-        NavMesh is 4.30x faster than Phaser AStar
-        NavMesh is 5.00x faster than EasyStar
-
-Long paths (600 pixels and greater length), average time per iteration:
-
-    Average time per iteration:
-        AStart Plugin: 1.38710ms
-        EasyStar Plugin: 0.15977ms
-        NavMesh Plugin: 0.00738ms
-
-    Comparison:
-        NavMesh is 187.95x faster than Phaser AStar
-        NavMesh is 21.65x faster than EasyStar</code>
-</code></pre><h2>Community Examples</h2><ul>
-<li><a href="https://colyseus-unity3d-navmesh.firebaseapp.com">TypeScript Server Example</a> - Right click to move the agent, see discussion thread <a href="https://github.com/mikewesthad/navmesh/issues/11#issuecomment-595211483">here</a> with links to source code.</li>
-</ul><h2>Development</h2><p>Pull requests are welcome (see <a href="#to-dos">todos</a>)! If you want to run this repo locally, make sure you have <a href="https://nodejs.org/en/">node</a> installed. Download the repo, open a terminal in the repo folder and run:</p><pre><code><code class="source-code prettyprint">npx yarn
-npm run bootstrap</code>
-</code></pre><p>This project uses <a href="https://github.com/lerna/lerna">lerna</a> and <a href="https://yarnpkg.com/lang/en/docs/workspaces/">yarn workspaces</a> to manage multiple packages within one repository. <code>npx yarn</code> will pull the root dependencies (and install yarn if needed) and <code>npm run bootstrap</code> will use lerna &amp; yarn to pull and link dependencies within &quot;packages/&quot;. This project has the following packages:</p><ul>
-<li><code>navmesh</code> - core logic, game-engine agnostic</li>
-<li><code>phaser-navmesh</code> - Phaser Plugin v3 wrapper around <code>navmesh</code></li>
-<li><code>phaser2-navmesh</code> - Phaser Plugin v2 wrapper around <code>navmesh</code></li>
-</ul><p>The project is controlled via npm scripts. The main ones to use:</p><ul>
-<li><code>npm run build</code> - will build all the individual packages within &quot;packages/&quot;.</li>
-<li><code>npm run dev</code> - watch &amp; serve the examples. Phaser 3 examples are at <a href="http://localhost:8080/">localhost::8080</a>, Phaser 2 examples at <a href="http://localhost:8081/">localhost::8081</a> and node examples at <a href="http://localhost:8082/">localhost::8082</a>. If you are working on the library, this is the easiest way to do &quot;functional testing&quot; by using the library in a game environment.</li>
-<li><code>npm run test</code> - will run the automated tests against the library.</li>
-</ul><h2>Changelogs</h2><ul>
-<li><a href="https://github.com/mikewesthad/navmesh/blob/master/packages/phaser-navmesh/README.md">Phaser NavMesh (for Phaser v3)</a></li>
-<li><a href="https://github.com/mikewesthad/navmesh/blob/master/packages/phaser2-navmesh/README.md">Phaser 2 NavMesh</a></li>
-<li><a href="https://github.com/mikewesthad/navmesh/blob/master/packages/navmesh/README.md">NavMesh</a></li>
-</ul><h2>References</h2><p>Helpful resources used while building this plugin:</p><ul>
-<li>Inspired by <a href="https://github.com/nickjanssen/PatrolJS">PatrolJS</a>, an implementation of navmeshes for threejs</li>
-<li>Navmesh path-finding algorithm explanations:<ul>
-<li><a href="http://jceipek.com/Olin-Coding-Tutorials/pathing.html">Game Path Planning by Julian Ceipek</a></li>
-<li><a href="http://digestingduck.blogspot.com/2010/03/simple-stupid-funnel-algorithm.html">Simple Stupid Funnel Algorithm</a></li>
-</ul>
-</li>
-<li><a href="http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html">Advice on astar heuristics</a></li>
-</ul><h2>To Dos</h2><ul>
-<li>Features<ul>
-<li>Allow non-square navmesh polygons from Tiled - ideally, any convex shape.</li>
-<li>Reimplement the autotessalation version of the lib &amp; try libtess in quad mode.</li>
-<li>The astar heuristic &amp; cost functions need another pass. They don&apos;t always produce the shortest path. Implement incomplete funneling while building the astar path?</li>
-<li>The navmesh assumes any polygon can reach any other polygon. This probably should be extended to put connected polygons into groups like patroljs.</li>
-<li>Better warnings for devs - warn on empty map, warn on disconnected map, warn if polygons are malformed.</li>
-<li>Factor in the layer position / scale / rotation</li>
-</ul>
-</li>
-<li>Testing<ul>
-<li>Check against tilemap that is larger than the screen</li>
-</ul>
-</li>
-<li>Research<ul>
-<li>There are probably optimization tricks to do when dealing with certain types of shapes. E.g. we are using axis-aligned boxes for the polygons and it is dead simple to calculate if a point is inside one of those...</li>
-<li>Investigate <a href="http://www.david-gouveia.com/portfolio/pathfinding-on-a-2d-polygonal-map/">Points-of-Visibility</a> pathfinding to compare speed</li>
-</ul>
-</li>
-</ul></div>
-        <a data-ice="link" href="manual/README.html"></a>
-      </div>
-    </div>
-<div class="manual-card-wrap" data-ice="cards">
-      <div class="manual-card">
-        <div data-ice="card"><h1>Creating a NavMesh in Tiled</h1><p><a href="http://www.mapeditor.org/">Tiled</a> is an open source tile map editor. If you are already using it to design your levels, then you can also use it to create your nav meshes.</p><p>Tiled allows you to design a map by creating <a href="http://doc.mapeditor.org/manual/layers/">layers</a> of tiles &amp; objects. A tile layer allows you to place your graphics (images from a tileset) into the world. An object layer allows you to store other kinds of information. Phaser can read both tile layers and object layers, so we can use the object layer to represent a nav mesh. In the image below, there is a layer of tiles (called &quot;walls&quot;) and a layer of gray rectangles that represents the nav mesh (called &quot;navmesh&quot;):</p><p><img src="./manual/./doc-source/tiled-guide/tiled-final.png"></p><p>This guide assumes you have some familiarity with Tiled. If you don&apos;t know Tiled, check out gamefromscratch&apos;s video <a href="http://www.gamefromscratch.com/post/2015/10/14/Tiled-Map-Editor-Tutorial-Series.aspx">tutorial series</a>.</p><h2>Goal</h2><p>The idea is that we want to create an object layer in Tiled that represents where an &quot;agent&quot; (the player, an enemy, an npc, etc.) can move. We will describe those walkable area by placing individual shapes (mainly rectangles). An agent can then &quot;walk&quot; from one shape to another as long as they are connected (i.e. their edges overlap).</p><p>Note: We will also want to take the agent&apos;s size into account when building the shapes. If you have an agent that is 20px wide, then it shouldn&apos;t be allowed to get within 10px of a wall.</p><h2>Snapping Setup</h2><p>In order to place shapes in the nav mesh accurately and ensure that neighboring shapes are &quot;connected,&quot; you&apos;ll want to enable snapping. Open up your map or create a new one, and go to preferences (<code>Edit &#x27F6; Preferences</code>):</p><p><img src="./manual/./doc-source/tiled-guide/tiled-preferences.png"></p><p>Set the fine grid divisions. This allows you to snap objects &quot;in-between&quot; the grid. E.g. on a 25px x 25px tile map with 5 grid divisions, the fine grid would be every 5px.</p><p><img src="./manual/./doc-source/tiled-guide/tiled-preferences-2.png"></p><p>Enable snapping (<code>View &#x27F6; Snapping</code>):</p><p><img src="./manual/./doc-source/tiled-guide/tiled-snapping.png"></p><h2>Creating the Mesh</h2><p>Create a new object layer and name it &quot;navmesh.&quot; Then start adding in rectangles to define your nav mesh. (Note: rectangles are the only Tiled shape currently supported by this plugin.)</p><p><img src="./manual/./doc-source/tiled-guide/tiled-navmesh-layer.gif"></p><p>See the Tiled manual for more information on <a href="http://doc.mapeditor.org/manual/objects/#working-with-objects">objects</a>.</p><h2>Agent Size (Gaps)</h2><p>Notice the 10px space left around the walls? That gap is because the agent is 20px wide circle. It would get stuck on corners of walls without that gap. Make sure the gaps you leave are a consistent size - you&apos;ll need to pass in the size as the third parameter to <code>plugin.buildMeshFromTiled</code>.</p><p>If you wanted, you <em>could</em> leave that gap out and write more complicated path following logic for your agents that avoids getting stuck. &quot;Baking&quot; the agent size into nav mesh with these gaps makes the path following logic pretty simple.</p></div>
-        <a data-ice="link" href="manual/tiled-navmesh-guide.html"></a>
-      </div>
-    </div>
-</div>
-</div>
-</div>
-
-<footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+			</ul>
+		</div>
+	</div>
 </footer>
-
-<script src="script/search_index.js"></script>
-<script src="script/search.js"></script>
-<script src="script/pretty-print.js"></script>
-<script src="script/inherited-summary.js"></script>
-<script src="script/test-summary.js"></script>
-<script src="script/inner-link.js"></script>
-<script src="script/patch-for-local.js"></script>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
 </body>
 </html>
