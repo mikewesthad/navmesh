@@ -2,8 +2,6 @@
 
 A JS plugin for fast pathfinding using [navigation meshes](https://en.wikipedia.org/wiki/Navigation_mesh), with optional wrappers for the Phaser v2 and Phaser v3 game engines.
 
-(Note: the latest work on this repo is on the [typescript-version](https://github.com/mikewesthad/navmesh/tree/typescript-version) branch. When the changes are ready for release they will be merged into the main branch.)
-
 [<img src="./doc-source/single-following-agent.gif" width="400">](https://www.mikewesthad.com/navmesh/demo/)
 
 [Interactive demo](https://www.mikewesthad.com/navmesh/demo/)
