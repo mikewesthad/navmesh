@@ -55,24 +55,7 @@ You can use any of them as a script or as a module in your bundler of choice.
 
 You can drop in any of the transpiled code into your project as a standalone script. Download the version that you want:
 
-| navmesh                           | phaser-navmesh                     | phaser2-navmesh                     |
-| --------------------------------- | ---------------------------------- | ----------------------------------- |
-| [minified][1] & source [map][2]   | [minified][3] & source [map][4]    | [minified][5] & source [map][6]     |
-| [unminified][7] & source [map][8] | [unminified][9] & source [map][10] | [unminified][11] & source [map][12] |
-| Library Name: NavMesh             | Library Name: PhaserNavMeshPlugin  | Library Name: Phaser2NavMeshPlugin  |
-
-[1]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.min.js
-[2]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.min.js.map
-[3]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.min.js
-[4]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.min.js.map
-[5]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.min.js
-[6]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.min.js.map
-[7]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.js
-[8]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/navmesh/dist/navmesh.js.map
-[9]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.js
-[10]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser-navmesh/dist/phaser-navmesh.js.map
-[11]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.js
-[12]: https://raw.githubusercontent.com/mikewesthad/navmesh/master/packages/phaser2-navmesh/dist/phaser2-navmesh.js.map
+TBD
 
 E.g. if you wanted phaser-navmesh, you would add this to your HTML:
 
@@ -119,10 +102,9 @@ import PhaserNavMeshPlugin from "phaser-navmesh/src";
 
 ## Creating a Navigation Mesh
 
-Before you can dive into the code, you'll need to create a navigation mesh for your game world. This is a process of defining the walkable areas within you world. You can create it from scratch in code, but it's far easier to use a tilemap editor like Tiled to do this. See [guide](https://www.mikewesthad.com/navmesh/docs/manual/tiled-navmesh-guide.html).
+Before you can dive into the code, you'll need to create a navigation mesh for your game world. This is a process of defining the walkable areas within you world. You can create it from scratch in code, but it's far easier to use a tilemap editor like Tiled to do this. See [guide](https://github.com/mikewesthad/navmesh/blob/master/tiled-navmesh-guide.md).
 
-Note: the current version of the library only supports [convex polygons](https://www.sparknotes.com/math/geometry1/polygons/section2/).
-There are libraries like [poly-decom.js](https://github.com/schteppe/poly-decomp.js/) for decomposing a concave polygon into easier to manage convex polygons. It's on the to do list to handle any polygon, but I've found that automatically decomposing polygons leads to worse performance than hand-mapping the levels with convex polygons.
+Note: the current version of the library only supports [convex polygons](https://www.sparknotes.com/math/geometry1/polygons/section2/). There are libraries like [poly-decom.js](https://github.com/schteppe/poly-decomp.js/) for decomposing a concave polygon into easier to manage convex polygons. It's on the to do list to handle any polygon, but I've found that automatically decomposing polygons leads to worse performance than hand-mapping the levels with convex polygons.
 
 ## Usage
 
@@ -167,7 +149,7 @@ const path = navMesh.findPath({ x: 0, y: 0 }, { x: 10, y: 20 });
 // ⮡  [{ x: 0, y: 0 }, { x: 10, y: 10 }, { x: 10, y: 20 }]
 ```
 
-Check out the [API reference](https://www.mikewesthad.com/navmesh/docs/identifiers.html#navmesh-src) for more information.
+Check out the [API reference](https://www.mikewesthad.com/navmesh/docs/modules/navmesh.html) for more information.
 
 ### phaser-navmesh
 
@@ -234,7 +216,7 @@ navMesh.debugDrawMesh({
 navMesh.debugDrawPath(path, 0xffd900);
 ```
 
-Check out the [API reference](https://www.mikewesthad.com/navmesh/docs/identifiers.html#phaser-navmesh-src) for more information.
+Check out the [API reference](https://www.mikewesthad.com/navmesh/docs/modules/phaser_navmesh.html) for more information.
 
 ### phaser2-navmesh
 
