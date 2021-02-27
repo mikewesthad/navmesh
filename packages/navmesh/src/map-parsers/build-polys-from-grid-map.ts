@@ -1,4 +1,4 @@
-import { Point } from "../common-types";
+import { Point, PolyPoints } from "../common-types";
 import { isTruthy } from "../utils";
 import { PointQueue } from "./point-queue";
 import { RectangleHull } from "./rectangle-hull";
@@ -6,15 +6,28 @@ import { RectangleHull } from "./rectangle-hull";
 type CardinalDirection = "top" | "bottom" | "left" | "right";
 
 /**
- * This parses a map that is a grid of squares into convex polygons that can be used for building a
- * navmesh. This is designed mainly for parsing tilemaps into polygons. NOTE: this is a rough
- * initial implementation. It needs some refactoring to clean it up!
+ * This parses a world that is a uniform grid into convex polygons (specifically rectangles) that
+ * can be used for building a navmesh. This is designed mainly for parsing tilemaps into polygons.
+ * The functions takes a 2D array that indicates which tiles are walkable and which aren't. The
+ * function returns PolyPoint[] that can be used to construct a NavMesh.
+ *
+ * Notes:
+ * - This algorithm traverses the walkable tiles in a depth-first search, combining neighbors into
+ *   rectangular polygons. This may not produce the best navmesh, but it doesn't require any manual
+ *   work!
+ * - This assumes the world is a uniform grid. It should work for any tile size, provided that all
+ *   tiles are the same width and height.
+ *
  * @param map 2D array of any type.
+ * @param tileWidth The width of each tile in the grid.
+ * @param tileHeight The height of each tile in the grid.
  * @param isWalkable Function that is used to test if a specific location in the map is walkable.
  * Defaults to assuming "truthy" means walkable.
  */
-export default function parseSquareMap<TileType>(
+export default function buildPolysFromGridMap<TileType>(
   map: TileType[][],
+  tileWidth: number = 1,
+  tileHeight: number = 1,
   isWalkable: (tile: TileType, x: number, y: number) => boolean = isTruthy
 ) {
   const walkableQueue = new PointQueue();
@@ -82,5 +95,18 @@ export default function parseSquareMap<TileType>(
     hulls.push(currentHull);
   }
 
-  return hulls;
+  const polygons: PolyPoints[] = hulls.map((hull) => {
+    const left = hull.left * tileWidth;
+    const top = hull.top * tileHeight;
+    const right = (hull.right + 1) * tileWidth;
+    const bottom = (hull.bottom + 1) * tileHeight;
+    return [
+      { x: left, y: top },
+      { x: left, y: bottom },
+      { x: right, y: bottom },
+      { x: right, y: top },
+    ];
+  });
+
+  return polygons;
 }
