@@ -8,4 +8,5 @@ import NavMesh from "./navmesh";
 
 export { NavMesh };
 export * from "./common-types";
+export * from "./map-parsers";
 export default NavMesh;
