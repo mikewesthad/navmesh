@@ -1,5 +1,5 @@
-import NavMesh from "../navmesh";
-import Vector2 from "../math/vector-2";
+import NavMesh from "./navmesh";
+import Vector2 from "./math/vector-2";
 
 const v2 = (x: number, y: number) => new Vector2(x, y);
 

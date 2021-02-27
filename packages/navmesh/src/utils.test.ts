@@ -1,5 +1,5 @@
-import { almostEqual, angleDifference, areCollinear } from "../utils";
-import Line from "../math/line";
+import { almostEqual, angleDifference, areCollinear } from "./utils";
+import Line from "./math/line";
 
 const line = (x1: number, y1: number, x2: number, y2: number) => new Line(x1, y1, x2, y2);
 
