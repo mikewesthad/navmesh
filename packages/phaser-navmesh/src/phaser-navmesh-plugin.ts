@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import PhaserNavMesh from "./phaser-navmesh";
-import { parseSquareMap } from "navmesh/src/map-parser";
+import { buildPolysFromGridMap } from "navmesh/src/map-parsers";
 
 /**
  * This class can create navigation meshes for use in Phaser 3. The navmeshes can be constructed
@@ -92,23 +92,7 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
       walkableAreas.push(row);
     }
 
-    const hulls = parseSquareMap(walkableAreas);
-    const { tileWidth, tileHeight } = tilemap;
-    const polygons = hulls.map((hull) => {
-      const left = hull.left * tileWidth;
-      const top = hull.top * tileHeight;
-      const right = (hull.right + 1) * tileWidth;
-      const bottom = (hull.bottom + 1) * tileHeight;
-      return [
-        { x: left, y: top },
-        { x: left, y: bottom },
-        { x: right, y: bottom },
-        { x: right, y: top },
-      ];
-    });
-
-    console.log(polygons.length);
-
+    const polygons = buildPolysFromGridMap(walkableAreas, tilemap.tileWidth, tilemap.tileHeight);
     const mesh = new PhaserNavMesh(this, this.scene, key, polygons, 0);
 
     this.phaserNavMeshes[key] = mesh;
