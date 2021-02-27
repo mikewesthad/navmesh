@@ -44,6 +44,14 @@ export default class Phaser2NavMesh {
   }
 
   /**
+   * Find if the given point is within any of the polygons in the mesh.
+   * @param point
+   */
+  public isPointInMesh(point: Point) {
+    return this.navMesh.isPointInMesh(point);
+  }
+
+  /**
    * See {@link NavMesh#findPath}. This implements the same functionality, except that the returned
    * path is converted to Phaser-compatible points.
    *
