@@ -75,19 +75,19 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
     const dataLayers = tilemapLayers ? tilemapLayers.map((tl) => tl.layer) : tilemap.layers;
 
     // Build 2D array of walkable tiles across all given layers.
-    const walkableAreas: number[][] = [];
+    const walkableAreas: boolean[][] = [];
     for (let tx = 0; tx < tilemap.width; tx += 1) {
-      const row: number[] = [];
+      const row: boolean[] = [];
       for (let ty = 0; ty < tilemap.height; ty += 1) {
-        let collides = false;
+        let walkable = true;
         for (const layer of dataLayers) {
           const tile = layer.data[ty][tx];
           if (tile && tile.collides) {
-            collides = true;
+            walkable = false;
             break;
           }
         }
-        row.push(collides ? 0 : 1);
+        row.push(walkable);
       }
       walkableAreas.push(row);
     }
