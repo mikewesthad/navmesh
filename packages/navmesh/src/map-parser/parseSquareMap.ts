@@ -18,36 +18,40 @@ export class RectangleHull {
 
 type CardinalDirection = "top" | "bottom" | "left" | "right";
 
+const isTruthy = (input: any) => Boolean(input);
+
 /**
  * This parses a map that is a grid of squares into convex polygons that can be used for building
  * a navmesh. This is designed mainly for parsing tilemaps into polygons.
  * NOTE: this is a rough initial implementation. It needs some refactoring to clean it up!
  * @param map
  */
-export default function parseSquareMap(map: number[][]) {
-  const colliding: Point[] = [];
-  let currentBox;
+export default function parseSquareMap<TileType>(
+  map: TileType[][],
+  isWalkable: (tile: TileType, x: number, y: number) => boolean = isTruthy
+) {
+  const walkableQueue: Point[] = [];
   const hulls: RectangleHull[] = [];
+  let currentHull;
 
   map.forEach((row, y) => {
     row.forEach((col, x) => {
-      if (col !== 0) colliding.push({ x, y });
+      if (isWalkable(col, x, y)) walkableQueue.push({ x, y });
     });
   });
 
-  const isColliding = (x: number, y: number) => (map[y] && map[y][x] == 1 ? true : false);
-  const isInQueue = (x: number, y: number) => colliding.find((p) => p.x === x && p.y === y);
+  const isInQueue = (x: number, y: number) => walkableQueue.find((p) => p.x === x && p.y === y);
 
-  const extend = (box: RectangleHull, direction: CardinalDirection) => {
+  const extend = (hull: RectangleHull, direction: CardinalDirection) => {
     let points = [];
     if (direction === "top") {
-      for (let x = box.left; x <= box.right; x++) points.push({ x, y: box.top - 1 });
+      for (let x = hull.left; x <= hull.right; x++) points.push({ x, y: hull.top - 1 });
     } else if (direction === "bottom") {
-      for (let x = box.left; x <= box.right; x++) points.push({ x, y: box.bottom + 1 });
+      for (let x = hull.left; x <= hull.right; x++) points.push({ x, y: hull.bottom + 1 });
     } else if (direction === "left") {
-      for (let y = box.top; y <= box.bottom; y++) points.push({ x: box.left - 1, y });
+      for (let y = hull.top; y <= hull.bottom; y++) points.push({ x: hull.left - 1, y });
     } else if (direction === "right") {
-      for (let y = box.top; y <= box.bottom; y++) points.push({ x: box.right + 1, y });
+      for (let y = hull.top; y <= hull.bottom; y++) points.push({ x: hull.right + 1, y });
     } else {
       throw new Error(`Invalid direction "${direction}" for extend`);
     }
@@ -55,7 +59,7 @@ export default function parseSquareMap(map: number[][]) {
     let canExtend = true;
     const extendTiles: Point[] = [];
     for (const { x, y } of points) {
-      if (isColliding(x, y) && isInQueue(x, y)) {
+      if (isInQueue(x, y)) {
         extendTiles.push({ x, y });
       } else {
         canExtend = false;
@@ -64,42 +68,44 @@ export default function parseSquareMap(map: number[][]) {
     }
 
     if (canExtend) {
-      if (direction === "top") box.top -= 1;
-      else if (direction === "bottom") box.bottom += 1;
-      else if (direction === "left") box.left -= 1;
-      else if (direction === "right") box.right += 1;
+      if (direction === "top") hull.top -= 1;
+      else if (direction === "bottom") hull.bottom += 1;
+      else if (direction === "left") hull.left -= 1;
+      else if (direction === "right") hull.right += 1;
 
-      box.tiles.push(...extendTiles);
+      hull.tiles.push(...extendTiles);
       extendTiles.forEach((point) => {
-        const index = colliding.findIndex((p) => p.x == point.x && p.y == point.y);
-        if (index !== -1) colliding.splice(index, 1);
+        const index = walkableQueue.findIndex((p) => p.x == point.x && p.y == point.y);
+        if (index !== -1) walkableQueue.splice(index, 1);
       });
     }
 
     return canExtend;
   };
 
-  while (colliding.length !== 0) {
+  while (walkableQueue.length !== 0) {
     // Find next colliding tile to start the algorithm.
-    const tile = colliding.shift()!;
-    currentBox = new RectangleHull(0, 0, 0, 0);
-    currentBox.left = tile.x;
-    currentBox.right = tile.x;
-    currentBox.top = tile.y;
-    currentBox.bottom = tile.y;
-    currentBox.tiles.push(tile);
+    const tile = walkableQueue.shift();
+    if (tile === undefined) break;
+
+    currentHull = new RectangleHull(0, 0, 0, 0);
+    currentHull.left = tile.x;
+    currentHull.right = tile.x;
+    currentHull.top = tile.y;
+    currentHull.bottom = tile.y;
+    currentHull.tiles.push(tile);
 
     // Check edges of bounding box to see if they can be extended.
     let needsExtensionCheck = true;
     while (needsExtensionCheck) {
-      const extendedTop = extend(currentBox, "top");
-      const extendedBottom = extend(currentBox, "bottom");
-      const extendedLeft = extend(currentBox, "left");
-      const extendedRight = extend(currentBox, "right");
+      const extendedTop = extend(currentHull, "top");
+      const extendedBottom = extend(currentHull, "bottom");
+      const extendedLeft = extend(currentHull, "left");
+      const extendedRight = extend(currentHull, "right");
       needsExtensionCheck = extendedTop || extendedBottom || extendedLeft || extendedRight;
     }
 
-    hulls.push(currentBox);
+    hulls.push(currentHull);
   }
 
   return hulls;
