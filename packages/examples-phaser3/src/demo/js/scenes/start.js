@@ -60,6 +60,13 @@ export default class Start extends Phaser.Scene {
       uiText.setText(uiTextLines);
     });
 
+    // Display whether the mouse is currently over a valid point in the navmesh
+    this.input.on(Phaser.Input.Events.POINTER_MOVE, (pointer) => {
+      const isInMesh = navMesh.isPointInMesh(pointer);
+      uiTextLines[1] = `Is mouse inside navmesh: ${isInMesh ? "yes" : "no "}`;
+      uiText.setText(uiTextLines);
+    });
+
     // Toggle the navmesh visibility on/off
     this.input.keyboard.on("keydown-M", () => {
       navMesh.debugDrawClear();
@@ -81,6 +88,7 @@ export default class Start extends Phaser.Scene {
     };
     const uiTextLines = [
       "Click to find a path!",
+      "Is mouse inside navmesh: false",
       "Press 'm' to see navmesh.",
       "Press '2' to go to scene 2.",
     ];
