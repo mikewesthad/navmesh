@@ -88,3 +88,7 @@ export function areCollinear(line1: Line, line2: Line, errorMargin = 0.0001) {
     return true;
   } else return false;
 }
+
+export function isTruthy<InputType>(input: InputType) {
+  return Boolean(input);
+}
