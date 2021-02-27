@@ -62,6 +62,14 @@ export default class NavMesh {
   }
 
   /**
+   * Find if the given point is within any of the polygons in the mesh.
+   * @param point
+   */
+  public isPointInMesh(point: Point) {
+    return this.navPolygons.some((navPoly) => navPoly.contains(point));
+  }
+
+  /**
    * Find a path from the start point to the end point using this nav mesh.
    * @param {object} startPoint A point-like object in the form {x, y}
    * @param {object} endPoint A point-like object in the form {x, y}

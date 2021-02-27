@@ -94,3 +94,41 @@ describe("A NavMesh instance with a corner", () => {
     expect(path).toEqual([v2(0, 0), v2(10, 10), v2(10, 20)]);
   });
 });
+
+describe("isPointInMesh", () => {
+  let navMesh: NavMesh;
+  /*
+    - - - - -     - - -
+    - 1 - 2 -     - 4 -
+    - - - - -     - - -
+        - 3 -
+        - - -
+  */
+  // prettier-ignore
+  const polygons = [
+    [v2(0,0), v2(10,0), v2(10,10), v2(0,10)], // 1
+    [v2(10,0), v2(20,0), v2(20,10), v2(10,10)], // 2
+    [v2(10,10), v2(20,10), v2(20,20), v2(10,20)], // 3
+    [v2(30,0), v2(40,0), v2(40,10), v2(30,10)] // 4
+  ];
+  beforeAll(() => (navMesh = new NavMesh(polygons)));
+
+  it("should return true if point is on the edge of a polygon", () => {
+    expect(navMesh.isPointInMesh(v2(0, 0))).toEqual(true);
+    expect(navMesh.isPointInMesh(v2(10, 0))).toEqual(true);
+    expect(navMesh.isPointInMesh(v2(10, 10))).toEqual(true);
+    expect(navMesh.isPointInMesh(v2(40, 10))).toEqual(true);
+  });
+
+  it("should return true if point is in a polygon in the mesh", () => {
+    expect(navMesh.isPointInMesh(v2(5, 5))).toEqual(true);
+    expect(navMesh.isPointInMesh(v2(10, 5))).toEqual(true);
+    expect(navMesh.isPointInMesh(v2(32, 2))).toEqual(true);
+  });
+
+  it("should return false for a point outside the mesh", () => {
+    expect(navMesh.isPointInMesh(v2(-10, -20))).toEqual(false);
+    expect(navMesh.isPointInMesh(v2(25, 0))).toEqual(false);
+    expect(navMesh.isPointInMesh(v2(300, 100))).toEqual(false);
+  });
+});
