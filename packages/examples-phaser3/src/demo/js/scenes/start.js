@@ -20,10 +20,14 @@ export default class Start extends Phaser.Scene {
 
     // -- NavMesh Setup --
 
+    // You can load a navmesh created by hand in Tiled:
     // Load the navMesh from the tilemap object layer "navmesh". The navMesh was created with
     // 12.5 pixels of space around obstacles.
     const objectLayer = tilemap.getObjectLayer("navmesh");
     const navMesh = this.navMeshPlugin.buildMeshFromTiled("mesh1", objectLayer, 12.5);
+
+    // Or, you can build one from your tilemap automatically:
+    // const navMesh = this.navMeshPlugin.buildMeshFromTilemap("mesh1", tilemap, [wallLayer]);
 
     // Now you could find a path via navMesh.findPath(startPoint, endPoint)
 
