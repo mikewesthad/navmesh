@@ -1,5 +1,9 @@
 import Phaser from "phaser";
 
+const map = (value, min, max, newMin, newMax) => {
+  return ((value - min) / (max - min)) * (newMax - newMin) + newMin;
+};
+
 class FollowerSprite extends Phaser.GameObjects.Sprite {
   /**
    * @param {Phaser.Scene} scene
@@ -53,8 +57,15 @@ class FollowerSprite extends Phaser.GameObjects.Sprite {
         else this.currentTarget = null;
       }
 
+      // Slow down as we approach final point in the path. This helps prevent issues with the
+      // physics body overshooting the goal and leaving the mesh.
+      let speed = 400;
+      if (this.path.length === 0 && distance < 50) {
+        speed = map(distance, 50, 0, 400, 50);
+      }
+
       // Still got a valid target?
-      if (this.currentTarget) this.moveTowards(this.currentTarget, 200, deltaTime / 1000);
+      if (this.currentTarget) this.moveTowards(this.currentTarget, speed, deltaTime / 1000);
     }
   }
 
