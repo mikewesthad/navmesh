@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import PhaserNavMesh from "./phaser-navmesh";
+import { parseSquareMap } from "navmesh/src/map-parser";
 
 /**
  * This class can create navigation meshes for use in Phaser 3. The navmeshes can be constructed
@@ -53,6 +54,69 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
   }
 
   /**
+   * This is a work-in-progress! This is a rough implementation of an automatic mesh builder. It
+   * takes the given tilemap (and optional layers) and uses them to construct a navmesh based on
+   * which tiles are set to collide.
+   *
+   * TODO: refactor, factor in shrink, consider excluding blank tiles, consider taking a isWalkable
+   * callback, factor in XY position/scale/rotation of layers?
+   *
+   * @param key Key to use when storing this navmesh within the plugin.
+   * @param tilemap The tilemap to use for building the navmesh.
+   * @param tilemapLayers An optional array of tilemap layers to use for building the mesh.
+   */
+
+  public buildMeshFromTilemap(
+    key: string,
+    tilemap: Phaser.Tilemaps.Tilemap,
+    tilemapLayers?: Phaser.Tilemaps.TilemapLayer[]
+  ) {
+    // Use all layers in map, or just the specified ones.
+    const dataLayers = tilemapLayers ? tilemapLayers.map((tl) => tl.layer) : tilemap.layers;
+
+    // Build 2D array of walkable tiles across all given layers.
+    const walkableAreas: number[][] = [];
+    for (let tx = 0; tx < tilemap.width; tx += 1) {
+      const row: number[] = [];
+      for (let ty = 0; ty < tilemap.height; ty += 1) {
+        let collides = false;
+        for (const layer of dataLayers) {
+          const tile = layer.data[ty][tx];
+          if (tile && tile.collides) {
+            collides = true;
+            break;
+          }
+        }
+        row.push(collides ? 0 : 1);
+      }
+      walkableAreas.push(row);
+    }
+
+    const hulls = parseSquareMap(walkableAreas);
+    const { tileWidth, tileHeight } = tilemap;
+    const polygons = hulls.map((hull) => {
+      const left = hull.left * tileWidth;
+      const top = hull.top * tileHeight;
+      const right = (hull.right + 1) * tileWidth;
+      const bottom = (hull.bottom + 1) * tileHeight;
+      return [
+        { x: left, y: top },
+        { x: left, y: bottom },
+        { x: right, y: bottom },
+        { x: right, y: top },
+      ];
+    });
+
+    console.log(polygons.length);
+
+    const mesh = new PhaserNavMesh(this, this.scene, key, polygons, 0);
+
+    this.phaserNavMeshes[key] = mesh;
+
+    return mesh;
+  }
+
+  /**
    * Load a navmesh from Tiled. Currently assumes that the polygons are squares! Does not support
    * tilemap layer scaling, rotation or position.
    * @param key Key to use when storing this navmesh within the plugin.
@@ -97,6 +161,7 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
     });
 
     const mesh = new PhaserNavMesh(this, this.scene, key, polygons, meshShrinkAmount);
+    console.log(polygons.length);
 
     this.phaserNavMeshes[key] = mesh;
 
