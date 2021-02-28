@@ -58,21 +58,24 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
    * takes the given tilemap (and optional layers) and uses them to construct a navmesh based on
    * which tiles are set to collide.
    *
-   * TODO: refactor, factor in shrink, consider excluding blank tiles, consider taking a isWalkable
-   * callback.
-   *
    * @param key Key to use when storing this navmesh within the plugin.
    * @param tilemap The tilemap to use for building the navmesh.
    * @param tilemapLayers An optional array of tilemap layers to use for building the mesh.
+   * @param isWalkable An optional function to use to test if a tile is walkable. Defaults to
+   * assuming non-colliding tiles are walkable.
    */
 
   public buildMeshFromTilemap(
     key: string,
     tilemap: Phaser.Tilemaps.Tilemap,
-    tilemapLayers?: Phaser.Tilemaps.TilemapLayer[]
+    tilemapLayers?: Phaser.Tilemaps.TilemapLayer[],
+    isWalkable?: (tile: Phaser.Tilemaps.Tile) => boolean
   ) {
+    // TODO: factor in shrink
+
     // Use all layers in map, or just the specified ones.
     const dataLayers = tilemapLayers ? tilemapLayers.map((tl) => tl.layer) : tilemap.layers;
+    if (!isWalkable) isWalkable = (tile: Phaser.Tilemaps.Tile) => !tile.collides;
 
     let offsetX = 0;
     let offsetY = 0;
@@ -126,7 +129,7 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
         let walkable = true;
         for (const layer of dataLayers) {
           const tile = layer.data[ty][tx];
-          if (tile && tile.collides) {
+          if (tile && !isWalkable(tile)) {
             walkable = false;
             break;
           }
