@@ -70,6 +70,31 @@ export default class NavMesh {
   }
 
   /**
+   * Find the closest polygon to the given point. If a fudgeAmount is provided, this will be used to
+   * find the closest polygon within the fudgeAmount of the point.
+   * @param point
+   * @param fudgeAmount
+   */
+  public findClosestPolyPoint(point: Vector2, maxAllowableDist: number = Number.POSITIVE_INFINITY) {
+    let minDistance = maxAllowableDist;
+    let closestPoly: NavPoly | null = null;
+    let pointOnClosestPoly: Point | null = null;
+    for (const navPoly of this.navPolygons) {
+      const result = this.projectPointToPolygon(point, navPoly);
+      if (result.distance < minDistance) {
+        minDistance = result.distance;
+        closestPoly = navPoly;
+        pointOnClosestPoly = result.point;
+      }
+    }
+    if (closestPoly && pointOnClosestPoly) {
+      return { minDistance, closestPoly, pointOnClosestPoly };
+    } else {
+      return null;
+    }
+  }
+
+  /**
    * Find a path from the start point to the end point using this nav mesh.
    * @param {object} startPoint A point-like object in the form {x, y}
    * @param {object} endPoint A point-like object in the form {x, y}

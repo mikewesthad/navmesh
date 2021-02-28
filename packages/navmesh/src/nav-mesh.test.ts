@@ -132,3 +132,47 @@ describe("isPointInMesh", () => {
     expect(navMesh.isPointInMesh(v2(300, 100))).toEqual(false);
   });
 });
+
+describe("findClosestPolyPoint", () => {
+  let navMesh: NavMesh;
+  /*
+    - - - - -     - - -
+    - 1 - 2 -     - 4 -
+    - - - - -     - - -
+        - 3 -
+        - - -
+  */
+  // prettier-ignore
+  const polygons = [
+    [v2(0,0), v2(10,0), v2(10,10), v2(0,10)], // 1
+    [v2(10,0), v2(20,0), v2(20,10), v2(10,10)], // 2
+    [v2(10,10), v2(20,10), v2(20,20), v2(10,20)], // 3
+    [v2(30,0), v2(40,0), v2(40,10), v2(30,10)] // 4
+  ];
+  beforeAll(() => (navMesh = new NavMesh(polygons)));
+
+  it("should return null for points outside of the max distance", () => {
+    expect(navMesh.findClosestPolyPoint(v2(-100, 0), 10)).toBeNull();
+  });
+
+  it("should return poly 1 for point inside poly 1", () => {
+    const result = navMesh.findClosestPolyPoint(v2(0, 0));
+    expect(result.closestPoly.id).toBe(0);
+  });
+
+  it("should return poly 1 or 2 for point on shared edge between poly 1 and 2", () => {
+    const result = navMesh.findClosestPolyPoint(v2(10, 5));
+    expect(result.closestPoly.id).toBeGreaterThanOrEqual(0);
+    expect(result.closestPoly.id).toBeLessThanOrEqual(1);
+  });
+
+  it("should return top left corner of poly 1 for a point just outside of top left corner", () => {
+    const result = navMesh.findClosestPolyPoint(v2(-10, -10));
+    expect(result.pointOnClosestPoly).toEqual({ x: 0, y: 0 });
+  });
+
+  it("should return top middle of poly 1 for a point just outside of top middle", () => {
+    const result = navMesh.findClosestPolyPoint(v2(-10, 5));
+    expect(result.pointOnClosestPoly).toEqual({ x: 0, y: 5 });
+  });
+});
