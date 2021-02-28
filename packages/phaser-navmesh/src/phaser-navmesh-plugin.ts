@@ -59,7 +59,7 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
    * which tiles are set to collide.
    *
    * TODO: refactor, factor in shrink, consider excluding blank tiles, consider taking a isWalkable
-   * callback, factor in XY position/scale/rotation of layers?
+   * callback.
    *
    * @param key Key to use when storing this navmesh within the plugin.
    * @param tilemap The tilemap to use for building the navmesh.
@@ -73,6 +73,50 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
   ) {
     // Use all layers in map, or just the specified ones.
     const dataLayers = tilemapLayers ? tilemapLayers.map((tl) => tl.layer) : tilemap.layers;
+
+    let offsetX = 0;
+    let offsetY = 0;
+    let scaleX = 1;
+    let scaleY = 1;
+
+    // Attempt to set position offset and scale from the 1st tilemap layer given.
+    if (tilemapLayers) {
+      const layer = tilemapLayers[0];
+      offsetX = layer.tileToWorldX(0);
+      offsetY = layer.tileToWorldY(0);
+      scaleX = layer.scaleX;
+      scaleY = layer.scaleY;
+
+      // Check and warn for layer settings that will throw off the calculation.
+      for (const layer of tilemapLayers) {
+        if (
+          offsetX !== layer.tileToWorldX(0) ||
+          offsetY !== layer.tileToWorldY(0) ||
+          scaleX !== layer.scaleX ||
+          scaleY !== layer.scaleY
+        ) {
+          console.warn(
+            `PhaserNavMeshPlugin: buildMeshFromTilemap reads position & scale from the 1st TilemapLayer. Layer index ${layer.layerIndex} has a different position & scale from the 1st TilemapLayer.`
+          );
+        }
+        if (layer.rotation !== 0) {
+          console.warn(
+            `PhaserNavMeshPlugin: buildMeshFromTilemap doesn't support TilemapLayer with rotation. Layer index ${layer.layerIndex} is rotated.`
+          );
+        }
+      }
+    }
+
+    // Check and warn about DataLayer that have x/y position from Tiled. In the future, these could
+    // be supported if A) only one colliding layer is offset, or B) the offset is a multiple of the
+    // tile size.
+    dataLayers.forEach((layer) => {
+      if (layer.x !== 0 || layer.y !== 0) {
+        console.warn(
+          `PhaserNavMeshPlugin: buildMeshFromTilemap doesn't support layers with x/y positions from Tiled.`
+        );
+      }
+    });
 
     // Build 2D array of walkable tiles across all given layers.
     const walkableAreas: boolean[][] = [];
@@ -92,9 +136,16 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
       walkableAreas.push(row);
     }
 
-    const polygons = buildPolysFromGridMap(walkableAreas, tilemap.tileWidth, tilemap.tileHeight);
-    const mesh = new PhaserNavMesh(this, this.scene, key, polygons, 0);
+    let polygons = buildPolysFromGridMap(walkableAreas, tilemap.tileWidth, tilemap.tileHeight);
 
+    // Offset and scale each polygon if necessary.
+    if (scaleX !== 1 && scaleY !== 1 && offsetX !== 0 && offsetY !== 0) {
+      polygons = polygons.map((poly) =>
+        poly.map((p) => ({ x: p.x * scaleX + offsetX, y: p.y * scaleY + offsetY }))
+      );
+    }
+
+    const mesh = new PhaserNavMesh(this, this.scene, key, polygons, 0);
     this.phaserNavMeshes[key] = mesh;
 
     return mesh;
