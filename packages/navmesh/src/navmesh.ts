@@ -109,9 +109,6 @@ export default class NavMesh {
     return { distance: minDistance, polygon: closestPoly, point: pointOnClosestPoly };
   }
 
-    }
-  }
-
   /**
    * Find a path from the start point to the end point using this nav mesh.
    * @param {object} startPoint A point-like object in the form {x, y}
