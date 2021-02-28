@@ -6,16 +6,21 @@ For usage information, see: [mikewesthad/navmesh](https://github.com/mikewesthad
 
 ## Changelog
 
-Version 2.1.0 - 2021-02-24
+Version 2.2.0
+
+- Feature: `PhaserNavMeshPlugin#buildMeshFromTilemap` allows you to automatically generate a navmesh from a Tilemap.
+- Feature: `PhaserNavMesh#isPointInMesh` allows you to check if a point is inside of the navmesh.
+
+Version 2.1.0
 
 - Added `public removeAllMeshes()` to `PhaserNavMeshPlugin`.
 - Bug: fixed double subscription to boot, thanks [@malahaas](https://github.com/malahaas)!
 - Converted library to TypeScript.
 
-Version 2.0.5 - 2019-08-04
+Version 2.0.5
 
 - Bug: fixed webpack config so that it applied babel transform and so that it worked under node environments, thanks to [@will-hart](https://github.com/will-hart)
 
-Version 2.0.4 - 2018-01-03
+Version 2.0.4
 
 - Bug: fixed a bug when destroying navmeshes, thanks to [@GGAlanSmithee](https://github.com/GGAlanSmithee) for pointing it out
