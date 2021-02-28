@@ -75,22 +75,35 @@ export default class NavMesh {
    * @param point
    * @param fudgeAmount
    */
-  public findClosestPolyPoint(point: Vector2, maxAllowableDist: number = Number.POSITIVE_INFINITY) {
+  public findClosestMeshPoint(point: Vector2, maxAllowableDist: number = Number.POSITIVE_INFINITY) {
     let minDistance = maxAllowableDist;
     let closestPoly: NavPoly | null = null;
     let pointOnClosestPoly: Point | null = null;
     for (const navPoly of this.navPolygons) {
-      const result = this.projectPointToPolygon(point, navPoly);
-      if (result.distance < minDistance) {
-        minDistance = result.distance;
+      // If we are inside a poly, we've got the closest.
+      if (navPoly.contains(point)) {
+        minDistance = 0;
         closestPoly = navPoly;
-        pointOnClosestPoly = result.point;
+        pointOnClosestPoly = point;
+        break;
+      }
+      // Is the poly close enough to warrant a more accurate check? Point is definitely outside of
+      // the polygon. Distance - Radius is the smallest possible distance to an edge of the poly.
+      // This will underestimate distance, but that's perfectly fine.
+      const r = navPoly.boundingRadius;
+      const d = navPoly.centroid.distance(point);
+      if (d - r < minDistance) {
+        const result = this.projectPointToPolygon(point, navPoly);
+        if (result.distance < minDistance) {
+          minDistance = result.distance;
+          closestPoly = navPoly;
+          pointOnClosestPoly = result.point;
+        }
       }
     }
-    if (closestPoly && pointOnClosestPoly) {
-      return { minDistance, closestPoly, pointOnClosestPoly };
-    } else {
-      return null;
+    return { distance: minDistance, polygon: closestPoly, point: pointOnClosestPoly };
+  }
+
     }
   }
 
