@@ -70,10 +70,15 @@ export default class NavMesh {
   }
 
   /**
-   * Find the closest polygon to the given point. If a fudgeAmount is provided, this will be used to
-   * find the closest polygon within the fudgeAmount of the point.
+   * Find the closest point in the mesh to the given point. If the point is already in the mesh,
+   * this will give you that point. If the point is outside of the mesh, this will attempt to
+   * project this point into the mesh (up to the given maxAllowableDist). This returns an object
+   * with:
+   * - distance - from the given point to the mesh
+   * - polygon - the one the point is closest to, or null
+   * - point - the point inside the mesh, or null
    * @param point
-   * @param fudgeAmount
+   * @param maxAllowableDist
    */
   public findClosestMeshPoint(point: Vector2, maxAllowableDist: number = Number.POSITIVE_INFINITY) {
     let minDistance = maxAllowableDist;
