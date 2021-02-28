@@ -13,6 +13,7 @@ module.exports = function (env, argv) {
     context: path.join(root, "src"),
     entry: {
       "demo/js/main": "./demo/js/main.js",
+      "test/js/main": "./test/js/main.js",
       "performance/js/main": "./performance/js/main.js",
     },
     output: {
