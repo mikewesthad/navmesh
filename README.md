@@ -16,9 +16,9 @@ Table of Contents:
   - [As a Module](#as-a-module)
 - [Creating a Navigation Mesh](#creating-a-navigation-mesh)
 - [Usage](#usage)
-  - [navmesh](#navmesh)
-  - [phaser-navmesh](#phaser-navmesh)
-  - [phaser2-navmesh](#phaser2-navmesh)
+  - [navmesh (API reference)](#navmesh-api-reference)
+  - [phaser-navmesh (API reference)](#phaser-navmesh-api-reference)
+  - [phaser2-navmesh (API reference)](#phaser2-navmesh-api-reference)
 - [Performance Comparison](#performance-comparison)
 - [Community Examples](#community-examples)
 - [Development](#development)
@@ -100,9 +100,13 @@ import PhaserNavMeshPlugin from "phaser-navmesh/src";
 
 ## Creating a Navigation Mesh
 
-Before you can dive into the code, you'll need to create a navigation mesh for your game world. This is a process of defining the walkable areas within you world. You can create it from scratch in code, but it's far easier to use a tilemap editor like Tiled to do this. See [guide](https://github.com/mikewesthad/navmesh/blob/master/tiled-navmesh-guide.md).
+Before you can dive into the code, you'll need to create a navigation mesh for your game world. This is a process of defining the walkable areas within you world. If you are using a tilemap, then you can probably just auto-generate the mesh using [buildMeshFromTilemap](https://www.mikewesthad.com/navmesh/docs/classes/phaser_navmesh.phasernavmeshplugin.html#buildmeshfromtilemap) in Phaser3 (or if you are using NavMesh, [buildPolysFromGridMap](https://www.mikewesthad.com/navmesh/docs/modules/navmesh.html#buildpolysfromgridmap)).
 
-Note: the current version of the library only supports [convex polygons](https://www.sparknotes.com/math/geometry1/polygons/section2/). There are libraries like [poly-decom.js](https://github.com/schteppe/poly-decomp.js/) for decomposing a concave polygon into easier to manage convex polygons. It's on the to do list to handle any polygon, but I've found that automatically decomposing polygons leads to worse performance than hand-mapping the levels with convex polygons.
+If you've got a more complex situation, you can use a tilemap editor like Tiled to create your mesh
+and load it into the game. See
+[guide](https://github.com/mikewesthad/navmesh/blob/master/tiled-navmesh-guide.md).
+
+(Note: the current version of the library only supports [convex polygons](https://www.sparknotes.com/math/geometry1/polygons/section2/). There are libraries like [poly-decom.js](https://github.com/schteppe/poly-decomp.js/) for decomposing a concave polygon into easier to manage convex polygons. It's on the to do list to handle any polygon, but I've found that automatically decomposing polygons leads to worse performance than hand-mapping the levels with convex polygons.)
 
 ## Usage
 
@@ -112,7 +116,7 @@ You can find code snippets for the different use cases below. You can also jump 
 - [phaser 2](https://github.com/mikewesthad/navmesh/tree/master/packages/examples-phaser2)
 - [navmesh in a node environment](https://github.com/mikewesthad/navmesh/tree/master/packages/examples-node)
 
-### navmesh
+### navmesh ([API reference](https://www.mikewesthad.com/navmesh/docs/modules/navmesh.html))
 
 If you don't need the Phaser wrappers, you can construct navmeshes directly from points using the navmesh package:
 
@@ -147,9 +151,9 @@ const path = navMesh.findPath({ x: 0, y: 0 }, { x: 10, y: 20 });
 // ⮡  [{ x: 0, y: 0 }, { x: 10, y: 10 }, { x: 10, y: 20 }]
 ```
 
-Check out the [API reference](https://www.mikewesthad.com/navmesh/docs/modules/navmesh.html) for more information.
+If your world is a grid (e.g. a tilemap), NavMesh also has a utility [buildPolysFromGridMap](https://www.mikewesthad.com/navmesh/docs/modules/navmesh.html#buildpolysfromgridmap) that can automatically generate meshPolygonPoints from a 2D array. 
 
-### phaser-navmesh
+### phaser-navmesh ([API reference](https://www.mikewesthad.com/navmesh/docs/modules/phaser_navmesh.html))
 
 If you are working with Phaser 3, you can use the phaser-navmesh package, which provides a Scene plugin. Play with a live example on CodeSandbox [here](https://codesandbox.io/s/zq1wvozxll?fontsize=14), or peek at the [examples](https://github.com/mikewesthad/navmesh/tree/master/packages/examples/src) in this repository for more complete usage.
 
@@ -188,13 +192,17 @@ function create() {
   const tilemap = this.add.tilemap("map");
   const tileset = tilemap.addTilesetImage("tiles", "tiles");
   const wallLayer = tilemap.createStaticLayer("walls", tileset);
+  wallLayer.setCollisionByProperty({ collides: true }); // Or, however you set tiles to collide.
 
-  // Load the navMesh from the tilemap object layer "navmesh" (created in Tiled). The navMesh was
-  // created with 12.5 pixels of space around obstacles.
-  const objectLayer = tilemap.getObjectLayer("navmesh");
-  const navMesh = this.navMeshPlugin.buildMeshFromTiled("mesh", objectLayer, 12.5);
+  // Automatically generate mesh from colliding tiles in a layer or layers: 
+  const navMesh = this.navMeshPlugin.buildMeshFromTilemap("mesh", tilemap, [wallLayer]);
   const path = navMesh.findPath({ x: 0, y: 0 }, { x: 300, y: 400 });
   // ⮡  path will either be null or an array of Phaser.Geom.Point objects
+
+  // Alternatively, you can load a navmesh created by hand in Tiled that is stored in an object 
+  // layer. See the creating a navmesh guide for more info on this.
+  // const objectLayer = tilemap.getObjectLayer("navmesh");
+  // const navMesh = this.navMeshPlugin.buildMeshFromTiled("mesh1", objectLayer, 12.5);
 }
 ```
 
@@ -214,9 +222,7 @@ navMesh.debugDrawMesh({
 navMesh.debugDrawPath(path, 0xffd900);
 ```
 
-Check out the [API reference](https://www.mikewesthad.com/navmesh/docs/modules/phaser_navmesh.html) for more information.
-
-### phaser2-navmesh
+### phaser2-navmesh ([API reference](https://www.mikewesthad.com/navmesh/docs/modules/phaser2_navmesh.html))
 
 If you are working with Phaser 2, you can use the phaser2-navmesh package, which provides a game plugin. See this [example](https://github.com/mikewesthad/navmesh/tree/master/packages/examples-phaser2/src) for more complete usage. You can also look at the [previous section](#phaser-navmesh) for Phaser usage.
 
