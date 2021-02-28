@@ -122,9 +122,9 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
 
     // Build 2D array of walkable tiles across all given layers.
     const walkableAreas: boolean[][] = [];
-    for (let tx = 0; tx < tilemap.width; tx += 1) {
+    for (let ty = 0; ty < tilemap.height; ty += 1) {
       const row: boolean[] = [];
-      for (let ty = 0; ty < tilemap.height; ty += 1) {
+      for (let tx = 0; tx < tilemap.width; tx += 1) {
         let walkable = true;
         for (const layer of dataLayers) {
           const tile = layer.data[ty][tx];
