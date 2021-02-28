@@ -54,9 +54,9 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
   }
 
   /**
-   * This is a work-in-progress! This is a rough implementation of an automatic mesh builder. It
-   * takes the given tilemap (and optional layers) and uses them to construct a navmesh based on
-   * which tiles are set to collide.
+   * This method attempts to automatically build a navmesh based on the give tilemap and tilemap
+   * layer(s). It attempts to respect the x/y position and scale of the layer(s). Important note: it
+   * doesn't support rotation/flip or multiple layers that have different positions/scales.
    *
    * @param key Key to use when storing this navmesh within the plugin.
    * @param tilemap The tilemap to use for building the navmesh.
@@ -64,7 +64,6 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
    * @param isWalkable An optional function to use to test if a tile is walkable. Defaults to
    * assuming non-colliding tiles are walkable.
    */
-
   public buildMeshFromTilemap(
     key: string,
     tilemap: Phaser.Tilemaps.Tilemap,
