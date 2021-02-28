@@ -138,16 +138,16 @@
 					<li><code>npm install --save phaser-navmesh</code> for Phaser 3</li>
 					<li><code>npm install --save phaser2-navmesh</code> for Phaser 2</li>
 				</ul>
-				<p>To use the transpiled and minified distribution of the library:</p>
+				<p>To use the transpiled and minified distribution of the library (recommended for most users):</p>
 				<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">PhaserNavMeshPlugin</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;phaser-navmesh&quot;</span><span style="color: #000000">;</span>
 </code></pre>
-				<p>To use the raw library (so you can transpile it to match your own project settings):</p>
+				<p>To use the raw TypeScript source code so you can optimize the bundle yourself:</p>
 				<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">PhaserNavMeshPlugin</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;phaser-navmesh/src&quot;</span><span style="color: #000000">;</span>
 </code></pre>
 				<a href="#creating-a-navigation-mesh" id="creating-a-navigation-mesh" style="color: inherit; text-decoration: none;">
 					<h2>Creating a Navigation Mesh</h2>
 				</a>
-				<p>Before you can dive into the code, you&#39;ll need to create a navigation mesh for your game world. This is a process of defining the walkable areas within you world. If you are using a tilemap, then you can probably just auto-generate the mesh using <a href="https://www.mikewesthad.com/navmesh/docs/classes/phaser_navmesh.phasernavmeshplugin.html#buildmeshfromtilemap">buildMeshFromTilemap</a> in Phaser3 (or if you are using NavMesh, <a href="https://www.mikewesthad.com/navmesh/docs/modules/navmesh.html#buildpolysfromgridmap">buildPolysFromGridMap</a>).</p>
+				<p>Creating a navigation mesh is the process of defining the walkable areas within you world as a series of polygons. If you are using a tilemap, then you can probably get away with just auto-generating the mesh using <a href="https://www.mikewesthad.com/navmesh/docs/classes/phaser_navmesh.phasernavmeshplugin.html#buildmeshfromtilemap">buildMeshFromTilemap</a> in Phaser 3 (or if you are using NavMesh without the Phaser wrapper, see <a href="https://www.mikewesthad.com/navmesh/docs/modules/navmesh.html#buildpolysfromgridmap">buildPolysFromGridMap</a>).</p>
 				<p>If you&#39;ve got a more complex situation, you can use a tilemap editor like Tiled to create your mesh
 					and load it into the game. See
 				<a href="https://github.com/mikewesthad/navmesh/blob/master/tiled-navmesh-guide.md">guide</a>.</p>
