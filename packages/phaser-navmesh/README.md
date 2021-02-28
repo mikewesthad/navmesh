@@ -6,6 +6,10 @@ For usage information, see: [mikewesthad/navmesh](https://github.com/mikewesthad
 
 ## Changelog
 
+Version 2.2.1
+
+- Fix: `PhaserNavMeshPlugin#buildMeshFromTilemap` mesh output is no longer incorrectly rotated (rows & cols were flipped).
+  
 Version 2.2.0
 
 - Feature: `PhaserNavMeshPlugin#buildMeshFromTilemap` allows you to automatically generate a navmesh from a Tilemap.
