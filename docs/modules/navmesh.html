@@ -86,6 +86,8 @@
 							<h3>Classes</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-class tsd-parent-kind-module"><a href="../classes/navmesh.navmesh-1.html" class="tsd-kind-icon">Nav<wbr>Mesh</a></li>
+								<li class="tsd-kind-class tsd-parent-kind-module"><a href="../classes/navmesh.pointqueue.html" class="tsd-kind-icon">Point<wbr>Queue</a></li>
+								<li class="tsd-kind-class tsd-parent-kind-module"><a href="../classes/navmesh.rectanglehull.html" class="tsd-kind-icon">Rectangle<wbr>Hull</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -98,6 +100,12 @@
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="navmesh.html#polypoints" class="tsd-kind-icon">Poly<wbr>Points</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Functions</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter"><a href="navmesh.html#buildpolysfromgridmap" class="tsd-kind-icon">build<wbr>Polys<wbr>From<wbr>Grid<wbr>Map</a></li>
 							</ul>
 						</section>
 					</div>
@@ -119,7 +127,7 @@
 					<div class="tsd-signature tsd-kind-icon">Poly<wbr>Points<span class="tsd-signature-symbol">:</span> <a href="../interfaces/navmesh.point.html" class="tsd-signature-type" data-tsd-kind="Interface">Point</a><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mikewesthad/navmesh/blob/3437418/packages/navmesh/src/common-types.ts#L7">packages/navmesh/src/common-types.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/mikewesthad/navmesh/blob/596c75d/packages/navmesh/src/common-types.ts#L7">packages/navmesh/src/common-types.ts:7</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -127,6 +135,100 @@
 							<p>Lightweight representation of a Polygon as a series of points.</p>
 						</div>
 					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
+					<a name="buildpolysfromgridmap" class="tsd-anchor"></a>
+					<h3>build<wbr>Polys<wbr>From<wbr>Grid<wbr>Map</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">build<wbr>Polys<wbr>From<wbr>Grid<wbr>Map&lt;TileType&gt;<span class="tsd-signature-symbol">(</span>map<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TileType</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span>, tileWidth<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, tileHeight<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, isWalkable<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">(</span>tile<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TileType</span>, x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="navmesh.html#polypoints" class="tsd-signature-type" data-tsd-kind="Type alias">PolyPoints</a><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/mikewesthad/navmesh/blob/596c75d/packages/navmesh/src/map-parsers/build-polys-from-grid-map.ts#L27">packages/navmesh/src/map-parsers/build-polys-from-grid-map.ts:27</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>This parses a world that is a uniform grid into convex polygons (specifically rectangles) that
+										can be used for building a navmesh. This is designed mainly for parsing tilemaps into polygons.
+										The functions takes a 2D array that indicates which tiles are walkable and which aren&#39;t. The
+									function returns PolyPoint[] that can be used to construct a NavMesh.</p>
+								</div>
+								<p>Notes:</p>
+								<ul>
+									<li>This algorithm traverses the walkable tiles in a depth-first search, combining neighbors into
+										rectangular polygons. This may not produce the best navmesh, but it doesn&#39;t require any manual
+									work!</li>
+									<li>This assumes the world is a uniform grid. It should work for any tile size, provided that all
+									tiles are the same width and height.</li>
+								</ul>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>TileType</h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>map: <span class="tsd-signature-type">TileType</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>2D array of any type.</p>
+									</div>
+								</li>
+								<li>
+									<h5>tileWidth: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 1</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The width of each tile in the grid.</p>
+									</div>
+								</li>
+								<li>
+									<h5>tileHeight: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 1</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The height of each tile in the grid.</p>
+									</div>
+								</li>
+								<li>
+									<h5>isWalkable: <span class="tsd-signature-symbol">(</span>tile<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TileType</span>, x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = ...</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Function that is used to test if a specific location in the map is walkable.
+										Defaults to assuming &quot;truthy&quot; means walkable.</p>
+									</div>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-signature">
+											<ul class="tsd-signatures tsd-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>tile<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TileType</span>, x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>tile: <span class="tsd-signature-type">TileType</span></h5>
+														</li>
+														<li>
+															<h5>x: <span class="tsd-signature-type">number</span></h5>
+														</li>
+														<li>
+															<h5>y: <span class="tsd-signature-type">number</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="navmesh.html#polypoints" class="tsd-signature-type" data-tsd-kind="Type alias">PolyPoints</a><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -155,11 +257,20 @@
 					<li class=" tsd-kind-class tsd-parent-kind-module">
 						<a href="../classes/navmesh.navmesh-1.html" class="tsd-kind-icon">Nav<wbr>Mesh</a>
 					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="../classes/navmesh.pointqueue.html" class="tsd-kind-icon">Point<wbr>Queue</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="../classes/navmesh.rectanglehull.html" class="tsd-kind-icon">Rectangle<wbr>Hull</a>
+					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="../interfaces/navmesh.point.html" class="tsd-kind-icon">Point</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
 						<a href="navmesh.html#polypoints" class="tsd-kind-icon">Poly<wbr>Points</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="navmesh.html#buildpolysfromgridmap" class="tsd-kind-icon">build<wbr>Polys<wbr>From<wbr>Grid<wbr>Map</a>
 					</li>
 				</ul>
 			</nav>
@@ -171,6 +282,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
 			</ul>
 			<ul class="tsd-legend">

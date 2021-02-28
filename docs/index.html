@@ -75,9 +75,9 @@
 					</li>
 					<li><a href="#creating-a-navigation-mesh">Creating a Navigation Mesh</a></li>
 					<li><a href="#usage">Usage</a><ul>
-							<li><a href="#navmesh">navmesh</a></li>
-							<li><a href="#phaser-navmesh">phaser-navmesh</a></li>
-							<li><a href="#phaser2-navmesh">phaser2-navmesh</a></li>
+							<li><a href="#navmesh-api-reference">navmesh (API reference)</a></li>
+							<li><a href="#phaser-navmesh-api-reference">phaser-navmesh (API reference)</a></li>
+							<li><a href="#phaser2-navmesh-api-reference">phaser2-navmesh (API reference)</a></li>
 						</ul>
 					</li>
 					<li><a href="#performance-comparison">Performance Comparison</a></li>
@@ -112,8 +112,7 @@
 				<a href="#as-a-script" id="as-a-script" style="color: inherit; text-decoration: none;">
 					<h3>As a Script</h3>
 				</a>
-				<p>You can drop in any of the transpiled code into your project as a standalone script. Download the version that you want:</p>
-				<p>TBD</p>
+				<p>You can drop in any of the transpiled code into your project as a standalone script. Download the version that you want from the <a href="https://github.com/mikewesthad/navmesh/releases/tag/2.1.0">GitHub release</a>.</p>
 				<p>E.g. if you wanted phaser-navmesh, you would add this to your HTML:</p>
 				<pre><code class="language-html"><span style="color: #800000">&lt;script</span><span style="color: #000000FF"> </span><span style="color: #FF0000">src</span><span style="color: #000000FF">=</span><span style="color: #0000FF">&quot;phaser-navmesh.min.js&quot;</span><span style="color: #800000">&gt;&lt;/script&gt;</span>
 </code></pre>
@@ -148,8 +147,11 @@
 				<a href="#creating-a-navigation-mesh" id="creating-a-navigation-mesh" style="color: inherit; text-decoration: none;">
 					<h2>Creating a Navigation Mesh</h2>
 				</a>
-				<p>Before you can dive into the code, you&#39;ll need to create a navigation mesh for your game world. This is a process of defining the walkable areas within you world. You can create it from scratch in code, but it&#39;s far easier to use a tilemap editor like Tiled to do this. See <a href="https://github.com/mikewesthad/navmesh/blob/master/tiled-navmesh-guide.md">guide</a>.</p>
-				<p>Note: the current version of the library only supports <a href="https://www.sparknotes.com/math/geometry1/polygons/section2/">convex polygons</a>. There are libraries like <a href="https://github.com/schteppe/poly-decomp.js/">poly-decom.js</a> for decomposing a concave polygon into easier to manage convex polygons. It&#39;s on the to do list to handle any polygon, but I&#39;ve found that automatically decomposing polygons leads to worse performance than hand-mapping the levels with convex polygons.</p>
+				<p>Before you can dive into the code, you&#39;ll need to create a navigation mesh for your game world. This is a process of defining the walkable areas within you world. If you are using a tilemap, then you can probably just auto-generate the mesh using <a href="https://www.mikewesthad.com/navmesh/docs/classes/phaser_navmesh.phasernavmeshplugin.html#buildmeshfromtilemap">buildMeshFromTilemap</a> in Phaser3 (or if you are using NavMesh, <a href="https://www.mikewesthad.com/navmesh/docs/modules/navmesh.html#buildpolysfromgridmap">buildPolysFromGridMap</a>).</p>
+				<p>If you&#39;ve got a more complex situation, you can use a tilemap editor like Tiled to create your mesh
+					and load it into the game. See
+				<a href="https://github.com/mikewesthad/navmesh/blob/master/tiled-navmesh-guide.md">guide</a>.</p>
+				<p>(Note: the current version of the library only supports <a href="https://www.sparknotes.com/math/geometry1/polygons/section2/">convex polygons</a>. There are libraries like <a href="https://github.com/schteppe/poly-decomp.js/">poly-decom.js</a> for decomposing a concave polygon into easier to manage convex polygons. It&#39;s on the to do list to handle any polygon, but I&#39;ve found that automatically decomposing polygons leads to worse performance than hand-mapping the levels with convex polygons.)</p>
 				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
 					<h2>Usage</h2>
 				</a>
@@ -159,8 +161,8 @@
 					<li><a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples-phaser2">phaser 2</a></li>
 					<li><a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples-node">navmesh in a node environment</a></li>
 				</ul>
-				<a href="#navmesh" id="navmesh" style="color: inherit; text-decoration: none;">
-					<h3>navmesh</h3>
+				<a href="#navmesh-api-reference" id="navmesh-api-reference" style="color: inherit; text-decoration: none;">
+					<h3>navmesh (<a href="https://www.mikewesthad.com/navmesh/docs/modules/navmesh.html">API reference</a>)</h3>
 				</a>
 				<p>If you don&#39;t need the Phaser wrappers, you can construct navmeshes directly from points using the navmesh package:</p>
 				<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">NavMesh</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;navmesh&quot;</span><span style="color: #000000">;</span>
@@ -192,9 +194,9 @@
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">path</span><span style="color: #000000"> = </span><span style="color: #001080">navMesh</span><span style="color: #000000">.</span><span style="color: #795E26">findPath</span><span style="color: #000000">({ </span><span style="color: #001080">x:</span><span style="color: #000000"> </span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #001080">y:</span><span style="color: #000000"> </span><span style="color: #098658">0</span><span style="color: #000000"> }, { </span><span style="color: #001080">x:</span><span style="color: #000000"> </span><span style="color: #098658">10</span><span style="color: #000000">, </span><span style="color: #001080">y:</span><span style="color: #000000"> </span><span style="color: #098658">20</span><span style="color: #000000"> });</span>
 <span style="color: #008000">// ⮡  [{ x: 0, y: 0 }, { x: 10, y: 10 }, { x: 10, y: 20 }]</span>
 </code></pre>
-				<p>Check out the <a href="https://www.mikewesthad.com/navmesh/docs/modules/navmesh.html">API reference</a> for more information.</p>
-				<a href="#phaser-navmesh" id="phaser-navmesh" style="color: inherit; text-decoration: none;">
-					<h3>phaser-navmesh</h3>
+				<p>If your world is a grid (e.g. a tilemap), NavMesh also has a utility <a href="https://www.mikewesthad.com/navmesh/docs/modules/navmesh.html#buildpolysfromgridmap">buildPolysFromGridMap</a> that can automatically generate meshPolygonPoints from a 2D array. </p>
+				<a href="#phaser-navmesh-api-reference" id="phaser-navmesh-api-reference" style="color: inherit; text-decoration: none;">
+					<h3>phaser-navmesh (<a href="https://www.mikewesthad.com/navmesh/docs/modules/phaser_navmesh.html">API reference</a>)</h3>
 				</a>
 				<p>If you are working with Phaser 3, you can use the phaser-navmesh package, which provides a Scene plugin. Play with a live example on CodeSandbox <a href="https://codesandbox.io/s/zq1wvozxll?fontsize=14">here</a>, or peek at the <a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples/src">examples</a> in this repository for more complete usage.</p>
 				<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">Phaser</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;phaser&quot;</span><span style="color: #000000">;</span>
@@ -231,13 +233,17 @@
 <span style="color: #000000">  </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">tilemap</span><span style="color: #000000"> = </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">add</span><span style="color: #000000">.</span><span style="color: #795E26">tilemap</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;map&quot;</span><span style="color: #000000">);</span>
 <span style="color: #000000">  </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">tileset</span><span style="color: #000000"> = </span><span style="color: #001080">tilemap</span><span style="color: #000000">.</span><span style="color: #795E26">addTilesetImage</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;tiles&quot;</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;tiles&quot;</span><span style="color: #000000">);</span>
 <span style="color: #000000">  </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">wallLayer</span><span style="color: #000000"> = </span><span style="color: #001080">tilemap</span><span style="color: #000000">.</span><span style="color: #795E26">createStaticLayer</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;walls&quot;</span><span style="color: #000000">, </span><span style="color: #001080">tileset</span><span style="color: #000000">);</span>
+<span style="color: #000000">  </span><span style="color: #001080">wallLayer</span><span style="color: #000000">.</span><span style="color: #795E26">setCollisionByProperty</span><span style="color: #000000">({ </span><span style="color: #001080">collides:</span><span style="color: #000000"> </span><span style="color: #0000FF">true</span><span style="color: #000000"> }); </span><span style="color: #008000">// Or, however you set tiles to collide.</span>
 
-<span style="color: #000000">  </span><span style="color: #008000">// Load the navMesh from the tilemap object layer &quot;navmesh&quot; (created in Tiled). The navMesh was</span>
-<span style="color: #000000">  </span><span style="color: #008000">// created with 12.5 pixels of space around obstacles.</span>
-<span style="color: #000000">  </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">objectLayer</span><span style="color: #000000"> = </span><span style="color: #001080">tilemap</span><span style="color: #000000">.</span><span style="color: #795E26">getObjectLayer</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;navmesh&quot;</span><span style="color: #000000">);</span>
-<span style="color: #000000">  </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">navMesh</span><span style="color: #000000"> = </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">navMeshPlugin</span><span style="color: #000000">.</span><span style="color: #795E26">buildMeshFromTiled</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;mesh&quot;</span><span style="color: #000000">, </span><span style="color: #001080">objectLayer</span><span style="color: #000000">, </span><span style="color: #098658">12.5</span><span style="color: #000000">);</span>
+<span style="color: #000000">  </span><span style="color: #008000">// Automatically generate mesh from colliding tiles in a layer or layers: </span>
+<span style="color: #000000">  </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">navMesh</span><span style="color: #000000"> = </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">navMeshPlugin</span><span style="color: #000000">.</span><span style="color: #795E26">buildMeshFromTilemap</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;mesh&quot;</span><span style="color: #000000">, </span><span style="color: #001080">tilemap</span><span style="color: #000000">, [</span><span style="color: #001080">wallLayer</span><span style="color: #000000">]);</span>
 <span style="color: #000000">  </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">path</span><span style="color: #000000"> = </span><span style="color: #001080">navMesh</span><span style="color: #000000">.</span><span style="color: #795E26">findPath</span><span style="color: #000000">({ </span><span style="color: #001080">x:</span><span style="color: #000000"> </span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #001080">y:</span><span style="color: #000000"> </span><span style="color: #098658">0</span><span style="color: #000000"> }, { </span><span style="color: #001080">x:</span><span style="color: #000000"> </span><span style="color: #098658">300</span><span style="color: #000000">, </span><span style="color: #001080">y:</span><span style="color: #000000"> </span><span style="color: #098658">400</span><span style="color: #000000"> });</span>
 <span style="color: #000000">  </span><span style="color: #008000">// ⮡  path will either be null or an array of Phaser.Geom.Point objects</span>
+
+<span style="color: #000000">  </span><span style="color: #008000">// Alternatively, you can load a navmesh created by hand in Tiled that is stored in an object </span>
+<span style="color: #000000">  </span><span style="color: #008000">// layer. See the creating a navmesh guide for more info on this.</span>
+<span style="color: #000000">  </span><span style="color: #008000">// const objectLayer = tilemap.getObjectLayer(&quot;navmesh&quot;);</span>
+<span style="color: #000000">  </span><span style="color: #008000">// const navMesh = this.navMeshPlugin.buildMeshFromTiled(&quot;mesh1&quot;, objectLayer, 12.5);</span>
 <span style="color: #000000">}</span>
 </code></pre>
 				<p>The plugin comes with some methods for visually debugging your navmesh:</p>
@@ -253,9 +259,8 @@
 <span style="color: #008000">// Visualize an individual path</span>
 <span style="color: #001080">navMesh</span><span style="color: #000000">.</span><span style="color: #795E26">debugDrawPath</span><span style="color: #000000">(</span><span style="color: #001080">path</span><span style="color: #000000">, </span><span style="color: #098658">0xffd900</span><span style="color: #000000">);</span>
 </code></pre>
-				<p>Check out the <a href="https://www.mikewesthad.com/navmesh/docs/modules/phaser_navmesh.html">API reference</a> for more information.</p>
-				<a href="#phaser2-navmesh" id="phaser2-navmesh" style="color: inherit; text-decoration: none;">
-					<h3>phaser2-navmesh</h3>
+				<a href="#phaser2-navmesh-api-reference" id="phaser2-navmesh-api-reference" style="color: inherit; text-decoration: none;">
+					<h3>phaser2-navmesh (<a href="https://www.mikewesthad.com/navmesh/docs/modules/phaser2_navmesh.html">API reference</a>)</h3>
 				</a>
 				<p>If you are working with Phaser 2, you can use the phaser2-navmesh package, which provides a game plugin. See this <a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples-phaser2/src">example</a> for more complete usage. You can also look at the <a href="#phaser-navmesh">previous section</a> for Phaser usage.</p>
 				<a href="#performance-comparison" id="performance-comparison" style="color: inherit; text-decoration: none;">
@@ -419,6 +424,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
 			</ul>
 			<ul class="tsd-legend">
