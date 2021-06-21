@@ -202,7 +202,6 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
     });
 
     const mesh = new PhaserNavMesh(this, this.scene, key, polygons, meshShrinkAmount);
-    console.log(polygons.length);
 
     this.phaserNavMeshes[key] = mesh;
 
