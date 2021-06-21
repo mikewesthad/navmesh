@@ -13,8 +13,12 @@ import { buildPolysFromGridMap } from "navmesh/src/map-parsers";
 export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
   private phaserNavMeshes: Record<string, PhaserNavMesh> = {};
 
-  public constructor(scene: Phaser.Scene, pluginManager: Phaser.Plugins.PluginManager) {
-    super(scene, pluginManager);
+  public constructor(
+    scene: Phaser.Scene,
+    pluginManager: Phaser.Plugins.PluginManager,
+    pluginKey: string
+  ) {
+    super(scene, pluginManager, pluginKey);
   }
 
   /** Phaser.Scene lifecycle event */
