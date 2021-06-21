@@ -46,7 +46,7 @@ export default class FollowerSprite extends Phaser.Sprite {
 
     // Move towards target
     const distance = this.position.distance(position);
-    const targetSpeed = distance / this.game.time.physicsElapsed;
+    const targetSpeed = distance / (this.game.time.elapsedMS / 1000);
     const magnitude = Math.min(maxSpeed, targetSpeed);
     this.body.velocity.x = magnitude * Math.cos(angle);
     this.body.velocity.y = magnitude * Math.sin(angle);
