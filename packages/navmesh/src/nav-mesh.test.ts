@@ -180,7 +180,6 @@ describe("findClosestMeshPoint", () => {
   it("should return poly 2 or 4 for a point equidistant from them", () => {
     const result = navMesh.findClosestMeshPoint(v2(25, 5));
     const isPoly2or4 = result?.polygon?.id === 1 || result?.polygon?.id === 3;
-    console.log(result.point, result.distance);
     expect(isPoly2or4).toBe(true);
   });
 });
