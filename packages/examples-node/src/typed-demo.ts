@@ -3,9 +3,13 @@
 import { NavMesh } from "navmesh";
 import express from "express";
 import yargs from "yargs";
+import { hideBin } from "yargs/helpers";
 
-const argv = yargs(process.argv.slice(2)).argv;
-const port = argv.port ?? 8082;
+const argv = yargs(hideBin(process.argv)).options({ port: { type: "number", default: 8082 } }).argv;
+// yargs returns argv as obj or a promise, so force it to be a plain object.
+const options = argv as { port: number };
+const port = options.port ?? 8082;
+
 const app = express();
 
 /*
