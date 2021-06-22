@@ -1,3 +1,5 @@
+/* eslint-env node */
+
 // Simple usage of navmesh in Node to find a path within geometry
 
 const { NavMesh } = require("navmesh");
