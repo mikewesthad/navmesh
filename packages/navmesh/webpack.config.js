@@ -11,11 +11,12 @@ module.exports = function (env, argv) {
     context: path.join(root, "src"),
     entry: "./index.ts",
     output: {
+      library: {
+        name: "NavMesh",
+        type: "umd",
+      },
       filename: "navmesh.js",
       path: path.resolve(root, "dist"),
-      library: "NavMesh",
-      libraryTarget: "umd",
-      libraryExport: "default",
       globalObject: '(typeof self !== "undefined" ? self : this)',
     },
     plugins: [new CleanWebpackPlugin()],

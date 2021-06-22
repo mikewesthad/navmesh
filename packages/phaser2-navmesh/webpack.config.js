@@ -11,10 +11,12 @@ module.exports = function (env, argv) {
     context: path.join(root, "src"),
     entry: "./index.ts",
     output: {
+      library: {
+        name: "Phaser2NavMeshPlugin",
+        type: "umd",
+      },
       filename: "phaser2-navmesh-plugin.js",
       path: path.resolve(root, "dist"),
-      library: "Phaser2NavMeshPlugin",
-      libraryTarget: "umd",
     },
     plugins: [new CleanWebpackPlugin()],
     externals: {
