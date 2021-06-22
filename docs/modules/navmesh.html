@@ -127,7 +127,7 @@
 					<div class="tsd-signature tsd-kind-icon">Poly<wbr>Points<span class="tsd-signature-symbol">:</span> <a href="../interfaces/navmesh.point.html" class="tsd-signature-type" data-tsd-kind="Interface">Point</a><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mikewesthad/navmesh/blob/137655c/packages/navmesh/src/common-types.ts#L7">packages/navmesh/src/common-types.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/mikewesthad/navmesh/blob/3a3d21e/packages/navmesh/src/common-types.ts#L7">packages/navmesh/src/common-types.ts:7</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -143,13 +143,13 @@
 					<a name="buildpolysfromgridmap" class="tsd-anchor"></a>
 					<h3>build<wbr>Polys<wbr>From<wbr>Grid<wbr>Map</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">build<wbr>Polys<wbr>From<wbr>Grid<wbr>Map&lt;TileType&gt;<span class="tsd-signature-symbol">(</span>map<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TileType</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span>, tileWidth<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, tileHeight<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, isWalkable<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">(</span>tile<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TileType</span>, x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="navmesh.html#polypoints" class="tsd-signature-type" data-tsd-kind="Type alias">PolyPoints</a><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">build<wbr>Polys<wbr>From<wbr>Grid<wbr>Map&lt;TileType&gt;<span class="tsd-signature-symbol">(</span>map<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TileType</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span>, tileWidth<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, tileHeight<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, isWalkable<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">TileWalkableTest</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TileType</span><span class="tsd-signature-symbol">&gt;</span>, shrinkAmount<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="navmesh.html#polypoints" class="tsd-signature-type" data-tsd-kind="Type alias">PolyPoints</a><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/mikewesthad/navmesh/blob/137655c/packages/navmesh/src/map-parsers/build-polys-from-grid-map.ts#L27">packages/navmesh/src/map-parsers/build-polys-from-grid-map.ts:27</a></li>
+									<li>Defined in <a href="https://github.com/mikewesthad/navmesh/blob/3a3d21e/packages/navmesh/src/map-parsers/build-polys-from-grid-map.ts#L28">packages/navmesh/src/map-parsers/build-polys-from-grid-map.ts:28</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -195,35 +195,14 @@
 									</div>
 								</li>
 								<li>
-									<h5>isWalkable: <span class="tsd-signature-symbol">(</span>tile<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TileType</span>, x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = ...</span></h5>
+									<h5>isWalkable: <span class="tsd-signature-type">TileWalkableTest</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TileType</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Function that is used to test if a specific location in the map is walkable.
 										Defaults to assuming &quot;truthy&quot; means walkable.</p>
 									</div>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-signature">
-											<ul class="tsd-signatures tsd-kind-type-literal">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>tile<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TileType</span>, x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5>tile: <span class="tsd-signature-type">TileType</span></h5>
-														</li>
-														<li>
-															<h5>x: <span class="tsd-signature-type">number</span></h5>
-														</li>
-														<li>
-															<h5>y: <span class="tsd-signature-type">number</span></h5>
-														</li>
-													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
+								</li>
+								<li>
+									<h5>shrinkAmount: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="navmesh.html#polypoints" class="tsd-signature-type" data-tsd-kind="Type alias">PolyPoints</a><span class="tsd-signature-symbol">[]</span></h4>

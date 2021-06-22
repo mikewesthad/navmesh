@@ -139,10 +139,18 @@
 					<li><code>npm install --save phaser2-navmesh</code> for Phaser 2</li>
 				</ul>
 				<p>To use the transpiled and minified distribution of the library (recommended for most users):</p>
-				<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">PhaserNavMeshPlugin</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;phaser-navmesh&quot;</span><span style="color: #000000">;</span>
+				<pre><code class="language-js"><span style="color: #008000">// Phaser 3</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">PhaserNavMeshPlugin</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;phaser-navmesh&quot;</span><span style="color: #000000">;</span>
+
+<span style="color: #008000">// Phaser 2</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">Phaser2NavMeshPlugin</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;phaser2-navmesh&quot;</span><span style="color: #000000">;</span>
+
+<span style="color: #008000">// NavMesh (commonjs or es import)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> { </span><span style="color: #0070C1">NavMesh</span><span style="color: #000000"> } = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;navmesh&quot;</span><span style="color: #000000">);</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">NavMesh</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;navmesh&quot;</span><span style="color: #000000">;</span>
 </code></pre>
 				<p>To use the raw TypeScript source code so you can optimize the bundle yourself:</p>
-				<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">PhaserNavMeshPlugin</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;phaser-navmesh/src&quot;</span><span style="color: #000000">;</span>
+				<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">PhaserNavMeshPlugin</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;phaser-navmesh/src&quot;</span><span style="color: #000000">;</span>
 </code></pre>
 				<a href="#creating-a-navigation-mesh" id="creating-a-navigation-mesh" style="color: inherit; text-decoration: none;">
 					<h2>Creating a Navigation Mesh</h2>
@@ -165,7 +173,7 @@
 					<h3>navmesh (<a href="https://www.mikewesthad.com/navmesh/docs/modules/navmesh.html">API reference</a>)</h3>
 				</a>
 				<p>If you don&#39;t need the Phaser wrappers, you can construct navmeshes directly from points using the navmesh package:</p>
-				<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">NavMesh</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;navmesh&quot;</span><span style="color: #000000">;</span>
+				<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">NavMesh</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;navmesh&quot;</span><span style="color: #000000">;</span>
 
 <span style="color: #008000">/*</span>
 <span style="color: #008000">  Imaging your game world has three walkable rooms, like this:</span>
@@ -200,7 +208,7 @@
 				</a>
 				<p>If you are working with Phaser 3, you can use the phaser-navmesh package, which provides a Scene plugin. Play with a live example on CodeSandbox <a href="https://codesandbox.io/s/zq1wvozxll?fontsize=14">here</a>, or peek at the <a href="https://github.com/mikewesthad/navmesh/tree/master/packages/examples/src">examples</a> in this repository for more complete usage.</p>
 				<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">Phaser</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;phaser&quot;</span><span style="color: #000000">;</span>
-<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">PhaserNavMeshPlugin</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;phaser-navmesh&quot;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">PhaserNavMeshPlugin</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;phaser-navmesh&quot;</span><span style="color: #000000">;</span>
 
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">game</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #001080">Phaser</span><span style="color: #000000">.</span><span style="color: #795E26">Game</span><span style="color: #000000">({</span>
 <span style="color: #000000">  </span><span style="color: #001080">type:</span><span style="color: #000000"> </span><span style="color: #001080">Phaser</span><span style="color: #000000">.</span><span style="color: #0070C1">AUTO</span><span style="color: #000000">,</span>
