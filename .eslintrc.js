@@ -15,7 +15,8 @@ module.exports = {
     es6: true
   },
   parserOptions: {
-    sourceType: "module"
+    sourceType: "module",
+    ecmaVersion: 2020
   },
   globals: {
     Phaser: true
