@@ -1,6 +1,6 @@
 // Simple usage of navmesh in Node to find a path within geometry
 
-import NavMesh from "navmesh";
+import { NavMesh } from "navmesh";
 import express from "express";
 import yargs from "yargs";
 

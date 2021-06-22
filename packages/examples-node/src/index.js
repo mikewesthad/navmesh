@@ -1,6 +1,6 @@
 // Simple usage of navmesh in Node to find a path within geometry
 
-const NavMesh = require("navmesh");
+const { NavMesh } = require("navmesh");
 const express = require("express");
 const yargs = require("yargs/yargs");
 

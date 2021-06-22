@@ -89,13 +89,21 @@ Install the appropriate dependency:
 To use the transpiled and minified distribution of the library (recommended for most users):
 
 ```js
-import PhaserNavMeshPlugin from "phaser-navmesh";
+// Phaser 3
+import { PhaserNavMeshPlugin } from "phaser-navmesh";
+
+// Phaser 2
+import { Phaser2NavMeshPlugin } from "phaser2-navmesh";
+
+// NavMesh (commonjs or es import)
+const { NavMesh } = require("navmesh");
+import { NavMesh } from "navmesh";
 ```
 
 To use the raw TypeScript source code so you can optimize the bundle yourself:
 
 ```js
-import PhaserNavMeshPlugin from "phaser-navmesh/src";
+import { PhaserNavMeshPlugin } from "phaser-navmesh/src";
 ```
 
 ## Creating a Navigation Mesh
@@ -121,7 +129,7 @@ You can find code snippets for the different use cases below. You can also jump 
 If you don't need the Phaser wrappers, you can construct navmeshes directly from points using the navmesh package:
 
 ```js
-import NavMesh from "navmesh";
+import { NavMesh } from "navmesh";
 
 /*
   Imaging your game world has three walkable rooms, like this:
@@ -159,7 +167,7 @@ If you are working with Phaser 3, you can use the phaser-navmesh package, which 
 
 ```js
 import Phaser from "phaser";
-import PhaserNavMeshPlugin from "phaser-navmesh";
+import { PhaserNavMeshPlugin } from "phaser-navmesh";
 
 const game = new Phaser.Game({
   type: Phaser.AUTO,

@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import Load from "./scenes/load";
 import Start from "./scenes/start";
 import ManyPaths from "./scenes/many-paths";
-import NavMeshPlugin from "phaser-navmesh";
+import { PhaserNavMeshPlugin } from "phaser-navmesh";
 
 const game = new Phaser.Game({
   type: Phaser.AUTO,
@@ -15,7 +15,7 @@ const game = new Phaser.Game({
     scene: [
       {
         key: "NavMeshPlugin", // Key to store the plugin class under in cache
-        plugin: NavMeshPlugin, // Class that constructs plugins
+        plugin: PhaserNavMeshPlugin, // Class that constructs plugins
         mapping: "navMeshPlugin", // Property mapping to use for the scene, e.g. this.navMeshPlugin
         start: true,
       },

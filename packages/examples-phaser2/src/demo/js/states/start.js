@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import PhaserNavMesh from "phaser2-navmesh";
+import { Phaser2NavMeshPlugin } from "phaser2-navmesh";
 import FollowerSprite from "../game-objects/follower";
 
 class StartState extends Phaser.State {
@@ -28,7 +28,7 @@ class StartState extends Phaser.State {
     // -- NavMesh Setup --
 
     // Register the plugin with Phaser
-    this.navMeshPlugin = this.game.plugins.add(PhaserNavMesh);
+    this.navMeshPlugin = this.game.plugins.add(Phaser2NavMeshPlugin);
 
     // Load the navMesh from the tilemap object layer "navmesh". The navMesh was created with
     // 12.5 pixels of space around obstacles.
