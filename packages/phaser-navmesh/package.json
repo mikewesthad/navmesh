@@ -1,6 +1,6 @@
 {
   "name": "phaser-navmesh",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "A plugin for Phaser (v3) for fast pathfinding using navigation meshes",
   "main": "dist/phaser-navmesh-plugin.js",
   "types": "dist/index.d.ts",
@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "core-js": "3",
-    "navmesh": "^2.2.0"
+    "navmesh": "^2.2.1"
   },
   "peerDependencies": {
     "phaser": "^3.55.2"
