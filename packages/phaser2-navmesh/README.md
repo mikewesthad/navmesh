@@ -6,6 +6,10 @@ For usage information, see: [mikewesthad/navmesh](https://github.com/mikewesthad
 
 ## Changelog
 
+Version 2.2.1
+
+- Update all dependencies to the latest versions.
+
 Version 2.2.0
 
 - Feature: `PhaserNavMesh2#isPointInMesh` allows you to check if a point is inside of the navmesh.

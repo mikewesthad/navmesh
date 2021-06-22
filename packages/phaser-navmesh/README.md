@@ -6,6 +6,11 @@ For usage information, see: [mikewesthad/navmesh](https://github.com/mikewesthad
 
 ## Changelog
 
+Version 2.2.2
+
+- Update all dependencies to the latest versions.
+- Fixed TS bug where constructor was missing `pluginKey` which is required in latest version of Phaser. 
+
 Version 2.2.1
 
 - Fix: `PhaserNavMeshPlugin#buildMeshFromTilemap` mesh output is no longer incorrectly rotated (rows & cols were flipped).
