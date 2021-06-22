@@ -8,7 +8,7 @@
     "build:libs": "lerna run --parallel build --scope '{navmesh,phaser-navmesh,phaser2-navmesh}'",
     "test": "jest --config ./config/jest.config.json",
     "watch": "lerna run --parallel watch",
-    "watch:libs": "lerna run --parallel watch --scope '{navmesh,phaser-navmesh,phaser-navmesh}'",
+    "watch:libs": "lerna run --parallel watch --scope '{navmesh,phaser-navmesh,phaser2-navmesh}'",
     "serve:examples": "lerna run --parallel serve --scope '{examples-phaser3,examples-phaser2,examples-node}'",
     "dev": "concurrently \"yarn watch:libs\" \"yarn serve:examples\"",
     "dev:phaser2": "concurrently \"lerna run watch --scope '{navmesh,phaser2-navmesh}'\" \"lerna run serve --scope examples-phaser2\"",
