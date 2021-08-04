@@ -60,22 +60,27 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
   /**
    * This method attempts to automatically build a navmesh based on the give tilemap and tilemap
    * layer(s). It attempts to respect the x/y position and scale of the layer(s). Important note: it
-   * doesn't support rotation/flip or multiple layers that have different positions/scales.
+   * doesn't support rotation/flip or multiple layers that have different positions/scales. This
+   * method is a bit experimental. It will generate a valid mesh, but it won't necessarily be
+   * optimal, so you may end up sometimes getting non-shortest paths.
    *
    * @param key Key to use when storing this navmesh within the plugin.
    * @param tilemap The tilemap to use for building the navmesh.
-   * @param tilemapLayers An optional array of tilemap layers to use for building the mesh.
-   * @param isWalkable An optional function to use to test if a tile is walkable. Defaults to
+   * @param [tilemapLayers] An optional array of tilemap layers to use for building the mesh.
+   * @param [isWalkable] An optional function to use to test if a tile is walkable. Defaults to
    * assuming non-colliding tiles are walkable.
+   * @param [shrinkAmount=0] Amount to "shrink" the mesh away from the tiles. This adds more
+   * polygons to the generated mesh, but can be helpful for preventing agents from getting caught on
+   * edges. This supports values between 0 and tileWidth/tileHeight (whichever dimension is
+   * smaller).
    */
   public buildMeshFromTilemap(
     key: string,
     tilemap: Phaser.Tilemaps.Tilemap,
     tilemapLayers?: Phaser.Tilemaps.TilemapLayer[],
-    isWalkable?: (tile: Phaser.Tilemaps.Tile) => boolean
+    isWalkable?: (tile: Phaser.Tilemaps.Tile) => boolean,
+    shrinkAmount = 0
   ) {
-    // TODO: factor in shrink
-
     // Use all layers in map, or just the specified ones.
     const dataLayers = tilemapLayers ? tilemapLayers.map((tl) => tl.layer) : tilemap.layers;
     if (!isWalkable) isWalkable = (tile: Phaser.Tilemaps.Tile) => !tile.collides;
@@ -142,7 +147,13 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
       walkableAreas.push(row);
     }
 
-    let polygons = buildPolysFromGridMap(walkableAreas, tilemap.tileWidth, tilemap.tileHeight);
+    let polygons = buildPolysFromGridMap(
+      walkableAreas,
+      tilemap.tileWidth,
+      tilemap.tileHeight,
+      (bool) => bool,
+      shrinkAmount
+    );
 
     // Offset and scale each polygon if necessary.
     if (scaleX !== 1 && scaleY !== 1 && offsetX !== 0 && offsetY !== 0) {
