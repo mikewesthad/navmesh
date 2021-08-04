@@ -127,7 +127,7 @@
 					<div class="tsd-signature tsd-kind-icon">Poly<wbr>Points<span class="tsd-signature-symbol">:</span> <a href="../interfaces/navmesh.point.html" class="tsd-signature-type" data-tsd-kind="Interface">Point</a><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mikewesthad/navmesh/blob/3a3d21e/packages/navmesh/src/common-types.ts#L7">packages/navmesh/src/common-types.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/mikewesthad/navmesh/blob/55ddd89/packages/navmesh/src/common-types.ts#L7">packages/navmesh/src/common-types.ts:7</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -149,7 +149,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/mikewesthad/navmesh/blob/3a3d21e/packages/navmesh/src/map-parsers/build-polys-from-grid-map.ts#L28">packages/navmesh/src/map-parsers/build-polys-from-grid-map.ts:28</a></li>
+									<li>Defined in <a href="https://github.com/mikewesthad/navmesh/blob/55ddd89/packages/navmesh/src/map-parsers/build-polys-from-grid-map.ts#L31">packages/navmesh/src/map-parsers/build-polys-from-grid-map.ts:31</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -203,6 +203,11 @@
 								</li>
 								<li>
 									<h5>shrinkAmount: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Amount to &quot;shrink&quot; the mesh away from the tiles. This adds more polygons
+											to the generated mesh, but can be helpful for preventing agents from getting caught on edges.
+										This supports values between 0 and tileWidth/tileHeight (whichever dimension is smaller).</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="navmesh.html#polypoints" class="tsd-signature-type" data-tsd-kind="Type alias">PolyPoints</a><span class="tsd-signature-symbol">[]</span></h4>
