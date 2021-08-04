@@ -24,6 +24,9 @@ type CardinalDirection = "top" | "bottom" | "left" | "right";
  * @param tileHeight The height of each tile in the grid.
  * @param isWalkable Function that is used to test if a specific location in the map is walkable.
  * Defaults to assuming "truthy" means walkable.
+ * @param [shrinkAmount=0] Amount to "shrink" the mesh away from the tiles. This adds more polygons
+ * to the generated mesh, but can be helpful for preventing agents from getting caught on edges.
+ * This supports values between 0 and tileWidth/tileHeight (whichever dimension is smaller).
  */
 export default function buildPolysFromGridMap<TileType>(
   map: TileType[][],
