@@ -18,7 +18,7 @@ export default class Start extends Phaser.Scene {
 
     const layers = [wallLayer1, wallLayer2];
     const [navMesh, meshMs] = timeIt(() =>
-      this.navMeshPlugin.buildMeshFromTilemap("mesh1", tilemap, layers, (t) => t.index === -1)
+      this.navMeshPlugin.buildMeshFromTilemap("mesh1", tilemap, layers, (t) => t.index === -1, 0)
     );
     console.log(`It took ${meshMs.toFixed(2)}ms to build the mesh.`);
 
@@ -38,7 +38,7 @@ export default class Start extends Phaser.Scene {
     this.input.keyboard.on("keydown-M", drawDebug);
 
     // Game object that can follow a path (inherits from Phaser.Sprite)
-    const follower = new FollowerSprite(this, 50, 200, navMesh);
+    const follower = new FollowerSprite(this, 30, 410, navMesh);
 
     // On click
     this.input.on("pointerdown", (pointer) => {
@@ -63,7 +63,8 @@ export default class Start extends Phaser.Scene {
     // Display whether the mouse is currently over a valid point in the navmesh
     this.input.on(Phaser.Input.Events.POINTER_MOVE, (pointer) => {
       const isInMesh = navMesh.isPointInMesh(pointer);
-      uiTextLines[1] = `Is mouse inside navmesh: ${isInMesh ? "yes" : "no "}`;
+      uiTextLines[1] = `Mouse: (${pointer.x}, ${pointer.y})`;
+      uiTextLines[2] = `Is mouse inside navmesh: ${isInMesh ? "yes" : "no "}`;
       uiText.setText(uiTextLines);
     });
 
@@ -77,6 +78,7 @@ export default class Start extends Phaser.Scene {
     };
     const uiTextLines = [
       "Click to find a path!",
+      "Mouse: (0, 0)",
       "Is mouse inside navmesh: false",
       "Arrow keys & q/e to move the camera.",
       "Note: debug drawing is slow!",
