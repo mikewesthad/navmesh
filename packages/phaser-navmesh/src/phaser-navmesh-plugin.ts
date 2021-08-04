@@ -66,10 +66,10 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
    *
    * @param key Key to use when storing this navmesh within the plugin.
    * @param tilemap The tilemap to use for building the navmesh.
-   * @param [tilemapLayers] An optional array of tilemap layers to use for building the mesh.
-   * @param [isWalkable] An optional function to use to test if a tile is walkable. Defaults to
+   * @param tilemapLayers An optional array of tilemap layers to use for building the mesh.
+   * @param isWalkable An optional function to use to test if a tile is walkable. Defaults to
    * assuming non-colliding tiles are walkable.
-   * @param [shrinkAmount=0] Amount to "shrink" the mesh away from the tiles. This adds more
+   * @param shrinkAmount Amount to "shrink" the mesh away from the tiles. This adds more
    * polygons to the generated mesh, but can be helpful for preventing agents from getting caught on
    * edges. This supports values between 0 and tileWidth/tileHeight (whichever dimension is
    * smaller).
