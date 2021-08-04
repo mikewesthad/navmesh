@@ -6,6 +6,12 @@ For usage information, see: [mikewesthad/navmesh](https://github.com/mikewesthad
 
 ## Changelog
 
+
+Version 2.3.1
+
+- Fix [issue 40](https://github.com/mikewesthad/navmesh/issues/40) where shrink parameter was not used in buildMeshFromTilemap. Thanks [@SlvainBreton](https://github.com/SylvainBreton).
+- Documentation fixes.
+
 Version 2.3.0
 
 - Fix: webpack misconfiguration that caused [issue 37](https://github.com/mikewesthad/navmesh/issues/37). The build was only picking up the "default" export, but now it properly picks up all library exports. Thanks to[@Wenish](https://github.com/Wenish).
