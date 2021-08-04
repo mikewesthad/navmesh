@@ -5,7 +5,6 @@ const timeIt = (fn) => {
   const startTime = performance.now();
   const fnReturn = fn();
   const elaspedMs = performance.now() - startTime;
-  const elapsedS = elaspedMs / 1000;
   return [fnReturn, elaspedMs];
 };
 
