@@ -23,7 +23,7 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
 
   /** Phaser.Scene lifecycle event */
   public boot() {
-    const emitter = this.systems.events;
+    const emitter = this.systems!.events;
     emitter.once("destroy", this.destroy, this);
   }
 
@@ -35,7 +35,7 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
 
   /** Phaser.Scene lifecycle event - will destroy all navmeshes created. */
   public destroy() {
-    this.systems.events.off("boot", this.boot, this);
+    this.systems!.events.off("boot", this.boot, this);
     this.removeAllMeshes();
   }
 
@@ -162,7 +162,7 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
       );
     }
 
-    const mesh = new PhaserNavMesh(this, this.scene, key, polygons, 0);
+    const mesh = new PhaserNavMesh(this, this.scene!, key, polygons, 0);
     this.phaserNavMeshes[key] = mesh;
 
     return mesh;
@@ -212,7 +212,7 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
       ];
     });
 
-    const mesh = new PhaserNavMesh(this, this.scene, key, polygons, meshShrinkAmount);
+    const mesh = new PhaserNavMesh(this, this.scene!, key, polygons, meshShrinkAmount);
 
     this.phaserNavMeshes[key] = mesh;
 
