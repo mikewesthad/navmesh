@@ -15,6 +15,7 @@ module.exports = function (env, argv) {
       "demo/js/main": "./demo/js/main.js",
       "test/js/main": "./test/js/main.js",
       "performance/js/main": "./performance/js/main.js",
+      "runtime-navmesh-lab/js/main": "./runtime-navmesh-lab/js/main.js",
     },
     output: {
       filename: "[name].js",

@@ -5,8 +5,10 @@
  */
 
 import NavMesh from "./navmesh";
+import GridNavMeshUpdater from "./grid-navmesh-updater";
 
 export { NavMesh };
+export { GridNavMeshUpdater };
 export * from "./common-types";
 export * from "./map-parsers";
 export default NavMesh;

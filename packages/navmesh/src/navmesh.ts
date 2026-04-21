@@ -22,6 +22,7 @@ export default class NavMesh {
   private meshShrinkAmount: number;
   private navPolygons: NavPoly[];
   private graph: NavGraph;
+  private nextPolyId = 0;
 
   /**
    * @param meshPolygonPoints Array where each element is an array of point-like objects that
@@ -33,11 +34,8 @@ export default class NavMesh {
     this.meshShrinkAmount = meshShrinkAmount;
 
     // Convert the PolyPoints[] into NavPoly instances.
-    const newPolys = meshPolygonPoints.map((polyPoints) => {
-      const vectors = polyPoints.map((p) => new Vector2(p.x, p.y));
-      return new Polygon(vectors);
-    });
-    this.navPolygons = newPolys.map((polygon, i) => new NavPoly(i, polygon));
+    const newPolys = meshPolygonPoints.map((polyPoints) => this.createNavPoly(polyPoints));
+    this.navPolygons = newPolys;
 
     this.calculateNeighbors();
 
@@ -50,6 +48,97 @@ export default class NavMesh {
    */
   public getPolygons() {
     return this.navPolygons;
+  }
+
+  /**
+   * Get a polygon in this navmesh by its id.
+   */
+  public getPolygonById(id: number) {
+    return this.navPolygons.find((poly) => poly.id === id) ?? null;
+  }
+
+  /**
+   * Add a polygon to the navmesh and rebuild the internal graph.
+   */
+  public addPolygon(polyPoints: PolyPoints) {
+    const [addedPoly] = this.addPolygons([polyPoints]);
+    return addedPoly ?? null;
+  }
+
+  /**
+   * Add multiple polygons to the navmesh and rebuild the internal graph.
+   */
+  public addPolygons(polyPointsCollection: PolyPoints[]) {
+    const newPolys = polyPointsCollection.map((polyPoints) => this.createNavPoly(polyPoints));
+    if (newPolys.length === 0) return [];
+
+    this.navPolygons.push(...newPolys);
+    this.connectPolygonSet(newPolys, this.navPolygons);
+    this.rebuildGraph();
+
+    return newPolys;
+  }
+
+  /**
+   * Remove a polygon from the navmesh by polygon reference or polygon id.
+   */
+  public removePolygon(polyOrId: NavPoly | number) {
+    const [removedPoly] = this.removePolygons([polyOrId]);
+    return removedPoly ?? null;
+  }
+
+  /**
+   * Remove multiple polygons from the navmesh by polygon reference or polygon id.
+   */
+  public removePolygons(polysOrIds: Array<NavPoly | number>) {
+    const polysToRemove = this.resolveNavPolys(polysOrIds);
+    if (polysToRemove.length === 0) return [];
+
+    const removeSet = new Set(polysToRemove);
+    polysToRemove.forEach((poly) => this.disconnectPolygon(poly));
+    this.navPolygons = this.navPolygons.filter((poly) => !removeSet.has(poly));
+    this.rebuildGraph();
+
+    return polysToRemove;
+  }
+
+  /**
+   * Replace a set of polygons with new polygons and rebuild the internal graph.
+   */
+  public replacePolygons(polysOrIdsToRemove: Array<NavPoly | number>, polysToAdd: PolyPoints[]) {
+    const removedPolys = this.resolveNavPolys(polysOrIdsToRemove);
+    const removedSet = new Set(removedPolys);
+    const neighborPolys: NavPoly[] = [];
+    const seenNeighbors = new Set<NavPoly>();
+
+    removedPolys.forEach((poly) => {
+      poly.neighbors.forEach((neighbor) => {
+        if (removedSet.has(neighbor) || seenNeighbors.has(neighbor)) return;
+        seenNeighbors.add(neighbor);
+        neighborPolys.push(neighbor);
+      });
+    });
+
+    if (removedPolys.length > 0) {
+      removedPolys.forEach((poly) => this.disconnectPolygon(poly));
+      this.navPolygons = this.navPolygons.filter((poly) => !removedSet.has(poly));
+    }
+
+    const mergedNeighborPolys: NavPoly[] = [];
+    const addedPolys = this.mergeReplacementPolygons(
+      polysToAdd.map((polyPoints) => this.createNavPoly(polyPoints)),
+      neighborPolys,
+      mergedNeighborPolys
+    );
+    if (addedPolys.length > 0) {
+      this.navPolygons.push(...addedPolys);
+      this.connectPolygonSet(addedPolys, this.navPolygons);
+    }
+
+    this.rebuildGraph();
+
+    const finalNeighborPolys = neighborPolys.filter((poly) => !mergedNeighborPolys.includes(poly));
+    return { removedPolys: removedPolys.concat(mergedNeighborPolys), addedPolys, neighborPolys: finalNeighborPolys };
   }
 
   /**
@@ -233,62 +322,8 @@ export default class NavMesh {
   }
 
   private calculateNeighbors() {
-    // Fill out the neighbor information for each navpoly
-    for (let i = 0; i < this.navPolygons.length; i++) {
-      const navPoly = this.navPolygons[i];
-
-      for (let j = i + 1; j < this.navPolygons.length; j++) {
-        const otherNavPoly = this.navPolygons[j];
-
-        // Check if the other navpoly is within range to touch
-        const d = navPoly.centroid.distance(otherNavPoly.centroid);
-        if (d > navPoly.boundingRadius + otherNavPoly.boundingRadius) continue;
-
-        // The are in range, so check each edge pairing
-        for (const edge of navPoly.edges) {
-          for (const otherEdge of otherNavPoly.edges) {
-            // If edges aren't collinear, not an option for connecting navpolys
-            if (!areCollinear(edge, otherEdge)) continue;
-
-            // If they are collinear, check if they overlap
-            const overlap = this.getSegmentOverlap(edge, otherEdge);
-            if (!overlap) continue;
-
-            // Connections are symmetric!
-            navPoly.neighbors.push(otherNavPoly);
-            otherNavPoly.neighbors.push(navPoly);
-
-            // Calculate the portal between the two polygons - this needs to be in
-            // counter-clockwise order, relative to each polygon
-            const [p1, p2] = overlap;
-            let edgeStartAngle = navPoly.centroid.angle(edge.start);
-            let a1 = navPoly.centroid.angle(overlap[0]);
-            let a2 = navPoly.centroid.angle(overlap[1]);
-            let d1 = angleDifference(edgeStartAngle, a1);
-            let d2 = angleDifference(edgeStartAngle, a2);
-            if (d1 < d2) {
-              navPoly.portals.push(new Line(p1.x, p1.y, p2.x, p2.y));
-            } else {
-              navPoly.portals.push(new Line(p2.x, p2.y, p1.x, p1.y));
-            }
-
-            edgeStartAngle = otherNavPoly.centroid.angle(otherEdge.start);
-            a1 = otherNavPoly.centroid.angle(overlap[0]);
-            a2 = otherNavPoly.centroid.angle(overlap[1]);
-            d1 = angleDifference(edgeStartAngle, a1);
-            d2 = angleDifference(edgeStartAngle, a2);
-            if (d1 < d2) {
-              otherNavPoly.portals.push(new Line(p1.x, p1.y, p2.x, p2.y));
-            } else {
-              otherNavPoly.portals.push(new Line(p2.x, p2.y, p1.x, p1.y));
-            }
-
-            // Two convex polygons shouldn't be connected more than once! (Unless
-            // there are unnecessary vertices...)
-          }
-        }
-      }
-    }
+    this.clearConnections();
+    this.connectPolygonSet(this.navPolygons, this.navPolygons);
   }
 
   // Check two collinear line segments to see if they overlap by sorting the points.
@@ -337,5 +372,225 @@ export default class NavMesh {
       }
     }
     return { point: closestProjection, distance: closestDistance };
+  }
+
+  private rebuildGraph() {
+    this.graph.destroy();
+    this.graph = new NavGraph(this.navPolygons);
+  }
+
+  private createNavPoly(polyPoints: PolyPoints) {
+    const vectors = polyPoints.map((p) => new Vector2(p.x, p.y));
+    const polygon = new Polygon(vectors);
+    const id = this.nextPolyId ?? 0;
+    this.nextPolyId = id + 1;
+    return new NavPoly(id, polygon);
+  }
+
+  private resolveNavPolys(polysOrIds: Array<NavPoly | number>) {
+    const resolved: NavPoly[] = [];
+    const seen = new Set<NavPoly>();
+
+    for (const entry of polysOrIds) {
+      const poly =
+        typeof entry === "number"
+          ? this.getPolygonById(entry)
+          : this.navPolygons.includes(entry)
+          ? entry
+          : this.getPolygonById(entry.id);
+      if (!poly || seen.has(poly)) continue;
+
+      seen.add(poly);
+      resolved.push(poly);
+    }
+
+    return resolved;
+  }
+
+  private clearConnections() {
+    for (const poly of this.navPolygons) {
+      poly.neighbors = [];
+      poly.portals = [];
+    }
+  }
+
+  private disconnectPolygon(poly: NavPoly) {
+    [...poly.neighbors].forEach((neighbor) => this.removeNeighborReference(neighbor, poly));
+    poly.neighbors = [];
+    poly.portals = [];
+  }
+
+  private removeNeighborReference(sourcePoly: NavPoly, targetPoly: NavPoly) {
+    for (let i = sourcePoly.neighbors.length - 1; i >= 0; i -= 1) {
+      if (sourcePoly.neighbors[i] !== targetPoly) continue;
+
+      sourcePoly.neighbors.splice(i, 1);
+      sourcePoly.portals.splice(i, 1);
+    }
+  }
+
+  private connectPolygonSet(sourcePolys: NavPoly[], candidatePolys: NavPoly[]) {
+    const uniqueSources = this.uniquePolys(sourcePolys);
+    const uniqueCandidates = this.uniquePolys(candidatePolys);
+
+    uniqueSources.forEach((navPoly) => {
+      uniqueCandidates.forEach((otherNavPoly) => {
+        this.connectPolygonPair(navPoly, otherNavPoly);
+      });
+    });
+  }
+
+  private uniquePolys(polys: NavPoly[]) {
+    const unique: NavPoly[] = [];
+    const seen = new Set<NavPoly>();
+
+    polys.forEach((poly) => {
+      if (!poly || seen.has(poly)) return;
+
+      seen.add(poly);
+      unique.push(poly);
+    });
+
+    return unique;
+  }
+
+  private connectPolygonPair(navPoly: NavPoly, otherNavPoly: NavPoly) {
+    if (!navPoly || !otherNavPoly || navPoly === otherNavPoly) return false;
+    if (navPoly.neighbors.includes(otherNavPoly)) return false;
+
+    const d = navPoly.centroid.distance(otherNavPoly.centroid);
+    if (d > navPoly.boundingRadius + otherNavPoly.boundingRadius) return false;
+
+    for (const edge of navPoly.edges) {
+      for (const otherEdge of otherNavPoly.edges) {
+        if (!areCollinear(edge, otherEdge)) continue;
+
+        const overlap = this.getSegmentOverlap(edge, otherEdge);
+        if (!overlap) continue;
+
+        navPoly.neighbors.push(otherNavPoly);
+        otherNavPoly.neighbors.push(navPoly);
+        navPoly.portals.push(this.buildPortal(navPoly, edge, overlap));
+        otherNavPoly.portals.push(this.buildPortal(otherNavPoly, otherEdge, overlap));
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  private mergeReplacementPolygons(addedPolys: NavPoly[], neighborPolys: NavPoly[], mergedNeighborPolys: NavPoly[]) {
+    const workingAdded = [...addedPolys];
+
+    for (let sourceIndex = 0; sourceIndex < workingAdded.length; sourceIndex += 1) {
+      let sourcePoly = workingAdded[sourceIndex];
+      let merged = true;
+
+      while (merged) {
+        merged = false;
+        const candidates = [
+          ...neighborPolys.filter((poly) => this.navPolygons.includes(poly)),
+          ...workingAdded.filter((_, index) => index !== sourceIndex),
+        ];
+
+        for (const candidate of candidates) {
+          const mergedPoints = this.getMergedRectanglePoints(sourcePoly, candidate);
+          if (!mergedPoints) continue;
+
+          if (this.navPolygons.includes(candidate)) {
+            this.disconnectPolygon(candidate);
+            this.navPolygons = this.navPolygons.filter((poly) => poly !== candidate);
+            mergedNeighborPolys.push(candidate);
+          } else {
+            const candidateIndex = workingAdded.indexOf(candidate);
+            if (candidateIndex >= 0) {
+              workingAdded.splice(candidateIndex, 1);
+              if (candidateIndex < sourceIndex) sourceIndex -= 1;
+            }
+          }
+
+          const mergedPoly = this.createNavPoly(mergedPoints);
+          workingAdded[sourceIndex] = mergedPoly;
+          sourcePoly = mergedPoly;
+          merged = true;
+          break;
+        }
+      }
+    }
+
+    return workingAdded;
+  }
+
+  private getMergedRectanglePoints(polyA: NavPoly, polyB: NavPoly) {
+    const rectA = this.getRectangleBounds(polyA);
+    const rectB = this.getRectangleBounds(polyB);
+    if (!rectA || !rectB) return null;
+
+    if (
+      this.areNumbersEqual(rectA.minY, rectB.minY) &&
+      this.areNumbersEqual(rectA.maxY, rectB.maxY) &&
+      (this.areNumbersEqual(rectA.maxX, rectB.minX) || this.areNumbersEqual(rectB.maxX, rectA.minX))
+    ) {
+      return this.createRectanglePoints(
+        Math.min(rectA.minX, rectB.minX),
+        rectA.minY,
+        Math.max(rectA.maxX, rectB.maxX),
+        rectA.maxY
+      );
+    }
+
+    if (
+      this.areNumbersEqual(rectA.minX, rectB.minX) &&
+      this.areNumbersEqual(rectA.maxX, rectB.maxX) &&
+      (this.areNumbersEqual(rectA.maxY, rectB.minY) || this.areNumbersEqual(rectB.maxY, rectA.minY))
+    ) {
+      return this.createRectanglePoints(
+        rectA.minX,
+        Math.min(rectA.minY, rectB.minY),
+        rectA.maxX,
+        Math.max(rectA.maxY, rectB.maxY)
+      );
+    }
+
+    return null;
+  }
+
+  private getRectangleBounds(poly: NavPoly) {
+    const points = poly.getPoints();
+    if (points.length !== 4) return null;
+
+    const xs = [...new Set(points.map((point) => point.x))].sort((a, b) => a - b);
+    const ys = [...new Set(points.map((point) => point.y))].sort((a, b) => a - b);
+    if (xs.length !== 2 || ys.length !== 2) return null;
+
+    return { minX: xs[0], maxX: xs[1], minY: ys[0], maxY: ys[1] };
+  }
+
+  private createRectanglePoints(minX: number, minY: number, maxX: number, maxY: number) {
+    return [
+      { x: minX, y: minY },
+      { x: maxX, y: minY },
+      { x: maxX, y: maxY },
+      { x: minX, y: maxY },
+    ];
+  }
+
+  private areNumbersEqual(a: number, b: number) {
+    return Math.abs(a - b) <= 0.000001;
+  }
+
+  private buildPortal(navPoly: NavPoly, edge: Line, overlap: Vector2[]) {
+    const [p1, p2] = overlap;
+    const edgeStartAngle = navPoly.centroid.angle(edge.start);
+    const a1 = navPoly.centroid.angle(overlap[0]);
+    const a2 = navPoly.centroid.angle(overlap[1]);
+    const d1 = angleDifference(edgeStartAngle, a1);
+    const d2 = angleDifference(edgeStartAngle, a2);
+
+    if (d1 < d2) {
+      return new Line(p1.x, p1.y, p2.x, p2.y);
+    }
+
+    return new Line(p2.x, p2.y, p1.x, p1.y);
   }
 }

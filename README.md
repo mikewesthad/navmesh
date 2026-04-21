@@ -1,6 +1,21 @@
-# Navigation Meshes Overview <!-- omit in toc -->
+# Runtime Navmesh Mutation Lab <!-- omit in toc -->
 
 A JS plugin for fast pathfinding using [navigation meshes](https://en.wikipedia.org/wiki/Navigation_mesh), with optional wrappers for the Phaser v2 and Phaser v3 game engines.
+
+Live demo: https://ridhwan-mohamed.github.io/navmesh/
+
+This fork focuses on runtime mutation for grid-generated navmeshes. It adds localized patch APIs to the core library and a Phaser 3 showcase that lets you compare accelerated local updates against Phaser's default full navmesh rebuild while editing the map in real time.
+
+## Fork Highlights
+
+- Live Phaser 3 runtime lab with a `100x100` editable world, traversal-mode toggles, blocker painting, live path rendering, and timing comparisons
+- `GridNavMeshUpdater` helpers for local `open` / `block` edits plus bounded `replaceBounds(...)` patch rebuilds
+- Runtime polygon mutation hooks on `NavMesh` so grid edits can reconnect into the existing mesh instead of forcing a full rebuild
+- A focused demo page on GitHub Pages intended to show the runtime mutation behavior clearly, not just benchmark it in isolation
+
+## What This Branch Is For
+
+`issue-27-runtime-navmesh-mutation` is intended to be a demo-ready branch for the runtime mutation work while it waits on upstream review. If you want the fastest way to understand the changes, start with the live lab above, then read the `Runtime Grid Mutation` section below for the API surface.
 
 [<img src="./doc-source/single-following-agent.gif" width="400">](https://www.mikewesthad.com/navmesh/demo/)
 
@@ -20,6 +35,7 @@ Table of Contents:
   - [phaser-navmesh (API reference)](#phaser-navmesh-api-reference)
   - [phaser2-navmesh (API reference)](#phaser2-navmesh-api-reference)
 - [Performance Comparison](#performance-comparison)
+- [Runtime Grid Mutation](#runtime-grid-mutation)
 - [Community Examples](#community-examples)
 - [Development](#development)
 - [Changelogs](#changelogs)
@@ -272,6 +288,21 @@ Long paths (600 pixels and greater length), average time per iteration:
         NavMesh is 187.95x faster than Phaser AStar
         NavMesh is 21.65x faster than EasyStar
 ```
+
+## Runtime Grid Mutation
+
+This fork adds two pieces aimed at live-editable worlds:
+
+- `NavMesh#addPolygon`, `removePolygon`, `replacePolygons` for direct runtime polygon mutation
+- `GridNavMeshUpdater` for localized updates to navmeshes that were generated from a boolean grid
+
+`GridNavMeshUpdater` supports:
+
+- `blockTile`, `blockTiles`, `blockRange`
+- `openTile`, `openTiles`, `openRange`
+- `replaceBounds(bounds, sourceGrid)` for rebuilding only a selected slice from the current grid state
+
+That means you can mutate terrain or blockers at runtime without rebuilding the entire navmesh from scratch every edit. The Phaser 3 runtime lab in this fork demonstrates the difference visually and records timings for both approaches side by side.
 
 ## Community Examples
 

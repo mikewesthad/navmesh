@@ -2,6 +2,12 @@ import NavMesh from "./navmesh";
 import Vector2 from "./math/vector-2";
 
 const v2 = (x: number, y: number) => new Vector2(x, y);
+const rectBounds = (points: Array<{ x: number; y: number }>) => ({
+  minX: Math.min(...points.map((point) => point.x)),
+  minY: Math.min(...points.map((point) => point.y)),
+  maxX: Math.max(...points.map((point) => point.x)),
+  maxY: Math.max(...points.map((point) => point.y)),
+});
 
 describe("An empty NavMesh instance", () => {
   let emptyNavMesh: NavMesh;
@@ -181,5 +187,54 @@ describe("findClosestMeshPoint", () => {
     const result = navMesh.findClosestMeshPoint(v2(25, 5));
     const isPoly2or4 = result?.polygon?.id === 1 || result?.polygon?.id === 3;
     expect(isPoly2or4).toBe(true);
+  });
+});
+
+describe("runtime polygon mutation", () => {
+  // prettier-ignore
+  const left = [v2(0,0), v2(10,0), v2(10,10), v2(0,10)];
+  // prettier-ignore
+  const middle = [v2(10,0), v2(20,0), v2(20,10), v2(10,10)];
+  // prettier-ignore
+  const right = [v2(20,0), v2(30,0), v2(30,10), v2(20,10)];
+
+  it("should connect islands after adding a bridging polygon", () => {
+    const navMesh = new NavMesh([left, right]);
+
+    expect(navMesh.findPath(v2(5, 5), v2(25, 5))).toBeNull();
+
+    const addedPoly = navMesh.addPolygon(middle);
+    const path = navMesh.findPath(v2(5, 5), v2(25, 5));
+
+    expect(addedPoly?.id).toBe(2);
+    expect(path).toEqual([v2(5, 5), v2(25, 5)]);
+  });
+
+  it("should disconnect regions after removing a bridging polygon", () => {
+    const navMesh = new NavMesh([left, middle, right]);
+
+    expect(navMesh.findPath(v2(5, 5), v2(25, 5))).toEqual([v2(5, 5), v2(25, 5)]);
+
+    const removedPoly = navMesh.removePolygon(1);
+
+    expect(removedPoly?.id).toBe(1);
+    expect(navMesh.findPath(v2(5, 5), v2(25, 5))).toBeNull();
+  });
+
+  it("should keep paths working when replacing a polygon with multiple polygons", () => {
+    const navMesh = new NavMesh([left, middle, right]);
+    // prettier-ignore
+    const middleA = [v2(10,0), v2(15,0), v2(15,10), v2(10,10)];
+    // prettier-ignore
+    const middleB = [v2(15,0), v2(20,0), v2(20,10), v2(15,10)];
+
+    const result = navMesh.replacePolygons([1], [middleA, middleB]);
+    const path = navMesh.findPath(v2(5, 5), v2(25, 5));
+
+    expect(result.removedPolys.map((poly) => poly.id)).toEqual(expect.arrayContaining([0, 1, 2]));
+    expect(result.addedPolys).toHaveLength(1);
+    expect(navMesh.getPolygonById(1)).toBeNull();
+    expect(rectBounds(result.addedPolys[0].getPoints())).toEqual({ minX: 0, minY: 0, maxX: 30, maxY: 10 });
+    expect(path).toEqual([v2(5, 5), v2(25, 5)]);
   });
 });
