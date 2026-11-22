@@ -14,7 +14,6 @@
     "watch:libs": "pnpm --filter \"*navmesh\" --parallel run watch",
     "serve:examples": "pnpm --filter \"examples-*\" --parallel run serve",
     "dev": "concurrently \"pnpm watch:libs\" \"pnpm serve:examples\"",
-    "dev:phaser2": "concurrently \"pnpm --filter navmesh --filter phaser2-navmesh --parallel run watch\" \"pnpm --filter examples-phaser2 run serve\"",
     "dev:phaser4": "concurrently \"pnpm --filter navmesh --filter phaser-navmesh --parallel run watch\" \"pnpm --filter examples-phaser4 run serve\"",
     "dev:phaser3": "concurrently \"pnpm --filter navmesh --filter phaser-navmesh --parallel run watch\" \"pnpm --filter examples-phaser3 run serve\"",
     "dev:node": "concurrently \"pnpm --filter navmesh run watch\" \"pnpm --filter examples-node run serve\"",

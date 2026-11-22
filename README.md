@@ -1,6 +1,6 @@
 # Navigation Meshes Overview <!-- omit in toc -->
 
-A JS plugin for fast pathfinding using [navigation meshes](https://en.wikipedia.org/wiki/Navigation_mesh), with optional wrappers for the Phaser v2, v3 and v4 game engines.
+A JS plugin for fast pathfinding using [navigation meshes](https://en.wikipedia.org/wiki/Navigation_mesh), with optional wrappers for the Phaser v3 and v4 game engines.
 
 [<img src="./doc-source/single-following-agent.gif" width="400">](https://www.mikewesthad.com/navmesh/demo/)
 
@@ -18,7 +18,6 @@ Table of Contents:
 - [Usage](#usage)
   - [navmesh (API reference)](#navmesh-api-reference)
   - [phaser-navmesh (API reference)](#phaser-navmesh-api-reference)
-  - [phaser2-navmesh (API reference)](#phaser2-navmesh-api-reference)
 - [Performance Comparison](#performance-comparison)
 - [Community Examples](#community-examples)
 - [Development](#development)
@@ -43,11 +42,10 @@ The example map below (left) is a 30 x 30 map. As a grid, there are 900 nodes, b
 
 ## Installation
 
-This repository contains 3 related JS packages:
+This repository contains 2 related JS packages:
 
 - `navmesh` - core logic, game-engine agnostic, usable outside of Phaser.
 - `phaser-navmesh` - Phaser v3 & v4 wrapper around `navmesh` that creates a Phaser Scene plugin. Phaser (v3.55+ or v4) is expected to be a dependency in your project.
-- `phaser2-navmesh` - Phaser v2 wrapper around `navmesh` that creates a Phaser 2 game plugin. Phaser 2 or Phaser-ce is expected to be in the global scope.
 
 You can use any of them as a script or as a module in your bundler of choice.
 
@@ -84,16 +82,12 @@ Install the appropriate dependency:
 
 - `npm install --save navmesh` for usage outside of Phaser
 - `npm install --save phaser-navmesh` for Phaser 3 or 4
-- `npm install --save phaser2-navmesh` for Phaser 2
 
 To use the transpiled and minified distribution of the library (recommended for most users):
 
 ```js
 // Phaser 3 or 4
 import { PhaserNavMeshPlugin } from "phaser-navmesh";
-
-// Phaser 2
-import { Phaser2NavMeshPlugin } from "phaser2-navmesh";
 
 // NavMesh (commonjs or es import)
 const { NavMesh } = require("navmesh");
@@ -122,7 +116,6 @@ You can find code snippets for the different use cases below. You can also jump 
 
 - [phaser 4](https://github.com/mikewesthad/navmesh/tree/main/packages/examples-phaser4)
 - [phaser 3](https://github.com/mikewesthad/navmesh/tree/main/packages/examples-phaser3)
-- [phaser 2](https://github.com/mikewesthad/navmesh/tree/main/packages/examples-phaser2)
 - [navmesh in a node environment](https://github.com/mikewesthad/navmesh/tree/main/packages/examples-node)
 
 ### navmesh ([API reference](https://www.mikewesthad.com/navmesh/docs/modules/navmesh.html))
@@ -232,10 +225,6 @@ navMesh.debugDrawMesh({
 navMesh.debugDrawPath(path, 0xffd900);
 ```
 
-### phaser2-navmesh ([API reference](https://www.mikewesthad.com/navmesh/docs/modules/phaser2_navmesh.html))
-
-If you are working with Phaser 2, you can use the phaser2-navmesh package, which provides a game plugin. See this [example](https://github.com/mikewesthad/navmesh/tree/main/packages/examples-phaser2/src) for more complete usage. You can also look at the [previous section](#phaser-navmesh) for Phaser usage.
-
 ## Performance Comparison
 
 _(Note: these comparisons were done in any earlier verison of the repo before Phaser v3 was released. The plugins tested haven't been released in v3 versions yet, so this section could use an update. That said, the results should be the same.)_
@@ -292,18 +281,17 @@ This project uses [pnpm workspaces](https://pnpm.io/workspaces) to manage multip
 
 - `navmesh` - core logic, game-engine agnostic
 - `phaser-navmesh` - Phaser Plugin v3 & v4 wrapper around `navmesh`
-- `phaser2-navmesh` - Phaser Plugin v2 wrapper around `navmesh`
 
 The project is controlled via npm scripts. The main ones to use:
 
-- `pnpm build:libs` - will build production versions of the three libraries within "packages/".
+- `pnpm build:libs` - will build production versions of the libraries within "packages/".
 - `pnpm test` - will run the automated tests against the libraries.
 - `pnpm typecheck` - will typecheck the libraries and the node example. Run `pnpm build:libs` first, since packages that depend on `navmesh` use its built types.
 - `pnpm format` / `pnpm format:check` - will format (or check the formatting of) the repo with Prettier.
-- `pnpm serve:examples` - will build, serve and watch the four examples. Phaser 4 examples are at [localhost::8083](http://localhost:8083/), Phaser 3 examples are at [localhost::8080](http://localhost:8080/), Phaser 2 examples at [localhost::8081](http://localhost:8081/) and node examples at [localhost::8082](http://localhost:8082/).
+- `pnpm serve:examples` - will build, serve and watch the three examples. Phaser 4 examples are at [localhost::8083](http://localhost:8083/), Phaser 3 examples are at [localhost::8080](http://localhost:8080/) and node examples at [localhost::8082](http://localhost:8082/).
 - `pnpm dev` - watch the libraries & serve the examples. If you are working on the library, this is the easiest way to do "functional testing" by using the library in a game environment.
-- `pnpm dev:phaser4`, `pnpm dev:phaser3`, `pnpm dev:phaser2`, `pnpm dev:node` - these will watch the relevant libraries and serve one the corresponding example. Useful for dev on a specific library.
-- `pnpm release <patch|minor|major|x.y.z>` - bump the three libraries to a shared version, then commit and tag the release (`navmesh@x.y.z`, etc.). The libraries depend on each other via `workspace:^`, which pnpm replaces with the real version range when publishing.
+- `pnpm dev:phaser4`, `pnpm dev:phaser3`, `pnpm dev:node` - these will watch the relevant libraries and serve one the corresponding example. Useful for dev on a specific library.
+- `pnpm release <patch|minor|major|x.y.z>` - bump the libraries to a shared version, then commit and tag the release (`navmesh@x.y.z`, etc.). The libraries depend on each other via `workspace:^`, which pnpm replaces with the real version range when publishing.
 
 To publish a release:
 
@@ -334,7 +322,6 @@ CI (`.github/workflows/ci.yml`) runs the format check, library build, typecheck 
 ## Changelogs
 
 - [Phaser NavMesh (for Phaser v3 & v4)](https://github.com/mikewesthad/navmesh/blob/main/packages/phaser-navmesh/README.md)
-- [Phaser 2 NavMesh](https://github.com/mikewesthad/navmesh/blob/main/packages/phaser2-navmesh/README.md)
 - [NavMesh](https://github.com/mikewesthad/navmesh/blob/main/packages/navmesh/README.md)
 
 ## References

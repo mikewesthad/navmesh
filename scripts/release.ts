@@ -6,7 +6,7 @@
 import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 
-const LIBS = ["navmesh", "phaser-navmesh", "phaser2-navmesh"] as const;
+const LIBS = ["navmesh", "phaser-navmesh"] as const;
 const USAGE = "Usage: pnpm release <patch|minor|major|x.y.z>";
 
 interface Manifest {
