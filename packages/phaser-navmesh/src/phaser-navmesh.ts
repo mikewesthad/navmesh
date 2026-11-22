@@ -5,7 +5,7 @@ import Phaser from "phaser";
 import PhaserNavMeshPlugin from "./phaser-navmesh-plugin";
 
 /**
- * A wrapper around {@link NavMesh} for Phaser 3. Create instances of this class from
+ * A wrapper around {@link NavMesh} for Phaser (v3 or v4). Create instances of this class from
  * {@link PhaserNavMeshPlugin}. This is the workhorse that represents a navigation mesh built from a
  * series of polygons. Once built, the mesh can be asked for a path from one point to another point.
  *
@@ -59,10 +59,11 @@ export default class PhaserNavMesh {
    * path is converted to Phaser-compatible points.
    * @param startPoint A point-like object
    * @param endPoint A point-like object
-   * @param PointClass The class used to represent points in the final path
+   * @param PointClass The class used to represent points in the final path. Defaults to
+   * Phaser.Math.Vector2.
    * @returns An array of points if a path is found, or null if no path
    */
-  public findPath(startPoint: Point, endPoint: Point, PointClass = Phaser.Geom.Point) {
+  public findPath(startPoint: Point, endPoint: Point, PointClass = Phaser.Math.Vector2) {
     const path = this.navMesh.findPath(startPoint, endPoint);
     return path ? path.map(({ x, y }) => new PointClass(x, y)) : path;
   }
@@ -128,7 +129,7 @@ export default class PhaserNavMesh {
     navPolys.forEach((poly) => {
       const color = palette[poly.id % palette.length];
       graphics.fillStyle(color);
-      graphics.fillPoints(poly.getPoints(), true);
+      graphics.fillPoints(poly.getPoints() as Phaser.Math.Vector2[], true);
 
       if (drawCentroid) {
         graphics.fillStyle(0x000000);
@@ -169,7 +170,7 @@ export default class PhaserNavMesh {
     if (path && path.length) {
       // Draw line for path
       this.debugGraphics.lineStyle(thickness, color, alpha);
-      this.debugGraphics.strokePoints(path);
+      this.debugGraphics.strokePoints(path as Phaser.Math.Vector2[]);
 
       // Draw circle at start and end of path
       this.debugGraphics.fillStyle(color, alpha);

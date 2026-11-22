@@ -1,6 +1,6 @@
 # Navigation Meshes Overview <!-- omit in toc -->
 
-A JS plugin for fast pathfinding using [navigation meshes](https://en.wikipedia.org/wiki/Navigation_mesh), with optional wrappers for the Phaser v2 and Phaser v3 game engines.
+A JS plugin for fast pathfinding using [navigation meshes](https://en.wikipedia.org/wiki/Navigation_mesh), with optional wrappers for the Phaser v2, v3 and v4 game engines.
 
 [<img src="./doc-source/single-following-agent.gif" width="400">](https://www.mikewesthad.com/navmesh/demo/)
 
@@ -46,7 +46,7 @@ The example map below (left) is a 30 x 30 map. As a grid, there are 900 nodes, b
 This repository contains 3 related JS packages:
 
 - `navmesh` - core logic, game-engine agnostic, usable outside of Phaser.
-- `phaser-navmesh` - Phaser v3 wrapper around `navmesh` that creates a Phaser 3 Scene plugin. Phaser 3 is expected to be a dependency in your project.
+- `phaser-navmesh` - Phaser v3 & v4 wrapper around `navmesh` that creates a Phaser Scene plugin. Phaser (v3.55+ or v4) is expected to be a dependency in your project.
 - `phaser2-navmesh` - Phaser v2 wrapper around `navmesh` that creates a Phaser 2 game plugin. Phaser 2 or Phaser-ce is expected to be in the global scope.
 
 You can use any of them as a script or as a module in your bundler of choice.
@@ -83,13 +83,13 @@ See [usage](#usage) for more information on how to use each of the three modules
 Install the appropriate dependency:
 
 - `npm install --save navmesh` for usage outside of Phaser
-- `npm install --save phaser-navmesh` for Phaser 3
+- `npm install --save phaser-navmesh` for Phaser 3 or 4
 - `npm install --save phaser2-navmesh` for Phaser 2
 
 To use the transpiled and minified distribution of the library (recommended for most users):
 
 ```js
-// Phaser 3
+// Phaser 3 or 4
 import { PhaserNavMeshPlugin } from "phaser-navmesh";
 
 // Phaser 2
@@ -108,7 +108,7 @@ import { PhaserNavMeshPlugin } from "phaser-navmesh/src";
 
 ## Creating a Navigation Mesh
 
-Creating a navigation mesh is the process of defining the walkable areas within you world as a series of polygons. If you are using a tilemap, then you can probably get away with just auto-generating the mesh using [buildMeshFromTilemap](https://www.mikewesthad.com/navmesh/docs/classes/phaser_navmesh.phasernavmeshplugin.html#buildmeshfromtilemap) in Phaser 3 (or if you are using NavMesh without the Phaser wrapper, see [buildPolysFromGridMap](https://www.mikewesthad.com/navmesh/docs/modules/navmesh.html#buildpolysfromgridmap)).
+Creating a navigation mesh is the process of defining the walkable areas within you world as a series of polygons. If you are using a tilemap, then you can probably get away with just auto-generating the mesh using [buildMeshFromTilemap](https://www.mikewesthad.com/navmesh/docs/classes/phaser_navmesh.phasernavmeshplugin.html#buildmeshfromtilemap) in Phaser 3/4 (or if you are using NavMesh without the Phaser wrapper, see [buildPolysFromGridMap](https://www.mikewesthad.com/navmesh/docs/modules/navmesh.html#buildpolysfromgridmap)).
 
 If you've got a more complex situation, you can use a tilemap editor like Tiled to create your mesh
 and load it into the game. See
@@ -120,6 +120,7 @@ and load it into the game. See
 
 You can find code snippets for the different use cases below. You can also jump directly to a few example projects in this repository for:
 
+- [phaser 4](https://github.com/mikewesthad/navmesh/tree/main/packages/examples-phaser4)
 - [phaser 3](https://github.com/mikewesthad/navmesh/tree/main/packages/examples-phaser3)
 - [phaser 2](https://github.com/mikewesthad/navmesh/tree/main/packages/examples-phaser2)
 - [navmesh in a node environment](https://github.com/mikewesthad/navmesh/tree/main/packages/examples-node)
@@ -164,7 +165,7 @@ If your world is a grid (e.g. a tilemap), NavMesh also has a utility [buildPolys
 
 ### phaser-navmesh ([API reference](https://www.mikewesthad.com/navmesh/docs/modules/phaser_navmesh.html))
 
-If you are working with Phaser 3, you can use the phaser-navmesh package, which provides a Scene plugin. Play with a live example on CodeSandbox [here](https://codesandbox.io/s/zq1wvozxll?fontsize=14), or peek at the [examples](https://github.com/mikewesthad/navmesh/tree/main/packages/examples-phaser3/src) in this repository for more complete usage.
+If you are working with Phaser 3 or 4, you can use the phaser-navmesh package, which provides a Scene plugin. Play with a live example on CodeSandbox [here](https://codesandbox.io/s/zq1wvozxll?fontsize=14), or peek at the examples ([v4](https://github.com/mikewesthad/navmesh/tree/main/packages/examples-phaser4/src), [v3](https://github.com/mikewesthad/navmesh/tree/main/packages/examples-phaser3/src)) in this repository for more complete usage.
 
 ```js
 import Phaser from "phaser";
@@ -206,7 +207,7 @@ function create() {
   // Automatically generate mesh from colliding tiles in a layer or layers:
   const navMesh = this.navMeshPlugin.buildMeshFromTilemap("mesh", tilemap, [wallLayer]);
   const path = navMesh.findPath({ x: 0, y: 0 }, { x: 300, y: 400 });
-  // ⮡  path will either be null or an array of Phaser.Geom.Point objects
+  // ⮡  path will either be null or an array of Phaser.Math.Vector2 objects
 
   // Alternatively, you can load a navmesh created by hand in Tiled that is stored in an object
   // layer. See the creating a navmesh guide for more info on this.
@@ -290,7 +291,7 @@ pnpm install
 This project uses [pnpm workspaces](https://pnpm.io/workspaces) to manage multiple packages within one repository. `corepack enable` installs the pnpm version pinned in the root `package.json`, and `pnpm install` pulls dependencies and links the packages within "packages/" together. pnpm is configured (in `pnpm-workspace.yaml`) to only install package versions that have been published for at least 7 days. This project has the following packages:
 
 - `navmesh` - core logic, game-engine agnostic
-- `phaser-navmesh` - Phaser Plugin v3 wrapper around `navmesh`
+- `phaser-navmesh` - Phaser Plugin v3 & v4 wrapper around `navmesh`
 - `phaser2-navmesh` - Phaser Plugin v2 wrapper around `navmesh`
 
 The project is controlled via npm scripts. The main ones to use:
@@ -299,9 +300,9 @@ The project is controlled via npm scripts. The main ones to use:
 - `pnpm test` - will run the automated tests against the libraries.
 - `pnpm typecheck` - will typecheck the libraries and the node example. Run `pnpm build:libs` first, since packages that depend on `navmesh` use its built types.
 - `pnpm format` / `pnpm format:check` - will format (or check the formatting of) the repo with Prettier.
-- `pnpm serve:examples` - will build, serve and watch the three examples. Phaser 3 examples are at [localhost::8080](http://localhost:8080/), Phaser 2 examples at [localhost::8081](http://localhost:8081/) and node examples at [localhost::8082](http://localhost:8082/).
+- `pnpm serve:examples` - will build, serve and watch the four examples. Phaser 4 examples are at [localhost::8083](http://localhost:8083/), Phaser 3 examples are at [localhost::8080](http://localhost:8080/), Phaser 2 examples at [localhost::8081](http://localhost:8081/) and node examples at [localhost::8082](http://localhost:8082/).
 - `pnpm dev` - watch the libraries & serve the examples. If you are working on the library, this is the easiest way to do "functional testing" by using the library in a game environment.
-- `pnpm dev:phaser3`, `pnpm dev:phaser2`, `pnpm dev:node` - these will watch the relevant libraries and serve one the corresponding example. Useful for dev on a specific library.
+- `pnpm dev:phaser4`, `pnpm dev:phaser3`, `pnpm dev:phaser2`, `pnpm dev:node` - these will watch the relevant libraries and serve one the corresponding example. Useful for dev on a specific library.
 - `pnpm release <patch|minor|major|x.y.z>` - bump the three libraries to a shared version, then commit and tag the release (`navmesh@x.y.z`, etc.). The libraries depend on each other via `workspace:^`, which pnpm replaces with the real version range when publishing.
 
 To publish a release:
@@ -332,7 +333,7 @@ CI (`.github/workflows/ci.yml`) runs the format check, library build, typecheck 
 
 ## Changelogs
 
-- [Phaser NavMesh (for Phaser v3)](https://github.com/mikewesthad/navmesh/blob/main/packages/phaser-navmesh/README.md)
+- [Phaser NavMesh (for Phaser v3 & v4)](https://github.com/mikewesthad/navmesh/blob/main/packages/phaser-navmesh/README.md)
 - [Phaser 2 NavMesh](https://github.com/mikewesthad/navmesh/blob/main/packages/phaser2-navmesh/README.md)
 - [NavMesh](https://github.com/mikewesthad/navmesh/blob/main/packages/navmesh/README.md)
 

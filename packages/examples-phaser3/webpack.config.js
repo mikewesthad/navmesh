@@ -20,6 +20,11 @@ module.exports = function (env, argv) {
       filename: "[name].js",
       path: path.resolve(root, "public"),
     },
+    resolve: {
+      // Force a single copy of Phaser: this example's own version. Otherwise, in the monorepo,
+      // phaser-navmesh's `import "phaser"` can resolve to a different hoisted Phaser version.
+      alias: { phaser: path.dirname(require.resolve("phaser/package.json")) },
+    },
     module: {
       rules: [
         {

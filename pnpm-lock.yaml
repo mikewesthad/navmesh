@@ -320,6 +320,46 @@ importers:
         specifier: ^3.11.2
         version: 3.11.2(webpack-cli@4.7.2)(webpack@5.112.2)
 
+  packages/examples-phaser4:
+    dependencies:
+      core-js:
+        specifier: '3'
+        version: 3.15.0
+      easystarjs:
+        specifier: ^0.4.4
+        version: 0.4.4
+      fontfaceobserver:
+        specifier: ^2.1.0
+        version: 2.1.0
+      phaser:
+        specifier: ^4.2.1
+        version: 4.2.1
+      phaser-navmesh:
+        specifier: workspace:^
+        version: link:../phaser-navmesh
+    devDependencies:
+      '@babel/core':
+        specifier: ^7.14.6
+        version: 7.14.6(supports-color@8.1.1)
+      '@babel/preset-env':
+        specifier: ^7.14.5
+        version: 7.14.5(@babel/core@7.14.6(supports-color@8.1.1))(supports-color@8.1.1)
+      babel-loader:
+        specifier: ^8.2.2
+        version: 8.2.2(@babel/core@7.14.6(supports-color@8.1.1))(webpack@5.112.2)
+      copy-webpack-plugin:
+        specifier: ^9.0.0
+        version: 9.0.0(webpack@5.112.2)
+      webpack:
+        specifier: ^5.40.0
+        version: 5.112.2(esbuild@0.28.2)(uglify-js@3.13.9)(webpack-cli@4.7.2)
+      webpack-cli:
+        specifier: ^4.7.2
+        version: 4.7.2(webpack-dev-server@3.11.2)(webpack@5.112.2)
+      webpack-dev-server:
+        specifier: ^3.11.2
+        version: 3.11.2(webpack-cli@4.7.2)(webpack@5.112.2)
+
   packages/navmesh:
     dependencies:
       core-js:
@@ -388,8 +428,8 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0(webpack@5.112.2)
       phaser:
-        specifier: ^3.90.0
-        version: 3.90.0
+        specifier: ^4.2.1
+        version: 4.2.1
       ts-loader:
         specifier: ^9.2.3
         version: 9.2.3(typescript@4.3.4)(webpack@5.112.2)
@@ -3961,6 +4001,9 @@ packages:
 
   phaser@3.90.0:
     resolution: {integrity: sha512-/cziz/5ZIn02uDkC9RzN8VF9x3Gs3XdFFf9nkiMEQT3p7hQlWuyjy4QWosU802qqno2YSLn2BfqwOKLv/sSVfQ==}
+
+  phaser@4.2.1:
+    resolution: {integrity: sha512-WUNwCPJpdjvZiuT6SgCfYVW8Qw/3j0jJ4ws7P2QkhFLFu74sbGuyHJcbFueGkY/AYO4Pi47bNQXn1OCJeLX//w==}
 
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
@@ -9953,6 +9996,10 @@ snapshots:
   phaser-ce@2.18.0: {}
 
   phaser@3.90.0:
+    dependencies:
+      eventemitter3: 5.0.4
+
+  phaser@4.2.1:
     dependencies:
       eventemitter3: 5.0.4
 

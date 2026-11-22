@@ -9,6 +9,7 @@ pnpm-lock.yaml
 
 # Vendored third-party code
 packages/examples-phaser3/src/performance/js/plugins/phaser-astar.js
+packages/examples-phaser4/src/performance/js/plugins/phaser-astar.js
 packages/navmesh/src/vendor/javascript-astar/astar.js
 
 # Local agent workspace files

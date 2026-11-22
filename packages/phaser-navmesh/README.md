@@ -1,10 +1,15 @@
 # Phaser NavMesh
 
-A Phaser 3 plugin for fast pathfinding using [navigation meshes](https://en.wikipedia.org/wiki/Navigation_mesh).
+A Phaser (v3 & v4) plugin for fast pathfinding using [navigation meshes](https://en.wikipedia.org/wiki/Navigation_mesh).
 
 For usage information, see: [mikewesthad/navmesh](https://github.com/mikewesthad/navmesh).
 
 ## Changelog
+
+Unreleased
+
+- Support Phaser v4 (and keep supporting Phaser v3.55+).
+- Breaking: `PhaserNavMesh#findPath` now returns `Phaser.Math.Vector2` points by default instead of `Phaser.Geom.Point`, since Phaser v4 removed `Geom.Point`. You can still pass your own point class as the third parameter.
 
 Version 2.3.1
 
