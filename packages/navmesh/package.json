@@ -17,8 +17,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "core-js": "3",
-    "javascript-astar": "github:mikewesthad/javascript-astar"
+    "core-js": "3"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",

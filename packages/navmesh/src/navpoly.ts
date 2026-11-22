@@ -3,7 +3,6 @@ import Polygon from "./math/polygon";
 import Vector2 from "./math/vector-2";
 import { Portal } from "./channel";
 import { Point } from "./common-types";
-import jsastar from "javascript-astar";
 
 /**
  * A class that represents a navigable polygon with a navmesh. It is built on top of a
@@ -11,7 +10,7 @@ import jsastar from "javascript-astar";
  * toString, isWall and getCost. See GPS test from astar repo for structure:
  * https://github.com/bgrins/javascript-astar/blob/master/test/tests.js
  */
-export default class NavPoly implements jsastar.GridNode {
+export default class NavPoly {
   public id: number;
   public polygon: Polygon;
   public edges: Line[];

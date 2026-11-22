@@ -1,4 +1,4 @@
-import jsastar from "javascript-astar";
+import jsastar from "./vendor/javascript-astar/astar.js";
 import NavPoly from "./navpoly";
 
 /**
@@ -8,7 +8,7 @@ import NavPoly from "./navpoly";
  * @class NavGraph
  * @private
  */
-class NavGraph implements jsastar.Graph<NavPoly> {
+class NavGraph {
   public nodes: NavPoly[];
 
   public grid = [];
