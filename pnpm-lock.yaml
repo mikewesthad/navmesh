@@ -280,7 +280,7 @@ importers:
         specifier: ^9.0.0
         version: 9.0.0(webpack@5.112.2)
       webpack:
-        specifier: ^5.40.0
+        specifier: ^5.105.0
         version: 5.112.2(esbuild@0.28.2)(uglify-js@3.13.9)(webpack-cli@6.0.1)
       webpack-cli:
         specifier: ^6.0.1
@@ -320,7 +320,7 @@ importers:
         specifier: ^9.0.0
         version: 9.0.0(webpack@5.112.2)
       webpack:
-        specifier: ^5.40.0
+        specifier: ^5.105.0
         version: 5.112.2(esbuild@0.28.2)(uglify-js@3.13.9)(webpack-cli@6.0.1)
       webpack-cli:
         specifier: ^6.0.1
@@ -369,7 +369,7 @@ importers:
         specifier: ^4.3.4
         version: 4.3.4
       webpack:
-        specifier: ^5.40.0
+        specifier: ^5.105.0
         version: 5.112.2(esbuild@0.28.2)(uglify-js@3.13.9)(webpack-cli@6.0.1)
       webpack-cli:
         specifier: ^6.0.1
@@ -406,7 +406,7 @@ importers:
         specifier: ^4.3.4
         version: 4.3.4
       webpack:
-        specifier: ^5.40.0
+        specifier: ^5.105.0
         version: 5.112.2(esbuild@0.28.2)(uglify-js@3.13.9)(webpack-cli@6.0.1)
       webpack-cli:
         specifier: ^6.0.1
