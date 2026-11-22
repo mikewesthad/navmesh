@@ -164,7 +164,7 @@ If your world is a grid (e.g. a tilemap), NavMesh also has a utility [buildPolys
 
 ### phaser-navmesh ([API reference](https://www.mikewesthad.com/navmesh/docs/modules/phaser_navmesh.html))
 
-If you are working with Phaser 3, you can use the phaser-navmesh package, which provides a Scene plugin. Play with a live example on CodeSandbox [here](https://codesandbox.io/s/zq1wvozxll?fontsize=14), or peek at the [examples](https://github.com/mikewesthad/navmesh/tree/main/packages/examples/src) in this repository for more complete usage.
+If you are working with Phaser 3, you can use the phaser-navmesh package, which provides a Scene plugin. Play with a live example on CodeSandbox [here](https://codesandbox.io/s/zq1wvozxll?fontsize=14), or peek at the [examples](https://github.com/mikewesthad/navmesh/tree/main/packages/examples-phaser3/src) in this repository for more complete usage.
 
 ```js
 import Phaser from "phaser";
@@ -246,7 +246,7 @@ Comparing this navmesh plugin against:
 
 Performance depends on the size of the area that needs to be searched. Finding for a path between points that are 50 pixels away is (generally) going to be much faster than finding a path between points that are 5000 pixels away.
 
-Details (see [src/library/performance](https://github.com/mikewesthad/navmesh/tree/main/src/examples/performance)):
+Details (see [packages/examples-phaser3/src/performance](https://github.com/mikewesthad/navmesh/tree/main/packages/examples-phaser3/src/performance)):
 
 ```
 Performance Comparison, 100000 iterations, 30x30 tilemap
