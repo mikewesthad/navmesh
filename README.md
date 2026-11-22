@@ -70,9 +70,9 @@ const game = new Phaser.Game({
   height: 750,
   plugins: {
     scene: [
-      { key: "NavMeshPlugin", plugin: PhaserNavMeshPlugin, mapping: "navMeshPlugin", start: true }
-    ]
-  }
+      { key: "NavMeshPlugin", plugin: PhaserNavMeshPlugin, mapping: "navMeshPlugin", start: true },
+    ],
+  },
 });
 ```
 
@@ -128,6 +128,7 @@ You can find code snippets for the different use cases below. You can also jump 
 
 If you don't need the Phaser wrappers, you can construct navmeshes directly from points using the navmesh package:
 
+<!-- prettier-ignore -->
 ```js
 import { NavMesh } from "navmesh";
 
@@ -159,7 +160,7 @@ const path = navMesh.findPath({ x: 0, y: 0 }, { x: 10, y: 20 });
 // ⮡  [{ x: 0, y: 0 }, { x: 10, y: 10 }, { x: 10, y: 20 }]
 ```
 
-If your world is a grid (e.g. a tilemap), NavMesh also has a utility [buildPolysFromGridMap](https://www.mikewesthad.com/navmesh/docs/modules/navmesh.html#buildpolysfromgridmap) that can automatically generate meshPolygonPoints from a 2D array. 
+If your world is a grid (e.g. a tilemap), NavMesh also has a utility [buildPolysFromGridMap](https://www.mikewesthad.com/navmesh/docs/modules/navmesh.html#buildpolysfromgridmap) that can automatically generate meshPolygonPoints from a 2D array.
 
 ### phaser-navmesh ([API reference](https://www.mikewesthad.com/navmesh/docs/modules/phaser_navmesh.html))
 
@@ -180,14 +181,14 @@ const game = new Phaser.Game({
         key: "PhaserNavMeshPlugin", // Key to store the plugin class under in cache
         plugin: PhaserNavMeshPlugin, // Class that constructs plugins
         mapping: "navMeshPlugin", // Property mapping to use for the scene, e.g. this.navMeshPlugin
-        start: true
-      }
-    ]
+        start: true,
+      },
+    ],
   },
   scene: {
     preload: preload,
-    create: create
-  }
+    create: create,
+  },
 });
 
 function preload() {
@@ -202,12 +203,12 @@ function create() {
   const wallLayer = tilemap.createStaticLayer("walls", tileset);
   wallLayer.setCollisionByProperty({ collides: true }); // Or, however you set tiles to collide.
 
-  // Automatically generate mesh from colliding tiles in a layer or layers: 
+  // Automatically generate mesh from colliding tiles in a layer or layers:
   const navMesh = this.navMeshPlugin.buildMeshFromTilemap("mesh", tilemap, [wallLayer]);
   const path = navMesh.findPath({ x: 0, y: 0 }, { x: 300, y: 400 });
   // ⮡  path will either be null or an array of Phaser.Geom.Point objects
 
-  // Alternatively, you can load a navmesh created by hand in Tiled that is stored in an object 
+  // Alternatively, you can load a navmesh created by hand in Tiled that is stored in an object
   // layer. See the creating a navmesh guide for more info on this.
   // const objectLayer = tilemap.getObjectLayer("navmesh");
   // const navMesh = this.navMeshPlugin.buildMeshFromTiled("mesh1", objectLayer, 12.5);
@@ -224,7 +225,7 @@ navMesh.debugDrawMesh({
   drawCentroid: true,
   drawBounds: false,
   drawNeighbors: true,
-  drawPortals: true
+  drawPortals: true,
 });
 // Visualize an individual path
 navMesh.debugDrawPath(path, 0xffd900);
@@ -296,8 +297,10 @@ The project is controlled via npm scripts. The main ones to use:
 
 - `pnpm build:libs` - will build production versions of the three libraries within "packages/".
 - `pnpm test` - will run the automated tests against the libraries.
+- `pnpm typecheck` - will typecheck the libraries and the node example. Run `pnpm build:libs` first, since packages that depend on `navmesh` use its built types.
+- `pnpm format` / `pnpm format:check` - will format (or check the formatting of) the repo with Prettier.
 - `pnpm serve:examples` - will build, serve and watch the three examples. Phaser 3 examples are at [localhost::8080](http://localhost:8080/), Phaser 2 examples at [localhost::8081](http://localhost:8081/) and node examples at [localhost::8082](http://localhost:8082/).
-- `pnpm dev` - watch the libraries & serve the examples.  If you are working on the library, this is the easiest way to do "functional testing" by using the library in a game environment.
+- `pnpm dev` - watch the libraries & serve the examples. If you are working on the library, this is the easiest way to do "functional testing" by using the library in a game environment.
 - `pnpm dev:phaser3`, `pnpm dev:phaser2`, `pnpm dev:node` - these will watch the relevant libraries and serve one the corresponding example. Useful for dev on a specific library.
 - `pnpm release <patch|minor|major|x.y.z>` - bump the three libraries to a shared version, then commit and tag the release (`navmesh@x.y.z`, etc.). The libraries depend on each other via `workspace:^`, which pnpm replaces with the real version range when publishing.
 
@@ -324,6 +327,8 @@ A few pnpm workspace tips:
 - Running a command in all workspaces:
   - `pnpm -r run <script>`
   - Example: `pnpm -r run build`
+
+CI (`.github/workflows/ci.yml`) runs the format check, library build, typecheck and tests on every pull request and push to master.
 
 ## Changelogs
 
