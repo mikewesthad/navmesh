@@ -1,4 +1,4 @@
-import jsastar from "javascript-astar";
+import jsastar from "./vendor/javascript-astar/astar.js";
 import NavPoly from "./navpoly";
 import NavGraph from "./navgraph";
 import Channel from "./channel";

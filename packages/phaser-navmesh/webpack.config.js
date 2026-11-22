@@ -3,6 +3,8 @@
 const path = require("path");
 const root = __dirname;
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const webpack = require("webpack");
+const javascriptAstarLicense = require("../../config/javascript-astar-license");
 
 module.exports = function (env, argv) {
   const isDev = argv.mode === "development";
@@ -18,7 +20,7 @@ module.exports = function (env, argv) {
       filename: "phaser-navmesh-plugin.js",
       path: path.resolve(root, "dist"),
     },
-    plugins: [new CleanWebpackPlugin()],
+    plugins: [new CleanWebpackPlugin(), javascriptAstarLicense(webpack)],
     externals: {
       phaser: {
         root: "Phaser",

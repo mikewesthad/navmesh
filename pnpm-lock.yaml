@@ -325,9 +325,6 @@ importers:
       core-js:
         specifier: '3'
         version: 3.15.0
-      javascript-astar:
-        specifier: github:mikewesthad/javascript-astar
-        version: https://codeload.github.com/mikewesthad/javascript-astar/tar.gz/c0304b12861eda334e27f2f15d701c10b296593f
     devDependencies:
       '@babel/core':
         specifier: ^7.14.6
@@ -3192,10 +3189,6 @@ packages:
   istanbul-reports@3.0.2:
     resolution: {integrity: sha512-9tZvz7AiR3PEDNGiV9vIouQ/EAcqMXFmkcA1CDFTwOB98OZVDL0PH9glHotf5Ugp6GCOTypfzGWI/OqjWNCRUw==}
     engines: {node: '>=8'}
-
-  javascript-astar@https://codeload.github.com/mikewesthad/javascript-astar/tar.gz/c0304b12861eda334e27f2f15d701c10b296593f:
-    resolution: {gitHosted: true, integrity: sha512-olZSrKxUu6gBFi2cZV8Q5B2hztaUFxu4YciMf4WwhN4i4UTG7WXRu6Gjz6iJPLchZsAGB42kaXWEHdypijJOoA==, tarball: https://codeload.github.com/mikewesthad/javascript-astar/tar.gz/c0304b12861eda334e27f2f15d701c10b296593f}
-    version: 0.4.2
 
   jest-changed-files@27.0.2:
     resolution: {integrity: sha512-eMeb1Pn7w7x3wue5/vF73LPCJ7DKQuC9wQUR5ebP9hDPpk5hzcT/3Hmz3Q5BOFpR3tgbmaWhJcMTVgC8Z1NuMw==}
@@ -9031,8 +9024,6 @@ snapshots:
     dependencies:
       html-escaper: 2.0.2
       istanbul-lib-report: 3.0.0
-
-  javascript-astar@https://codeload.github.com/mikewesthad/javascript-astar/tar.gz/c0304b12861eda334e27f2f15d701c10b296593f: {}
 
   jest-changed-files@27.0.2:
     dependencies:
