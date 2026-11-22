@@ -1,6 +1,6 @@
 /**
- * `phaser-navmesh` is a Phaser v3 wrapper around `navmesh` that creates a Phaser 3 Scene plugin.
- * Phaser 3 is expected to be a dependency in your project.
+ * `phaser-navmesh` is a Phaser wrapper around `navmesh` that creates a Phaser Scene plugin. It
+ * supports Phaser v3 and v4. Phaser is expected to be a dependency in your project.
  * @packageDocumentation
  * @module phaser-navmesh
  */

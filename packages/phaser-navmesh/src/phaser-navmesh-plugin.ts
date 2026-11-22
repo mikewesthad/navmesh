@@ -3,9 +3,9 @@ import PhaserNavMesh from "./phaser-navmesh";
 import { buildPolysFromGridMap } from "navmesh/src/map-parsers";
 
 /**
- * This class can create navigation meshes for use in Phaser 3. The navmeshes can be constructed
- * from convex polygons embedded in a Tiled map. The class that conforms to Phaser 3's plugin
- * structure.
+ * This class can create navigation meshes for use in Phaser (v3 or v4). The navmeshes can be
+ * constructed from convex polygons embedded in a Tiled map. The class that conforms to Phaser's
+ * scene plugin structure.
  *
  * @export
  * @class PhaserNavMeshPlugin
