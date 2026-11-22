@@ -112,7 +112,7 @@ Creating a navigation mesh is the process of defining the walkable areas within 
 
 If you've got a more complex situation, you can use a tilemap editor like Tiled to create your mesh
 and load it into the game. See
-[guide](https://github.com/mikewesthad/navmesh/blob/master/tiled-navmesh-guide.md).
+[guide](https://github.com/mikewesthad/navmesh/blob/main/tiled-navmesh-guide.md).
 
 (Note: the current version of the library only supports [convex polygons](https://www.sparknotes.com/math/geometry1/polygons/section2/). There are libraries like [poly-decom.js](https://github.com/schteppe/poly-decomp.js/) for decomposing a concave polygon into easier to manage convex polygons. It's on the to do list to handle any polygon, but I've found that automatically decomposing polygons leads to worse performance than hand-mapping the levels with convex polygons.)
 
@@ -120,9 +120,9 @@ and load it into the game. See
 
 You can find code snippets for the different use cases below. You can also jump directly to a few example projects in this repository for:
 
-- [phaser 3](https://github.com/mikewesthad/navmesh/tree/master/packages/examples-phaser3)
-- [phaser 2](https://github.com/mikewesthad/navmesh/tree/master/packages/examples-phaser2)
-- [navmesh in a node environment](https://github.com/mikewesthad/navmesh/tree/master/packages/examples-node)
+- [phaser 3](https://github.com/mikewesthad/navmesh/tree/main/packages/examples-phaser3)
+- [phaser 2](https://github.com/mikewesthad/navmesh/tree/main/packages/examples-phaser2)
+- [navmesh in a node environment](https://github.com/mikewesthad/navmesh/tree/main/packages/examples-node)
 
 ### navmesh ([API reference](https://www.mikewesthad.com/navmesh/docs/modules/navmesh.html))
 
@@ -164,7 +164,7 @@ If your world is a grid (e.g. a tilemap), NavMesh also has a utility [buildPolys
 
 ### phaser-navmesh ([API reference](https://www.mikewesthad.com/navmesh/docs/modules/phaser_navmesh.html))
 
-If you are working with Phaser 3, you can use the phaser-navmesh package, which provides a Scene plugin. Play with a live example on CodeSandbox [here](https://codesandbox.io/s/zq1wvozxll?fontsize=14), or peek at the [examples](https://github.com/mikewesthad/navmesh/tree/master/packages/examples/src) in this repository for more complete usage.
+If you are working with Phaser 3, you can use the phaser-navmesh package, which provides a Scene plugin. Play with a live example on CodeSandbox [here](https://codesandbox.io/s/zq1wvozxll?fontsize=14), or peek at the [examples](https://github.com/mikewesthad/navmesh/tree/main/packages/examples/src) in this repository for more complete usage.
 
 ```js
 import Phaser from "phaser";
@@ -233,7 +233,7 @@ navMesh.debugDrawPath(path, 0xffd900);
 
 ### phaser2-navmesh ([API reference](https://www.mikewesthad.com/navmesh/docs/modules/phaser2_navmesh.html))
 
-If you are working with Phaser 2, you can use the phaser2-navmesh package, which provides a game plugin. See this [example](https://github.com/mikewesthad/navmesh/tree/master/packages/examples-phaser2/src) for more complete usage. You can also look at the [previous section](#phaser-navmesh) for Phaser usage.
+If you are working with Phaser 2, you can use the phaser2-navmesh package, which provides a game plugin. See this [example](https://github.com/mikewesthad/navmesh/tree/main/packages/examples-phaser2/src) for more complete usage. You can also look at the [previous section](#phaser-navmesh) for Phaser usage.
 
 ## Performance Comparison
 
@@ -246,7 +246,7 @@ Comparing this navmesh plugin against:
 
 Performance depends on the size of the area that needs to be searched. Finding for a path between points that are 50 pixels away is (generally) going to be much faster than finding a path between points that are 5000 pixels away.
 
-Details (see [src/library/performance](https://github.com/mikewesthad/navmesh/tree/master/src/examples/performance)):
+Details (see [src/library/performance](https://github.com/mikewesthad/navmesh/tree/main/src/examples/performance)):
 
 ```
 Performance Comparison, 100000 iterations, 30x30 tilemap
@@ -328,13 +328,13 @@ A few pnpm workspace tips:
   - `pnpm -r run <script>`
   - Example: `pnpm -r run build`
 
-CI (`.github/workflows/ci.yml`) runs the format check, library build, typecheck and tests on every pull request and push to master.
+CI (`.github/workflows/ci.yml`) runs the format check, library build, typecheck and tests on every pull request and push to main.
 
 ## Changelogs
 
-- [Phaser NavMesh (for Phaser v3)](https://github.com/mikewesthad/navmesh/blob/master/packages/phaser-navmesh/README.md)
-- [Phaser 2 NavMesh](https://github.com/mikewesthad/navmesh/blob/master/packages/phaser2-navmesh/README.md)
-- [NavMesh](https://github.com/mikewesthad/navmesh/blob/master/packages/navmesh/README.md)
+- [Phaser NavMesh (for Phaser v3)](https://github.com/mikewesthad/navmesh/blob/main/packages/phaser-navmesh/README.md)
+- [Phaser 2 NavMesh](https://github.com/mikewesthad/navmesh/blob/main/packages/phaser2-navmesh/README.md)
+- [NavMesh](https://github.com/mikewesthad/navmesh/blob/main/packages/navmesh/README.md)
 
 ## References
 
