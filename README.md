@@ -286,7 +286,7 @@ corepack enable
 pnpm install
 ```
 
-This project uses [pnpm workspaces](https://pnpm.io/workspaces) to manage multiple packages within one repository, and [lerna](https://github.com/lerna/lerna) to version and publish them. `corepack enable` installs the pnpm version pinned in the root `package.json`, and `pnpm install` pulls dependencies and links the packages within "packages/" together. pnpm is configured (in `pnpm-workspace.yaml`) to only install package versions that have been published for at least 7 days. This project has the following packages:
+This project uses [pnpm workspaces](https://pnpm.io/workspaces) to manage multiple packages within one repository. `corepack enable` installs the pnpm version pinned in the root `package.json`, and `pnpm install` pulls dependencies and links the packages within "packages/" together. pnpm is configured (in `pnpm-workspace.yaml`) to only install package versions that have been published for at least 7 days. This project has the following packages:
 
 - `navmesh` - core logic, game-engine agnostic
 - `phaser-navmesh` - Phaser Plugin v3 wrapper around `navmesh`
@@ -299,7 +299,17 @@ The project is controlled via npm scripts. The main ones to use:
 - `pnpm serve:examples` - will build, serve and watch the three examples. Phaser 3 examples are at [localhost::8080](http://localhost:8080/), Phaser 2 examples at [localhost::8081](http://localhost:8081/) and node examples at [localhost::8082](http://localhost:8082/).
 - `pnpm dev` - watch the libraries & serve the examples.  If you are working on the library, this is the easiest way to do "functional testing" by using the library in a game environment.
 - `pnpm dev:phaser3`, `pnpm dev:phaser2`, `pnpm dev:node` - these will watch the relevant libraries and serve one the corresponding example. Useful for dev on a specific library.
-- `pnpm run publish` - version and publish the libraries with lerna. The root `version` script refreshes `pnpm-lock.yaml` so the release commit includes the bumped internal dependency ranges.
+- `pnpm release <patch|minor|major|x.y.z>` - bump the three libraries to a shared version, then commit and tag the release (`navmesh@x.y.z`, etc.). The libraries depend on each other via `workspace:^`, which pnpm replaces with the real version range when publishing.
+
+To publish a release:
+
+```
+pnpm release patch
+git push --follow-tags
+pnpm -r publish
+```
+
+`pnpm -r publish` publishes any library whose version isn't on npm yet, in dependency order, and runs each library's `prepublishOnly` build first.
 
 A few pnpm workspace tips:
 

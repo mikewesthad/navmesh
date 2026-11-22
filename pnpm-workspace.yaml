@@ -5,12 +5,9 @@ packages:
 # (in minutes). Reduces exposure to compromised releases that get pulled quickly.
 minimumReleaseAge: 10080
 
-# Link local workspace packages (e.g. navmesh) instead of fetching them from the
-# registry, since internal deps use plain semver ranges for lerna publish.
-linkWorkspacePackages: true
-
 allowBuilds:
   core-js: false
   cypress: false
+  esbuild: false
   fsevents: false
   nodemon: false

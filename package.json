@@ -20,8 +20,7 @@
     "predeploy:examples": "cd packages/examples && npm run build",
     "deploy:doc": "gh-pages --branch gh-pages --dist docs --dest docs",
     "predeploy:doc": "pnpm doc",
-    "publish": "lerna publish",
-    "version": "pnpm install --lockfile-only && git add pnpm-lock.yaml",
+    "release": "tsx scripts/release.ts",
     "prettier": "pnpm -r exec prettier --config ../../.prettierrc.json --write \"src/**/*.{js,ts,json}\""
   },
   "devDependencies": {
@@ -33,8 +32,8 @@
     "eslint-plugin-prettier": "^3.4.0",
     "gh-pages": "^3.2.3",
     "jest": "^27.0.4",
-    "lerna": "^4.0.0",
     "prettier": "^2.3.1",
+    "tsx": "^4.23.15",
     "typedoc": "^0.21.0"
   },
   "prettier": {

@@ -18,7 +18,7 @@
     "easystarjs": "^0.4.4",
     "fontfaceobserver": "^2.1.0",
     "phaser-ce": "^2.18.0",
-    "phaser2-navmesh": "^2.3.1"
+    "phaser2-navmesh": "workspace:^"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
