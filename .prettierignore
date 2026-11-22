@@ -1,0 +1,14 @@
+# Build output and generated files
+dist
+docs
+public
+pnpm-lock.yaml
+
+# Tiled map exports
+**/tilemaps/*.json
+
+# Third-party code vendored into the examples
+packages/examples-phaser3/src/performance/js/plugins/phaser-astar.js
+
+# Local agent workspace files
+.context
