@@ -10,6 +10,7 @@
   ],
   "scripts": {
     "test": "",
+    "typecheck": "tsc --noEmit",
     "tsc": "tsc",
     "build": "webpack --mode production",
     "watch": "webpack --mode development --watch",

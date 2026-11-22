@@ -6,7 +6,6 @@ For usage information, see: [mikewesthad/navmesh](https://github.com/mikewesthad
 
 ## Changelog
 
-
 Version 2.3.1
 
 - Fix [issue 40](https://github.com/mikewesthad/navmesh/issues/40) where shrink parameter was not used in buildMeshFromTilemap. Thanks [@SlvainBreton](https://github.com/SylvainBreton).
@@ -19,12 +18,12 @@ Version 2.3.0
 Version 2.2.2
 
 - Update all dependencies to the latest versions.
-- Fixed TS bug where constructor was missing `pluginKey` which is required in latest version of Phaser. 
+- Fixed TS bug where constructor was missing `pluginKey` which is required in latest version of Phaser.
 
 Version 2.2.1
 
 - Fix: `PhaserNavMeshPlugin#buildMeshFromTilemap` mesh output is no longer incorrectly rotated (rows & cols were flipped).
-  
+
 Version 2.2.0
 
 - Feature: `PhaserNavMeshPlugin#buildMeshFromTilemap` allows you to automatically generate a navmesh from a Tilemap.

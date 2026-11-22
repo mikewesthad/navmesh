@@ -7,6 +7,9 @@
   "scripts": {
     "build:libs": "pnpm --filter \"*navmesh\" run build",
     "test": "jest --config ./config/jest.config.json",
+    "typecheck": "pnpm -r run typecheck",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "watch": "pnpm -r --parallel run watch",
     "watch:libs": "pnpm --filter \"*navmesh\" --parallel run watch",
     "serve:examples": "pnpm --filter \"examples-*\" --parallel run serve",
@@ -20,8 +23,7 @@
     "predeploy:examples": "cd packages/examples && npm run build",
     "deploy:doc": "gh-pages --branch gh-pages --dist docs --dest docs",
     "predeploy:doc": "pnpm doc",
-    "release": "tsx scripts/release.ts",
-    "prettier": "pnpm -r exec prettier --config ../../.prettierrc.json --write \"src/**/*.{js,ts,json}\""
+    "release": "tsx scripts/release.ts"
   },
   "devDependencies": {
     "babel-jest": "^27.0.2",

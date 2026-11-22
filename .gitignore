@@ -5,3 +5,6 @@ node_modules
 
 # Ignore files used for publishing to gh-pages
 .publish
+
+# TypeScript incremental build info
+*.tsbuildinfo

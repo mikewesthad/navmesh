@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "",
+    "typecheck": "tsc --noEmit",
     "build": "",
     "watch": "nodemon src/index.js",
     "serve": "npm run watch",
