@@ -1,0 +1,16 @@
+packages:
+  - packages/*
+
+# Only install package versions that have been published for at least 7 days
+# (in minutes). Reduces exposure to compromised releases that get pulled quickly.
+minimumReleaseAge: 10080
+
+# Link local workspace packages (e.g. navmesh) instead of fetching them from the
+# registry, since internal deps use plain semver ranges for lerna publish.
+linkWorkspacePackages: true
+
+allowBuilds:
+  core-js: false
+  cypress: false
+  fsevents: false
+  nodemon: false
