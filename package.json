@@ -1,30 +1,28 @@
 {
   "private": true,
+  "packageManager": "pnpm@12.21.0",
   "engines": {
     "node": ">=24"
   },
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
-    "bootstrap": "lerna bootstrap",
-    "build:libs": "lerna run --parallel build --scope '{navmesh,phaser-navmesh,phaser2-navmesh}'",
+    "build:libs": "pnpm --filter \"*navmesh\" run build",
     "test": "jest --config ./config/jest.config.json",
-    "watch": "lerna run --parallel watch",
-    "watch:libs": "lerna run --parallel watch --scope '{navmesh,phaser-navmesh,phaser2-navmesh}'",
-    "serve:examples": "lerna run --parallel serve --scope '{examples-phaser3,examples-phaser2,examples-node}'",
-    "dev": "concurrently \"yarn watch:libs\" \"yarn serve:examples\"",
-    "dev:phaser2": "concurrently \"lerna run watch --scope '{navmesh,phaser2-navmesh}'\" \"lerna run serve --scope examples-phaser2\"",
-    "dev:phaser3": "concurrently \"lerna run watch --scope '{navmesh,phaser-navmesh}'\" \"lerna run serve --scope examples-phaser3\"",
-    "dev:node": "concurrently \"lerna run watch --scope navmesh\" \"lerna run serve --scope examples-node\"",
+    "watch": "pnpm -r --parallel run watch",
+    "watch:libs": "pnpm --filter \"*navmesh\" --parallel run watch",
+    "serve:examples": "pnpm --filter \"examples-*\" --parallel run serve",
+    "dev": "concurrently \"pnpm watch:libs\" \"pnpm serve:examples\"",
+    "dev:phaser2": "concurrently \"pnpm --filter navmesh --filter phaser2-navmesh --parallel run watch\" \"pnpm --filter examples-phaser2 run serve\"",
+    "dev:phaser3": "concurrently \"pnpm --filter navmesh --filter phaser-navmesh --parallel run watch\" \"pnpm --filter examples-phaser3 run serve\"",
+    "dev:node": "concurrently \"pnpm --filter navmesh run watch\" \"pnpm --filter examples-node run serve\"",
     "doc": "typedoc --tsconfig ./typedoc.tsconfig.json",
     "postdoc": "cp -r doc-source/ docs/",
     "deploy:examples": "gh-pages --branch gh-pages --dist packages/examples/public --add",
     "predeploy:examples": "cd packages/examples && npm run build",
     "deploy:doc": "gh-pages --branch gh-pages --dist docs --dest docs",
-    "predeploy:doc": "npm run doc",
+    "predeploy:doc": "pnpm doc",
     "publish": "lerna publish",
-    "prettier": "yarn workspaces run prettier --config ../../.prettierrc.json --write \"src/**/*.{js,ts,json}\""
+    "version": "pnpm install --lockfile-only && git add pnpm-lock.yaml",
+    "prettier": "pnpm -r exec prettier --config ../../.prettierrc.json --write \"src/**/*.{js,ts,json}\""
   },
   "devDependencies": {
     "babel-jest": "^27.0.2",
@@ -37,8 +35,7 @@
     "jest": "^27.0.4",
     "lerna": "^4.0.0",
     "prettier": "^2.3.1",
-    "typedoc": "^0.21.0",
-    "yarn": "^1.22.10"
+    "typedoc": "^0.21.0"
   },
   "prettier": {
     "printWidth": 100

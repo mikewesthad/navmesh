@@ -279,15 +279,14 @@ Long paths (600 pixels and greater length), average time per iteration:
 
 ## Development
 
-Pull requests are welcome (see [todos](#to-dos))! If you want to run this repo locally, make sure you have [node](https://nodejs.org/en/) installed. Download the repo, open a terminal in the repo folder and run:
+Pull requests are welcome (see [todos](#to-dos))! If you want to run this repo locally, make sure you have [node](https://nodejs.org/en/) installed (the version is pinned in `.nvmrc`, so `nvm use` will pick it up). Download the repo, open a terminal in the repo folder and run:
 
 ```
-npm i -g yarn
-yarn
-yarn bootstrap
+corepack enable
+pnpm install
 ```
 
-This project uses [lerna](https://github.com/lerna/lerna) and [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/) to manage multiple packages within one repository. `npx yarn` will pull the root dependencies (and install yarn if needed) and `npm run bootstrap` will use lerna & yarn to pull and link dependencies within "packages/". This project has the following packages:
+This project uses [pnpm workspaces](https://pnpm.io/workspaces) to manage multiple packages within one repository, and [lerna](https://github.com/lerna/lerna) to version and publish them. `corepack enable` installs the pnpm version pinned in the root `package.json`, and `pnpm install` pulls dependencies and links the packages within "packages/" together. pnpm is configured (in `pnpm-workspace.yaml`) to only install package versions that have been published for at least 7 days. This project has the following packages:
 
 - `navmesh` - core logic, game-engine agnostic
 - `phaser-navmesh` - Phaser Plugin v3 wrapper around `navmesh`
@@ -295,26 +294,26 @@ This project uses [lerna](https://github.com/lerna/lerna) and [yarn workspaces](
 
 The project is controlled via npm scripts. The main ones to use:
 
-- `yarn build:libs` - will build production versions of the three libraries within "packages/".
-- `yarn test` - will run the automated tests against the libraries.
-- `serve:examples` - will build, serve and watch the three examples. Phaser 3 examples are at [localhost::8080](http://localhost:8080/), Phaser 2 examples at [localhost::8081](http://localhost:8081/) and node examples at [localhost::8082](http://localhost:8082/).
-- `yarn dev` - watch the libraries & serve the examples.  If you are working on the library, this is the easiest way to do "functional testing" by using the library in a game environment.
-- `yarn dev:phaser3`, `yarn dev:phaser2`, `yarn dev:node` - these will watch the relevant libraries and serve one the corresponding example. Useful for dev on a specific library.
+- `pnpm build:libs` - will build production versions of the three libraries within "packages/".
+- `pnpm test` - will run the automated tests against the libraries.
+- `pnpm serve:examples` - will build, serve and watch the three examples. Phaser 3 examples are at [localhost::8080](http://localhost:8080/), Phaser 2 examples at [localhost::8081](http://localhost:8081/) and node examples at [localhost::8082](http://localhost:8082/).
+- `pnpm dev` - watch the libraries & serve the examples.  If you are working on the library, this is the easiest way to do "functional testing" by using the library in a game environment.
+- `pnpm dev:phaser3`, `pnpm dev:phaser2`, `pnpm dev:node` - these will watch the relevant libraries and serve one the corresponding example. Useful for dev on a specific library.
+- `pnpm run publish` - version and publish the libraries with lerna. The root `version` script refreshes `pnpm-lock.yaml` so the release commit includes the bumped internal dependency ranges.
 
-A few tips, because Lerna + Yarn is complicated, and I keep forgetting these:
+A few pnpm workspace tips:
 
 - Running a command in a workspace:
-  - `yarn workspace <workspace_name> <command>` 
-  - Example: `yarn workspace navmesh add typescript --dev`
+  - `pnpm --filter <workspace_name> <command>`
+  - Example: `pnpm --filter navmesh add typescript --save-dev`
 - Running a command in a set of workspaces:
-  - `lerna run --parallel watch --scope <scope>`
-  - Example: `lerna run --parallel build --scope '{navmesh,phaser-navmesh,phaser-navmesh}'`
+  - `pnpm --filter <pattern> --parallel run <script>`
+  - Example: `pnpm --filter "*navmesh" --parallel run watch`
 - Add a dev dependency to the root:
-  - `yarn add <dependency> --dev -W`
+  - `pnpm add <dependency> --save-dev -w`
 - Running a command in all workspaces:
-  - `yarn workspaces <command>` 
-  - Example: `yarn workspaces build`
-  - `lerna run --parallel watch`
+  - `pnpm -r run <script>`
+  - Example: `pnpm -r run build`
 
 ## Changelogs
 
