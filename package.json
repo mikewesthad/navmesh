@@ -36,7 +36,7 @@
     "jest": "^27.0.4",
     "prettier": "^2.3.1",
     "tsx": "^4.23.15",
-    "typedoc": "^0.21.0"
+    "typedoc": "^0.28.14"
   },
   "prettier": {
     "printWidth": 100

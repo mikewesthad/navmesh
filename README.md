@@ -102,7 +102,7 @@ import { PhaserNavMeshPlugin } from "phaser-navmesh/src";
 
 ## Creating a Navigation Mesh
 
-Creating a navigation mesh is the process of defining the walkable areas within you world as a series of polygons. If you are using a tilemap, then you can probably get away with just auto-generating the mesh using [buildMeshFromTilemap](https://www.mikewesthad.com/navmesh/docs/classes/phaser_navmesh.phasernavmeshplugin.html#buildmeshfromtilemap) in Phaser 3/4 (or if you are using NavMesh without the Phaser wrapper, see [buildPolysFromGridMap](https://www.mikewesthad.com/navmesh/docs/modules/navmesh.html#buildpolysfromgridmap)).
+Creating a navigation mesh is the process of defining the walkable areas within you world as a series of polygons. If you are using a tilemap, then you can probably get away with just auto-generating the mesh using [buildMeshFromTilemap](https://www.mikewesthad.com/navmesh/docs/classes/phaser-navmesh.PhaserNavMeshPlugin.html#buildmeshfromtilemap) in Phaser 3/4 (or if you are using NavMesh without the Phaser wrapper, see [buildPolysFromGridMap](https://www.mikewesthad.com/navmesh/docs/functions/navmesh.buildPolysFromGridMap.html)).
 
 If you've got a more complex situation, you can use a tilemap editor like Tiled to create your mesh
 and load it into the game. See
@@ -154,9 +154,9 @@ const path = navMesh.findPath({ x: 0, y: 0 }, { x: 10, y: 20 });
 // ⮡  [{ x: 0, y: 0 }, { x: 10, y: 10 }, { x: 10, y: 20 }]
 ```
 
-If your world is a grid (e.g. a tilemap), NavMesh also has a utility [buildPolysFromGridMap](https://www.mikewesthad.com/navmesh/docs/modules/navmesh.html#buildpolysfromgridmap) that can automatically generate meshPolygonPoints from a 2D array.
+If your world is a grid (e.g. a tilemap), NavMesh also has a utility [buildPolysFromGridMap](https://www.mikewesthad.com/navmesh/docs/functions/navmesh.buildPolysFromGridMap.html) that can automatically generate meshPolygonPoints from a 2D array.
 
-### phaser-navmesh ([API reference](https://www.mikewesthad.com/navmesh/docs/modules/phaser_navmesh.html))
+### phaser-navmesh ([API reference](https://www.mikewesthad.com/navmesh/docs/modules/phaser-navmesh.html))
 
 If you are working with Phaser 3 or 4, you can use the phaser-navmesh package, which provides a Scene plugin. Play with a live example on CodeSandbox [here](https://codesandbox.io/s/zq1wvozxll?fontsize=14), or peek at the examples ([v4](https://github.com/mikewesthad/navmesh/tree/main/packages/examples-phaser4/src), [v3](https://github.com/mikewesthad/navmesh/tree/main/packages/examples-phaser3/src)) in this repository for more complete usage.
 
