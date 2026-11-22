@@ -13,18 +13,25 @@ import { buildPolysFromGridMap } from "navmesh/src/map-parsers";
 export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
   private phaserNavMeshes: Record<string, PhaserNavMesh> = {};
 
+  /**
+   * The scene that owns this plugin. ScenePlugin's own `scene` and `systems` are typed as nullable
+   * (as of Phaser 3.60) because Phaser clears them on destroy, so the plugin keeps its own
+   * non-null reference for the lifetime of the scene.
+   */
+  private readonly phaserScene: Phaser.Scene;
+
   public constructor(
     scene: Phaser.Scene,
     pluginManager: Phaser.Plugins.PluginManager,
     pluginKey: string
   ) {
     super(scene, pluginManager, pluginKey);
+    this.phaserScene = scene;
   }
 
   /** Phaser.Scene lifecycle event */
   public boot() {
-    const emitter = this.systems!.events;
-    emitter.once("destroy", this.destroy, this);
+    this.phaserScene.sys.events.once("destroy", this.destroy, this);
   }
 
   /** Phaser.Scene lifecycle event - noop in this plugin, but still required. */
@@ -35,7 +42,7 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
 
   /** Phaser.Scene lifecycle event - will destroy all navmeshes created. */
   public destroy() {
-    this.systems!.events.off("boot", this.boot, this);
+    this.phaserScene.sys.events.off("destroy", this.destroy, this);
     this.removeAllMeshes();
   }
 
@@ -162,7 +169,7 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
       );
     }
 
-    const mesh = new PhaserNavMesh(this, this.scene!, key, polygons, 0);
+    const mesh = new PhaserNavMesh(this, this.phaserScene, key, polygons, 0);
     this.phaserNavMeshes[key] = mesh;
 
     return mesh;
@@ -212,7 +219,7 @@ export default class PhaserNavMeshPlugin extends Phaser.Plugins.ScenePlugin {
       ];
     });
 
-    const mesh = new PhaserNavMesh(this, this.scene!, key, polygons, meshShrinkAmount);
+    const mesh = new PhaserNavMesh(this, this.phaserScene, key, polygons, meshShrinkAmount);
 
     this.phaserNavMeshes[key] = mesh;
 
