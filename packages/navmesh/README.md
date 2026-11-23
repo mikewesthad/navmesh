@@ -2,6 +2,8 @@
 
 A JS plugin for fast pathfinding using [navigation meshes](https://en.wikipedia.org/wiki/Navigation_mesh).
 
+This fork adds runtime polygon mutation helpers and `GridNavMeshUpdater` for localized grid-based navmesh edits without a full rebuild.
+
 For usage information, see: [mikewesthad/navmesh](https://github.com/mikewesthad/navmesh).
 
 ## Changelog
