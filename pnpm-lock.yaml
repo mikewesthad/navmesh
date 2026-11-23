@@ -249,49 +249,6 @@ importers:
         specifier: ^10.0.0
         version: 10.0.0(@types/node@15.12.4)(typescript@4.3.4)
 
-  packages/examples-phaser2:
-    dependencies:
-      core-js:
-        specifier: '3'
-        version: 3.15.0
-      easystarjs:
-        specifier: ^0.4.4
-        version: 0.4.4
-      fontfaceobserver:
-        specifier: ^2.1.0
-        version: 2.1.0
-      phaser-ce:
-        specifier: ^2.18.0
-        version: 2.18.0
-      phaser2-navmesh:
-        specifier: workspace:^
-        version: link:../phaser2-navmesh
-    devDependencies:
-      '@babel/core':
-        specifier: ^7.14.6
-        version: 7.14.6(supports-color@8.1.1)
-      '@babel/preset-env':
-        specifier: ^7.14.5
-        version: 7.14.5(@babel/core@7.14.6(supports-color@8.1.1))(supports-color@8.1.1)
-      babel-loader:
-        specifier: ^8.2.2
-        version: 8.2.2(@babel/core@7.14.6(supports-color@8.1.1))(webpack@5.112.2)
-      copy-webpack-plugin:
-        specifier: ^9.0.0
-        version: 9.0.0(webpack@5.112.2)
-      expose-loader:
-        specifier: ^3.0.0
-        version: 3.0.0(webpack@5.112.2)
-      webpack:
-        specifier: ^5.40.0
-        version: 5.112.2(esbuild@0.28.2)(uglify-js@3.13.9)(webpack-cli@6.0.1)
-      webpack-cli:
-        specifier: ^6.0.1
-        version: 6.0.1(webpack-dev-server@5.2.7)(webpack@5.112.2)
-      webpack-dev-server:
-        specifier: ^5.2.7
-        version: 5.2.7(debug@4.3.2(supports-color@8.1.1))(supports-color@8.1.1)(webpack-cli@6.0.1)(webpack@5.112.2)
-
   packages/examples-phaser3:
     dependencies:
       core-js:
@@ -323,7 +280,7 @@ importers:
         specifier: ^9.0.0
         version: 9.0.0(webpack@5.112.2)
       webpack:
-        specifier: ^5.40.0
+        specifier: ^5.105.0
         version: 5.112.2(esbuild@0.28.2)(uglify-js@3.13.9)(webpack-cli@6.0.1)
       webpack-cli:
         specifier: ^6.0.1
@@ -363,7 +320,7 @@ importers:
         specifier: ^9.0.0
         version: 9.0.0(webpack@5.112.2)
       webpack:
-        specifier: ^5.40.0
+        specifier: ^5.105.0
         version: 5.112.2(esbuild@0.28.2)(uglify-js@3.13.9)(webpack-cli@6.0.1)
       webpack-cli:
         specifier: ^6.0.1
@@ -412,7 +369,7 @@ importers:
         specifier: ^4.3.4
         version: 4.3.4
       webpack:
-        specifier: ^5.40.0
+        specifier: ^5.105.0
         version: 5.112.2(esbuild@0.28.2)(uglify-js@3.13.9)(webpack-cli@6.0.1)
       webpack-cli:
         specifier: ^6.0.1
@@ -449,44 +406,7 @@ importers:
         specifier: ^4.3.4
         version: 4.3.4
       webpack:
-        specifier: ^5.40.0
-        version: 5.112.2(esbuild@0.28.2)(uglify-js@3.13.9)(webpack-cli@6.0.1)
-      webpack-cli:
-        specifier: ^6.0.1
-        version: 6.0.1(webpack-dev-server@5.2.7)(webpack@5.112.2)
-
-  packages/phaser2-navmesh:
-    dependencies:
-      core-js:
-        specifier: '3'
-        version: 3.15.0
-      navmesh:
-        specifier: workspace:^
-        version: link:../navmesh
-    devDependencies:
-      '@babel/core':
-        specifier: ^7.14.6
-        version: 7.14.6(supports-color@8.1.1)
-      '@babel/preset-env':
-        specifier: ^7.14.5
-        version: 7.14.5(@babel/core@7.14.6(supports-color@8.1.1))(supports-color@8.1.1)
-      babel-loader:
-        specifier: ^8.2.2
-        version: 8.2.2(@babel/core@7.14.6(supports-color@8.1.1))(webpack@5.112.2)
-      clean-webpack-plugin:
-        specifier: ^3.0.0
-        version: 3.0.0(webpack@5.112.2)
-      phaser-ce:
-        specifier: ^2.18.0
-        version: 2.18.0
-      ts-loader:
-        specifier: ^9.2.3
-        version: 9.2.3(typescript@4.3.4)(webpack@5.112.2)
-      typescript:
-        specifier: ^4.3.4
-        version: 4.3.4
-      webpack:
-        specifier: ^5.40.0
+        specifier: ^5.105.0
         version: 5.112.2(esbuild@0.28.2)(uglify-js@3.13.9)(webpack-cli@6.0.1)
       webpack-cli:
         specifier: ^6.0.1
@@ -2660,12 +2580,6 @@ packages:
     resolution: {integrity: sha512-YJFNJe2+P2DqH+ZrXy+ydRQYO87oxRUonZImpDodR1G7qo3NYd3pL+NQ9Keqpez3cehczYwZDBC3A7xk3n7M/w==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
 
-  expose-loader@3.0.0:
-    resolution: {integrity: sha512-X7ncrzmiQbJHOyLwuymECHk4NYvoPFwnsINMYFaRrm4fxuxR59hV1v65bho3TpIoWieP8WZmhz6micKny8orWg==}
-    engines: {node: '>= 12.13.0'}
-    peerDependencies:
-      webpack: ^5.0.0
-
   express@4.22.3:
     resolution: {integrity: sha512-Bdcs4+3qlpVlx2NRn6fgX2Ue2/gGRaPeawebgclM0ERSCqDpA+owF1fdPwjJUTAJWMTuAaxjDf+hzb0/4eKvvw==}
     engines: {node: '>= 0.10.0'}
@@ -3900,9 +3814,6 @@ packages:
 
   performance-now@2.1.0:
     resolution: {integrity: sha512-7EAHlyLHI56VEIdK57uwHdHKIaAGbnXPiw0yWbarQZOKaKpvUIgW0jWRVLiatnM+XXlSwsanIBH/hzGMJulMow==}
-
-  phaser-ce@2.18.0:
-    resolution: {integrity: sha512-1j3X89aqCaQcmhoFxc7tbKFNlB1VS/BV3FRdu6qSCUfxNT7+A9ioOTfva4jcX8xyNcrgOKTMvB7dOUqYPbL8ZQ==}
 
   phaser@3.90.0:
     resolution: {integrity: sha512-/cziz/5ZIn02uDkC9RzN8VF9x3Gs3XdFFf9nkiMEQT3p7hQlWuyjy4QWosU802qqno2YSLn2BfqwOKLv/sSVfQ==}
@@ -7553,10 +7464,6 @@ snapshots:
       jest-message-util: 27.0.2
       jest-regex-util: 27.0.1
 
-  expose-loader@3.0.0(webpack@5.112.2):
-    dependencies:
-      webpack: 5.112.2(esbuild@0.28.2)(uglify-js@3.13.9)(webpack-cli@6.0.1)
-
   express@4.22.3(supports-color@5.5.0):
     dependencies:
       accepts: 1.3.8
@@ -9033,8 +8940,6 @@ snapshots:
   pend@1.2.0: {}
 
   performance-now@2.1.0: {}
-
-  phaser-ce@2.18.0: {}
 
   phaser@3.90.0:
     dependencies:
