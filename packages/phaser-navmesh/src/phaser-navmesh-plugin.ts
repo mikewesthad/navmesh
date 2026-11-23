@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import PhaserNavMesh from "./phaser-navmesh";
-import { buildPolysFromGridMap } from "navmesh/src/map-parsers";
+import { buildPolysFromGridMap } from "navmesh";
 
 /**
  * This class can create navigation meshes for use in Phaser (v3 or v4). The navmeshes can be

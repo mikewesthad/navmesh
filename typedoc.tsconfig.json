@@ -8,6 +8,8 @@
   },
   "include": ["./packages/navmesh/src/index.ts", "./packages/phaser-navmesh/src/index.ts"],
   "compilerOptions": {
-    "target": "ESNext"
+    "target": "ESNext",
+    // Resolve navmesh to its source (rather than its built types) so cross-package links work.
+    "paths": { "navmesh": ["./packages/navmesh/src/index.ts"] }
   }
 }

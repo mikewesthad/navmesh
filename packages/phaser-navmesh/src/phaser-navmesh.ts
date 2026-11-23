@@ -1,5 +1,4 @@
-// Directly importing the TS version - no need to double bundle.
-import NavMesh, { Point, PolyPoints } from "navmesh/src";
+import NavMesh, { Point, PolyPoints } from "navmesh";
 
 import Phaser from "phaser";
 import PhaserNavMeshPlugin from "./phaser-navmesh-plugin";

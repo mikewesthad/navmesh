@@ -10,6 +10,7 @@ Unreleased
 
 - Support Phaser v4 (and keep supporting Phaser v3.55+).
 - Breaking: `PhaserNavMesh#findPath` now returns `Phaser.Math.Vector2` points by default instead of `Phaser.Geom.Point`, since Phaser v4 removed `Geom.Point`. You can still pass your own point class as the third parameter.
+- Fix: TypeScript declarations are now emitted at `dist/index.d.ts` (where `package.json` points), so TypeScript projects actually pick up the plugin's types. They now import types from the `navmesh` package instead of its source.
 
 Version 2.3.1
 
